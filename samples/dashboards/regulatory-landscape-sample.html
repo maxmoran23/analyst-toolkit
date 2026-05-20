@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Regulatory Intelligence — Digital-Asset Landscape (Illustrative Sample)</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<style>
+/* ============================================================
+   ANALYST TOOLKIT — REGULATORY INTELLIGENCE SAMPLE
+   Deep-dive 3-tab dashboard. Single file, no build step.
+   ALL CONTENT IS ILLUSTRATIVE — themes, not real actions.
+   ============================================================ */
+:root{
+  --bg-primary:#0a0a0f;
+  --bg-card:#12121a;
+  --bg-card-alt:#181828;
+  --bg-hover:#1a1a2e;
+  --border:#2a2a3e;
+  --border-accent:#3a3a5e;
+  --text-primary:#e0e0e8;
+  --text-secondary:#8888aa;
+  --text-muted:#555570;
+  --accent-blue:#4a9eff;
+  --accent-indigo:#6c63ff;
+  --accent-green:#00d4aa;
+  --accent-red:#ff4757;
+  --accent-amber:#ffa502;
+  --accent-cyan:#00d4ff;
+  --accent-purple:#b388ff;
+  --accent-yellow:#fdd835;
+  --radius:10px;
+  --shadow:0 2px 8px rgba(0,0,0,0.3);
+  --mono:'SF Mono','Fira Code',ui-monospace,Menlo,monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg-primary);color:var(--text-primary);min-height:100vh}
+a{color:var(--accent-blue);text-decoration:none}
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-track{background:var(--bg-primary)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+
+/* ── SAMPLE BANNER ── */
+.sample-banner{
+  background:repeating-linear-gradient(45deg,rgba(255,165,2,.16),rgba(255,165,2,.16) 14px,rgba(255,165,2,.07) 14px,rgba(255,165,2,.07) 28px);
+  border-bottom:1px solid rgba(255,165,2,.45);color:var(--accent-amber);text-align:center;
+  padding:8px 14px;font-size:12px;font-weight:700;letter-spacing:.04em;
+  display:flex;align-items:center;justify-content:center;gap:9px;flex-wrap:wrap}
+.sample-banner .dot{width:7px;height:7px;border-radius:50%;background:var(--accent-amber);box-shadow:0 0 8px var(--accent-amber);animation:pulseDot 2s ease-in-out infinite}
+@keyframes pulseDot{0%,100%{opacity:1}50%{opacity:.35}}
+
+/* ── NAV BAR ── */
+.topbar{background:var(--bg-card);border-bottom:1px solid var(--border);padding:14px 24px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100;gap:16px;flex-wrap:wrap}
+.topbar-title{font-size:15px;font-weight:700;color:var(--accent-indigo);letter-spacing:.5px;text-transform:uppercase;display:flex;align-items:center;gap:8px}
+.topbar-title .ico{font-size:18px}
+.topbar-meta{font-size:11px;color:var(--text-muted);font-family:var(--mono);margin-top:3px}
+.topbar-tabs{display:flex;gap:4px}
+.topbar-tab{padding:7px 16px;border-radius:7px;font-size:12px;font-weight:600;color:var(--text-secondary);background:transparent;border:none;cursor:pointer;transition:all .2s;font-family:inherit}
+.topbar-tab:hover{background:var(--bg-hover);color:var(--text-primary)}
+.topbar-tab.active{background:var(--accent-indigo);color:#fff}
+
+/* ── LAYOUT ── */
+.container{max-width:1400px;margin:0 auto;padding:20px 24px}
+.section-label{font-size:11px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--text-muted);margin:22px 0 11px;display:flex;align-items:center;gap:8px}
+.section-label::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* ── HERO STRIP ── */
+.hero{background:linear-gradient(135deg,rgba(108,99,255,.14),rgba(74,158,255,.05));border:1px solid var(--border-accent);border-radius:var(--radius);padding:20px 22px;margin-bottom:18px;display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap}
+.hero-main{flex:1;min-width:280px}
+.hero-h{font-size:20px;font-weight:700;letter-spacing:-.3px;margin-bottom:6px}
+.hero-p{font-size:13px;color:var(--text-secondary);line-height:1.65}
+.hero-signal{background:var(--bg-card);border:1px solid var(--accent-amber);border-left-width:4px;border-radius:8px;padding:13px 15px;min-width:300px;max-width:420px}
+.hero-signal .hs-label{font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--accent-amber);margin-bottom:5px}
+.hero-signal .hs-body{font-size:12.5px;color:var(--text-primary);line-height:1.6}
+
+/* ── KPI STRIP ── */
+.kpi-strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:18px}
+.kpi-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:15px;text-align:center;transition:border-color .2s}
+.kpi-card:hover{border-color:var(--border-accent)}
+.kpi-label{font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+.kpi-value{font-size:27px;font-weight:700;font-family:var(--mono);line-height:1}
+.kpi-delta{font-size:11px;margin-top:5px;font-weight:600}
+.kpi-up{color:var(--accent-green)}.kpi-down{color:var(--accent-red)}.kpi-flat{color:var(--text-muted)}
+.kpi-warn{color:var(--accent-amber)}
+
+/* ── CARDS ── */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:16px}
+.grid-5-7{display:grid;grid-template-columns:5fr 7fr;gap:16px;margin-bottom:16px}
+.grid-7-5{display:grid;grid-template-columns:7fr 5fr;gap:16px;margin-bottom:16px}
+.grid-full{grid-column:1/-1}
+.card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);transition:border-color .2s}
+.card:hover{border-color:var(--border-accent)}
+.card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:13px;padding-bottom:10px;border-bottom:1px solid var(--border);gap:10px;flex-wrap:wrap}
+.card-title{font-size:12px;font-weight:700;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px}
+.card-badge{font-size:10px;padding:3px 9px;border-radius:5px;font-weight:700;letter-spacing:.3px}
+.badge-green{background:rgba(0,212,170,.15);color:var(--accent-green)}
+.badge-red{background:rgba(255,71,87,.15);color:var(--accent-red)}
+.badge-amber{background:rgba(255,165,2,.15);color:var(--accent-amber)}
+.badge-blue{background:rgba(74,158,255,.15);color:var(--accent-blue)}
+.badge-indigo{background:rgba(108,99,255,.15);color:var(--accent-indigo)}
+.badge-purple{background:rgba(179,136,255,.15);color:var(--accent-purple)}
+
+/* ── CHARTS ── */
+.chart-container{position:relative;height:265px}
+.chart-container-sm{position:relative;height:200px}
+
+/* ── TABLES ── */
+.data-table{width:100%;border-collapse:collapse;font-size:12px}
+.data-table th{text-align:left;color:var(--text-muted);font-weight:700;padding:9px 10px;border-bottom:1px solid var(--border);text-transform:uppercase;letter-spacing:.5px;font-size:10px;white-space:nowrap}
+.data-table td{padding:9px 10px;border-bottom:1px solid rgba(42,42,62,.4);color:var(--text-primary);vertical-align:top}
+.data-table tr:hover td{background:var(--bg-hover)}
+.data-table .t-main{font-weight:600}
+.data-table .t-sub{color:var(--text-muted);font-size:11px;margin-top:2px}
+
+/* severity pills */
+.severity{padding:2px 8px;border-radius:4px;font-size:10px;font-weight:800;letter-spacing:.4px;white-space:nowrap}
+.severity-critical{background:rgba(255,71,87,.22);color:var(--accent-red)}
+.severity-high{background:rgba(255,165,2,.22);color:var(--accent-amber)}
+.severity-medium{background:rgba(253,216,53,.16);color:var(--accent-yellow)}
+.severity-low{background:rgba(0,212,170,.16);color:var(--accent-green)}
+.severity-info{background:rgba(85,85,112,.25);color:var(--text-secondary)}
+
+/* status pills */
+.status{padding:2px 8px;border-radius:4px;font-size:10px;font-weight:700;white-space:nowrap}
+.status-open{background:rgba(74,158,255,.16);color:var(--accent-blue)}
+.status-active{background:rgba(255,165,2,.16);color:var(--accent-amber)}
+.status-final{background:rgba(0,212,170,.16);color:var(--accent-green)}
+.status-watch{background:rgba(179,136,255,.16);color:var(--accent-purple)}
+
+/* type chips */
+.type-chip{padding:2px 7px;border-radius:4px;font-size:9.5px;font-weight:700;letter-spacing:.3px;text-transform:uppercase;border:1px solid var(--border)}
+
+/* ── DEVELOPMENT CARDS ── */
+.dev-card{background:var(--bg-card);border:1px solid var(--border);border-left-width:4px;border-radius:8px;padding:14px 16px;margin-bottom:11px;transition:border-color .2s,transform .15s}
+.dev-card:hover{border-color:var(--border-accent);transform:translateX(2px)}
+.dev-card.sv-critical{border-left-color:var(--accent-red)}
+.dev-card.sv-high{border-left-color:var(--accent-amber)}
+.dev-card.sv-medium{border-left-color:var(--accent-yellow)}
+.dev-card.sv-low{border-left-color:var(--accent-green)}
+.dev-head{display:flex;align-items:center;gap:9px;margin-bottom:7px;flex-wrap:wrap}
+.dev-id{font-family:var(--mono);font-size:10px;color:var(--text-muted)}
+.dev-title{font-size:13.5px;font-weight:700;color:var(--text-primary);margin-bottom:6px;line-height:1.4}
+.dev-body{font-size:12px;color:var(--text-secondary);line-height:1.62}
+.dev-meta{display:flex;gap:14px;margin-top:9px;padding-top:9px;border-top:1px solid var(--border);flex-wrap:wrap;font-size:11px}
+.dev-meta .dm-k{color:var(--text-muted);text-transform:uppercase;letter-spacing:.4px;font-size:9.5px;font-weight:700}
+.dev-meta .dm-v{color:var(--text-primary);margin-left:5px}
+.dev-meta-item{display:flex;align-items:baseline}
+
+/* ── METRIC ROWS ── */
+.metric-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(42,42,62,.4);gap:12px}
+.metric-row:last-child{border-bottom:none}
+.metric-label{color:var(--text-secondary);font-size:12px}
+.metric-value{font-weight:600;font-size:12.5px;font-family:var(--mono);text-align:right}
+
+/* ── DEADLINE LIST ── */
+.deadline{display:flex;gap:13px;align-items:flex-start;padding:11px 0;border-bottom:1px solid rgba(42,42,62,.4)}
+.deadline:last-child{border-bottom:none}
+.deadline-date{flex-shrink:0;width:80px;text-align:center;border-radius:7px;padding:6px 4px;border:1px solid var(--border)}
+.deadline-date.dd-soon{border-color:var(--accent-red);background:rgba(255,71,87,.08)}
+.deadline-date.dd-mid{border-color:var(--accent-amber);background:rgba(255,165,2,.08)}
+.deadline-date.dd-far{border-color:var(--border-accent)}
+.dd-day{font-size:18px;font-weight:800;font-family:var(--mono);line-height:1}
+.dd-mon{font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--text-muted);margin-top:2px}
+.deadline-body{flex:1}
+.deadline-title{font-size:12.5px;font-weight:600;color:var(--text-primary);margin-bottom:3px}
+.deadline-desc{font-size:11px;color:var(--text-secondary);line-height:1.55}
+.deadline-tag{font-size:9.5px;font-family:var(--mono);color:var(--text-muted);margin-top:4px}
+
+/* ── LEGEND ── */
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:var(--text-secondary)}
+.legend-item{display:flex;align-items:center;gap:6px}
+.legend-dot{width:9px;height:9px;border-radius:2px}
+
+/* ── TABS ── */
+.tab-panel{display:none}
+.tab-panel.active{display:block;animation:fadeUp .35s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── JURISDICTION SPLIT ── */
+.jur-col h4{font-size:12px;font-weight:700;display:flex;align-items:center;gap:7px;margin-bottom:10px;color:var(--text-primary)}
+.jur-flag{font-size:15px}
+.theme-row{padding:9px 0;border-bottom:1px solid rgba(42,42,62,.4)}
+.theme-row:last-child{border-bottom:none}
+.theme-name{font-size:12px;font-weight:600;color:var(--text-primary);display:flex;justify-content:space-between;gap:10px;align-items:center}
+.theme-desc{font-size:11px;color:var(--text-secondary);line-height:1.5;margin-top:3px}
+
+/* progress bar */
+.pbar-track{height:6px;background:var(--bg-card-alt);border-radius:3px;overflow:hidden;margin-top:6px}
+.pbar-fill{height:100%;border-radius:3px}
+
+/* ── FOOTER ── */
+.footer{margin-top:32px;padding:18px 0;border-top:1px solid var(--border);font-size:11px;color:var(--text-muted);text-align:center;line-height:1.7}
+.footer .fnote{max-width:780px;margin:8px auto 0;opacity:.8}
+.footer .mono{font-family:var(--mono)}
+
+/* ── RESPONSIVE ── */
+@media (max-width:980px){
+  .grid-2,.grid-3,.grid-5-7,.grid-7-5{grid-template-columns:1fr}
+  .kpi-strip{grid-template-columns:repeat(2,1fr)}
+  .container{padding:14px}
+}
+@media print{
+  .topbar{position:static}
+  body{background:#0a0a0f;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     ILLUSTRATIVE SAMPLE BANNER — required, always visible
+     ============================================================ -->
+<div class="sample-banner">
+  <span class="dot"></span>
+  ILLUSTRATIVE SAMPLE &mdash; synthetic data, fictional entity, for format demonstration only
+  <span class="dot"></span>
+</div>
+
+<!-- ── TOPBAR ── -->
+<div class="topbar">
+  <div>
+    <div class="topbar-title"><span class="ico">&#9878;</span> Regulatory Intelligence &mdash; Digital-Asset Landscape</div>
+    <div class="topbar-meta">Window: trailing 7 days (illustrative) &middot; Jurisdictions: US federal + EU &middot; Generated <span id="gen-date"></span></div>
+  </div>
+  <div class="topbar-tabs">
+    <button class="topbar-tab active" data-tab="overview">Overview</button>
+    <button class="topbar-tab" data-tab="developments">Developments</button>
+    <button class="topbar-tab" data-tab="tracking">Tracking &amp; Deadlines</button>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- ════════════════════════════════════════════════
+     TAB 1 — OVERVIEW
+     ════════════════════════════════════════════════ -->
+<div id="tab-overview" class="tab-panel active">
+
+  <div class="hero">
+    <div class="hero-main">
+      <div class="hero-h">Digital-Asset Regulatory Landscape &mdash; US + EU</div>
+      <p class="hero-p">
+        An illustrative regulatory-intelligence briefing covering broadly-known public themes in digital-asset
+        regulation across the United States and the European Union. The developments below are
+        <strong>generic and illustrative</strong> &mdash; they describe well-established directions of travel
+        (a comprehensive EU framework phasing in, a US move toward dedicated market-structure and stablecoin
+        legislation, ongoing supervisory attention to AML/CFT) and do <strong>not</strong> represent specific
+        enforcement actions against any named firm. Severity tiers use the toolkit's shared CRITICAL / HIGH /
+        MEDIUM / LOW vocabulary.
+      </p>
+    </div>
+    <div class="hero-signal">
+      <div class="hs-label">&#9650; Top Signal</div>
+      <div class="hs-body">
+        The defining theme of this illustrative window is <strong>framework consolidation</strong>: a phased
+        comprehensive EU regime is moving from rule text into supervised application, while the US continues
+        shifting digital-asset oversight from case-by-case enforcement toward dedicated market-structure and
+        stablecoin statutes. The practical takeaway for any digital-asset business is that ad-hoc
+        compliance postures are being overtaken by explicit, examinable rule sets.
+      </div>
+    </div>
+  </div>
+
+  <div class="kpi-strip">
+    <div class="kpi-card"><div class="kpi-label">Developments</div><div class="kpi-value" style="color:var(--accent-indigo)">7</div><div class="kpi-delta kpi-flat">illustrative window</div></div>
+    <div class="kpi-card"><div class="kpi-label">Critical</div><div class="kpi-value" style="color:var(--accent-red)">1</div><div class="kpi-delta kpi-down">deadline &lt; 30 days</div></div>
+    <div class="kpi-card"><div class="kpi-label">High</div><div class="kpi-value" style="color:var(--accent-amber)">3</div><div class="kpi-delta kpi-warn">action advised</div></div>
+    <div class="kpi-card"><div class="kpi-label">Tracked Matters</div><div class="kpi-value" style="color:var(--accent-blue)">6</div><div class="kpi-delta kpi-flat">running ledger</div></div>
+    <div class="kpi-card"><div class="kpi-label">Deadlines / 60d</div><div class="kpi-value" style="color:var(--accent-cyan)">5</div><div class="kpi-delta kpi-warn">next: 9 days</div></div>
+    <div class="kpi-card"><div class="kpi-label">Jurisdictions</div><div class="kpi-value" style="color:var(--accent-green)">2</div><div class="kpi-delta kpi-flat">US fed + EU</div></div>
+  </div>
+
+  <div class="section-label">Landscape at a glance</div>
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Developments by Severity</span>
+        <span class="card-badge badge-amber">7 items</span>
+      </div>
+      <div class="chart-container"><canvas id="severityChart"></canvas></div>
+      <div class="legend" style="margin-top:12px;justify-content:center">
+        <div class="legend-item"><span class="legend-dot" style="background:var(--accent-red)"></span>Critical</div>
+        <div class="legend-item"><span class="legend-dot" style="background:var(--accent-amber)"></span>High</div>
+        <div class="legend-item"><span class="legend-dot" style="background:var(--accent-yellow)"></span>Medium</div>
+        <div class="legend-item"><span class="legend-dot" style="background:var(--accent-green)"></span>Low</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Developments by Authority Type</span>
+        <span class="card-badge badge-blue">illustrative</span>
+      </div>
+      <div class="chart-container"><canvas id="agencyChart"></canvas></div>
+    </div>
+  </div>
+
+  <div class="grid-7-5">
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Activity by Development Type</span>
+        <span class="card-badge badge-indigo">6 categories</span>
+      </div>
+      <div class="chart-container-sm"><canvas id="typeChart"></canvas></div>
+      <p style="font-size:11px;color:var(--text-muted);margin-top:10px;line-height:1.55">
+        The scan targets six development types: enforcement actions, rulemaking, guidance, legislation,
+        policy statements, and deadlines. In this illustrative window, rulemaking and legislation dominate &mdash;
+        consistent with the framework-consolidation top signal.
+      </p>
+    </div>
+    <div class="card">
+      <div class="card-header"><span class="card-title">Briefing Summary</span></div>
+      <div class="metric-row"><span class="metric-label">Reporting window</span><span class="metric-value">7 days (illustrative)</span></div>
+      <div class="metric-row"><span class="metric-label">Jurisdictions in scope</span><span class="metric-value">US federal, EU</span></div>
+      <div class="metric-row"><span class="metric-label">Topic area</span><span class="metric-value">Digital assets</span></div>
+      <div class="metric-row"><span class="metric-label">Developments surfaced</span><span class="metric-value">7</span></div>
+      <div class="metric-row"><span class="metric-label">Highest severity</span><span class="metric-value" style="color:var(--accent-red)">CRITICAL &times;1</span></div>
+      <div class="metric-row"><span class="metric-label">Nearest deadline</span><span class="metric-value" style="color:var(--accent-amber)">9 days</span></div>
+      <div class="metric-row"><span class="metric-label">Source basis</span><span class="metric-value">Public themes</span></div>
+      <div class="metric-row"><span class="metric-label">Briefing posture</span><span class="metric-value" style="color:var(--accent-indigo)">Active</span></div>
+    </div>
+  </div>
+
+  <div class="section-label">Jurisdiction themes</div>
+  <div class="grid-2">
+    <div class="card jur-col">
+      <h4><span class="jur-flag">&#127482;&#127480;</span> United States &mdash; Federal</h4>
+      <div class="theme-row">
+        <div class="theme-name"><span>Market-structure legislation</span><span class="severity severity-high">HIGH</span></div>
+        <div class="theme-desc">Sustained legislative effort to define which digital assets are securities versus commodities and to allocate oversight between market regulators. Direction of travel, not a finalized statute.</div>
+        <div class="pbar-track"><div class="pbar-fill" style="width:62%;background:var(--accent-amber)"></div></div>
+      </div>
+      <div class="theme-row">
+        <div class="theme-name"><span>Stablecoin / payment-token regime</span><span class="severity severity-critical">CRITICAL</span></div>
+        <div class="theme-desc">Movement toward a dedicated federal framework for payment stablecoins &mdash; reserve, redemption, and issuer-licensing standards. The most advanced US workstream in this illustrative scan.</div>
+        <div class="pbar-track"><div class="pbar-fill" style="width:78%;background:var(--accent-red)"></div></div>
+      </div>
+      <div class="theme-row">
+        <div class="theme-name"><span>AML/CFT supervisory attention</span><span class="severity severity-high">HIGH</span></div>
+        <div class="theme-desc">Continued focus on Bank Secrecy Act obligations for digital-asset intermediaries &mdash; registration, the Travel Rule, and transaction-monitoring expectations.</div>
+        <div class="pbar-track"><div class="pbar-fill" style="width:55%;background:var(--accent-amber)"></div></div>
+      </div>
+      <div class="theme-row">
+        <div class="theme-name"><span>Tokenization &amp; custody guidance</span><span class="severity severity-medium">MEDIUM</span></div>
+        <div class="theme-desc">Growing interpretive attention to tokenized real-world assets and to custody standards for digital-asset intermediaries.</div>
+        <div class="pbar-track"><div class="pbar-fill" style="width:40%;background:var(--accent-yellow)"></div></div>
+      </div>
+    </div>
+    <div class="card jur-col">
+      <h4><span class="jur-flag">&#127466;&#127482;</span> European Union</h4>
+      <div class="theme-row">
+        <div class="theme-name"><span>Comprehensive markets framework</span><span class="severity severity-critical">CRITICAL</span></div>
+        <div class="theme-desc">A phased, comprehensive regime for crypto-asset markets moving from rule text into supervised application &mdash; authorization, conduct, and disclosure obligations for issuers and service providers.</div>
+        <div class="pbar-track"><div class="pbar-fill" style="width:85%;background:var(--accent-red)"></div></div>
+      </div>
+      <div class="theme-row">
+        <div class="theme-name"><span>Transfer-of-funds / Travel Rule</span><span class="severity severity-high">HIGH</span></div>
+        <div class="theme-desc">Originator- and beneficiary-information requirements for crypto-asset transfers, aligning the sector with established wire-transfer transparency standards.</div>
+        <div class="pbar-track"><div class="pbar-fill" style="width:70%;background:var(--accent-amber)"></div></div>
+      </div>
+      <div class="theme-row">
+        <div class="theme-name"><span>AML single-rulebook &amp; authority</span><span class="severity severity-medium">MEDIUM</span></div>
+        <div class="theme-desc">Harmonization of AML/CFT rules and the stand-up of a central supervisory authority, with digital-asset service providers expressly in scope.</div>
+        <div class="pbar-track"><div class="pbar-fill" style="width:48%;background:var(--accent-yellow)"></div></div>
+      </div>
+      <div class="theme-row">
+        <div class="theme-name"><span>Supervisory technical standards</span><span class="severity severity-low">LOW</span></div>
+        <div class="theme-desc">Ongoing publication of technical standards and guidance that operationalize the headline framework &mdash; background workstream, steady cadence.</div>
+        <div class="pbar-track"><div class="pbar-fill" style="width:32%;background:var(--accent-green)"></div></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ════════════════════════════════════════════════
+     TAB 2 — DEVELOPMENTS
+     ════════════════════════════════════════════════ -->
+<div id="tab-developments" class="tab-panel">
+
+  <div class="section-label">Severity-ranked developments &mdash; illustrative</div>
+  <div class="card" style="margin-bottom:16px;padding:13px 16px">
+    <p style="font-size:11.5px;color:var(--text-secondary);line-height:1.6">
+      The cards below are <strong>illustrative regulatory developments</strong> built on broadly-known public
+      themes. They are ordered by severity. Each carries the type, authority, an action-required line, and a
+      source line &mdash; the structure a live regulatory-intelligence scan produces. No card describes a real
+      enforcement action against any named company; where a card references enforcement, it describes a
+      <em>generic supervisory pattern</em>, not a specific case.
+    </p>
+  </div>
+
+  <div class="legend" style="margin-bottom:14px">
+    <div class="legend-item"><span class="severity severity-critical">CRITICAL</span>binding rule / deadline &lt; 30d</div>
+    <div class="legend-item"><span class="severity severity-high">HIGH</span>significant guidance / pattern</div>
+    <div class="legend-item"><span class="severity severity-medium">MEDIUM</span>worth tracking</div>
+    <div class="legend-item"><span class="severity severity-low">LOW</span>background</div>
+  </div>
+
+  <div id="dev-list"></div>
+
+</div>
+
+<!-- ════════════════════════════════════════════════
+     TAB 3 — TRACKING & DEADLINES
+     ════════════════════════════════════════════════ -->
+<div id="tab-tracking" class="tab-panel">
+
+  <div class="section-label">Tracked matters &mdash; running ledger</div>
+  <div class="card grid-full" style="margin-bottom:18px">
+    <div class="card-header">
+      <span class="card-title">Tracked Matters &mdash; Status</span>
+      <span class="card-badge badge-blue">6 matters &middot; illustrative</span>
+    </div>
+    <div style="overflow-x:auto">
+      <table class="data-table">
+        <thead><tr>
+          <th>Matter</th><th>Jurisdiction</th><th>Type</th><th>Severity</th>
+          <th>Status</th><th>Last Development</th><th>Next Date</th>
+        </tr></thead>
+        <tbody id="tracked-body"></tbody>
+      </table>
+    </div>
+    <p style="font-size:10.5px;color:var(--text-muted);margin-top:11px;line-height:1.55">
+      In a recurring scan this table is a running ledger &mdash; each run updates status, the last development,
+      and the next date in place, so the same matter can be followed over time. All entries here are illustrative.
+    </p>
+  </div>
+
+  <div class="grid-7-5">
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Upcoming Deadlines &mdash; Next 60 Days</span>
+        <span class="card-badge badge-amber">5 items</span>
+      </div>
+      <div id="deadline-list"></div>
+      <p style="font-size:10.5px;color:var(--text-muted);margin-top:11px;line-height:1.5">
+        Illustrative dates relative to the briefing date. A compliance-calendar variant of this scan would extend
+        the horizon to 180 days and output this section alone.
+      </p>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <div class="card">
+        <div class="card-header"><span class="card-title">Deadline Pressure</span></div>
+        <div class="chart-container-sm"><canvas id="deadlineChart"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-header"><span class="card-title">How to Read This Briefing</span></div>
+        <div class="metric-row"><span class="metric-label">Severity vocabulary</span><span class="metric-value">4-tier</span></div>
+        <div class="metric-row"><span class="metric-label">CRITICAL means</span><span class="metric-value" style="color:var(--accent-red)">&lt; 30 days</span></div>
+        <div class="metric-row"><span class="metric-label">HIGH means</span><span class="metric-value" style="color:var(--accent-amber)">30&ndash;90 days</span></div>
+        <div class="metric-row"><span class="metric-label">MEDIUM means</span><span class="metric-value" style="color:var(--accent-yellow)">&gt; 90 days</span></div>
+        <div class="metric-row"><span class="metric-label">Re-run cadence</span><span class="metric-value">daily / weekly</span></div>
+        <div class="metric-row"><span class="metric-label">Ledger behavior</span><span class="metric-value">updates in place</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label">Recommended watch posture</div>
+  <div class="grid-3">
+    <div class="card" style="border-left:3px solid var(--accent-red)">
+      <div class="card-header"><span class="card-title" style="color:var(--accent-red)">Act Now</span><span class="card-badge badge-red">&lt; 30d</span></div>
+      <p style="font-size:11.5px;color:var(--text-secondary);line-height:1.6">
+        Confirm scope against the phased EU framework milestone and the nearest comment-period close. Where a
+        deadline lands inside 30 days, assign an owner and a written action this week.
+      </p>
+    </div>
+    <div class="card" style="border-left:3px solid var(--accent-amber)">
+      <div class="card-header"><span class="card-title" style="color:var(--accent-amber)">Prepare</span><span class="card-badge badge-amber">30&ndash;90d</span></div>
+      <p style="font-size:11.5px;color:var(--text-secondary);line-height:1.6">
+        Map Travel-Rule and market-structure workstreams to existing controls. Draft gap assessments now so the
+        HIGH-tier items do not become CRITICAL-tier scrambles as deadlines approach.
+      </p>
+    </div>
+    <div class="card" style="border-left:3px solid var(--accent-yellow)">
+      <div class="card-header"><span class="card-title" style="color:var(--accent-yellow)">Monitor</span><span class="card-badge badge-purple">&gt; 90d</span></div>
+      <p style="font-size:11.5px;color:var(--text-secondary);line-height:1.6">
+        Keep tokenization, custody guidance, and the AML single-rulebook on the tracked-matters ledger. No action
+        required this cycle &mdash; re-assess severity at the next scan.
+      </p>
+    </div>
+  </div>
+
+</div>
+
+</div><!-- /container -->
+
+<div class="footer">
+  <p><strong>Regulatory Intelligence &mdash; Digital-Asset Landscape</strong> &middot; Illustrative sample for the <span class="mono">analyst-toolkit</span> repository</p>
+  <p class="fnote">
+    This dashboard is a format demonstration. Every development, tracked matter, deadline, and chart value is
+    synthetic and illustrative. The content describes broadly-known, public directions of travel in digital-asset
+    regulation; it does not report specific enforcement actions and does not name or assess any real company in a
+    risk or enforcement context. Severity tiers and dates are invented to show structure. Not legal, regulatory,
+    or compliance advice.
+  </p>
+</div>
+
+<script>
+/* ============================================================
+   REGULATORY INTELLIGENCE SAMPLE — ENGINE
+   All data synthetic / illustrative. Safe DOM construction —
+   no innerHTML on dynamic content.
+   ============================================================ */
+
+/* ---- tiny DOM helper ---- */
+function el(tag,props){
+  var node=document.createElement(tag);
+  if(props){
+    for(var k in props){
+      if(k==='class')node.className=props[k];
+      else if(k==='style')node.setAttribute('style',props[k]);
+      else if(k==='text')node.textContent=props[k];
+      else node.setAttribute(k,props[k]);
+    }
+  }
+  for(var i=2;i<arguments.length;i++){
+    var c=arguments[i];
+    if(c==null)continue;
+    if(Array.isArray(c)){c.forEach(function(x){if(x!=null)node.appendChild(typeof x==='string'?document.createTextNode(x):x)});}
+    else node.appendChild(typeof c==='string'?document.createTextNode(c):c);
+  }
+  return node;
+}
+
+/* ---- TAB SWITCHING ---- */
+document.querySelectorAll('.topbar-tab').forEach(function(btn){
+  btn.addEventListener('click',function(){
+    var name=btn.getAttribute('data-tab');
+    document.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active')});
+    document.querySelectorAll('.topbar-tab').forEach(function(t){t.classList.remove('active')});
+    document.getElementById('tab-'+name).classList.add('active');
+    btn.classList.add('active');
+    window.scrollTo({top:0,behavior:'smooth'});
+  });
+});
+
+/* ---- DEVELOPMENTS DATA (illustrative) ---- */
+var SEV_META={
+  critical:{cls:'severity-critical',card:'sv-critical',label:'CRITICAL'},
+  high:{cls:'severity-high',card:'sv-high',label:'HIGH'},
+  medium:{cls:'severity-medium',card:'sv-medium',label:'MEDIUM'},
+  low:{cls:'severity-low',card:'sv-low',label:'LOW'}
+};
+var TYPE_COLOR={
+  'Rulemaking':'var(--accent-blue)','Legislation':'var(--accent-indigo)','Guidance':'var(--accent-cyan)',
+  'Enforcement':'var(--accent-red)','Policy':'var(--accent-purple)','Deadline':'var(--accent-amber)'
+};
+
+var DEVS=[
+  {id:'REG-01', sev:'critical', type:'Rulemaking',
+   title:'EU comprehensive crypto-asset markets framework enters a phased application milestone',
+   body:'An illustrative milestone in which a major component of the EU’s comprehensive crypto-asset markets regime moves from adopted rule text into supervised application. Issuers and crypto-asset service providers face authorization, governance, conduct-of-business, and disclosure obligations. This is a binding-rule transition with a near-term effective milestone — the defining CRITICAL item of the window.',
+   auth:'EU — markets regulators / national competent authorities',
+   action:'Confirm authorization status and that conduct, custody, and disclosure controls map to the framework before the milestone date.',
+   src:'Illustrative — EU primary rule text + supervisory guidance (no specific citation; sample content)'},
+  {id:'REG-02', sev:'high', type:'Legislation',
+   title:'US federal payment-stablecoin legislation advances toward a dedicated regime',
+   body:'An illustrative legislative development in which a dedicated US framework for payment stablecoins progresses — covering reserve composition and segregation, redemption rights, and issuer licensing or registration. The direction of travel is from case-by-case treatment toward an explicit statutory regime for payment tokens. Significant for any issuer or distributor of dollar-referenced stablecoins.',
+   auth:'US — federal legislature; prudential and market regulators',
+   action:'Inventory stablecoin exposure (issuance, distribution, treasury use); track reserve and redemption provisions against current practice.',
+   src:'Illustrative — US legislative tracker themes (no specific bill cited; sample content)'},
+  {id:'REG-03', sev:'high', type:'Guidance',
+   title:'Supervisory attention to AML/CFT obligations for digital-asset intermediaries intensifies',
+   body:'An illustrative guidance-and-supervision pattern in which authorities reiterate Bank Secrecy Act / AML expectations for digital-asset intermediaries — registration, customer due diligence, the Travel Rule, sanctions screening, and transaction monitoring. This describes a generic supervisory direction, not a specific enforcement action against any named firm.',
+   auth:'US — financial-crime and prudential supervisors',
+   action:'Re-test CDD, Travel-Rule, sanctions-screening, and monitoring controls against current supervisory expectations; document the assessment.',
+   src:'Illustrative — generic AML/CFT supervisory guidance themes (sample content)'},
+  {id:'REG-04', sev:'high', type:'Rulemaking',
+   title:'EU transfer-of-funds requirements extend Travel-Rule transparency to crypto transfers',
+   body:'An illustrative rulemaking development applying originator- and beneficiary-information requirements to crypto-asset transfers, aligning the sector with established wire-transfer transparency standards. Crypto-asset service providers must collect, verify, and transmit prescribed information with transfers and handle missing-information cases.',
+   auth:'EU — AML legislators / supervisory authorities',
+   action:'Verify Travel-Rule data collection, transmission, and missing-information handling are implemented across all transfer rails.',
+   src:'Illustrative — EU transfer-of-funds rule themes (sample content)'},
+  {id:'REG-05', sev:'medium', type:'Policy',
+   title:'Regulators signal increased focus on tokenized real-world assets and custody standards',
+   body:'An illustrative policy-statement theme — speeches, testimony, and press statements indicating growing supervisory interest in tokenized real-world assets and in custody standards for digital-asset intermediaries. No new binding rule; a forward-looking signal worth tracking for entities active in tokenization or custody.',
+   auth:'US + EU — market regulators (policy statements)',
+   action:'Monitor; assess tokenization and custody exposure so the workstream is ready if it converts into a rulemaking or guidance item.',
+   src:'Illustrative — generic regulator policy-statement themes (sample content)'},
+  {id:'REG-06', sev:'medium', type:'Rulemaking',
+   title:'EU AML single-rulebook and central authority bring digital-asset providers into harmonized scope',
+   body:'An illustrative development in which harmonized EU AML/CFT rules and a central AML supervisory authority continue to stand up, with crypto-asset service providers expressly in scope. Phased, with effective milestones beyond the near term — a MEDIUM-tier item to keep on the ledger rather than act on this cycle.',
+   auth:'EU — AML authority / national competent authorities',
+   action:'Track effective-date milestones; begin a gap assessment against the harmonized single-rulebook expectations.',
+   src:'Illustrative — EU AML harmonization themes (sample content)'},
+  {id:'REG-07', sev:'low', type:'Guidance',
+   title:'Routine supervisory technical standards and FAQs operationalize headline frameworks',
+   body:'An illustrative background workstream — the steady publication of technical standards, FAQs, and interpretive material that operationalizes the headline digital-asset frameworks. Individually low-impact; collectively useful as the practical detail behind the larger regimes. LOW severity, steady cadence.',
+   auth:'EU + US — supervisory staff (technical standards / FAQs)',
+   action:'No action required this cycle; review periodically for clarifications relevant to live compliance workstreams.',
+   src:'Illustrative — generic technical-standard / FAQ cadence (sample content)'}
+];
+
+/* ---- RENDER DEVELOPMENT CARDS ---- */
+var dl=document.getElementById('dev-list');
+DEVS.forEach(function(d){
+  var sm=SEV_META[d.sev];
+  var tcolor=TYPE_COLOR[d.type]||'var(--text-secondary)';
+  var card=el('div',{class:'dev-card '+sm.card},
+    el('div',{class:'dev-head'},
+      el('span',{class:'severity '+sm.cls,text:sm.label}),
+      el('span',{class:'type-chip',style:'color:'+tcolor+';border-color:'+tcolor,text:d.type}),
+      el('span',{class:'dev-id',text:d.id})
+    ),
+    el('div',{class:'dev-title',text:d.title}),
+    el('div',{class:'dev-body',text:d.body}),
+    el('div',{class:'dev-meta'},
+      el('div',{class:'dev-meta-item'},el('span',{class:'dm-k'},'Authority'),el('span',{class:'dm-v',text:d.auth})),
+      el('div',{class:'dev-meta-item'},el('span',{class:'dm-k'},'Action'),el('span',{class:'dm-v',text:d.action})),
+      el('div',{class:'dev-meta-item'},el('span',{class:'dm-k'},'Source'),el('span',{class:'dm-v',text:d.src}))
+    )
+  );
+  dl.appendChild(card);
+});
+
+/* ---- TRACKED MATTERS DATA ---- */
+var TRACKED=[
+  {m:'EU comprehensive markets framework', sub:'Authorization & conduct regime', jur:'EU', type:'Rulemaking', sev:'critical',
+   status:'active', statusLabel:'In application', last:'Phased application milestone reached', next:'+9 days'},
+  {m:'US payment-stablecoin legislation', sub:'Reserve, redemption, licensing', jur:'US fed', type:'Legislation', sev:'high',
+   status:'open', statusLabel:'In progress', last:'Advanced toward a dedicated regime', next:'+34 days'},
+  {m:'EU transfer-of-funds / Travel Rule', sub:'Originator & beneficiary data', jur:'EU', type:'Rulemaking', sev:'high',
+   status:'active', statusLabel:'In application', last:'Implementation expectations reiterated', next:'+21 days'},
+  {m:'AML/CFT supervisory expectations', sub:'CDD, monitoring, sanctions', jur:'US fed', type:'Guidance', sev:'high',
+   status:'watch', statusLabel:'Monitoring', last:'Supervisory focus signalled', next:'rolling'},
+  {m:'EU AML single-rulebook & authority', sub:'Harmonized rules, central supervisor', jur:'EU', type:'Rulemaking', sev:'medium',
+   status:'open', statusLabel:'Phasing in', last:'Central authority stand-up continues', next:'+96 days'},
+  {m:'Tokenization & custody standards', sub:'RWA tokenization, custody', jur:'US + EU', type:'Policy', sev:'medium',
+   status:'watch', statusLabel:'Monitoring', last:'Policy interest signalled', next:'next scan'}
+];
+var STATUS_META={open:'status-open',active:'status-active',final:'status-final',watch:'status-watch'};
+var tb=document.getElementById('tracked-body');
+TRACKED.forEach(function(t){
+  var sm=SEV_META[t.sev];
+  tb.appendChild(el('tr',null,
+    el('td',null,el('div',{class:'t-main',text:t.m}),el('div',{class:'t-sub',text:t.sub})),
+    el('td',{text:t.jur}),
+    el('td',null,el('span',{class:'type-chip',style:'color:'+(TYPE_COLOR[t.type]||'var(--text-secondary)')+';border-color:var(--border)',text:t.type})),
+    el('td',null,el('span',{class:'severity '+sm.cls,text:sm.label})),
+    el('td',null,el('span',{class:'status '+STATUS_META[t.status],text:t.statusLabel})),
+    el('td',{style:'color:var(--text-secondary)',text:t.last}),
+    el('td',null,el('span',{style:'font-family:var(--mono);font-weight:600',text:t.next}))
+  ));
+});
+
+/* ---- DEADLINE DATA ---- */
+var DEADLINES=[
+  {day:'09', mon:'days', band:'soon', title:'EU framework phased application milestone',
+   desc:'An illustrative effective milestone for a component of the EU comprehensive crypto-asset markets regime.', tag:'CRITICAL · Rulemaking · REG-01'},
+  {day:'21', mon:'days', band:'mid', title:'Travel-Rule implementation checkpoint',
+   desc:'Illustrative checkpoint for crypto transfer-of-funds originator/beneficiary data requirements.', tag:'HIGH · Rulemaking · REG-04'},
+  {day:'28', mon:'days', band:'mid', title:'Illustrative consultation comment period closes',
+   desc:'A sample comment-period close on supervisory technical standards — last chance to respond.', tag:'HIGH · Guidance · REG-07'},
+  {day:'34', mon:'days', band:'mid', title:'US stablecoin legislation procedural checkpoint',
+   desc:'Illustrative procedural milestone in the advance of a dedicated US payment-stablecoin regime.', tag:'HIGH · Legislation · REG-02'},
+  {day:'52', mon:'days', band:'far', title:'AML supervisory expectations review point',
+   desc:'A sample review point for digital-asset AML/CFT supervisory expectations.', tag:'MEDIUM · Guidance · REG-03'}
+];
+var dle=document.getElementById('deadline-list');
+DEADLINES.forEach(function(d){
+  dle.appendChild(el('div',{class:'deadline'},
+    el('div',{class:'deadline-date dd-'+d.band},
+      el('div',{class:'dd-day',text:d.day}),
+      el('div',{class:'dd-mon',text:d.mon})),
+    el('div',{class:'deadline-body'},
+      el('div',{class:'deadline-title',text:d.title}),
+      el('div',{class:'deadline-desc',text:d.desc}),
+      el('div',{class:'deadline-tag',text:d.tag}))
+  ));
+});
+
+/* ============================================================
+   CHARTS
+   ============================================================ */
+var cgrid='rgba(42,42,62,0.4)', ctick='#555570';
+Chart.defaults.font.family="'Inter',-apple-system,sans-serif";
+Chart.defaults.color='#8888aa';
+
+/* severity doughnut */
+new Chart(document.getElementById('severityChart'),{
+  type:'doughnut',
+  data:{labels:['Critical','High','Medium','Low'],
+    datasets:[{data:[1,3,2,1],
+      backgroundColor:['#ff4757','#ffa502','#fdd835','#00d4aa'],
+      borderColor:'#12121a',borderWidth:3,cutout:'58%'}]},
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},
+      tooltip:{backgroundColor:'#1a1a2e',borderColor:'#2a2a3e',borderWidth:1,cornerRadius:6,
+        callbacks:{label:function(c){return c.label+': '+c.parsed+' development'+(c.parsed>1?'s':'')}}}}}
+});
+
+/* agency / authority bar */
+new Chart(document.getElementById('agencyChart'),{
+  type:'bar',
+  data:{labels:['EU markets\nregulators','US federal\nlegislature','US financial-crime\nsupervisors','EU AML\nauthorities','US + EU market\nregulators'],
+    datasets:[{label:'Developments',data:[2,1,1,2,1],
+      backgroundColor:['#4a9effcc','#6c63ffcc','#ff4757cc','#00d4ffcc','#b388ffcc'],
+      borderColor:['#4a9eff','#6c63ff','#ff4757','#00d4ff','#b388ff'],borderWidth:1,borderRadius:5}]},
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},
+      tooltip:{backgroundColor:'#1a1a2e',borderColor:'#2a2a3e',borderWidth:1,cornerRadius:6,
+        callbacks:{label:function(c){return c.parsed.y+' development'+(c.parsed.y>1?'s':'')}}}},
+    scales:{x:{grid:{display:false},ticks:{color:ctick,font:{size:9}}},
+      y:{grid:{color:cgrid},ticks:{color:ctick,font:{size:10},stepSize:1},beginAtZero:true}}}
+});
+
+/* development type horizontal bar */
+new Chart(document.getElementById('typeChart'),{
+  type:'bar',
+  data:{labels:['Rulemaking','Legislation','Guidance','Policy','Enforcement','Deadline'],
+    datasets:[{label:'Items',data:[3,1,2,1,0,5],
+      backgroundColor:['#4a9effcc','#6c63ffcc','#00d4ffcc','#b388ffcc','#ff4757cc','#ffa502cc'],
+      borderRadius:5}]},
+  options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},
+      tooltip:{backgroundColor:'#1a1a2e',borderColor:'#2a2a3e',borderWidth:1,cornerRadius:6,
+        callbacks:{label:function(c){return c.parsed.x+' item'+(c.parsed.x!==1?'s':'')}}}},
+    scales:{x:{grid:{color:cgrid},ticks:{color:ctick,font:{size:10},stepSize:1},beginAtZero:true},
+      y:{grid:{display:false},ticks:{color:'#8888aa',font:{size:10}}}}}
+});
+
+/* deadline pressure */
+new Chart(document.getElementById('deadlineChart'),{
+  type:'bar',
+  data:{labels:['0-15d','16-30d','31-45d','46-60d'],
+    datasets:[{label:'Deadlines',data:[1,2,1,1],
+      backgroundColor:['#ff4757cc','#ffa502cc','#fdd835cc','#00d4aacc'],
+      borderRadius:5}]},
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},
+      tooltip:{backgroundColor:'#1a1a2e',borderColor:'#2a2a3e',borderWidth:1,cornerRadius:6,
+        callbacks:{label:function(c){return c.parsed.y+' deadline'+(c.parsed.y!==1?'s':'')}}}},
+    scales:{x:{grid:{display:false},ticks:{color:ctick,font:{size:10}}},
+      y:{grid:{color:cgrid},ticks:{color:ctick,font:{size:10},stepSize:1},beginAtZero:true}}}
+});
+
+/* ---- date ---- */
+document.getElementById('gen-date').textContent=new Date().toLocaleDateString('en-US',{year:'numeric',month:'short',day:'numeric'});
+</script>
+</body>
+</html>

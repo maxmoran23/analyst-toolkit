@@ -1,0 +1,120 @@
+# analyst-toolkit
+
+**A copy/paste library of battle-tested prompts and output templates for AI-assisted analytical work — compliance, regulatory, research, market intelligence, and quantitative analysis.**
+
+---
+
+## What this is
+
+A library of reusable, paste-ready **prompt templates** and **document templates** for analytical work. Every prompt is a self-contained block you drop into an AI assistant — GitHub Copilot, Claude, ChatGPT — to get a rigorous, structured, audit-defensible result: an enhanced due diligence assessment, a regulatory intelligence scan, a deep research report, a risk-scored analysis, a populated dashboard.
+
+It is **not a framework to run**. There is nothing to install, no runtime, no scheduler. You browse, copy, paste, fill in the `{{PLACEHOLDERS}}`, and run. The work product is the prompt itself — the analytical method, the scoring rubric, the output structure, and the quality bar baked into each one.
+
+Each template was extracted and generalized from a production autonomous-agent fleet, then stripped to its portable core — the part that travels to any assistant, any account, any machine.
+
+> Looking for the architecture to *run* agents like these autonomously on a schedule — state, self-repair, budget management? That is the companion repo: **[Claude-Agent-Fleet](https://github.com/maxmoran23/Claude-Agent-Fleet)**. This repo is the content; that repo is the runtime.
+
+![Enhanced Due Diligence dashboard — illustrative sample](samples/previews/edd-sample-preview.png)
+
+*Above: a sample Enhanced Due Diligence assessment — the output of one prompt plus one template. [See all samples](samples/).*
+
+---
+
+## What's inside
+
+| Directory | What's in it |
+|-----------|--------------|
+| **[`prompts/`](prompts/)** | 24 paste-ready analytical prompt templates — the "codes" you give an assistant |
+| **[`output-templates/`](output-templates/)** | Document scaffolds — interactive dashboards, PDF reports, compliance documents, communications |
+| **[`samples/`](samples/)** | Rendered example outputs with previews — what the prompts and templates actually produce |
+| **[`methodology/`](methodology/)** | The writing voice, quality standards, and analytical patterns that keep outputs consistent |
+| **[`reference/`](reference/)** | Domain cheat-sheets — AML typologies, compliance, audit, regulatory, financial analysis |
+| **[`quant/`](quant/)** | A dependency-free Python quant library — VaR, Sharpe, Kelly, Monte Carlo, DCF, drawdown |
+
+---
+
+## Start here
+
+1. **Browse [`prompts/`](prompts/)** and find the template that matches your task.
+2. **Copy the prompt block** — each file has one fenced block under `## The prompt`.
+3. **Replace the `{{PLACEHOLDERS}}`** with your inputs.
+4. **Run it** in any capable AI assistant.
+5. Need a formatted deliverable? Pair the result with an **[`output-templates/`](output-templates/)** scaffold.
+
+Full workflow, including the Copilot copy/paste loop and getting output into clean files: **[docs/using-with-copilot.md](docs/using-with-copilot.md)**.
+
+---
+
+## Prompt catalog
+
+### Compliance & due diligence — [`prompts/compliance/`](prompts/compliance/)
+| Prompt | What it does |
+|--------|--------------|
+| [enhanced-due-diligence](prompts/compliance/enhanced-due-diligence.md) | 8-domain weighted risk assessment of an entity — 0-100 composite, 5-tier rating, disposition |
+| [onchain-sanctions-monitor](prompts/compliance/onchain-sanctions-monitor.md) | Screen blockchain addresses for sanctions, mixer, and AML-typology exposure |
+| [defi-protocol-risk](prompts/compliance/defi-protocol-risk.md) | Score a DeFi protocol on TVL, yield, contract, governance, and bridge risk |
+| [token-compliance-screen](prompts/compliance/token-compliance-screen.md) | Screen a digital asset on both thesis quality and AML red flags |
+| [sanctions-watchlist-screen](prompts/compliance/sanctions-watchlist-screen.md) | Screen a name/entity/address against OFAC + EU/UN/UK lists with hit disposition |
+
+### Regulatory — [`prompts/regulatory/`](prompts/regulatory/)
+| Prompt | What it does |
+|--------|--------------|
+| [regulatory-intelligence-scan](prompts/regulatory/regulatory-intelligence-scan.md) | Severity-rated briefing on what changed in a regulatory landscape |
+| [geopolitical-risk-monitor](prompts/regulatory/geopolitical-risk-monitor.md) | Per-jurisdiction sanctions, conflict, and regulatory-risk scoring |
+
+### Research — [`prompts/research/`](prompts/research/)
+| Prompt | What it does |
+|--------|--------------|
+| [deep-research-storm](prompts/research/deep-research-storm.md) | Multi-perspective deep research into a cited long-form article |
+| [cross-source-synthesis](prompts/research/cross-source-synthesis.md) | Meta-analysis across many sources — themes, contradictions, blind spots |
+| [idea-generation](prompts/research/idea-generation.md) | Cross-domain idea generation, scored on an opportunity rubric |
+| [calibration-debate](prompts/research/calibration-debate.md) | Steelman both sides of a thesis, then score its defensibility |
+| [research-translation-scan](prompts/research/research-translation-scan.md) | Filter a research stream for signal, translate to practical implications |
+| [frontier-scan](prompts/research/frontier-scan.md) | Track speculative research with strict evidence-tiering and forced counter-arguments |
+| [futures-projection](prompts/research/futures-projection.md) | Year-by-year multi-metric scenario forecast with confidence bands |
+
+### Market & economic — [`prompts/market/`](prompts/market/)
+| Prompt | What it does |
+|--------|--------------|
+| [market-sentiment-tracker](prompts/market/market-sentiment-tracker.md) | Synthesize price, sentiment, and news into a market-narrative read |
+| [macro-regime-monitor](prompts/market/macro-regime-monitor.md) | Classify the current macro regime from growth/inflation/liquidity indicators |
+| [prediction-market-signal](prompts/market/prediction-market-signal.md) | Mine prediction markets for implied probabilities and flag divergences |
+| [simulated-portfolio-manager](prompts/market/simulated-portfolio-manager.md) | A hypothetical portfolio-simulation exercise with risk rules and attribution |
+| [intelligence-dashboard-aggregator](prompts/market/intelligence-dashboard-aggregator.md) | Consolidate multiple feeds into one structured dashboard view |
+
+### Intelligence briefs — [`prompts/briefs/`](prompts/briefs/)
+| Prompt | What it does |
+|--------|--------------|
+| [intelligence-brief](prompts/briefs/intelligence-brief.md) | A prioritized, scannable briefing — morning / midday / afternoon / evening variants |
+| [weekly-roundup](prompts/briefs/weekly-roundup.md) | A weekly review with a multi-dimension performance scorecard |
+| [breaking-news-scan](prompts/briefs/breaking-news-scan.md) | A terse, relevance-filtered breaking-news headline scan |
+
+### Specialty — [`prompts/specialty/`](prompts/specialty/)
+| Prompt | What it does |
+|--------|--------------|
+| [expected-value-analysis](prompts/specialty/expected-value-analysis.md) | Compute edge and expected value, size with the Kelly criterion, with risk-of-ruin context |
+| [local-market-analytics](prompts/specialty/local-market-analytics.md) | Local real-estate market analytics — tracking, transformation signals, multi-scenario projection |
+
+---
+
+## Design principles
+
+Every prompt in this library follows the same discipline — documented in full under [`methodology/`](methodology/):
+
+- **Audit-defensible.** Every claim carries a source. Observed fact, allegation, and projection are never blended.
+- **Structured output.** Each prompt specifies an exact output format — scorecards, severity tiers, confidence ratings — so results are comparable and reusable.
+- **Honest about gaps.** "No adverse findings" and "quiet period" are valid results. Thin evidence lowers the confidence rating; it does not get filled with inference.
+- **Vendor-skeptical.** Self-reported metrics and vendor claims are treated as unverified until corroborated.
+- **No fabrication.** An unverifiable claim is labeled or omitted — never invented.
+
+---
+
+## About
+
+This toolkit was generalized from a production autonomous-agent fleet operated at the intersection of crypto/AML compliance work and hands-on AI system design. That compliance background is why the templates lean toward structured severity frameworks, audit-defensible documentation, and systematic evidence-based analysis — those are the default operating principles here, not decoration.
+
+Everything in this repository is generic and reusable. There is no proprietary, employer-specific, or non-public content — only method, structure, and quality bar.
+
+## License
+
+MIT — see [LICENSE](LICENSE). Use these freely; adapt them to your work.

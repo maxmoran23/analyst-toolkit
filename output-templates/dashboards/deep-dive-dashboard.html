@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TITLE_PLACEHOLDER -- Deep Dive</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg-primary: #0a0a0f;
+    --bg-card: #12121a;
+    --bg-card-alt: #181828;
+    --bg-hover: #1a1a2e;
+    --border: #2a2a3e;
+    --border-accent: #3a3a5e;
+    --text-primary: #e0e0e8;
+    --text-secondary: #8888aa;
+    --text-muted: #555570;
+    --accent-blue: #4a9eff;
+    --accent-indigo: #6c63ff;
+    --accent-green: #00d4aa;
+    --accent-red: #ff4757;
+    --accent-amber: #ffa502;
+    --accent-cyan: #00d4ff;
+    --accent-purple: #b388ff;
+    --radius: 10px;
+    --shadow: 0 2px 8px rgba(0,0,0,0.3);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    min-height: 100vh;
+  }
+
+  /* ── NAV BAR ── */
+  .topbar {
+    background: var(--bg-card);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .topbar-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--accent-indigo);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  .topbar-meta {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-family: 'SF Mono', 'Fira Code', monospace;
+  }
+
+  .topbar-tabs {
+    display: flex;
+    gap: 4px;
+  }
+
+  .topbar-tab {
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .topbar-tab:hover { background: var(--bg-hover); color: var(--text-primary); }
+  .topbar-tab.active { background: var(--accent-indigo); color: #fff; }
+
+  /* ── LAYOUT ── */
+  .container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px 24px;
+  }
+
+  /* ── KPI STRIP ── */
+  .kpi-strip {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .kpi-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px;
+    text-align: center;
+  }
+
+  .kpi-label {
+    font-size: 11px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+  }
+
+  .kpi-value {
+    font-size: 28px;
+    font-weight: 700;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+  }
+
+  .kpi-delta {
+    font-size: 12px;
+    margin-top: 4px;
+    font-weight: 600;
+  }
+
+  .kpi-up { color: var(--accent-green); }
+  .kpi-down { color: var(--accent-red); }
+  .kpi-flat { color: var(--text-muted); }
+
+  /* ── CARDS GRID ── */
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  .grid-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  .grid-full {
+    grid-column: 1 / -1;
+  }
+
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px;
+    box-shadow: var(--shadow);
+    transition: border-color 0.2s;
+  }
+
+  .card:hover { border-color: var(--border-accent); }
+
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .card-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .card-badge {
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+  }
+
+  .badge-green { background: rgba(0,212,170,0.15); color: var(--accent-green); }
+  .badge-red { background: rgba(255,71,87,0.15); color: var(--accent-red); }
+  .badge-amber { background: rgba(255,165,2,0.15); color: var(--accent-amber); }
+  .badge-blue { background: rgba(74,158,255,0.15); color: var(--accent-blue); }
+
+  /* ── CHARTS ── */
+  .chart-container {
+    position: relative;
+    height: 260px;
+  }
+
+  .chart-container-sm {
+    position: relative;
+    height: 180px;
+  }
+
+  .no-data {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 180px;
+    color: var(--text-muted);
+    font-size: 13px;
+    font-style: italic;
+    border: 1px dashed var(--border);
+    border-radius: 6px;
+  }
+
+  /* ── TABLES ── */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+  }
+
+  .data-table th {
+    text-align: left;
+    color: var(--text-muted);
+    font-weight: 600;
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--border);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 10px;
+  }
+
+  .data-table td {
+    padding: 8px 10px;
+    border-bottom: 1px solid rgba(42,42,62,0.3);
+    color: var(--text-primary);
+  }
+
+  .data-table tr:hover td { background: var(--bg-hover); }
+
+  /* Severity pills */
+  .severity { padding: 2px 8px; border-radius: 3px; font-size: 10px; font-weight: 700; }
+  .severity-critical { background: rgba(255,71,87,0.2); color: var(--accent-red); }
+  .severity-high { background: rgba(255,165,2,0.2); color: var(--accent-amber); }
+  .severity-medium { background: rgba(255,235,59,0.15); color: #fdd835; }
+  .severity-low { background: rgba(0,212,170,0.15); color: var(--accent-green); }
+  .severity-info { background: rgba(85,85,112,0.2); color: var(--text-secondary); }
+
+  /* ── METRIC ROWS (key-value pairs) ── */
+  .metric-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 7px 0;
+    border-bottom: 1px solid rgba(42,42,62,0.3);
+  }
+
+  .metric-row:last-child { border-bottom: none; }
+  .metric-label { color: var(--text-secondary); font-size: 12px; }
+  .metric-value { font-weight: 600; font-size: 13px; font-family: 'SF Mono', monospace; }
+
+  /* ── TABS CONTENT ── */
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* ── FOOTER ── */
+  .footer {
+    margin-top: 30px;
+    padding: 16px 0;
+    border-top: 1px solid var(--border);
+    font-size: 11px;
+    color: var(--text-muted);
+    text-align: center;
+    font-family: 'SF Mono', monospace;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    .kpi-strip { grid-template-columns: repeat(2, 1fr); }
+    .container { padding: 12px; }
+  }
+
+  @media print {
+    .topbar { position: static; }
+    body { background: #fff; color: #111; }
+    .card { border: 1px solid #ddd; box-shadow: none; background: #fff; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════
+     TOPBAR — Title + tabs for multi-section reports
+     ═══════════════════════════════════════════════ -->
+<div class="topbar">
+  <div>
+    <div class="topbar-title">TITLE_PLACEHOLDER</div>
+    <div class="topbar-meta">Generated DATE_PLACEHOLDER | Source: SOURCE_PLACEHOLDER</div>
+  </div>
+  <div class="topbar-tabs">
+    <button class="topbar-tab active" onclick="showTab('overview')">Overview</button>
+    <button class="topbar-tab" onclick="showTab('trends')">Trends</button>
+    <button class="topbar-tab" onclick="showTab('details')">Details</button>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- ═══════════════════════════════════════════════
+     TAB 1: OVERVIEW — KPIs + summary charts
+     ═══════════════════════════════════════════════ -->
+<div id="tab-overview" class="tab-panel active">
+
+  <!-- KPI STRIP — 4-6 top-level metrics -->
+  <div class="kpi-strip">
+    <div class="kpi-card">
+      <div class="kpi-label">KPI_1_LABEL</div>
+      <div class="kpi-value" style="color: var(--accent-indigo)">KPI_1_VALUE</div>
+      <div class="kpi-delta kpi-up">KPI_1_DELTA</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">KPI_2_LABEL</div>
+      <div class="kpi-value" style="color: var(--accent-green)">KPI_2_VALUE</div>
+      <div class="kpi-delta kpi-flat">KPI_2_DELTA</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">KPI_3_LABEL</div>
+      <div class="kpi-value" style="color: var(--accent-cyan)">KPI_3_VALUE</div>
+      <div class="kpi-delta kpi-down">KPI_3_DELTA</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">KPI_4_LABEL</div>
+      <div class="kpi-value" style="color: var(--accent-amber)">KPI_4_VALUE</div>
+      <div class="kpi-delta kpi-up">KPI_4_DELTA</div>
+    </div>
+  </div>
+
+  <!-- MAIN CHARTS -->
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Primary Chart</span>
+        <span class="card-badge badge-blue">PERIOD</span>
+      </div>
+      <div class="chart-container">
+        <canvas id="primaryChart"></canvas>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Secondary Chart</span>
+        <span class="card-badge badge-green">LIVE</span>
+      </div>
+      <div class="chart-container">
+        <canvas id="secondaryChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUMMARY TABLE -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">Summary Table</span>
+    </div>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Value</th>
+          <th>Change</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- DATA_SUMMARY_ROWS -->
+        <tr>
+          <td>Example Item</td>
+          <td>$1,234</td>
+          <td style="color: var(--accent-green)">+5.2%</td>
+          <td><span class="severity severity-low">ACTIVE</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     TAB 2: TRENDS — Time series and comparisons
+     ═══════════════════════════════════════════════ -->
+<div id="tab-trends" class="tab-panel">
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Trend Chart 1</span>
+      </div>
+      <div class="chart-container">
+        <canvas id="trendChart1"></canvas>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Trend Chart 2</span>
+      </div>
+      <div class="chart-container">
+        <canvas id="trendChart2"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">Comparison Table</span>
+    </div>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Period</th>
+          <th>Metric A</th>
+          <th>Metric B</th>
+          <th>Metric C</th>
+          <th>Delta</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- DATA_TREND_ROWS -->
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     TAB 3: DETAILS — Drill-down data
+     ═══════════════════════════════════════════════ -->
+<div id="tab-details" class="tab-panel">
+
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">Detailed Findings</span>
+    </div>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Category</th>
+          <th>Severity</th>
+          <th>Description</th>
+          <th>Source</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- DATA_DETAIL_ROWS -->
+      </tbody>
+    </table>
+  </div>
+
+  <!-- KEY-VALUE METRICS -->
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Metrics Panel A</span>
+      </div>
+      <!-- DATA_METRICS_A: Use .metric-row divs -->
+      <div class="metric-row">
+        <span class="metric-label">Metric Name</span>
+        <span class="metric-value">Value</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Metrics Panel B</span>
+      </div>
+      <!-- DATA_METRICS_B -->
+      <div class="metric-row">
+        <span class="metric-label">Metric Name</span>
+        <span class="metric-value">Value</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</div><!-- /container -->
+
+<div class="footer">
+  Generated DATE_TIMESTAMP | SOURCE_PLACEHOLDER
+</div>
+
+<script>
+// ============================================================
+// TAB SWITCHING
+// ============================================================
+function showTab(name) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.topbar-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  event.target.classList.add('active');
+}
+
+// ============================================================
+// CHART DEFAULTS (dark theme)
+// ============================================================
+const CHART_COLORS = {
+  indigo: '#6c63ff',
+  cyan: '#00d4ff',
+  green: '#00d4aa',
+  amber: '#ffa502',
+  red: '#ff4757',
+  purple: '#b388ff',
+  blue: '#4a9eff'
+};
+
+const chartDefaults = {
+  responsive: true,
+  maintainAspectRatio: false,
+  plugins: {
+    legend: {
+      labels: { color: '#8888aa', font: { size: 11 } }
+    },
+    tooltip: {
+      backgroundColor: '#1a1a2e',
+      borderColor: '#2a2a3e',
+      borderWidth: 1,
+      titleColor: '#e0e0e8',
+      bodyColor: '#8888aa',
+      cornerRadius: 6
+    }
+  },
+  scales: {
+    x: {
+      ticks: { color: '#555570', font: { size: 10 } },
+      grid: { color: 'rgba(42,42,62,0.3)' }
+    },
+    y: {
+      ticks: { color: '#555570', font: { size: 10 } },
+      grid: { color: 'rgba(42,42,62,0.3)' }
+    }
+  }
+};
+
+// ============================================================
+// DATA INJECTION POINTS
+// Replace these with actual data from your analysis
+// ============================================================
+
+// Primary chart (line, bar, or area)
+const primaryData = {
+  labels: ['Label1', 'Label2', 'Label3'],
+  datasets: [{
+    label: 'Series A',
+    data: [10, 20, 15],
+    borderColor: CHART_COLORS.indigo,
+    backgroundColor: 'rgba(108,99,255,0.1)',
+    fill: true,
+    tension: 0.3
+  }]
+};
+
+// Secondary chart
+const secondaryData = {
+  labels: ['A', 'B', 'C', 'D'],
+  datasets: [{
+    label: 'Series B',
+    data: [40, 30, 50, 20],
+    backgroundColor: [
+      CHART_COLORS.indigo, CHART_COLORS.cyan,
+      CHART_COLORS.green, CHART_COLORS.amber
+    ],
+    borderRadius: 4
+  }]
+};
+
+// Trend charts (Tab 2)
+const trend1Data = {
+  labels: [],
+  datasets: [{
+    label: 'Trend 1',
+    data: [],
+    borderColor: CHART_COLORS.green,
+    tension: 0.3
+  }]
+};
+
+const trend2Data = {
+  labels: [],
+  datasets: [{
+    label: 'Trend 2',
+    data: [],
+    borderColor: CHART_COLORS.amber,
+    tension: 0.3
+  }]
+};
+
+// ============================================================
+// RENDER CHARTS
+// ============================================================
+function renderChart(id, type, data, extraOpts = {}) {
+  const canvas = document.getElementById(id);
+  if (!canvas) return;
+  if (!data.labels || data.labels.length === 0) {
+    canvas.parentElement.innerHTML = '<div class="no-data">No data available</div>';
+    return;
+  }
+  new Chart(canvas, {
+    type, data,
+    options: { ...chartDefaults, ...extraOpts }
+  });
+}
+
+renderChart('primaryChart', 'line', primaryData);
+renderChart('secondaryChart', 'bar', secondaryData, {
+  plugins: { ...chartDefaults.plugins, legend: { display: false } }
+});
+renderChart('trendChart1', 'line', trend1Data);
+renderChart('trendChart2', 'line', trend2Data);
+</script>
+</body>
+</html>

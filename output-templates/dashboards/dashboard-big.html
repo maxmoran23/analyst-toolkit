@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{DASHBOARD_TITLE}}</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<meta name="theme-color" content="#0a0a0f">
+<style>
+/* ============================================================
+   DASHBOARD BIG — MASTER TEMPLATE
+   Heavyweight interactive analytical dashboard. Single file,
+   no build step. Glassmorphism + Chart.js + dark/light toggle.
+   ============================================================ */
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+/* ===== DARK MODE (default) ===== */
+:root,[data-theme="dark"]{
+  --bg:#0a0a0f;--bg2:#111118;--bg3:#1a1a24;--bg4:#22222e;
+  --text:#f5f5f7;--text2:#a1a1a6;--text3:#6e6e73;
+  /* ACCENT: Change this one color to re-theme the entire dashboard */
+  --accent:#fa2d48;--accent2:#fc3d57;
+  --pink:#ff375f;--orange:#ff9f0a;--green:#30d158;--blue:#0a84ff;
+  --purple:#bf5af2;--teal:#64d2ff;--yellow:#ffd60a;--indigo:#5e5ce6;
+  --red:#ef4444;--amber:#f59e0b;--cyan:#22d3ee;
+  --card:rgba(28,28,35,.7);--card-border:rgba(255,255,255,.07);
+  --glass:rgba(255,255,255,.04);--glass-border:rgba(255,255,255,.08);
+  --radius:16px;--radius-sm:10px;
+  --font:-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',sans-serif;
+  --nav-bg:rgba(10,10,15,.85);--modal-bg:var(--bg2);
+  --blob-opacity:.7;--blob-blend:screen;
+  --scrollbar-thumb:var(--bg4);
+  --replay-g1:rgba(255,140,100,.35);--replay-g2:rgba(255,80,120,.3);--replay-g3:rgba(230,60,160,.25);
+  --replay-g4:rgba(180,80,220,.2);--replay-g5:rgba(255,180,100,.18);--replay-g6:rgba(255,60,80,.22);
+}
+
+/* ===== LIGHT MODE ===== */
+[data-theme="light"]{
+  --bg:#faf8f6;--bg2:#ffffff;--bg3:#f0ecea;--bg4:#e5e0dc;
+  --text:#1d1d1f;--text2:#6e6e73;--text3:#a1a1a6;
+  --card:rgba(255,255,255,.85);--card-border:rgba(0,0,0,.06);
+  --glass:rgba(0,0,0,.03);--glass-border:rgba(0,0,0,.06);
+  --nav-bg:rgba(250,248,246,.9);--modal-bg:#ffffff;
+  --blob-opacity:.5;--blob-blend:multiply;
+  --scrollbar-thumb:#d0ccc8;
+  --replay-g1:rgba(255,160,130,.5);--replay-g2:rgba(255,100,140,.4);--replay-g3:rgba(240,80,180,.35);
+  --replay-g4:rgba(200,100,240,.3);--replay-g5:rgba(255,200,130,.4);--replay-g6:rgba(255,80,100,.35);
+}
+[data-theme="light"] .card{backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);box-shadow:0 1px 3px rgba(0,0,0,.04)}
+[data-theme="light"] .glass-card{background:rgba(0,0,0,.02)}
+[data-theme="light"] .nav{border-bottom-color:rgba(0,0,0,.08)}
+[data-theme="light"] .nav-btn:hover,[data-theme="light"] .nav-btn.active{background:rgba(0,0,0,.06);color:var(--text)}
+[data-theme="light"] .rank-item:hover{background:rgba(0,0,0,.04)}
+[data-theme="light"] .modal{background:var(--modal-bg);box-shadow:0 20px 60px rgba(0,0,0,.15)}
+[data-theme="light"] .hero{background:linear-gradient(180deg,rgba(255,140,100,.12) 0%,transparent 60%)}
+[data-theme="light"] .export-fab{box-shadow:0 4px 20px rgba(250,45,72,.2)}
+[data-theme="light"] .section-gradient-1{background:linear-gradient(180deg,rgba(255,120,100,.06) 0%,transparent 100%)}
+[data-theme="light"] .section-gradient-2{background:linear-gradient(180deg,rgba(94,92,230,.05) 0%,transparent 100%)}
+[data-theme="light"] .section-gradient-3{background:linear-gradient(180deg,rgba(200,80,200,.05) 0%,transparent 100%)}
+[data-theme="light"] .section-gradient-4{background:linear-gradient(180deg,rgba(48,209,88,.05) 0%,transparent 100%)}
+[data-theme="light"] .section-gradient-5{background:linear-gradient(180deg,rgba(10,132,255,.05) 0%,transparent 100%)}
+
+/* THEME TOGGLE */
+.theme-toggle{position:fixed;top:12px;right:20px;z-index:200;width:36px;height:36px;border-radius:50%;border:1px solid var(--glass-border);background:var(--glass);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);color:var(--text);font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .3s}
+.theme-toggle:hover{background:var(--bg3);border-color:var(--accent)}
+
+/* BASE */
+html{font-size:16px;scroll-behavior:smooth}
+body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;line-height:1.5;position:relative;transition:background .4s,color .4s}
+a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
+::-webkit-scrollbar{width:6px;height:6px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--scrollbar-thumb);border-radius:3px}
+
+/* ANIMATED BACKGROUND */
+.liquid-bg{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;overflow:hidden;opacity:var(--blob-opacity);pointer-events:none;transition:opacity .4s}
+.liquid-blob{position:absolute;border-radius:50%;filter:blur(100px);mix-blend-mode:var(--blob-blend);transition:background .4s}
+.blob-1{width:700px;height:700px;background:radial-gradient(circle,var(--replay-g1),transparent 70%);top:-15%;left:-10%;animation:bm1 14s ease-in-out infinite alternate}
+.blob-2{width:600px;height:600px;background:radial-gradient(circle,var(--replay-g2),transparent 70%);top:20%;right:-8%;animation:bm2 18s ease-in-out infinite alternate}
+.blob-3{width:650px;height:650px;background:radial-gradient(circle,var(--replay-g3),transparent 70%);bottom:-10%;left:15%;animation:bm3 16s ease-in-out infinite alternate}
+.blob-4{width:500px;height:500px;background:radial-gradient(circle,var(--replay-g4),transparent 70%);top:55%;left:45%;animation:bm4 20s ease-in-out infinite alternate}
+@keyframes bm1{0%{transform:translate(0,0) scale(1)}100%{transform:translate(20vw,25vh) scale(1.3)}}
+@keyframes bm2{0%{transform:translate(0,0) scale(1)}100%{transform:translate(-25vw,-18vh) scale(.85)}}
+@keyframes bm3{0%{transform:translate(0,0) scale(1)}100%{transform:translate(12vw,-30vh) scale(1.15)}}
+@keyframes bm4{0%{transform:translate(0,0) scale(.85)}100%{transform:translate(-18vw,12vh) scale(1.2)}}
+
+/* TYPOGRAPHY */
+h1{font-size:2.5rem;font-weight:700;letter-spacing:-.03em;line-height:1.1}
+h1 span{background:linear-gradient(135deg,var(--accent),var(--pink),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+h3{font-size:1.15rem;font-weight:600}
+.section-title{font-size:1.25rem;font-weight:700;letter-spacing:-.02em;margin-bottom:1rem;display:flex;align-items:center;gap:.75rem}
+.section-title .icon{font-size:1.75rem}
+.label{font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text3)}
+
+/* LAYOUT */
+.container{max-width:1480px;margin:0 auto;padding:0 2rem}
+.section{padding:1.75rem 0;position:relative}
+.grid{display:grid;gap:1.25rem}
+.grid-2{grid-template-columns:repeat(2,1fr)}.grid-3{grid-template-columns:repeat(3,1fr)}.grid-4{grid-template-columns:repeat(4,1fr)}.grid-5{grid-template-columns:repeat(5,1fr)}
+.split-layout{display:grid;grid-template-columns:2fr 1fr;gap:1.25rem}
+@media(max-width:1200px){.grid-4,.grid-5{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:900px){.grid-2,.grid-3,.grid-4,.grid-5,.split-layout{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.grid-2,.grid-3,.grid-4,.grid-5,.split-layout{grid-template-columns:1fr}}
+
+/* HERO */
+.hero{padding:2.5rem 0 2rem;text-align:center;background:linear-gradient(180deg,rgba(250,45,72,.08) 0%,transparent 60%);position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50%;left:50%;transform:translateX(-50%);width:800px;height:800px;background:radial-gradient(circle,rgba(250,45,72,.12) 0%,transparent 70%);pointer-events:none}
+.hero-logo{width:60px;height:60px;margin:0 auto 1rem;background:linear-gradient(135deg,var(--accent),var(--pink));border-radius:22px;display:flex;align-items:center;justify-content:center;font-size:2rem;box-shadow:0 0 40px rgba(250,45,72,.3);animation:pulseGlow 3s ease-in-out infinite}
+@keyframes pulseGlow{0%,100%{box-shadow:0 0 20px rgba(250,45,72,.2)}50%{box-shadow:0 0 40px rgba(250,45,72,.4)}}
+.hero-sub{color:var(--text2);font-size:1.1rem;margin-top:.5rem}
+.personality-badge{display:inline-flex;align-items:center;gap:.5rem;background:linear-gradient(135deg,rgba(250,45,72,.15),rgba(191,90,242,.15));border:1px solid rgba(250,45,72,.3);border-radius:100px;padding:.5rem 1.25rem;font-size:.9rem;font-weight:600;color:var(--accent2);margin-top:1rem}
+
+/* STAT CHIPS (KPI Row) */
+.stat-row{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center}
+.stat-chip{display:flex;flex-direction:column;align-items:center;padding:.75rem 1.25rem;border-radius:var(--radius);background:var(--glass);border:1px solid var(--glass-border)}
+.stat-chip .sc-value{font-size:1.8rem;font-weight:700;letter-spacing:-.02em}
+.stat-chip .sc-label{font-size:.65rem;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-top:.15rem}
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:.75rem;margin-bottom:1rem}
+.kpi{background:var(--glass);border:1px solid var(--glass-border);border-radius:var(--radius);padding:.75rem;text-align:center}
+.kpi-label{font-size:.6rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text3)}
+.kpi-val{font-size:1.5rem;font-weight:700;margin-top:.15rem}
+.kpi-delta{font-size:.65rem;margin-top:.1rem;color:var(--text3)}
+
+/* NAVIGATION */
+.nav{position:sticky;top:0;z-index:100;background:var(--nav-bg);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--card-border);transition:background .4s}
+.nav-inner{display:flex;align-items:center;gap:.2rem;padding:.5rem 0;overflow-x:auto;scrollbar-width:none}.nav-inner::-webkit-scrollbar{display:none}
+.nav-btn{padding:.3rem .7rem;border-radius:100px;border:none;background:transparent;color:var(--text2);font-size:.78rem;font-weight:500;cursor:pointer;white-space:nowrap;transition:all .2s;font-family:var(--font)}
+.nav-btn:hover,.nav-btn.active{background:var(--bg3);color:var(--text)}
+
+/* CARDS */
+.card{background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius);padding:1.25rem;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);transition:transform .25s,border-color .25s,box-shadow .25s;position:relative;overflow:hidden}
+.card:hover{transform:translateY(-2px);border-color:rgba(255,255,255,.14);box-shadow:0 12px 40px rgba(0,0,0,.3)}
+.card-accent-red{border-left:3px solid var(--accent)}.card-accent-purple{border-left:3px solid var(--purple)}
+.card-accent-blue{border-left:3px solid var(--blue)}.card-accent-green{border-left:3px solid var(--green)}
+.card-accent-amber{border-left:3px solid var(--amber)}.card-accent-cyan{border-left:3px solid var(--cyan)}
+.card-glow::before{content:'';position:absolute;top:0;left:0;right:0;height:60px;background:linear-gradient(180deg,rgba(250,45,72,.06),transparent);pointer-events:none;border-radius:var(--radius) var(--radius) 0 0}
+.glass-card{background:var(--glass);border:1px solid var(--glass-border);border-radius:var(--radius);padding:1.5rem;backdrop-filter:blur(16px)}
+
+/* SECTION GRADIENTS */
+.section-gradient-1{background:linear-gradient(180deg,rgba(250,45,72,.04) 0%,transparent 100%)}
+.section-gradient-2{background:linear-gradient(180deg,rgba(94,92,230,.04) 0%,transparent 100%)}
+.section-gradient-3{background:linear-gradient(180deg,rgba(191,90,242,.04) 0%,transparent 100%)}
+.section-gradient-4{background:linear-gradient(180deg,rgba(48,209,88,.04) 0%,transparent 100%)}
+.section-gradient-5{background:linear-gradient(180deg,rgba(10,132,255,.04) 0%,transparent 100%)}
+.section-divider{width:100%;height:1px;background:linear-gradient(90deg,transparent,rgba(250,45,72,.2),rgba(191,90,242,.2),transparent);margin:1rem 0}
+
+/* RANKED LIST */
+.rank-list{display:flex;flex-direction:column;gap:.5rem}
+.rank-item{display:flex;align-items:center;gap:1rem;padding:.75rem 1rem;border-radius:var(--radius-sm);background:var(--glass);border:1px solid var(--glass-border);transition:background .2s;cursor:pointer}
+.rank-item:hover{background:rgba(255,255,255,.06)}
+.rank-num{font-size:.75rem;font-weight:700;color:var(--text3);min-width:1.5rem;text-align:center}
+.rank-item:nth-child(1) .rank-num{color:var(--yellow)}.rank-item:nth-child(2) .rank-num{color:var(--text2)}.rank-item:nth-child(3) .rank-num{color:var(--orange)}
+.rank-info{flex:1;min-width:0}.rank-name{font-weight:600;font-size:.9rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.rank-meta{font-size:.75rem;color:var(--text3)}
+.rank-value{font-weight:700;font-size:.9rem;color:var(--accent)}
+
+/* FINDINGS (Severity-Coded) */
+.finding{padding:10px 14px;border-left:3px solid var(--card-border);margin-bottom:8px;background:var(--glass);border-radius:0 6px 6px 0;font-size:.82rem;line-height:1.6}
+.finding-critical{border-left-color:var(--red)}.finding-high{border-left-color:var(--orange)}.finding-medium{border-left-color:var(--cyan)}.finding-low{border-left-color:var(--text3)}
+.severity-critical{color:var(--red);font-weight:700;font-size:.7rem;letter-spacing:.05em}
+.severity-high{color:var(--orange);font-weight:700;font-size:.7rem;letter-spacing:.05em}
+.severity-medium{color:var(--cyan);font-size:.7rem}.severity-low{color:var(--text3);font-size:.7rem}
+
+/* TABLES */
+.data-table{width:100%;border-collapse:collapse;font-size:.8rem}
+.data-table th{text-align:left;padding:.6rem .8rem;color:var(--text3);font-weight:600;font-size:.7rem;text-transform:uppercase;letter-spacing:.05em;border-bottom:1px solid var(--card-border);cursor:pointer;user-select:none;white-space:nowrap}
+.data-table td{padding:.5rem .8rem;border-bottom:1px solid var(--glass-border);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:250px;color:var(--text2)}
+.data-table tr:hover td{background:rgba(255,255,255,.03)}
+
+/* TABS */
+.tab-bar{display:flex;gap:.25rem;margin-bottom:1.5rem;flex-wrap:wrap}
+.tab-btn{padding:.45rem 1rem;border-radius:100px;border:1px solid var(--glass-border);background:transparent;color:var(--text2);font-size:.8rem;font-weight:500;cursor:pointer;transition:all .2s;font-family:var(--font)}
+.tab-btn:hover{background:var(--glass);color:var(--text)}.tab-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.tab-content{display:none}.tab-content.active{display:block}
+
+/* PILLS & BADGES */
+.pill{display:inline-block;padding:3px 10px;border-radius:12px;font-size:.7rem;font-weight:600;margin:2px 3px}
+.pill-green{background:rgba(48,209,88,.12);color:var(--green);border:1px solid rgba(48,209,88,.3)}
+.pill-cyan{background:rgba(34,211,238,.12);color:var(--cyan);border:1px solid rgba(34,211,238,.3)}
+.pill-amber{background:rgba(245,158,11,.12);color:var(--amber);border:1px solid rgba(245,158,11,.3)}
+.pill-red{background:rgba(239,68,68,.12);color:var(--red);border:1px solid rgba(239,68,68,.3)}
+.pill-purple{background:rgba(191,90,242,.12);color:var(--purple);border:1px solid rgba(191,90,242,.3)}
+.pill-blue{background:rgba(10,132,255,.12);color:var(--blue);border:1px solid rgba(10,132,255,.3)}
+.badge{display:inline-flex;align-items:center;gap:.3rem;padding:.2rem .6rem;border-radius:100px;font-size:.7rem;font-weight:600}
+.badge-gold{background:rgba(255,214,10,.12);color:var(--yellow);border:1px solid rgba(255,214,10,.2)}
+.badge-green{background:rgba(48,209,88,.12);color:var(--green);border:1px solid rgba(48,209,88,.2)}
+.badge-purple{background:rgba(191,90,242,.12);color:var(--purple);border:1px solid rgba(191,90,242,.2)}
+.badge-blue{background:rgba(10,132,255,.12);color:var(--blue);border:1px solid rgba(10,132,255,.2)}
+
+/* PRIORITY ACTIONS */
+.action-item{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:.82rem}
+.action-item:last-child{border:none}
+.priority-badge{width:22px;height:22px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0}
+.p1{background:rgba(239,68,68,.15);color:var(--red)}.p2{background:rgba(245,158,11,.15);color:var(--amber)}.p3{background:rgba(34,211,238,.15);color:var(--cyan)}
+
+/* PROGRESS BARS */
+.progress-track{width:100%;height:6px;background:var(--bg3);border-radius:3px;overflow:hidden}
+.progress-fill{height:100%;border-radius:3px;transition:width .6s ease}
+
+/* CHARTS */
+.chart-container{position:relative;width:100%;aspect-ratio:2/1}
+.chart-container-sq{position:relative;width:100%;aspect-ratio:1/1}
+
+/* MILESTONES */
+.milestone-card{border-radius:var(--radius);padding:1rem 1.25rem;position:relative;overflow:hidden;border:1px solid var(--card-border);transition:transform .2s}
+.milestone-card:hover{transform:translateY(-2px)}
+.milestone-card.locked{opacity:.45;filter:grayscale(.6)}
+.tier-icon{font-size:1.6rem;margin-bottom:.25rem}
+.tier-bronze{background:linear-gradient(135deg,rgba(205,127,50,.12),rgba(205,127,50,.04));border-color:rgba(205,127,50,.25)}
+.tier-silver{background:linear-gradient(135deg,rgba(192,192,192,.12),rgba(192,192,192,.04));border-color:rgba(192,192,192,.25)}
+.tier-gold{background:linear-gradient(135deg,rgba(255,214,10,.12),rgba(255,214,10,.04));border-color:rgba(255,214,10,.25)}
+.tier-platinum{background:linear-gradient(135deg,rgba(100,210,255,.12),rgba(100,210,255,.04));border-color:rgba(100,210,255,.25)}
+.tier-diamond{background:linear-gradient(135deg,rgba(191,90,242,.15),rgba(94,92,230,.06));border-color:rgba(191,90,242,.3)}
+.tier-mythic{background:linear-gradient(135deg,rgba(250,45,72,.15),rgba(255,214,10,.08));border-color:rgba(250,45,72,.3);animation:mythicGlow 3s ease-in-out infinite}
+@keyframes mythicGlow{0%,100%{box-shadow:0 0 8px rgba(250,45,72,.15)}50%{box-shadow:0 0 20px rgba(250,45,72,.25)}}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:300;display:none;align-items:center;justify-content:center;backdrop-filter:blur(8px)}
+.modal-overlay.active{display:flex}
+.modal{background:var(--bg2);border:1px solid var(--card-border);border-radius:var(--radius);max-width:700px;width:90%;max-height:85vh;overflow-y:auto;padding:2rem;position:relative;animation:modalIn .3s ease}
+@keyframes modalIn{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}
+.modal-close{position:absolute;top:1rem;right:1rem;background:none;border:none;color:var(--text3);font-size:1.5rem;cursor:pointer;line-height:1}.modal-close:hover{color:var(--text)}
+
+/* SEARCH */
+.search-input{padding:.6rem 1rem;border-radius:100px;border:1px solid var(--glass-border);background:var(--glass);color:var(--text);font-size:.85rem;font-family:var(--font);outline:none;transition:border-color .2s}
+.search-input:focus{border-color:var(--accent)}.search-input::placeholder{color:var(--text3)}
+
+/* HEATMAP */
+.heatmap-cell{width:100%;aspect-ratio:1;border-radius:3px;transition:transform .15s}.heatmap-cell:hover{transform:scale(1.3);z-index:1}
+
+/* CAROUSEL */
+.carousel{display:flex;gap:1rem;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;padding-bottom:.75rem;scroll-behavior:smooth}
+.carousel::-webkit-scrollbar{height:4px}.carousel::-webkit-scrollbar-thumb{background:var(--bg4);border-radius:2px}
+.carousel>*{scroll-snap-align:start;flex-shrink:0}
+.carousel-wrap{position:relative}
+.carousel-wrap .car-arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:10;width:36px;height:36px;border-radius:50%;background:rgba(28,28,35,.9);border:1px solid var(--glass-border);color:var(--text);font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(12px);transition:all .2s;opacity:.7;font-family:var(--font)}
+.carousel-wrap .car-arrow:hover{opacity:1;background:rgba(250,45,72,.2);border-color:var(--accent)}
+.carousel-wrap .car-arrow.arr-l{left:-6px}.carousel-wrap .car-arrow.arr-r{right:-6px}
+
+/* EXPORT FAB */
+.export-fab{position:fixed;bottom:24px;right:24px;z-index:150;width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--pink));color:#fff;border:none;font-size:1.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(250,45,72,.3);transition:transform .2s;font-family:var(--font)}
+.export-fab:hover{transform:scale(1.1)}
+.export-menu{position:fixed;bottom:76px;right:24px;z-index:150;background:var(--bg2);border:1px solid var(--card-border);border-radius:var(--radius);padding:.5rem;display:none;flex-direction:column;gap:.25rem;min-width:180px;backdrop-filter:blur(20px);box-shadow:0 8px 30px rgba(0,0,0,.4)}
+.export-menu.show{display:flex}
+.export-menu button{background:none;border:none;color:var(--text);padding:.5rem .75rem;border-radius:var(--radius-sm);font-size:.78rem;font-family:var(--font);cursor:pointer;text-align:left;transition:background .15s}
+.export-menu button:hover{background:var(--glass)}
+
+/* ANIMATIONS */
+.fade-in{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease}.fade-in.visible{opacity:1;transform:translateY(0)}
+.fade-in:nth-child(2){transition-delay:.06s}.fade-in:nth-child(3){transition-delay:.12s}.fade-in:nth-child(4){transition-delay:.18s}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes countUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* FOOTER */
+.footer{text-align:center;padding:3rem 0 2rem;color:var(--text3);font-size:.8rem;border-top:1px solid var(--card-border);margin-top:2rem}
+
+/* PRINT */
+@media print{
+  .nav,.export-fab,.export-menu,.carousel-wrap .car-arrow,.theme-toggle{display:none!important}
+  body{background:#0a0a0f!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .section{page-break-inside:avoid}.card,.glass-card,.milestone-card{break-inside:avoid}
+}
+</style>
+</head>
+<body>
+
+<!-- THEME TOGGLE -->
+<button class="theme-toggle" onclick="toggleTheme()" title="Toggle light/dark mode" id="theme-btn">&#9790;</button>
+
+<!-- ANIMATED BACKGROUND -->
+<div class="liquid-bg">
+  <div class="liquid-blob blob-1"></div>
+  <div class="liquid-blob blob-2"></div>
+  <div class="liquid-blob blob-3"></div>
+  <div class="liquid-blob blob-4"></div>
+</div>
+
+<!-- MODAL SYSTEM -->
+<div class="modal-overlay" id="modal-overlay" onclick="if(event.target===this)closeModal()">
+  <div class="modal" id="modal-content">
+    <button class="modal-close" onclick="closeModal()">&times;</button>
+    <div id="modal-body"></div>
+  </div>
+</div>
+
+<!-- ============================================================
+     HERO SECTION
+     ============================================================ -->
+<section class="hero" id="hero"><div class="container">
+  <div class="hero-logo"><!-- ICON: emoji or SVG --></div>
+  <h1><span>{{TITLE}}</span></h1>
+  <p class="hero-sub" id="hero-sub">{{SUBTITLE}}</p>
+  <div class="personality-badge" id="personality-badge"><!-- e.g., "Summary tag" --></div>
+  <div class="stat-row" id="hero-stats">
+    <!-- JS populates stat chips here -->
+  </div>
+</div></section>
+
+<!-- ============================================================
+     STICKY NAVIGATION
+     ============================================================ -->
+<nav class="nav"><div class="container"><div class="nav-inner" id="nav">
+  <!-- Nav buttons injected by JS from SECTIONS array -->
+  <div style="margin-left:auto;position:relative">
+    <input class="search-input" id="global-search" type="text" placeholder="Search..." style="width:220px;font-size:.75rem;padding:.35rem .8rem" oninput="handleSearch(this.value)">
+    <div id="search-results" style="display:none;position:absolute;top:110%;right:0;width:400px;max-height:420px;overflow-y:auto;background:var(--bg2);border:1px solid var(--card-border);border-radius:var(--radius-sm);box-shadow:0 8px 32px rgba(0,0,0,.4);z-index:200"></div>
+  </div>
+</div></div></nav>
+
+<!-- ============================================================
+     SECTIONS — Add/remove as needed for your topic
+     Each section follows the pattern:
+       <section class="section [section-gradient-N]" id="sec-{id}">
+         <div class="container">
+           <div class="section-title"><span class="icon">EMOJI</span> Title</div>
+           <div id="{id}-content"></div>
+         </div>
+       </section>
+     ============================================================ -->
+<div class="container">
+
+  <!-- SECTION: Summary / Overview -->
+  <section class="section section-gradient-1" id="sec-summary">
+    <div class="section-title"><span class="icon">&#128202;</span> Executive Summary</div>
+    <div id="summary-content"></div>
+  </section>
+
+  <!-- SECTION: Rankings (Tabbed) -->
+  <section class="section section-gradient-2" id="sec-rankings">
+    <div class="section-title"><span class="icon">&#127942;</span> Rankings</div>
+    <div class="tab-bar" id="rankings-tabs"></div>
+    <div id="rankings-content"></div>
+  </section>
+
+  <!-- SECTION: Timeline / Period-by-Period -->
+  <section class="section" id="sec-timeline">
+    <div class="section-title"><span class="icon">&#128197;</span> Period-by-Period</div>
+    <div class="grid grid-4" id="timeline-grid"></div>
+  </section>
+
+  <!-- SECTION: Growth -->
+  <section class="section section-gradient-3" id="sec-growth">
+    <div class="section-title"><span class="icon">&#128200;</span> Growth Trends</div>
+    <div class="card card-glow" style="padding:1rem">
+      <div class="chart-container" style="aspect-ratio:3/1"><canvas id="chart-growth"></canvas></div>
+    </div>
+  </section>
+
+  <!-- SECTION: Categories -->
+  <section class="section section-gradient-5" id="sec-categories">
+    <div class="section-title"><span class="icon">&#127752;</span> Category Breakdown</div>
+    <div class="grid grid-2">
+      <div class="card" style="padding:1rem"><div class="chart-container-sq" style="max-height:300px;aspect-ratio:1.2/1"><canvas id="chart-category-donut"></canvas></div></div>
+      <div class="card" style="padding:1rem" id="category-list"></div>
+    </div>
+  </section>
+
+  <!-- SECTION: Entity Deep Dives -->
+  <section class="section section-gradient-1" id="sec-entities">
+    <div class="section-title"><span class="icon">&#128269;</span> Deep Dives</div>
+    <div class="grid grid-5" id="entity-grid"></div>
+  </section>
+
+  <!-- SECTION: Findings (Severity-Coded) -->
+  <section class="section" id="sec-findings">
+    <div class="section-title"><span class="icon">&#128161;</span> Key Findings</div>
+    <div id="findings-content"></div>
+  </section>
+
+  <!-- SECTION: Quantitative Lab -->
+  <section class="section section-gradient-4" id="sec-quant">
+    <div class="section-title"><span class="icon">&#128290;</span> Quantitative Lab</div>
+    <div id="quant-content"></div>
+  </section>
+
+  <!-- SECTION: Patterns -->
+  <section class="section section-gradient-3" id="sec-patterns">
+    <div class="section-title"><span class="icon">&#128336;</span> Patterns</div>
+    <div class="grid grid-2">
+      <div class="card"><h3 style="margin-bottom:1rem">Distribution</h3><div class="chart-container"><canvas id="chart-distribution"></canvas></div></div>
+      <div class="card"><h3 style="margin-bottom:1rem">Heatmap</h3><div id="heatmap-container"></div></div>
+    </div>
+  </section>
+
+  <!-- SECTION: Benchmarks / Comparisons -->
+  <section class="section section-gradient-2" id="sec-benchmarks">
+    <div class="section-title"><span class="icon">&#127758;</span> Benchmarks</div>
+    <div id="benchmarks-content"></div>
+  </section>
+
+  <!-- SECTION: Opportunity Pipeline -->
+  <section class="section" id="sec-pipeline">
+    <div class="section-title"><span class="icon">&#128640;</span> Pipeline</div>
+    <div class="card" style="padding:1rem;overflow-x:auto">
+      <table class="data-table" id="pipeline-table">
+        <thead><tr><!-- Columns injected by JS --></tr></thead>
+        <tbody id="pipeline-body"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- SECTION: Competency Map -->
+  <section class="section section-gradient-1" id="sec-skills">
+    <div class="section-title"><span class="icon">&#127919;</span> Competency Map</div>
+    <div id="skills-content"></div>
+  </section>
+
+  <!-- SECTION: Scenarios -->
+  <section class="section section-gradient-5" id="sec-scenarios">
+    <div class="section-title"><span class="icon">&#128302;</span> Scenario Analysis</div>
+    <div class="card" style="padding:1rem;overflow-x:auto">
+      <table class="data-table" id="scenario-table">
+        <thead><tr><!-- Columns injected by JS --></tr></thead>
+        <tbody id="scenario-body"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- SECTION: Data Browser (Full Table) -->
+  <section class="section section-gradient-5" id="sec-browser">
+    <div class="section-title"><span class="icon">&#128218;</span> Data Browser <span class="badge badge-blue" id="browser-count"></span></div>
+    <div class="card" style="padding:1.25rem">
+      <div style="display:flex;gap:.75rem;margin-bottom:.75rem;flex-wrap:wrap;align-items:center">
+        <div style="flex:1;min-width:220px;position:relative">
+          <input class="search-input" id="browser-search" placeholder="Search..." style="width:100%;font-size:.82rem;padding:.5rem 1rem" oninput="filterBrowser()">
+        </div>
+        <select id="browser-filter" class="search-input" style="width:auto;font-size:.78rem;padding:.4rem .8rem" onchange="filterBrowser()"><option value="">All Categories</option></select>
+        <select id="browser-sort" class="search-input" style="width:auto;font-size:.78rem;padding:.4rem .8rem" onchange="filterBrowser()">
+          <option value="value-desc">Highest Value</option><option value="value-asc">Lowest Value</option>
+          <option value="name-asc">A-Z</option><option value="name-desc">Z-A</option>
+        </select>
+      </div>
+      <div style="max-height:650px;overflow-y:auto;border-radius:var(--radius-sm)">
+        <table class="data-table"><thead><tr><th>#</th><th>Name</th><th>Category</th><th>Value</th><th>Status</th></tr></thead>
+          <tbody id="browser-body"></tbody>
+        </table>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:.75rem">
+        <div id="browser-info" style="font-size:.72rem;color:var(--text3)"></div>
+        <div id="browser-pagination" style="display:flex;gap:.3rem"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION: Priority Actions -->
+  <section class="section" id="sec-actions">
+    <div class="section-title"><span class="icon">&#9889;</span> Priority Actions</div>
+    <div class="card" id="actions-content"></div>
+  </section>
+
+  <!-- SECTION: Deep Insights (Tabbed) -->
+  <section class="section section-gradient-3" id="sec-insights">
+    <div class="section-title"><span class="icon">&#128161;</span> Deep Insights</div>
+    <div class="tab-bar" id="insights-tabs"></div>
+    <div id="insights-content"></div>
+  </section>
+
+  <!-- SECTION: Milestones / Achievements -->
+  <section class="section section-gradient-3" id="sec-milestones">
+    <div class="section-title"><span class="icon">&#127941;</span> Milestones</div>
+    <div id="milestones-summary" style="margin-bottom:1.25rem"></div>
+    <div id="milestones-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem"></div>
+  </section>
+
+</div>
+
+<!-- EXPORT FAB -->
+<button class="export-fab" onclick="toggleExportMenu()" title="Export">&#8599;</button>
+<div class="export-menu" id="export-menu">
+  <button onclick="exportSection('hero','Overview')">&#128202; Export Overview</button>
+  <button onclick="exportSection('sec-rankings','Rankings')">&#127942; Export Rankings</button>
+  <button onclick="exportSection('sec-benchmarks','Benchmarks')">&#127758; Export Benchmarks</button>
+  <button onclick="exportSection('sec-milestones','Milestones')">&#127941; Export Milestones</button>
+  <button onclick="exportFullPage()">&#128196; Full Dashboard (PDF)</button>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <p>{{DASHBOARD_TITLE}} &mdash; Generated <span id="gen-date"></span></p>
+  <p id="footer-stats" style="margin-top:.25rem;font-size:.7rem;color:var(--text3)"></p>
+  <p style="margin-top:.25rem;font-size:.65rem;color:var(--text3);opacity:.6">Sources: {{SOURCES}}</p>
+</footer>
+
+<script>
+/* ============================================================
+   DASHBOARD BIG — ENGINE
+   ============================================================ */
+
+// ===== DATA =====
+// Option A: Embed data directly
+// const DATA = { ... };
+// Option B: Load from JSON
+// fetch('data/analytics.json').then(r=>r.json()).then(d=>{DATA=d;render(d)});
+let DATA = null;
+
+// ===== THEME TOGGLE =====
+function toggleTheme(){
+  const t=document.documentElement.getAttribute('data-theme')==='light'?'dark':'light';
+  document.documentElement.setAttribute('data-theme',t);
+  document.getElementById('theme-btn').innerHTML=t==='light'?'&#9728;':'&#9790;';
+  localStorage.setItem('theme',t);
+}
+(function(){const t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t)})();
+
+// ===== UTILITY =====
+const fmt=n=>n>=1e6?(n/1e6).toFixed(1)+'M':n>=1e3?(n/1e3).toFixed(1)+'K':n.toLocaleString();
+const pct=(n,d)=>d?Math.round(n/d*100):0;
+const esc=s=>(s||'').replace(/'/g,"\\'").replace(/"/g,'&quot;');
+
+// ===== MODAL =====
+function openModal(html){document.getElementById('modal-body').innerHTML=html;document.getElementById('modal-overlay').classList.add('active');document.body.style.overflow='hidden'}
+function closeModal(){document.getElementById('modal-overlay').classList.remove('active');document.body.style.overflow=''}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
+
+// ===== TABS =====
+function switchTab(group,idx){
+  document.querySelectorAll(`[data-tab^="${group}-"]`).forEach((t,i)=>{t.classList.toggle('active',i===idx)});
+  const btns=document.querySelectorAll(`#${group}-tabs .tab-btn`);btns.forEach((b,i)=>b.classList.toggle('active',i===idx));
+}
+
+// ===== SEARCH =====
+let searchTimeout;
+function handleSearch(q){
+  clearTimeout(searchTimeout);
+  const box=document.getElementById('search-results');
+  if(!q||q.length<2||!DATA){box.style.display='none';return}
+  searchTimeout=setTimeout(()=>{
+    // Customize: filter DATA based on your schema
+    box.style.display='block';
+    box.innerHTML='<div style="padding:1rem;color:var(--text3);font-size:.82rem">Implement search for your data schema</div>';
+  },200);
+}
+document.addEventListener('click',e=>{if(!e.target.closest('#global-search')&&!e.target.closest('#search-results'))document.getElementById('search-results').style.display='none'});
+
+// ===== EXPORT =====
+function toggleExportMenu(){document.getElementById('export-menu').classList.toggle('show')}
+async function exportSection(id,title){
+  const el=document.getElementById(id);if(!el)return;
+  const canvas=await html2canvas(el,{backgroundColor:'#0a0a0f',scale:2});
+  const link=document.createElement('a');link.download=title.replace(/\s/g,'-')+'.png';link.href=canvas.toDataURL();link.click();
+  document.getElementById('export-menu').classList.remove('show');
+}
+function exportFullPage(){window.print()}
+
+// ===== BROWSER (Pagination + Filter + Sort) =====
+let browserData=[],browserPage=0,browserPerPage=50;
+function filterBrowser(){
+  const q=(document.getElementById('browser-search')?.value||'').toLowerCase();
+  const cat=document.getElementById('browser-filter')?.value||'';
+  const sort=document.getElementById('browser-sort')?.value||'value-desc';
+  let filtered=browserData.filter(item=>{
+    if(q&&!JSON.stringify(item).toLowerCase().includes(q))return false;
+    if(cat&&item.category!==cat)return false;
+    return true;
+  });
+  // Sort
+  const [key,dir]=sort.split('-');
+  filtered.sort((a,b)=>{
+    const va=a[key]||0,vb=b[key]||0;
+    if(typeof va==='string')return dir==='asc'?va.localeCompare(vb):vb.localeCompare(va);
+    return dir==='asc'?va-vb:vb-va;
+  });
+  browserPage=0;
+  renderBrowserPage(filtered);
+}
+function renderBrowserPage(data){
+  const start=browserPage*browserPerPage;
+  const page=data.slice(start,start+browserPerPage);
+  const body=document.getElementById('browser-body');
+  body.innerHTML=page.map((item,i)=>`<tr>
+    <td style="color:var(--text3)">${start+i+1}</td>
+    <td style="font-weight:600;color:var(--text)">${item.name||''}</td>
+    <td>${item.category||''}</td>
+    <td style="font-weight:700;color:var(--accent)">${item.value||''}</td>
+    <td>${item.status||''}</td>
+  </tr>`).join('');
+  document.getElementById('browser-info').textContent=`Showing ${start+1}-${Math.min(start+browserPerPage,data.length)} of ${data.length}`;
+  const pages=Math.ceil(data.length/browserPerPage);
+  document.getElementById('browser-pagination').innerHTML=Array.from({length:Math.min(pages,10)},(_, i)=>`<button class="tab-btn${i===browserPage?' active':''}" style="padding:.2rem .5rem;font-size:.7rem" onclick="browserPage=${i};renderBrowserPage(browserData)">${i+1}</button>`).join('');
+}
+
+// ===== CAROUSEL =====
+function wrapCarousel(el){
+  if(!el||el.parentElement.classList.contains('carousel-wrap'))return;
+  const wrap=document.createElement('div');wrap.className='carousel-wrap';
+  el.parentNode.insertBefore(wrap,el);wrap.appendChild(el);
+  const amt=320;
+  const lb=document.createElement('button');lb.className='car-arrow arr-l';lb.innerHTML='&#8249;';lb.onclick=()=>el.scrollBy({left:-amt,behavior:'smooth'});
+  const rb=document.createElement('button');rb.className='car-arrow arr-r';rb.innerHTML='&#8250;';rb.onclick=()=>el.scrollBy({left:amt,behavior:'smooth'});
+  wrap.appendChild(lb);wrap.appendChild(rb);
+}
+
+// ===== MAIN RENDER =====
+function render(d){
+  DATA=d;
+  document.getElementById('gen-date').textContent=new Date().toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+
+  // Build navigation from visible sections
+  const secs=[...document.querySelectorAll('.section[id]')].map(s=>({id:s.id,l:s.querySelector('.section-title')?.textContent?.trim()?.replace(/^.\s*/,'').split('\n')[0]||s.id}));
+  const nav=document.getElementById('nav');
+  const searchHTML=nav.innerHTML;
+  nav.innerHTML=secs.map(s=>`<button class="nav-btn" data-nav="${s.id}" onclick="document.getElementById('${s.id}').scrollIntoView({behavior:'smooth'})">${s.l.substring(0,12)}</button>`).join('')+searchHTML;
+
+  // RENDER EACH SECTION — customize these for your topic
+  // renderHero(d); renderSummary(d); renderRankings(d); etc.
+
+  // Fade-in animations
+  const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target)}})},{threshold:.1});
+  document.querySelectorAll('.card,.glass-card,.milestone-card').forEach(el=>{el.classList.add('fade-in');obs.observe(el)});
+
+  // Active nav highlighting
+  const navObs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){document.querySelectorAll('.nav-btn[data-nav]').forEach(b=>b.classList.remove('active'));const btn=document.querySelector(`.nav-btn[data-nav="${e.target.id}"]`);if(btn){btn.classList.add('active');btn.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'})}}})},{rootMargin:'-40% 0px -55% 0px',threshold:0});
+  secs.forEach(s=>{const el=document.getElementById(s.id);if(el)navObs.observe(el)});
+
+  document.querySelectorAll('.carousel').forEach(c=>wrapCarousel(c));
+}
+
+// ===== CHART HELPERS =====
+const chartDefaults={
+  responsive:true,maintainAspectRatio:true,
+  plugins:{legend:{labels:{color:'#a1a1a6',font:{family:'-apple-system,sans-serif',size:11}}},tooltip:{backgroundColor:'#1a1a24',borderColor:'rgba(255,255,255,.1)',borderWidth:1,titleColor:'#f5f5f7',bodyColor:'#a1a1a6',cornerRadius:8,padding:10}},
+  scales:{x:{ticks:{color:'#6e6e73',font:{size:10}},grid:{color:'rgba(255,255,255,.04)'}},y:{ticks:{color:'#6e6e73',font:{size:10}},grid:{color:'rgba(255,255,255,.04)'}}}
+};
+function makeChart(id,type,labels,datasets,opts={}){
+  const ctx=document.getElementById(id);if(!ctx)return;
+  return new Chart(ctx,{type,data:{labels,datasets},options:{...chartDefaults,...opts}});
+}
+
+// ===== INIT =====
+document.addEventListener('DOMContentLoaded',()=>{
+  // Option A: embedded data
+  // render(DATA);
+  // Option B: fetch
+  // fetch('data/analytics.json').then(r=>r.json()).then(render).catch(e=>console.error('Data load failed',e));
+});
+</script>
+</body>
+</html>

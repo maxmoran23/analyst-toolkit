@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EDD Assessment — Meridian Digital Exchange (Illustrative Sample)</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<meta name="theme-color" content="#0a0a0f">
+<style>
+/* ============================================================
+   ANALYST TOOLKIT — EDD SAMPLE DASHBOARD
+   Enhanced Due Diligence assessment, rendered in the
+   dashboard-big visual system. Single file, no build step.
+   ALL CONTENT IS SYNTHETIC AND ILLUSTRATIVE.
+   ============================================================ */
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root,[data-theme="dark"]{
+  --bg:#0a0a0f;--bg2:#111118;--bg3:#1a1a24;--bg4:#22222e;
+  --text:#f5f5f7;--text2:#a1a1a6;--text3:#6e6e73;
+  /* ACCENT — regulatory/legal blue */
+  --accent:#0a84ff;--accent2:#3d9bff;
+  --pink:#ff375f;--orange:#ff9f0a;--green:#30d158;--blue:#0a84ff;
+  --purple:#bf5af2;--teal:#64d2ff;--yellow:#ffd60a;--indigo:#5e5ce6;
+  --red:#ef4444;--amber:#f59e0b;--cyan:#22d3ee;
+  --card:rgba(28,28,35,.7);--card-border:rgba(255,255,255,.07);
+  --glass:rgba(255,255,255,.04);--glass-border:rgba(255,255,255,.08);
+  --radius:16px;--radius-sm:10px;
+  --font:-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',sans-serif;
+  --mono:'SF Mono','Fira Code',ui-monospace,Menlo,monospace;
+  --nav-bg:rgba(10,10,15,.85);
+  --blob-opacity:.6;--blob-blend:screen;
+  --scrollbar-thumb:var(--bg4);
+  --replay-g1:rgba(80,140,255,.32);--replay-g2:rgba(60,120,230,.28);--replay-g3:rgba(120,90,230,.22);
+  --replay-g4:rgba(255,159,10,.16);
+}
+[data-theme="light"]{
+  --bg:#f4f6fb;--bg2:#ffffff;--bg3:#e9edf5;--bg4:#dde3ee;
+  --text:#10131a;--text2:#4a4f5c;--text3:#8b909c;
+  --card:rgba(255,255,255,.9);--card-border:rgba(15,25,55,.08);
+  --glass:rgba(15,25,55,.035);--glass-border:rgba(15,25,55,.08);
+  --nav-bg:rgba(244,246,251,.92);
+  --blob-opacity:.4;--blob-blend:multiply;
+  --scrollbar-thumb:#c4ccdc;
+  --replay-g1:rgba(80,140,255,.4);--replay-g2:rgba(60,120,230,.32);--replay-g3:rgba(120,90,230,.3);
+  --replay-g4:rgba(255,159,10,.3);
+}
+[data-theme="light"] .card{box-shadow:0 1px 3px rgba(15,25,55,.06)}
+[data-theme="light"] .nav-btn:hover,[data-theme="light"] .nav-btn.active{background:rgba(15,25,55,.07);color:var(--text)}
+
+.theme-toggle{position:fixed;top:12px;right:20px;z-index:200;width:36px;height:36px;border-radius:50%;border:1px solid var(--glass-border);background:var(--glass);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);color:var(--text);font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .3s}
+.theme-toggle:hover{background:var(--bg3);border-color:var(--accent)}
+
+html{font-size:16px;scroll-behavior:smooth}
+body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;line-height:1.5;position:relative;transition:background .4s,color .4s}
+a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
+::-webkit-scrollbar{width:6px;height:6px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--scrollbar-thumb);border-radius:3px}
+
+/* ANIMATED BACKGROUND */
+.liquid-bg{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;overflow:hidden;opacity:var(--blob-opacity);pointer-events:none;transition:opacity .4s}
+.liquid-blob{position:absolute;border-radius:50%;filter:blur(100px);mix-blend-mode:var(--blob-blend);transition:background .4s}
+.blob-1{width:700px;height:700px;background:radial-gradient(circle,var(--replay-g1),transparent 70%);top:-15%;left:-10%;animation:bm1 16s ease-in-out infinite alternate}
+.blob-2{width:600px;height:600px;background:radial-gradient(circle,var(--replay-g2),transparent 70%);top:20%;right:-8%;animation:bm2 20s ease-in-out infinite alternate}
+.blob-3{width:650px;height:650px;background:radial-gradient(circle,var(--replay-g3),transparent 70%);bottom:-10%;left:15%;animation:bm3 18s ease-in-out infinite alternate}
+.blob-4{width:480px;height:480px;background:radial-gradient(circle,var(--replay-g4),transparent 70%);top:55%;left:45%;animation:bm4 22s ease-in-out infinite alternate}
+@keyframes bm1{0%{transform:translate(0,0) scale(1)}100%{transform:translate(18vw,22vh) scale(1.25)}}
+@keyframes bm2{0%{transform:translate(0,0) scale(1)}100%{transform:translate(-22vw,-16vh) scale(.88)}}
+@keyframes bm3{0%{transform:translate(0,0) scale(1)}100%{transform:translate(10vw,-26vh) scale(1.12)}}
+@keyframes bm4{0%{transform:translate(0,0) scale(.85)}100%{transform:translate(-16vw,10vh) scale(1.18)}}
+
+/* TYPOGRAPHY */
+h1{font-size:2.4rem;font-weight:700;letter-spacing:-.03em;line-height:1.1}
+h1 span{background:linear-gradient(135deg,var(--accent),var(--teal),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+h3{font-size:1.1rem;font-weight:600}
+.section-title{font-size:1.25rem;font-weight:700;letter-spacing:-.02em;margin-bottom:1rem;display:flex;align-items:center;gap:.6rem}
+.section-title .num{font-family:var(--mono);font-size:.85rem;color:var(--accent);background:var(--glass);border:1px solid var(--glass-border);padding:.15rem .5rem;border-radius:6px}
+.label{font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text3)}
+.mono{font-family:var(--mono)}
+
+/* LAYOUT */
+.container{max-width:1380px;margin:0 auto;padding:0 2rem}
+.section{padding:1.75rem 0;position:relative}
+.grid{display:grid;gap:1.25rem}
+.grid-2{grid-template-columns:repeat(2,1fr)}.grid-3{grid-template-columns:repeat(3,1fr)}.grid-4{grid-template-columns:repeat(4,1fr)}
+.split-7-5{display:grid;grid-template-columns:7fr 5fr;gap:1.25rem}
+.split-5-7{display:grid;grid-template-columns:5fr 7fr;gap:1.25rem}
+@media(max-width:1100px){.grid-4{grid-template-columns:repeat(2,1fr)}.grid-3{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:900px){.grid-2,.grid-3,.grid-4,.split-7-5,.split-5-7{grid-template-columns:1fr}}
+
+/* SAMPLE BANNER */
+.sample-banner{background:repeating-linear-gradient(45deg,rgba(245,158,11,.14),rgba(245,158,11,.14) 14px,rgba(245,158,11,.07) 14px,rgba(245,158,11,.07) 28px);border-bottom:1px solid rgba(245,158,11,.4);color:var(--amber);text-align:center;padding:.55rem 1rem;font-size:.78rem;font-weight:700;letter-spacing:.04em;display:flex;align-items:center;justify-content:center;gap:.6rem;flex-wrap:wrap}
+.sample-banner .dot{width:7px;height:7px;border-radius:50%;background:var(--amber);box-shadow:0 0 8px var(--amber);animation:pulseDot 2s ease-in-out infinite}
+@keyframes pulseDot{0%,100%{opacity:1}50%{opacity:.35}}
+
+/* HERO */
+.hero{padding:2.4rem 0 1.6rem;text-align:center;background:linear-gradient(180deg,rgba(10,132,255,.08) 0%,transparent 62%);position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50%;left:50%;transform:translateX(-50%);width:760px;height:760px;background:radial-gradient(circle,rgba(10,132,255,.12) 0%,transparent 70%);pointer-events:none}
+.hero-logo{width:58px;height:58px;margin:0 auto .9rem;background:linear-gradient(135deg,var(--accent),var(--purple));border-radius:20px;display:flex;align-items:center;justify-content:center;font-size:1.7rem;box-shadow:0 0 38px rgba(10,132,255,.32);animation:pulseGlow 3.4s ease-in-out infinite}
+@keyframes pulseGlow{0%,100%{box-shadow:0 0 18px rgba(10,132,255,.2)}50%{box-shadow:0 0 38px rgba(10,132,255,.4)}}
+.hero-sub{color:var(--text2);font-size:1.02rem;margin-top:.5rem}
+.hero-meta{color:var(--text3);font-size:.78rem;margin-top:.35rem;font-family:var(--mono)}
+.rating-badge{display:inline-flex;align-items:center;gap:.5rem;border-radius:100px;padding:.5rem 1.3rem;font-size:.92rem;font-weight:700;margin-top:1rem;letter-spacing:.03em}
+.rating-elevated{background:linear-gradient(135deg,rgba(245,158,11,.18),rgba(255,159,10,.12));border:1px solid rgba(245,158,11,.4);color:var(--amber)}
+.stat-row{display:flex;gap:.85rem;flex-wrap:wrap;justify-content:center;margin-top:1.4rem}
+.stat-chip{display:flex;flex-direction:column;align-items:center;padding:.7rem 1.15rem;border-radius:var(--radius);background:var(--glass);border:1px solid var(--glass-border);min-width:118px}
+.stat-chip .sc-value{font-size:1.55rem;font-weight:700;letter-spacing:-.02em}
+.stat-chip .sc-label{font-size:.6rem;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;margin-top:.2rem;text-align:center}
+
+/* NAV */
+.nav{position:sticky;top:0;z-index:100;background:var(--nav-bg);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--card-border);transition:background .4s}
+.nav-inner{display:flex;align-items:center;gap:.2rem;padding:.5rem 0;overflow-x:auto;scrollbar-width:none}.nav-inner::-webkit-scrollbar{display:none}
+.nav-btn{padding:.32rem .72rem;border-radius:100px;border:none;background:transparent;color:var(--text2);font-size:.76rem;font-weight:500;cursor:pointer;white-space:nowrap;transition:all .2s;font-family:var(--font)}
+.nav-btn:hover,.nav-btn.active{background:var(--bg3);color:var(--text)}
+
+/* CARDS */
+.card{background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius);padding:1.25rem;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);transition:transform .25s,border-color .25s,box-shadow .25s;position:relative;overflow:hidden}
+.card:hover{transform:translateY(-2px);border-color:rgba(255,255,255,.14);box-shadow:0 12px 40px rgba(0,0,0,.3)}
+.card-accent-red{border-left:3px solid var(--red)}.card-accent-amber{border-left:3px solid var(--amber)}
+.card-accent-cyan{border-left:3px solid var(--cyan)}.card-accent-green{border-left:3px solid var(--green)}
+.card-accent-blue{border-left:3px solid var(--blue)}.card-accent-purple{border-left:3px solid var(--purple)}
+.glass-card{background:var(--glass);border:1px solid var(--glass-border);border-radius:var(--radius);padding:1.4rem;backdrop-filter:blur(16px)}
+
+.section-gradient-1{background:linear-gradient(180deg,rgba(10,132,255,.04) 0%,transparent 100%)}
+.section-gradient-2{background:linear-gradient(180deg,rgba(94,92,230,.04) 0%,transparent 100%)}
+.section-gradient-3{background:linear-gradient(180deg,rgba(191,90,242,.04) 0%,transparent 100%)}
+.section-gradient-4{background:linear-gradient(180deg,rgba(245,158,11,.04) 0%,transparent 100%)}
+
+/* KPI */
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.75rem;margin-bottom:1.1rem}
+.kpi{background:var(--glass);border:1px solid var(--glass-border);border-radius:var(--radius);padding:.85rem .9rem;text-align:center}
+.kpi-label{font-size:.58rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text3)}
+.kpi-val{font-size:1.45rem;font-weight:700;margin-top:.18rem}
+.kpi-sub{font-size:.65rem;margin-top:.15rem;color:var(--text3)}
+
+/* GAUGE */
+.gauge-wrap{display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap}
+.gauge{position:relative;width:200px;height:200px;flex-shrink:0}
+.gauge-num{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.gauge-num .g-big{font-size:3rem;font-weight:800;letter-spacing:-.03em;line-height:1}
+.gauge-num .g-small{font-size:.7rem;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-top:.2rem}
+
+/* SCORECARD TABLE */
+.data-table{width:100%;border-collapse:collapse;font-size:.82rem}
+.data-table th{text-align:left;padding:.62rem .8rem;color:var(--text3);font-weight:600;font-size:.68rem;text-transform:uppercase;letter-spacing:.05em;border-bottom:1px solid var(--card-border);white-space:nowrap}
+.data-table td{padding:.62rem .8rem;border-bottom:1px solid var(--glass-border);color:var(--text2);vertical-align:middle}
+.data-table tr:hover td{background:rgba(255,255,255,.03)}
+.data-table .row-total td{border-top:2px solid var(--card-border);border-bottom:none;font-weight:700;color:var(--text);background:rgba(10,132,255,.06)}
+.score-pill{display:inline-flex;align-items:center;justify-content:center;min-width:42px;padding:.2rem .5rem;border-radius:7px;font-family:var(--mono);font-weight:700;font-size:.82rem}
+.sbar-track{width:100%;min-width:90px;height:7px;background:var(--bg3);border-radius:4px;overflow:hidden}
+.sbar-fill{height:100%;border-radius:4px}
+
+/* SEVERITY COLOR HELPERS */
+.sv-low{color:var(--green)}.sv-mod{color:var(--cyan)}.sv-elev{color:var(--amber)}.sv-high{color:var(--orange)}.sv-sev{color:var(--red)}
+.bg-low{background:rgba(48,209,88,.16);color:var(--green)}
+.bg-mod{background:rgba(34,211,238,.16);color:var(--cyan)}
+.bg-elev{background:rgba(245,158,11,.18);color:var(--amber)}
+.bg-high{background:rgba(255,159,10,.18);color:var(--orange)}
+.bg-sev{background:rgba(239,68,68,.18);color:var(--red)}
+
+/* PILLS / BADGES */
+.pill{display:inline-block;padding:3px 10px;border-radius:12px;font-size:.68rem;font-weight:600;margin:2px 3px}
+.pill-green{background:rgba(48,209,88,.12);color:var(--green);border:1px solid rgba(48,209,88,.3)}
+.pill-cyan{background:rgba(34,211,238,.12);color:var(--cyan);border:1px solid rgba(34,211,238,.3)}
+.pill-amber{background:rgba(245,158,11,.12);color:var(--amber);border:1px solid rgba(245,158,11,.3)}
+.pill-red{background:rgba(239,68,68,.12);color:var(--red);border:1px solid rgba(239,68,68,.3)}
+.pill-blue{background:rgba(10,132,255,.12);color:var(--blue);border:1px solid rgba(10,132,255,.3)}
+.pill-purple{background:rgba(191,90,242,.12);color:var(--purple);border:1px solid rgba(191,90,242,.3)}
+.pill-grey{background:var(--glass);color:var(--text3);border:1px solid var(--glass-border)}
+.tag-obs{background:rgba(48,209,88,.12);color:var(--green);border:1px solid rgba(48,209,88,.3);font-size:.6rem;font-weight:700;padding:1px 6px;border-radius:5px;letter-spacing:.04em}
+.tag-alg{background:rgba(245,158,11,.12);color:var(--amber);border:1px solid rgba(245,158,11,.3);font-size:.6rem;font-weight:700;padding:1px 6px;border-radius:5px;letter-spacing:.04em}
+.tag-unv{background:rgba(110,110,115,.16);color:var(--text2);border:1px solid var(--glass-border);font-size:.6rem;font-weight:700;padding:1px 6px;border-radius:5px;letter-spacing:.04em}
+
+/* DOMAIN CARD */
+.domain-card{background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius);padding:1.15rem 1.25rem;backdrop-filter:blur(20px);transition:transform .2s,border-color .2s;position:relative;overflow:hidden}
+.domain-card:hover{transform:translateY(-2px);border-color:rgba(255,255,255,.13)}
+.domain-card .dc-top{display:flex;align-items:flex-start;justify-content:space-between;gap:.75rem;margin-bottom:.6rem}
+.domain-card .dc-title{font-size:.95rem;font-weight:700;display:flex;align-items:center;gap:.5rem}
+.domain-card .dc-ico{font-size:1.15rem}
+.domain-card .dc-score{font-family:var(--mono);font-size:1.5rem;font-weight:800;line-height:1}
+.domain-card .dc-wt{font-size:.6rem;color:var(--text3);text-align:right;margin-top:.15rem}
+.domain-card .dc-body{font-size:.8rem;color:var(--text2);line-height:1.62}
+.domain-card .dc-body strong{color:var(--text)}
+.domain-card ul{margin:.5rem 0 0;padding-left:1.05rem}
+.domain-card li{font-size:.78rem;color:var(--text2);margin-bottom:.28rem;line-height:1.5}
+.dc-meta{display:flex;flex-wrap:wrap;gap:.3rem;margin-top:.7rem;padding-top:.6rem;border-top:1px solid var(--glass-border)}
+
+/* FINDINGS */
+.finding{padding:11px 15px;border-left:3px solid var(--card-border);margin-bottom:9px;background:var(--glass);border-radius:0 8px 8px 0;font-size:.82rem;line-height:1.6}
+.finding-critical{border-left-color:var(--red)}.finding-high{border-left-color:var(--orange)}
+.finding-medium{border-left-color:var(--cyan)}.finding-low{border-left-color:var(--text3)}
+.finding .f-head{display:flex;align-items:center;gap:.55rem;margin-bottom:.3rem;flex-wrap:wrap}
+.finding .f-title{font-weight:700;color:var(--text);font-size:.86rem}
+.sev-tag{font-weight:800;font-size:.62rem;letter-spacing:.06em;padding:2px 7px;border-radius:5px}
+.finding .f-body{color:var(--text2)}
+.finding .f-link{margin-top:.35rem;font-size:.7rem;color:var(--text3);font-family:var(--mono)}
+
+/* INFO GAP / DISPOSITION ITEMS */
+.gap-item{display:flex;gap:.7rem;align-items:flex-start;padding:.6rem 0;border-bottom:1px solid var(--glass-border);font-size:.82rem}
+.gap-item:last-child{border-bottom:none}
+.gap-ico{width:24px;height:24px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:.8rem;flex-shrink:0;background:rgba(110,110,115,.16);color:var(--text2)}
+.cond-item{display:flex;gap:.7rem;align-items:flex-start;padding:.65rem 0;border-bottom:1px solid var(--glass-border);font-size:.83rem;line-height:1.55}
+.cond-item:last-child{border-bottom:none}
+.cond-num{width:24px;height:24px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;flex-shrink:0;background:rgba(10,132,255,.16);color:var(--accent2);font-family:var(--mono)}
+
+/* DISPOSITION BANNER */
+.disp-banner{border-radius:var(--radius);padding:1.3rem 1.5rem;border:1px solid rgba(245,158,11,.4);background:linear-gradient(135deg,rgba(245,158,11,.12),rgba(255,159,10,.05));display:flex;gap:1.1rem;align-items:flex-start;flex-wrap:wrap}
+.disp-icon{width:46px;height:46px;border-radius:13px;background:rgba(245,158,11,.2);display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0}
+.disp-text h3{font-size:1.12rem;color:var(--amber);margin-bottom:.25rem}
+.disp-text p{font-size:.85rem;color:var(--text2);line-height:1.6}
+
+/* TIMELINE */
+.tl{position:relative;padding-left:1.5rem}
+.tl::before{content:'';position:absolute;left:5px;top:4px;bottom:4px;width:2px;background:linear-gradient(180deg,var(--accent),var(--purple),transparent)}
+.tl-item{position:relative;padding-bottom:1rem}
+.tl-item:last-child{padding-bottom:0}
+.tl-item::before{content:'';position:absolute;left:-1.5rem;top:3px;width:12px;height:12px;border-radius:50%;background:var(--bg);border:2px solid var(--accent)}
+.tl-item.warn::before{border-color:var(--amber)}
+.tl-item.crit::before{border-color:var(--red)}
+.tl-date{font-size:.66rem;font-family:var(--mono);color:var(--text3);letter-spacing:.03em}
+.tl-title{font-size:.84rem;font-weight:600;color:var(--text);margin:.1rem 0}
+.tl-desc{font-size:.76rem;color:var(--text2);line-height:1.5}
+
+/* METHOD STEPS */
+.method-step{display:flex;gap:.7rem;padding:.5rem 0;font-size:.8rem;color:var(--text2);line-height:1.55}
+.method-step .ms-n{font-family:var(--mono);font-size:.72rem;color:var(--accent);flex-shrink:0;font-weight:700}
+
+/* CONFIDENCE METER */
+.conf-meter{display:flex;gap:.3rem;margin-top:.4rem}
+.conf-seg{flex:1;height:8px;border-radius:3px;background:var(--bg3)}
+.conf-seg.on{background:var(--amber)}
+
+/* FOOTER */
+.footer{text-align:center;padding:2.6rem 0 2rem;color:var(--text3);font-size:.78rem;border-top:1px solid var(--card-border);margin-top:2rem}
+.footer .fnote{margin-top:.5rem;font-size:.7rem;opacity:.75;max-width:760px;margin-left:auto;margin-right:auto;line-height:1.6}
+
+.fade-in{opacity:0;transform:translateY(18px);transition:opacity .55s ease,transform .55s ease}
+.fade-in.visible{opacity:1;transform:translateY(0)}
+
+@media print{
+  .nav,.theme-toggle{display:none!important}
+  body{background:#0a0a0f!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .section,.card,.glass-card,.domain-card{break-inside:avoid}
+}
+</style>
+</head>
+<body>
+
+<button class="theme-toggle" onclick="toggleTheme()" title="Toggle light/dark mode" id="theme-btn">&#9790;</button>
+
+<div class="liquid-bg">
+  <div class="liquid-blob blob-1"></div>
+  <div class="liquid-blob blob-2"></div>
+  <div class="liquid-blob blob-3"></div>
+  <div class="liquid-blob blob-4"></div>
+</div>
+
+<!-- ============================================================
+     ILLUSTRATIVE SAMPLE BANNER — required, always visible
+     ============================================================ -->
+<div class="sample-banner">
+  <span class="dot"></span>
+  ILLUSTRATIVE SAMPLE &mdash; synthetic data, fictional entity, for format demonstration only
+  <span class="dot"></span>
+</div>
+
+<!-- ============================================================
+     HERO
+     ============================================================ -->
+<section class="hero" id="hero"><div class="container">
+  <div class="hero-logo">&#128737;</div>
+  <h1><span>EDD Assessment</span></h1>
+  <p class="hero-sub">Meridian Digital Exchange &mdash; Enhanced Due Diligence Risk Assessment</p>
+  <p class="hero-meta">Fictional entity &middot; Assessment date 2026-05-19 &middot; Basis: public sources only (OSINT) &middot; Context: counterparty onboarding review</p>
+  <div class="rating-badge rating-elevated">&#9888; Composite Risk Score 57/100 &mdash; ELEVATED</div>
+  <div class="stat-row">
+    <div class="stat-chip"><span class="sc-value sv-elev">57</span><span class="sc-label">Composite / 100</span></div>
+    <div class="stat-chip"><span class="sc-value">8</span><span class="sc-label">Risk Domains</span></div>
+    <div class="stat-chip"><span class="sc-value sv-high">5</span><span class="sc-label">Red Flags</span></div>
+    <div class="stat-chip"><span class="sc-value sv-elev">4</span><span class="sc-label">Information Gaps</span></div>
+    <div class="stat-chip"><span class="sc-value sv-elev">MOD</span><span class="sc-label">Confidence</span></div>
+    <div class="stat-chip"><span class="sc-value sv-elev">3</span><span class="sc-label">Onboarding Conditions</span></div>
+  </div>
+</div></section>
+
+<!-- ============================================================
+     STICKY NAV
+     ============================================================ -->
+<nav class="nav"><div class="container"><div class="nav-inner" id="nav"></div></div></nav>
+
+<div class="container">
+
+  <!-- ====================================================
+       1. EXECUTIVE SUMMARY
+       ==================================================== -->
+  <section class="section section-gradient-1" id="sec-summary">
+    <div class="section-title"><span class="num">01</span> Executive Summary</div>
+    <div class="split-7-5">
+      <div class="card card-accent-amber">
+        <p style="font-size:.92rem;line-height:1.72;color:var(--text2)">
+          <strong style="color:var(--text)">Meridian Digital Exchange</strong> is a fictional mid-size digital-asset
+          exchange used here purely to demonstrate the Enhanced Due Diligence output format. The synthetic profile:
+          founded 2019, incorporated in an unnamed offshore jurisdiction, with a reported user base of approximately
+          4 million and spot and derivatives trading across major digital assets. The illustrative assessment returns
+          a composite risk score of <strong style="color:var(--amber)">57/100 &mdash; ELEVATED</strong>, driven primarily
+          by adverse-media volume, geographic and sector exposure, and an open regulatory matter.
+        </p>
+        <p style="font-size:.92rem;line-height:1.72;color:var(--text2);margin-top:.85rem">
+          The risk picture in this fictional scenario is concentrated, not pervasive. Sanctions and watchlist exposure
+          screens clean against the synthetic dataset (35/100); financial-health indicators are the second-lowest
+          domain (40/100) but rest on limited disclosure. The dominant drivers are a
+          <strong style="color:var(--text)">sustained pattern of adverse media</strong> around withdrawal delays,
+          an <strong style="color:var(--text)">opaque multi-layer holding structure</strong> that obscures ultimate
+          beneficial ownership, and operations centered in a high-risk jurisdiction. No confirmed sanctions hit and no
+          criminal indictment were identified in this synthetic scenario, so the SEVERE override does not apply.
+        </p>
+        <p style="font-size:.92rem;line-height:1.72;color:var(--text2);margin-top:.85rem">
+          Recommended disposition for this illustrative case: <strong style="color:var(--amber)">proceed with conditions
+          &mdash; escalate for senior review.</strong> The matter is workable but not clean; the conditions in Section 06
+          would need to be satisfied and a senior reviewer would need to sign off before onboarding.
+        </p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:1rem">
+        <div class="glass-card">
+          <div class="label" style="margin-bottom:.7rem">Entity Snapshot &mdash; Synthetic</div>
+          <div style="display:flex;flex-direction:column;gap:.5rem;font-size:.82rem">
+            <div style="display:flex;justify-content:space-between;gap:1rem"><span style="color:var(--text3)">Entity type</span><span style="font-weight:600">Digital-asset exchange</span></div>
+            <div style="display:flex;justify-content:space-between;gap:1rem"><span style="color:var(--text3)">Founded</span><span style="font-weight:600">2019 (illustrative)</span></div>
+            <div style="display:flex;justify-content:space-between;gap:1rem"><span style="color:var(--text3)">Incorporation</span><span style="font-weight:600">Offshore (unnamed)</span></div>
+            <div style="display:flex;justify-content:space-between;gap:1rem"><span style="color:var(--text3)">Reported users</span><span style="font-weight:600">~4,000,000</span></div>
+            <div style="display:flex;justify-content:space-between;gap:1rem"><span style="color:var(--text3)">Ownership</span><span style="font-weight:600">Private &middot; opaque</span></div>
+            <div style="display:flex;justify-content:space-between;gap:1rem"><span style="color:var(--text3)">Assessment basis</span><span style="font-weight:600">OSINT only</span></div>
+          </div>
+        </div>
+        <div class="glass-card">
+          <div class="label" style="margin-bottom:.55rem">Disposition</div>
+          <div style="font-size:.96rem;font-weight:700;color:var(--amber);margin-bottom:.3rem">Proceed with conditions</div>
+          <div style="font-size:.78rem;color:var(--text2);line-height:1.55">Escalate for senior review. Three onboarding conditions attached &mdash; see Section 06.</div>
+          <div class="label" style="margin:.85rem 0 .3rem">Overall confidence</div>
+          <div style="font-size:.82rem;font-weight:600;color:var(--amber)">MODERATE</div>
+          <div class="conf-meter"><span class="conf-seg on"></span><span class="conf-seg on"></span><span class="conf-seg on"></span><span class="conf-seg"></span><span class="conf-seg"></span></div>
+          <div style="font-size:.7rem;color:var(--text3);margin-top:.35rem">Limited by ownership opacity and unverifiable financials.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="kpi-row" style="margin-top:1.25rem">
+      <div class="kpi"><div class="kpi-label">Composite</div><div class="kpi-val sv-elev">57</div><div class="kpi-sub">Tier: ELEVATED (41&ndash;60)</div></div>
+      <div class="kpi"><div class="kpi-label">Highest domain</div><div class="kpi-val sv-high">75</div><div class="kpi-sub">Geographic &amp; Sector</div></div>
+      <div class="kpi"><div class="kpi-label">Lowest domain</div><div class="kpi-val sv-mod">35</div><div class="kpi-sub">Sanctions &amp; Watchlist</div></div>
+      <div class="kpi"><div class="kpi-label">Sanctions override</div><div class="kpi-val sv-low">N/A</div><div class="kpi-sub">No confirmed hit</div></div>
+      <div class="kpi"><div class="kpi-label">Adverse media items</div><div class="kpi-val">23</div><div class="kpi-sub">14 within 12 months</div></div>
+      <div class="kpi"><div class="kpi-label">Sources reviewed</div><div class="kpi-val">31</div><div class="kpi-sub">All public / OSINT</div></div>
+    </div>
+  </section>
+
+  <!-- ====================================================
+       2. RISK SCORECARD
+       ==================================================== -->
+  <section class="section section-gradient-2" id="sec-scorecard">
+    <div class="section-title"><span class="num">02</span> Risk Scorecard &mdash; 8 Domains</div>
+    <div class="split-5-7">
+      <div class="card" style="display:flex;align-items:center;justify-content:center;padding:1.5rem">
+        <div class="gauge-wrap" style="flex-direction:column">
+          <div class="gauge">
+            <canvas id="gaugeChart"></canvas>
+            <div class="gauge-num"><span class="g-big sv-elev">57</span><span class="g-small">Composite / 100</span></div>
+          </div>
+          <div style="text-align:center">
+            <div style="display:flex;gap:.35rem;justify-content:center;flex-wrap:wrap;margin-top:.4rem">
+              <span class="pill pill-green">0&ndash;20 Low</span>
+              <span class="pill pill-cyan">21&ndash;40 Moderate</span>
+              <span class="pill pill-amber">41&ndash;60 Elevated</span>
+              <span class="pill pill-red">61&ndash;80 High</span>
+              <span class="pill pill-red">81&ndash;100 Severe</span>
+            </div>
+            <div style="font-size:.74rem;color:var(--text3);margin-top:.6rem;max-width:280px;line-height:1.5">
+              Weighting is financial-crime-leaning: sanctions and enforcement carry the most weight.
+              Composite = &Sigma;(domain score &times; weight).
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card" style="padding:1rem 1.1rem;overflow-x:auto">
+        <table class="data-table">
+          <thead><tr>
+            <th>Risk Domain</th><th style="text-align:center">Score</th><th>Severity</th>
+            <th style="text-align:center">Weight</th><th style="text-align:center">Weighted</th><th>Key Driver</th>
+          </tr></thead>
+          <tbody id="scorecard-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================================================
+       3. DOMAIN SCORE VISUALS
+       ==================================================== -->
+  <section class="section section-gradient-3" id="sec-charts">
+    <div class="section-title"><span class="num">03</span> Domain Score Profile</div>
+    <div class="grid grid-2">
+      <div class="card">
+        <h3 style="margin-bottom:.3rem">Risk by Domain</h3>
+        <p style="font-size:.74rem;color:var(--text3);margin-bottom:.6rem">Higher bar = higher assessed risk. Bars colored by severity tier.</p>
+        <div style="position:relative;height:320px"><canvas id="barChart"></canvas></div>
+      </div>
+      <div class="card">
+        <h3 style="margin-bottom:.3rem">Risk Surface (Radar)</h3>
+        <p style="font-size:.74rem;color:var(--text3);margin-bottom:.6rem">The shape shows where exposure concentrates against the 50-point reference ring.</p>
+        <div style="position:relative;height:320px"><canvas id="radarChart"></canvas></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================================================
+       4. DOMAIN FINDINGS
+       ==================================================== -->
+  <section class="section section-gradient-1" id="sec-domains">
+    <div class="section-title"><span class="num">04</span> Domain Findings</div>
+    <p style="font-size:.8rem;color:var(--text3);margin:-.4rem 0 1rem;display:flex;gap:.8rem;flex-wrap:wrap;align-items:center">
+      Evidence tags:
+      <span class="tag-obs">OBSERVED</span> verifiable public fact
+      <span class="tag-alg">ALLEGED</span> reported / unproven
+      <span class="tag-unv">UNVERIFIED</span> not confirmable from public sources
+    </p>
+    <div class="grid grid-2" id="domain-grid"></div>
+  </section>
+
+  <!-- ====================================================
+       5. RED FLAGS
+       ==================================================== -->
+  <section class="section section-gradient-4" id="sec-redflags">
+    <div class="section-title"><span class="num">05</span> Red Flags</div>
+    <div class="split-7-5">
+      <div>
+        <div id="redflags-list"></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:1rem">
+        <div class="glass-card">
+          <div class="label" style="margin-bottom:.6rem">Red Flag Severity Mix</div>
+          <div style="position:relative;height:170px"><canvas id="flagDonut"></canvas></div>
+        </div>
+        <div class="glass-card">
+          <div class="label" style="margin-bottom:.55rem">Reading the flags</div>
+          <p style="font-size:.78rem;color:var(--text2);line-height:1.6">
+            None of these synthetic flags individually disqualifies the counterparty. In combination they explain the
+            ELEVATED rating and are why the disposition is conditional rather than a clean proceed. Each flag maps to a
+            domain in Section 04 and to a condition or escalation trigger in Section 06.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================================================
+       6. DISPOSITION & CONDITIONS
+       ==================================================== -->
+  <section class="section section-gradient-2" id="sec-disposition">
+    <div class="section-title"><span class="num">06</span> Recommended Disposition</div>
+    <div class="disp-banner" style="margin-bottom:1.25rem">
+      <div class="disp-icon">&#9888;</div>
+      <div class="disp-text">
+        <h3>Proceed with conditions &mdash; escalate for senior review</h3>
+        <p>
+          In this fictional scenario the counterparty is workable but carries enough concentrated risk that onboarding
+          should not proceed on a desk-level decision. A senior reviewer signs off only after the three conditions below
+          are satisfied and evidenced. If any escalation trigger fires before or after onboarding, the relationship
+          returns to senior review.
+        </p>
+      </div>
+    </div>
+    <div class="grid grid-2">
+      <div class="card card-accent-blue">
+        <h3 style="margin-bottom:.7rem;display:flex;align-items:center;gap:.5rem">&#128203; Onboarding Conditions</h3>
+        <div class="cond-item"><span class="cond-num">1</span><span><strong>Ownership transparency.</strong> Obtain a complete beneficial-ownership chart down to natural persons holding 10%+, with supporting registry documents for each holding-structure layer. Onboarding does not proceed on a partial chart.</span></div>
+        <div class="cond-item"><span class="cond-num">2</span><span><strong>Independent financial assurance.</strong> Obtain the most recent audited financials and a current proof-of-reserves attestation from a named, reputable firm. The auditor turnover noted in Section 04 must be explained in writing.</span></div>
+        <div class="cond-item"><span class="cond-num">3</span><span><strong>Regulatory standing letter.</strong> Obtain written confirmation of licensing and registration status in every operating jurisdiction, plus the entity's formal response to the open consumer-protection matter.</span></div>
+      </div>
+      <div class="card card-accent-red">
+        <h3 style="margin-bottom:.7rem;display:flex;align-items:center;gap:.5rem">&#128680; Escalation Triggers</h3>
+        <div class="cond-item"><span class="cond-num" style="background:rgba(239,68,68,.16);color:var(--red)">A</span><span>Any confirmed sanctions nexus involving the entity, a principal, or a beneficial owner &mdash; immediate stop and SEVERE re-rate.</span></div>
+        <div class="cond-item"><span class="cond-num" style="background:rgba(239,68,68,.16);color:var(--red)">B</span><span>A formal enforcement action, license suspension, or criminal charge in any jurisdiction.</span></div>
+        <div class="cond-item"><span class="cond-num" style="background:rgba(239,68,68,.16);color:var(--red)">C</span><span>A material escalation in withdrawal-delay reporting, or any credible insolvency or commingling signal.</span></div>
+        <div class="cond-item"><span class="cond-num" style="background:rgba(239,68,68,.16);color:var(--red)">D</span><span>Discovery that disclosed ownership or financials materially conflict with public record.</span></div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:1.25rem">
+      <h3 style="margin-bottom:.6rem">Disposition Logic</h3>
+      <div class="grid grid-4" style="gap:.85rem">
+        <div class="glass-card" style="padding:.9rem"><div class="label" style="margin-bottom:.3rem">Composite</div><div style="font-size:.82rem;color:var(--text2)">57/100 &mdash; mid-ELEVATED band. Not a clean proceed, not a decline.</div></div>
+        <div class="glass-card" style="padding:.9rem"><div class="label" style="margin-bottom:.3rem">Override check</div><div style="font-size:.82rem;color:var(--text2)">No confirmed sanctions hit, no indictment. SEVERE override does not apply.</div></div>
+        <div class="glass-card" style="padding:.9rem"><div class="label" style="margin-bottom:.3rem">Risk shape</div><div style="font-size:.82rem;color:var(--text2)">Concentrated in 3 domains, not pervasive &mdash; addressable with conditions.</div></div>
+        <div class="glass-card" style="padding:.9rem"><div class="label" style="margin-bottom:.3rem">Confidence</div><div style="font-size:.82rem;color:var(--text2)">MODERATE &mdash; gaps argue for senior review rather than desk approval.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================================================
+       7. INFORMATION GAPS
+       ==================================================== -->
+  <section class="section section-gradient-3" id="sec-gaps">
+    <div class="section-title"><span class="num">07</span> Information Gaps</div>
+    <div class="split-7-5">
+      <div class="card">
+        <p style="font-size:.82rem;color:var(--text2);margin-bottom:.6rem;line-height:1.6">
+          The following could not be verified from public sources in this synthetic scenario. Each gap lowers confidence
+          and is the reason the disposition is conditional. Gaps are stated, not filled with inference.
+        </p>
+        <div class="gap-item"><span class="gap-ico">&#128269;</span><span><strong style="color:var(--text)">Ultimate beneficial ownership.</strong> The multi-layer holding structure terminates in jurisdictions without public registries. Natural-person owners could not be confirmed from public record.</span></div>
+        <div class="gap-item"><span class="gap-ico">&#128202;</span><span><strong style="color:var(--text)">Audited financial statements.</strong> No audited financials are publicly filed. Revenue, reserves, and solvency rest on the entity's own statements and third-party estimates.</span></div>
+        <div class="gap-item"><span class="gap-ico">&#127760;</span><span><strong style="color:var(--text)">Operating-jurisdiction licensing.</strong> Registration status is confirmable in two jurisdictions; status in the primary operating jurisdiction could not be established from public sources.</span></div>
+        <div class="gap-item"><span class="gap-ico">&#128100;</span><span><strong style="color:var(--text)">Principal background.</strong> Several named executives have limited verifiable professional history before 2019, constraining the governance and integrity read.</span></div>
+      </div>
+      <div class="card card-accent-amber">
+        <h3 style="margin-bottom:.6rem">Effect on Confidence</h3>
+        <p style="font-size:.8rem;color:var(--text2);line-height:1.62">
+          Overall confidence is <strong style="color:var(--amber)">MODERATE</strong>. The regulatory, adverse-media, and
+          geographic reads are well-supported by public sources. The ownership and financial reads are not &mdash; they
+          rely on partial disclosure and estimates.
+        </p>
+        <p style="font-size:.8rem;color:var(--text2);line-height:1.62;margin-top:.7rem">
+          Closing the two ownership and financial gaps via Conditions 1 and 2 would likely move confidence toward HIGH
+          and could move the composite either direction depending on what disclosure reveals.
+        </p>
+        <div class="label" style="margin:.85rem 0 .3rem">Confidence by domain</div>
+        <div style="display:flex;flex-direction:column;gap:.4rem;font-size:.74rem">
+          <div style="display:flex;justify-content:space-between"><span style="color:var(--text3)">Regulatory / Adverse Media / Geographic</span><span class="pill pill-green" style="margin:0">HIGH</span></div>
+          <div style="display:flex;justify-content:space-between"><span style="color:var(--text3)">Sanctions / Litigation</span><span class="pill pill-cyan" style="margin:0">MODERATE</span></div>
+          <div style="display:flex;justify-content:space-between"><span style="color:var(--text3)">Ownership / Financial / Governance</span><span class="pill pill-amber" style="margin:0">LOW</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================================================
+       8. ASSESSMENT TIMELINE
+       ==================================================== -->
+  <section class="section" id="sec-timeline">
+    <div class="section-title"><span class="num">08</span> Illustrative Entity Timeline</div>
+    <div class="grid grid-2">
+      <div class="card">
+        <h3 style="margin-bottom:1rem">Synthetic Event History</h3>
+        <div class="tl" id="timeline"></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:1.1rem">
+        <div class="card">
+          <h3 style="margin-bottom:.3rem">Adverse Media Volume</h3>
+          <p style="font-size:.74rem;color:var(--text3);margin-bottom:.5rem">Synthetic count of negative-coverage items by quarter.</p>
+          <div style="position:relative;height:190px"><canvas id="mediaChart"></canvas></div>
+        </div>
+        <div class="card card-accent-cyan">
+          <h3 style="margin-bottom:.5rem">Trend Read</h3>
+          <p style="font-size:.8rem;color:var(--text2);line-height:1.6">
+            In this fictional dataset, adverse-media volume steps up sharply from Q3 2025, coinciding with the
+            withdrawal-delay reports and the regulator consumer warning. The trajectory &mdash; not just the absolute
+            count &mdash; is what pushes the Adverse Media domain to 72/100.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================================================
+       9. SOURCES & METHOD
+       ==================================================== -->
+  <section class="section section-gradient-1" id="sec-sources">
+    <div class="section-title"><span class="num">09</span> Sources, Method &amp; Confidence</div>
+    <div class="grid grid-3">
+      <div class="card">
+        <h3 style="margin-bottom:.7rem">Method</h3>
+        <div class="method-step"><span class="ms-n">01</span><span>Resolve the entity and state assumptions. Scope: OSINT only.</span></div>
+        <div class="method-step"><span class="ms-n">02</span><span>Gather public evidence across 8 risk domains.</span></div>
+        <div class="method-step"><span class="ms-n">03</span><span>Score each domain 0&ndash;100; separate observed fact from allegation.</span></div>
+        <div class="method-step"><span class="ms-n">04</span><span>Apply domain weights; compute weighted composite.</span></div>
+        <div class="method-step"><span class="ms-n">05</span><span>Check the sanctions / indictment SEVERE override.</span></div>
+        <div class="method-step"><span class="ms-n">06</span><span>Map composite to the 5-tier rating; set disposition.</span></div>
+        <div class="method-step"><span class="ms-n">07</span><span>State red flags, gaps, and a sourced confidence rating.</span></div>
+      </div>
+      <div class="card">
+        <h3 style="margin-bottom:.7rem">Source Categories <span class="pill pill-blue" style="margin-left:.3rem">31 reviewed</span></h3>
+        <div style="display:flex;flex-direction:column;gap:.55rem;font-size:.8rem">
+          <div style="display:flex;justify-content:space-between"><span style="color:var(--text2)">Corporate registries &amp; filings</span><span class="mono" style="color:var(--text3)">6</span></div>
+          <div style="display:flex;justify-content:space-between"><span style="color:var(--text2)">Regulator publications &amp; notices</span><span class="mono" style="color:var(--text3)">5</span></div>
+          <div style="display:flex;justify-content:space-between"><span style="color:var(--text2)">Court dockets &amp; legal databases</span><span class="mono" style="color:var(--text3)">3</span></div>
+          <div style="display:flex;justify-content:space-between"><span style="color:var(--text2)">Sanctions &amp; watchlist sources</span><span class="mono" style="color:var(--text3)">4</span></div>
+          <div style="display:flex;justify-content:space-between"><span style="color:var(--text2)">News &amp; investigative journalism</span><span class="mono" style="color:var(--text3)">9</span></div>
+          <div style="display:flex;justify-content:space-between"><span style="color:var(--text2)">Country-risk indices</span><span class="mono" style="color:var(--text3)">4</span></div>
+        </div>
+        <p style="font-size:.72rem;color:var(--text3);margin-top:.8rem;line-height:1.55;border-top:1px solid var(--glass-border);padding-top:.6rem">
+          All sources illustrative. A live assessment would cite FATF lists, the Basel AML Index, Transparency
+          International CPI, OFAC SDN and consolidated EU / UN / UK lists, plus primary registry and regulator records.
+        </p>
+      </div>
+      <div class="card card-accent-amber">
+        <h3 style="margin-bottom:.5rem">Overall Confidence</h3>
+        <div style="font-size:1.5rem;font-weight:800;color:var(--amber)">MODERATE</div>
+        <div class="conf-meter" style="margin:.5rem 0 .7rem"><span class="conf-seg on"></span><span class="conf-seg on"></span><span class="conf-seg on"></span><span class="conf-seg"></span><span class="conf-seg"></span></div>
+        <p style="font-size:.79rem;color:var(--text2);line-height:1.6">
+          Regulatory, adverse-media, and geographic findings are well-evidenced. Ownership and financial findings rest
+          on partial disclosure. The four information gaps cap confidence at MODERATE and are the reason the disposition
+          carries conditions and senior review.
+        </p>
+        <div style="background:var(--glass);border:1px solid var(--glass-border);border-radius:var(--radius-sm);padding:.7rem;margin-top:.8rem;font-size:.73rem;color:var(--text3);line-height:1.55">
+          <strong style="color:var(--text2)">Scope note.</strong> No non-public information was used. Allegations are
+          labeled as allegations; pending matters as pending. Gaps were not filled with inference.
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <p><strong>EDD Assessment &mdash; Meridian Digital Exchange</strong> &middot; Illustrative sample generated <span id="gen-date"></span></p>
+  <p class="fnote">
+    This dashboard is a format demonstration for the <span class="mono">analyst-toolkit</span> repository. Meridian
+    Digital Exchange is a fictional entity. All scores, findings, red flags, sources, and timeline events are synthetic
+    and were invented solely to show the structure of an Enhanced Due Diligence deliverable. Nothing here assesses,
+    describes, or references any real company, person, or event. Not financial, legal, or compliance advice.
+  </p>
+</footer>
+
+<script>
+/* ============================================================
+   EDD SAMPLE — ENGINE  (all data synthetic / illustrative)
+   Built with safe DOM construction — no innerHTML on dynamic data.
+   ============================================================ */
+
+function toggleTheme(){
+  var t=document.documentElement.getAttribute('data-theme')==='light'?'dark':'light';
+  document.documentElement.setAttribute('data-theme',t);
+  document.getElementById('theme-btn').innerHTML=t==='light'?'☀':'☾';
+}
+
+/* ---- tiny DOM helper: el(tag, props, ...children) ---- */
+function el(tag,props){
+  var node=document.createElement(tag);
+  if(props){
+    for(var k in props){
+      if(k==='class')node.className=props[k];
+      else if(k==='style')node.setAttribute('style',props[k]);
+      else if(k==='text')node.textContent=props[k];
+      else node.setAttribute(k,props[k]);
+    }
+  }
+  for(var i=2;i<arguments.length;i++){
+    var c=arguments[i];
+    if(c==null)continue;
+    if(Array.isArray(c)){c.forEach(function(x){if(x!=null)node.appendChild(typeof x==='string'?document.createTextNode(x):x)});}
+    else node.appendChild(typeof c==='string'?document.createTextNode(c):c);
+  }
+  return node;
+}
+
+/* ---- DOMAIN DATA ---- */
+var DOMAINS=[
+  {id:'corp', n:'Corporate Profile & Ownership', ico:'🏢', score:55, weight:5,  band:'elev',
+   driver:'Multi-layer offshore holding structure obscures UBO',
+   lead:'Meridian Digital Exchange presents as a single trading brand but sits beneath a chain of intermediate holding companies across multiple offshore jurisdictions. The operating entity and customer-facing brand are public-registry confirmed; the chain above the first holding layer is not fully traceable.',
+   evid:'OBS',
+   bullets:['Founded 2019; ~7 years of operating history (illustrative).','At least four intermediate holding-company layers identified.','Ultimate beneficial owners not confirmable from public registries.','Two named directors appear across several of the holding layers.']},
+  {id:'fin', n:'Financial Health', ico:'📊', score:40, weight:8, band:'mod',
+   driver:'No audited financials; solvency relies on entity statements',
+   lead:'No audited financial statements are publicly filed — expected for a private offshore entity. Reported trading volume and a self-published proof-of-reserves page suggest an operating, liquid business, but this is unverified. No public insolvency or default signal was found.',
+   evid:'UNV',
+   bullets:['No publicly filed audited financials.','Self-published reserves page; not independently attested.','No bankruptcy, default, or winding-up filings located.','Withdrawal-delay reports raise an unconfirmed liquidity question.']},
+  {id:'reg', n:'Regulatory & Enforcement', ico:'⚖️', score:68, weight:18, band:'high',
+   driver:'Open consumer-protection matter; uneven registration',
+   lead:'One jurisdiction issued a published consumer warning naming the exchange and citing withdrawal complaints; this is a regulator notice, not a finalized enforcement action. Registration is confirmed in two jurisdictions and unconfirmed in the primary operating jurisdiction. No finalized penalty or license revocation was identified.',
+   evid:'OBS',
+   bullets:['Consumer warning published by one regulator (open matter).','Money-services / VASP registration confirmed in 2 jurisdictions.','Registration status unconfirmed in the primary operating jurisdiction.','No finalized enforcement action, consent order, or penalty found.']},
+  {id:'lit', n:'Litigation & Legal', ico:'📝', score:50, weight:12, band:'elev',
+   driver:'Civil disputes consistent with sector; no fraud judgment',
+   lead:'Public dockets show a small number of civil disputes — user claims over account access and a commercial contract dispute. These are alleged matters at the pleading stage. No fraud judgment, no class action certification, and no indictment were identified.',
+   evid:'ALG',
+   bullets:['A handful of individual civil claims over account access.','One commercial contract dispute with a vendor.','No certified class action; no fraud judgment on record.','No criminal proceeding identified against the entity or principals.']},
+  {id:'sanc', n:'Sanctions & Watchlist', ico:'🛡️', score:35, weight:20, band:'mod',
+   driver:'Clean screen; residual exposure from jurisdiction & opacity',
+   lead:'Screening the entity, named principals, and identifiable owners against consolidated sanctions and watchlist sources returned no direct match. Residual risk is structural: ownership opacity limits how completely owners can be screened, and operating-jurisdiction exposure raises indirect-exposure risk.',
+   evid:'OBS',
+   bullets:['No direct SDN / consolidated-list match on entity or principals.','No identified PEP among confirmable owners or directors.','Screening completeness limited by unverified UBO.','Operating footprint raises indirect-exposure considerations.']},
+  {id:'media', n:'Adverse Media', ico:'📰', score:72, weight:15, band:'high',
+   driver:'Sustained negative coverage of withdrawal delays',
+   lead:'The strongest synthetic risk signal. A sustained, escalating pattern of coverage — 23 negative items identified, 14 within the last 12 months — centers on alleged withdrawal delays and support failures. Coverage is reported user experience and journalism, not a regulatory or court finding, but the volume and trajectory are material.',
+   evid:'ALG',
+   bullets:['23 adverse-media items identified; 14 in the trailing 12 months.','Dominant theme: delayed withdrawals and unresponsive support.','Volume steps up sharply from Q3 2025 (see timeline).','Coverage is reportorial; not a regulatory or judicial finding.']},
+  {id:'gov', n:'Governance & Integrity', ico:'🤝', score:62, weight:12, band:'high',
+   driver:'Auditor turnover; thin principal track records',
+   lead:'Two governance signals. First, observed auditor turnover — the entity has changed its stated auditor twice since 2022, with no public explanation. Second, several principals have limited verifiable professional history before the 2019 launch. No principal was linked to a failed or sanctioned entity in public record.',
+   evid:'OBS',
+   bullets:['Stated auditor changed twice since 2022; no public reason given.','Several executives have thin pre-2019 verifiable history.','No related-party transactions disclosed (consistent with no audited filings).','No principal tied to a prior failed or sanctioned entity in public record.']},
+  {id:'geo', n:'Geographic & Sector', ico:'🌍', score:75, weight:10, band:'high',
+   driver:'High-risk operating jurisdiction; high-ML-risk sector',
+   lead:'The highest-scoring domain, and largely structural. The primary operating jurisdiction scores poorly on recognized country-risk indices, and digital-asset exchange is an inherently high money-laundering-risk sector. This is observed inherent risk — a property of where and what the business is, independent of conduct.',
+   evid:'OBS',
+   bullets:['Primary operating jurisdiction rates poorly on country-risk indices.','Incorporation jurisdiction adds limited-transparency exposure.','Digital-asset exchange is an inherently high-ML-risk sector.','Inherent (structural) risk — not a conduct finding.']}
+];
+
+var BAND_COLOR={low:'#30d158',mod:'#22d3ee',elev:'#f59e0b',high:'#ff9f0a',sev:'#ef4444'};
+var BAND_LABEL={low:'LOW',mod:'MODERATE',elev:'ELEVATED',high:'HIGH',sev:'SEVERE'};
+var BAND_BG={low:'bg-low',mod:'bg-mod',elev:'bg-elev',high:'bg-high',sev:'bg-sev'};
+var EVID_CLASS={OBS:'tag-obs',ALG:'tag-alg',UNV:'tag-unv'};
+var EVID_LABEL={OBS:'OBSERVED',ALG:'ALLEGED',UNV:'UNVERIFIED'};
+
+/* ---- SCORECARD TABLE ---- */
+var sb=document.getElementById('scorecard-body');
+var weightedTotal=0;
+DOMAINS.forEach(function(d){
+  var w=(d.score*d.weight/100);
+  weightedTotal+=w;
+  var c=BAND_COLOR[d.band];
+  var bar=el('div',{class:'sbar-track'},el('div',{class:'sbar-fill',style:'width:'+d.score+'%;background:'+c}));
+  var sevCell=el('td',null,el('div',{style:'display:flex;align-items:center;gap:.5rem'},
+    bar,el('span',{style:'font-size:.66rem;font-weight:700;color:'+c,text:BAND_LABEL[d.band]})));
+  sb.appendChild(el('tr',null,
+    el('td',{style:'color:var(--text);font-weight:600',text:d.n}),
+    el('td',{style:'text-align:center'},el('span',{class:'score-pill '+BAND_BG[d.band],text:String(d.score)})),
+    sevCell,
+    el('td',{style:'text-align:center;font-family:var(--mono);color:var(--text3)',text:d.weight+'%'}),
+    el('td',{style:'text-align:center;font-family:var(--mono);font-weight:700;color:var(--text)',text:w.toFixed(1)}),
+    el('td',{style:'font-size:.76rem',text:d.driver})
+  ));
+});
+sb.appendChild(el('tr',{class:'row-total'},
+  el('td',null,'COMPOSITE RISK SCORE'),
+  el('td',{style:'text-align:center'},el('span',{class:'score-pill bg-elev',style:'font-size:.92rem',text:'57'})),
+  el('td',null,el('span',{style:'font-weight:800;color:#f59e0b'},'ELEVATED · Tier 3 of 5')),
+  el('td',{style:'text-align:center;font-family:var(--mono)',text:'100%'}),
+  el('td',{style:'text-align:center;font-family:var(--mono)',text:weightedTotal.toFixed(1)}),
+  el('td',{style:'font-size:.76rem',text:'Concentrated in adverse media, geographic and regulatory exposure'})
+));
+
+/* ---- DOMAIN CARDS ---- */
+var dg=document.getElementById('domain-grid');
+var accentByBand={low:'card-accent-green',mod:'card-accent-cyan',elev:'card-accent-amber',high:'card-accent-amber',sev:'card-accent-red'};
+DOMAINS.forEach(function(d,i){
+  var c=BAND_COLOR[d.band];
+  var ul=el('ul');
+  d.bullets.forEach(function(b){ul.appendChild(el('li',{text:b}));});
+  var card=el('div',{class:'domain-card '+accentByBand[d.band]},
+    el('div',{class:'dc-top'},
+      el('div',null,el('div',{class:'dc-title'},
+        el('span',{class:'dc-ico',text:d.ico}),' '+(i+1)+'. '+d.n)),
+      el('div',{style:'text-align:right'},
+        el('div',{class:'dc-score',style:'color:'+c},String(d.score),
+          el('span',{style:'font-size:.7rem;color:var(--text3)'},'/100')),
+        el('div',{class:'dc-wt',text:'weight '+d.weight+'% · '+BAND_LABEL[d.band]}))
+    ),
+    el('div',{style:'height:6px;background:var(--bg3);border-radius:4px;overflow:hidden;margin-bottom:.7rem'},
+      el('div',{style:'height:100%;width:'+d.score+'%;background:'+c+';border-radius:4px'})),
+    el('div',{class:'dc-body'},
+      el('span',{class:EVID_CLASS[d.evid],text:EVID_LABEL[d.evid]}),' ',d.lead,ul),
+    el('div',{class:'dc-meta'},el('span',{class:'pill pill-grey',style:'margin:0',text:'Driver: '+d.driver}))
+  );
+  dg.appendChild(card);
+});
+
+/* ---- RED FLAGS ---- */
+var FLAGS=[
+  {cls:'finding-high', tag:'HIGH', tagcls:'bg-high', t:'Opaque ownership via multi-layer holding structure',
+   b:'At least four intermediate offshore holding-company layers sit above the operating entity, and ultimate beneficial owners cannot be confirmed from public registries. Ownership opacity limits both UBO diligence and the completeness of sanctions screening.', dom:'Corporate Profile / Sanctions'},
+  {cls:'finding-high', tag:'HIGH', tagcls:'bg-high', t:'Sustained adverse-media pattern around withdrawal delays',
+   b:'23 negative-coverage items, 14 within the trailing 12 months, centered on alleged withdrawal delays and unresponsive support. Volume escalates from Q3 2025. Reportorial, not adjudicated — but the trajectory is the single strongest synthetic risk signal.', dom:'Adverse Media'},
+  {cls:'finding-high', tag:'HIGH', tagcls:'bg-high', t:'Primary operations in a high-risk jurisdiction',
+   b:'The main operating jurisdiction scores poorly on recognized country-risk indices, and digital-asset exchange is an inherently high money-laundering-risk sector. Structural inherent risk that compounds the conduct-based flags.', dom:'Geographic & Sector'},
+  {cls:'finding-medium', tag:'MEDIUM', tagcls:'bg-mod', t:'Regulator consumer warning in one jurisdiction',
+   b:'A published consumer-protection notice names the exchange and cites withdrawal complaints. It is an open matter and a regulator advisory, not a finalized enforcement action — tracked accordingly, and an escalation trigger if it advances.', dom:'Regulatory & Enforcement'},
+  {cls:'finding-medium', tag:'MEDIUM', tagcls:'bg-mod', t:'Auditor turnover without public explanation',
+   b:'The entity has changed its stated auditor twice since 2022 with no public rationale. Repeated auditor turnover is a recognized governance warning sign and warrants a written explanation before onboarding.', dom:'Governance & Integrity'}
+];
+var rf=document.getElementById('redflags-list');
+FLAGS.forEach(function(f,i){
+  rf.appendChild(el('div',{class:'finding '+f.cls},
+    el('div',{class:'f-head'},
+      el('span',{class:'sev-tag '+f.tagcls,text:f.tag}),
+      el('span',{class:'f-title',text:'RF-'+String(i+1).padStart(2,'0')+' · '+f.t})),
+    el('div',{class:'f-body',text:f.b}),
+    el('div',{class:'f-link',text:'Domain: '+f.dom+'   ·   Status: open / monitored'})
+  ));
+});
+
+/* ---- TIMELINE ---- */
+var TL=[
+  {d:'2019', cls:'', t:'Entity founded (illustrative)', x:'Meridian Digital Exchange launches as a spot trading venue under the first-layer offshore holding company.'},
+  {d:'2021', cls:'', t:'Derivatives products added', x:'Product range expands to derivatives; reported user base crosses an estimated 1 million.'},
+  {d:'2022', cls:'warn', t:'First auditor change', x:'The entity changes its stated auditor for the first time. No public explanation is provided.'},
+  {d:'2024 Q4', cls:'warn', t:'Second auditor change', x:'A second auditor change is recorded. Reported users reach an estimated 4 million.'},
+  {d:'2025 Q3', cls:'crit', t:'Withdrawal-delay reports begin', x:'Negative coverage of delayed withdrawals and unresponsive support begins to cluster and accelerate.'},
+  {d:'2026 Q1', cls:'crit', t:'Regulator consumer warning', x:'One jurisdiction publishes a consumer-protection notice naming the exchange. Matter remains open.'},
+  {d:'2026-05-19', cls:'', t:'EDD assessment (this sample)', x:'Illustrative counterparty-onboarding EDD produced: composite 57/100, ELEVATED, proceed with conditions.'}
+];
+var tl=document.getElementById('timeline');
+TL.forEach(function(e){
+  tl.appendChild(el('div',{class:'tl-item '+e.cls},
+    el('div',{class:'tl-date',text:e.d}),
+    el('div',{class:'tl-title',text:e.t}),
+    el('div',{class:'tl-desc',text:e.x})
+  ));
+});
+
+/* ---- CHARTS ---- */
+var cgrid='rgba(255,255,255,.06)', ctick='#8b909c';
+Chart.defaults.font.family="-apple-system,BlinkMacSystemFont,sans-serif";
+Chart.defaults.color=ctick;
+
+new Chart(document.getElementById('gaugeChart'),{
+  type:'doughnut',
+  data:{datasets:[{data:[57,43],backgroundColor:['#f59e0b','rgba(255,255,255,.06)'],borderWidth:0,circumference:360,cutout:'78%'}]},
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{enabled:false}}}
+});
+
+new Chart(document.getElementById('barChart'),{
+  type:'bar',
+  data:{labels:DOMAINS.map(function(d){return d.n.replace(' & ','/').split('/')[0]}),
+    datasets:[{label:'Risk score',data:DOMAINS.map(function(d){return d.score}),
+      backgroundColor:DOMAINS.map(function(d){return BAND_COLOR[d.band]+'cc'}),
+      borderColor:DOMAINS.map(function(d){return BAND_COLOR[d.band]}),borderWidth:1,borderRadius:6}]},
+  options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){return 'Risk: '+c.parsed.x+'/100'}}}},
+    scales:{x:{min:0,max:100,grid:{color:cgrid},ticks:{color:ctick,font:{size:10}}},
+      y:{grid:{display:false},ticks:{color:'#a1a1a6',font:{size:10}}}}}
+});
+
+new Chart(document.getElementById('radarChart'),{
+  type:'radar',
+  data:{labels:DOMAINS.map(function(d){return d.n.split(' & ')[0].split(' ').slice(0,2).join(' ')}),
+    datasets:[
+      {label:'Assessed risk',data:DOMAINS.map(function(d){return d.score}),
+        borderColor:'#0a84ff',backgroundColor:'rgba(10,132,255,.2)',
+        pointBackgroundColor:'#0a84ff',pointRadius:3,borderWidth:2},
+      {label:'50-pt reference',data:DOMAINS.map(function(){return 50}),
+        borderColor:'rgba(245,158,11,.6)',backgroundColor:'transparent',
+        borderDash:[5,4],pointRadius:0,borderWidth:1.5}
+    ]},
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{labels:{color:ctick,font:{size:10},boxWidth:12}}},
+    scales:{r:{min:0,max:100,ticks:{stepSize:25,color:'#6e6e73',backdropColor:'transparent',font:{size:8}},
+      grid:{color:cgrid},angleLines:{color:cgrid},pointLabels:{color:'#a1a1a6',font:{size:9}}}}}
+});
+
+new Chart(document.getElementById('flagDonut'),{
+  type:'doughnut',
+  data:{labels:['HIGH','MEDIUM'],datasets:[{data:[3,2],
+    backgroundColor:['#ff9f0a','#22d3ee'],borderColor:'#0a0a0f',borderWidth:2,cutout:'62%'}]},
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{position:'bottom',labels:{color:ctick,font:{size:10},boxWidth:12,padding:10}},
+      tooltip:{callbacks:{label:function(c){return c.label+': '+c.parsed+' flag'+(c.parsed>1?'s':'')}}}}}
+});
+
+new Chart(document.getElementById('mediaChart'),{
+  type:'bar',
+  data:{labels:['Q1 25','Q2 25','Q3 25','Q4 25','Q1 26','Q2 26*'],
+    datasets:[{label:'Adverse-media items',data:[1,2,5,7,6,2],
+      backgroundColor:['#22d3ee99','#22d3ee99','#f59e0bcc','#ff9f0acc','#ff9f0acc','#22d3ee99'],
+      borderRadius:5}]},
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){return c.parsed.y+' items'}}}},
+    scales:{x:{grid:{display:false},ticks:{color:ctick,font:{size:9}}},
+      y:{grid:{color:cgrid},ticks:{color:ctick,font:{size:9},stepSize:2}}}}
+});
+
+/* ---- NAV ---- */
+var SECTIONS=[
+  ['sec-summary','Summary'],['sec-scorecard','Scorecard'],['sec-charts','Profile'],
+  ['sec-domains','Domains'],['sec-redflags','Red Flags'],['sec-disposition','Disposition'],
+  ['sec-gaps','Info Gaps'],['sec-timeline','Timeline'],['sec-sources','Sources']
+];
+var nav=document.getElementById('nav');
+SECTIONS.forEach(function(s){
+  var b=el('button',{class:'nav-btn','data-nav':s[0],text:s[1]});
+  b.addEventListener('click',function(){document.getElementById(s[0]).scrollIntoView({behavior:'smooth'})});
+  nav.appendChild(b);
+});
+
+/* fade-in */
+var obs=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target)}})},{threshold:.08});
+document.querySelectorAll('.card,.glass-card,.domain-card,.finding,.disp-banner').forEach(function(el){el.classList.add('fade-in');obs.observe(el)});
+
+/* active nav */
+var navObs=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){
+  document.querySelectorAll('.nav-btn[data-nav]').forEach(function(b){b.classList.remove('active')});
+  var b=document.querySelector('.nav-btn[data-nav="'+e.target.id+'"]');
+  if(b){b.classList.add('active');b.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'})}
+}})},{rootMargin:'-35% 0px -55% 0px',threshold:0});
+SECTIONS.forEach(function(s){var eln=document.getElementById(s[0]);if(eln)navObs.observe(eln)});
+
+document.getElementById('gen-date').textContent=new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
+</script>
+</body>
+</html>

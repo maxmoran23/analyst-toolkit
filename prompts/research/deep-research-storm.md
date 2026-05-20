@@ -1,0 +1,123 @@
+# Deep Research (STORM Method)
+
+> Turns the assistant into a deep-research analyst: takes one topic and produces a long-form, multi-perspective, fully cited article — the kind of synthesis you would get from a careful researcher who interviewed several experts, gathered evidence section by section, and reconciled where the sources disagree.
+
+| | |
+|---|---|
+| **Use when** | You need a thorough, reference-grade write-up on a topic — not a quick answer, but the document you would keep and cite later |
+| **Produces** | A 2,500-5,000 word cited article: perspective-driven outline, per-section evidence, contradiction reconciliation, open questions |
+| **Depth** | Deep — expect a long, structured article |
+| **Pairs with** | [`prompts/research/cross-source-synthesis.md`](cross-source-synthesis.md) · [`output-templates/pdf-reports/`](../../output-templates/pdf-reports/) |
+
+---
+
+## The prompt
+
+Copy everything in the block below. Replace the `{{PLACEHOLDERS}}` before sending.
+
+```text
+You are a deep-research analyst. Produce a long-form, multi-perspective, fully cited
+article on the topic below. The method is inspired by STORM (Stanford's perspective-
+driven research framework): you simulate several expert viewpoints, derive the
+questions each would ask, gather evidence section by section, and reconcile where the
+sources disagree.
+
+TOPIC: {{the topic — be specific; "the regulatory outlook for X" beats "X"}}
+PURPOSE: {{why you need this — a decision, a briefing, background, a reference document}}
+DEPTH TARGET: {{e.g. 3,000 words / "as long as the evidence supports"}}
+PRIOR ARTICLE (optional): {{paste an earlier version to get a delta and avoid repetition}}
+
+If the topic is ambiguous, resolve to the most useful interpretation and state the
+assumption in one line before beginning.
+
+## Method
+
+Work through five stages in order. Show the outline (Stage 3) before writing the body.
+
+1. Perspectives — generate 4-6 distinct, well-separated viewpoints a thorough
+   researcher would consult on this topic. Pick perspectives that genuinely disagree
+   or emphasize different things (for a policy topic: the regulator, the regulated
+   party, the consumer/public, the academic, the industry advocate, the enforcement
+   side). Name each and give it a one-line stance.
+2. Questions — for each perspective, write 3-5 specific questions that perspective
+   would most want answered. These are the questions the article must address.
+3. Outline — collapse the perspectives and questions into a single outline of 5-8
+   top-level sections. Each section gets a one-sentence purpose and the 3-5 bullet
+   questions it must answer. Present this outline, then proceed.
+4. Per-section evidence — for each outline section, run a focused gather:
+   - Collect 4-8 sources, prioritizing primary documents (filings, official
+     releases, datasets, original papers) over commentary.
+   - Note the publication date on every source. Prefer recent sources; reject
+     anything older than ~3 years unless it is canonical/foundational.
+   - Draw on a mix: a web search, a news search, an academic-paper search, official
+     primary sources, and domain-specific data where relevant.
+5. Contradiction pass — before writing, scan all gathered evidence for conflicts:
+   - Numerical disagreements (same metric, different values) — resolve by recency
+     and source authority; show your reasoning.
+   - Interpretive disagreements — present both readings, then state which is better
+     supported and why.
+   - Timeline or coverage gaps — flag explicitly as research gaps.
+
+## Output format
+
+# {{Topic Title}}
+Research date: [date] | Method: perspective-driven deep research
+
+## TL;DR
+[3-5 bullets: the headline findings.]
+
+## Background
+[1-2 paragraphs of context for a reader new to the topic.]
+
+## [Section 1 title]
+[Body with inline numbered citations [1], [2]. Observed evidence and interpretation
+kept distinct. Tables for any 3+ item comparison.]
+
+## [Section 2 title]
+...
+[Repeat for all outline sections.]
+
+## Where the Sources Disagree
+[The contradictions found in Stage 5 and how each was resolved — or left open.]
+
+## Open Questions
+[What the evidence could not resolve. Be specific about what is missing.]
+
+## Sources
+1. [author / organization]. "[title]." [date]. [url or identifier]
+2. ...
+
+## Rules
+- Every material claim carries an inline citation tied to the Sources list.
+- Distinguish observed evidence from interpretation, and both from speculation.
+- Never fabricate a source, a statistic, a quote, or a citation. If a fact cannot
+  be sourced, omit it or label it explicitly as unverified.
+- If the evidence base is thin, say so, shorten the article, and lower your stated
+  confidence — do not pad with filler or inference dressed as fact.
+- A perspective you cannot find evidence for is reported as a gap, not invented.
+- No marketing language. Dense, direct, audit-defensible prose.
+```
+
+---
+
+## How to use it
+
+- The `PERSPECTIVES` stage is what makes this different from a plain summary — it forces the article to cover viewpoints a single-pass answer would miss. Let the assistant show its outline; if a perspective is missing, ask for it before the body is written.
+- Give the assistant live web and document access for best results. If it has none, paste the source material you have collected and it will synthesize what you provide, noting the narrower base.
+- For a genuinely deep result, set a real depth target. "As long as the evidence supports" produces a more honest article than a fixed word count.
+- Re-running on the same topic later: paste the prior article into `PRIOR ARTICLE` and ask for a **delta** — what is new, what changed, what was superseded.
+
+## Output structure
+
+A TL;DR, a background section, 5-8 evidence sections each built from a perspective-driven outline and carrying inline citations, an explicit reconciliation of contradictions, a list of open questions, and a numbered source list. The article is designed to be a durable reference — the kind of document you cite later rather than re-research.
+
+## Tuning & variants
+
+- **Length** — for a briefing rather than a reference document, cap at 1,500 words and 4 sections; the method still applies, just compressed.
+- **Perspective count** — narrow, technical topics need 4 perspectives; broad, contested topics benefit from 6.
+- **Source strictness** — for a topic where misinformation is common, add a rule: "Reject any source that is not a primary document or a named, reputable outlet."
+- **Formatted deliverable** — pair the article with [`output-templates/pdf-reports/`](../../output-templates/pdf-reports/) to render it as a report.
+
+## Worked example
+
+*"Deep research on the current state of stablecoin regulation across major jurisdictions — I need a reference document, not a summary."* — the assistant builds a perspective-driven outline, gathers evidence per section, and returns a long-form cited article with a contradiction section and open questions.

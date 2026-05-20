@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{REPORT_TITLE}}</title>
+<style>
+/* ==========================================================================
+   PDF NARRATIVE DASHBOARD — Design System
+   Dark-background, amber-accented multi-page report.
+   Engine: HTML-to-PDF via Chrome headless or wkhtmltopdf
+   Page size: US Letter (8.5 x 11 in)
+   ========================================================================== */
+
+/* --- CSS Variables (Design Tokens) --- */
+:root {
+  /* Backgrounds */
+  --bg-primary:      #111827;
+  --bg-card:         #1a1f35;
+  --bg-callout:      #1e2440;
+  --bg-table-alt:    #151b2e;
+
+  /* Accent */
+  --amber:           #d4a574;
+  --amber-light:     #e8c9a0;
+  --amber-dim:       rgba(212, 165, 116, 0.15);
+  --amber-glow:      rgba(212, 165, 116, 0.08);
+
+  /* Text */
+  --text-primary:    #ffffff;
+  --text-body:       #c8ccd4;
+  --text-secondary:  #8b92a0;
+  --text-muted:      #5a6070;
+
+  /* Borders & Lines */
+  --border-subtle:   #2a3045;
+  --border-accent:   rgba(212, 165, 116, 0.3);
+
+  /* Semantic */
+  --severity-high:   #e05555;
+  --severity-pos:    #4ade80;
+  --severity-warn:   #f59e0b;
+
+  /* Spacing */
+  --margin-page:     0.83in;
+  --section-gap:     36pt;
+  --para-gap:        12pt;
+}
+
+/* --- Reset & Page Setup --- */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+@page {
+  size: letter;
+  margin: 0;
+}
+
+@media print {
+  html, body { margin: 0; padding: 0; }
+  .page { page-break-after: always; }
+  .page:last-child { page-break-after: avoid; }
+  .no-break { page-break-inside: avoid; }
+}
+
+html {
+  font-size: 10pt;
+  -webkit-print-color-adjust: exact !important;
+  print-color-adjust: exact !important;
+  color-adjust: exact !important;
+}
+
+body {
+  font-family: Helvetica, 'Helvetica Neue', Arial, sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-body);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* --- Page Container --- */
+.page {
+  width: 8.5in;
+  min-height: 11in;
+  padding: 0.75in var(--margin-page);
+  background: var(--bg-primary);
+  position: relative;
+  overflow: hidden;
+}
+
+/* --- Running Page Header --- */
+.page-header {
+  font-size: 8pt;
+  color: var(--text-muted);
+  margin-bottom: 24pt;
+  letter-spacing: 0.3px;
+}
+
+/* --- Section Headers --- */
+.section-title {
+  font-size: 18pt;
+  font-weight: 700;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  margin-bottom: 4pt;
+}
+
+.section-subtitle {
+  font-size: 13pt;
+  color: var(--text-body);
+  font-weight: 400;
+  margin-bottom: 20pt;
+}
+
+.subsection-title {
+  font-size: 13pt;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-top: 20pt;
+  margin-bottom: 8pt;
+}
+
+.sub-subsection-title {
+  font-size: 11pt;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-top: 16pt;
+  margin-bottom: 6pt;
+}
+
+/* --- Body Text --- */
+p {
+  font-size: 10pt;
+  color: var(--text-body);
+  line-height: 1.55;
+  margin-bottom: var(--para-gap);
+}
+
+p.intro {
+  font-size: 10.5pt;
+  line-height: 1.6;
+}
+
+p.caption {
+  font-size: 8.5pt;
+  color: var(--text-secondary);
+  margin-top: -6pt;
+}
+
+/* --- Accent Line --- */
+.accent-line {
+  width: 48px;
+  height: 2px;
+  background: var(--amber);
+  margin: 16pt 0;
+}
+
+.accent-line-full {
+  width: 100%;
+  height: 1px;
+  background: var(--border-subtle);
+  margin: 20pt 0;
+}
+
+/* ==========================================================================
+   COMPONENT: Hero Stat Block (Cover Page)
+   ========================================================================== */
+.hero-stat {
+  text-align: center;
+  padding: 32pt 0 16pt;
+}
+
+.hero-stat .number {
+  font-size: 84pt;
+  font-weight: 700;
+  color: var(--amber);
+  line-height: 1;
+  margin-bottom: 8pt;
+}
+
+.hero-stat .label {
+  font-size: 14pt;
+  color: var(--text-primary);
+  font-weight: 400;
+  margin-bottom: 4pt;
+}
+
+.hero-stat .sublabel {
+  font-size: 10pt;
+  color: var(--text-secondary);
+}
+
+/* ==========================================================================
+   COMPONENT: KPI Row (3 stat pills)
+   ========================================================================== */
+.kpi-row {
+  display: flex;
+  justify-content: center;
+  gap: 24pt;
+  margin: 24pt 0;
+}
+
+.kpi-pill {
+  text-align: center;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  padding: 14pt 20pt;
+  min-width: 120pt;
+}
+
+.kpi-pill .value {
+  font-size: 28pt;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.1;
+}
+
+.kpi-pill .value.amber {
+  color: var(--amber);
+}
+
+.kpi-pill .unit {
+  font-size: 8pt;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 4pt;
+}
+
+/* ==========================================================================
+   COMPONENT: Comparison Cards (2x2 grid)
+   ========================================================================== */
+.card-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12pt;
+  margin: 16pt 0;
+}
+
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  padding: 16pt;
+}
+
+.card .card-title {
+  font-size: 9pt;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 6pt;
+}
+
+.card .card-value {
+  font-size: 22pt;
+  font-weight: 700;
+  color: var(--amber);
+  margin-bottom: 6pt;
+}
+
+.card .card-desc {
+  font-size: 9pt;
+  color: var(--text-body);
+  line-height: 1.45;
+}
+
+/* ==========================================================================
+   COMPONENT: Data Table
+   ========================================================================== */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 12pt 0 16pt;
+  font-size: 9.5pt;
+}
+
+thead th {
+  font-size: 8.5pt;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  padding: 8pt 10pt;
+  text-align: left;
+  border-bottom: 1px solid var(--border-subtle);
+  background: var(--bg-card);
+}
+
+tbody td {
+  padding: 9pt 10pt;
+  color: var(--text-body);
+  border-bottom: 1px solid var(--border-subtle);
+  vertical-align: top;
+  line-height: 1.4;
+}
+
+tbody tr:nth-child(even) {
+  background: var(--bg-table-alt);
+}
+
+tbody td:first-child {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+/* Confidence badges */
+.badge {
+  display: inline-block;
+  font-size: 7.5pt;
+  font-weight: 600;
+  padding: 2pt 6pt;
+  border-radius: 3px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.badge-high   { background: rgba(74, 222, 128, 0.15); color: var(--severity-pos); }
+.badge-medium { background: rgba(212, 165, 116, 0.15); color: var(--amber); }
+.badge-low    { background: rgba(224, 85, 85, 0.15); color: var(--severity-high); }
+
+/* ==========================================================================
+   COMPONENT: Trait Matrix (Strength/Risk two-column)
+   ========================================================================== */
+table.trait-matrix thead th:nth-child(2) { color: var(--severity-pos); }
+table.trait-matrix thead th:nth-child(3) { color: var(--severity-high); }
+
+/* ==========================================================================
+   COMPONENT: Callout Box
+   ========================================================================== */
+.callout {
+  background: var(--bg-callout);
+  border-left: 3px solid var(--amber);
+  border-radius: 0 6px 6px 0;
+  padding: 16pt 18pt;
+  margin: 20pt 0;
+}
+
+.callout .callout-title {
+  font-size: 12pt;
+  font-weight: 700;
+  color: var(--amber);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 8pt;
+}
+
+.callout p {
+  font-size: 10pt;
+  margin-bottom: 8pt;
+}
+.callout p:last-child { margin-bottom: 0; }
+
+/* ==========================================================================
+   COMPONENT: Radar Chart (SVG-based)
+   ========================================================================== */
+.chart-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 24pt;
+  margin: 16pt 0;
+}
+
+.chart-container svg {
+  flex-shrink: 0;
+}
+
+.chart-legend {
+  list-style: none;
+  padding: 8pt 0;
+}
+
+.chart-legend li {
+  font-size: 10pt;
+  color: var(--text-body);
+  padding: 4pt 0;
+  display: flex;
+  justify-content: space-between;
+  gap: 16pt;
+  min-width: 200pt;
+}
+
+.chart-legend li .legend-value {
+  font-weight: 700;
+  color: var(--amber);
+}
+
+/* ==========================================================================
+   COMPONENT: Distribution Curve (SVG-based)
+   ========================================================================== */
+.distribution-chart {
+  text-align: center;
+  margin: 16pt 0;
+}
+
+/* ==========================================================================
+   COMPONENT: Bullet Evidence List
+   ========================================================================== */
+.evidence-list {
+  list-style: none;
+  padding: 0;
+  margin: 12pt 0;
+}
+
+.evidence-list li {
+  padding: 10pt 0;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.evidence-list li:last-child {
+  border-bottom: none;
+}
+
+.evidence-list .evidence-title {
+  font-weight: 700;
+  color: var(--text-primary);
+  font-size: 10.5pt;
+  margin-bottom: 4pt;
+}
+
+.evidence-list .evidence-desc {
+  font-size: 9.5pt;
+  color: var(--text-body);
+  line-height: 1.5;
+}
+
+/* ==========================================================================
+   COMPONENT: Footer / Disclaimer
+   ========================================================================== */
+.footer-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: calc(11in - 1.5in);
+}
+
+.disclaimer {
+  font-size: 8pt;
+  color: var(--text-muted);
+  line-height: 1.6;
+  border-top: 1px solid var(--border-subtle);
+  padding-top: 12pt;
+}
+
+.disclaimer .generated-date {
+  font-size: 9pt;
+  color: var(--text-secondary);
+  margin-bottom: 8pt;
+}
+
+/* ==========================================================================
+   UTILITIES
+   ========================================================================== */
+.text-amber   { color: var(--amber); }
+.text-white   { color: var(--text-primary); }
+.text-muted   { color: var(--text-muted); }
+.text-center  { text-align: center; }
+.text-right   { text-align: right; }
+.mt-0         { margin-top: 0; }
+.mt-1         { margin-top: 8pt; }
+.mt-2         { margin-top: 16pt; }
+.mt-3         { margin-top: 24pt; }
+.mb-0         { margin-bottom: 0; }
+.mb-1         { margin-bottom: 8pt; }
+.mb-2         { margin-bottom: 16pt; }
+.fw-bold      { font-weight: 700; }
+.fs-small     { font-size: 9pt; }
+</style>
+</head>
+<body>
+
+<!-- ====================================================================
+     PAGE 1: COVER / HERO PAGE
+     ==================================================================== -->
+<div class="page">
+
+  <div style="text-align: center; padding-top: 24pt;">
+    <div class="section-title" style="font-size: 24pt; letter-spacing: 5px;">{{REPORT_TITLE}}</div>
+    <div class="section-subtitle" style="font-size: 15pt; margin-bottom: 4pt;">{{REPORT_SUBTITLE}}</div>
+    <p class="text-muted" style="font-size: 10pt;">{{SUBJECT_NAME}} · {{REPORT_DATE}} · {{REPORT_DESCRIPTOR}}</p>
+  </div>
+
+  <div class="hero-stat">
+    <div class="number">{{HERO_NUMBER}}</div>
+    <div class="label">{{HERO_LABEL}}</div>
+    <div class="sublabel">{{HERO_SUBLABEL}}</div>
+  </div>
+
+  <div class="kpi-row">
+    <div class="kpi-pill">
+      <div class="value amber">{{KPI_1_VALUE}}</div>
+      <div class="unit">{{KPI_1_LABEL}}</div>
+    </div>
+    <div class="kpi-pill">
+      <div class="value">{{KPI_2_VALUE}}</div>
+      <div class="unit">{{KPI_2_LABEL}}</div>
+    </div>
+    <div class="kpi-pill">
+      <div class="value">{{KPI_3_VALUE}}</div>
+      <div class="unit">{{KPI_3_LABEL}}</div>
+    </div>
+  </div>
+
+  <div class="accent-line-full"></div>
+
+  <p class="intro" style="margin-top: 16pt;">
+    {{METHODOLOGY_PARAGRAPH}}
+  </p>
+
+  <p class="caption" style="margin-top: 8pt;">
+    {{METHODOLOGY_DETAIL}}
+  </p>
+
+</div>
+
+
+<!-- ====================================================================
+     PAGE 2: DISTRIBUTION / POSITIONING
+     ==================================================================== -->
+<div class="page">
+
+  <div class="page-header">{{REPORT_TITLE}} — {{SUBJECT_NAME}} — {{REPORT_DATE}} | Page 2</div>
+
+  <div class="section-title">POPULATION DISTRIBUTION</div>
+  <div class="section-subtitle">{{DISTRIBUTION_SUBTITLE}}</div>
+
+  <!-- Bell Curve SVG — replace with actual data-driven chart -->
+  <div class="distribution-chart">
+    <svg width="480" height="160" viewBox="0 0 480 160" xmlns="http://www.w3.org/2000/svg">
+      <!-- Background grid -->
+      <line x1="40" y1="130" x2="440" y2="130" stroke="#2a3045" stroke-width="1"/>
+      <!-- Bell curve path — standard normal approximation -->
+      <path d="M40,130 Q80,128 120,120 Q160,100 200,60 Q240,10 260,10 Q280,10 300,30 Q340,80 380,110 Q420,125 440,130"
+            fill="none" stroke="#c8ccd4" stroke-width="1.5" opacity="0.4"/>
+      <!-- Filled area under curve (left portion up to marker) -->
+      <path d="M40,130 Q80,128 120,120 Q160,100 200,60 Q240,10 260,10 Q280,10 300,30 Q340,80 380,110 Q420,125 440,130 L440,130 L40,130 Z"
+            fill="url(#curveGradient)" opacity="0.08"/>
+      <!-- Highlighted area (right tail) -->
+      <path d="M370,115 Q390,120 410,125 Q430,128 440,130 L440,130 L370,130 Z"
+            fill="#d4a574" opacity="0.35"/>
+      <!-- Position marker -->
+      <line x1="370" y1="115" x2="370" y2="140" stroke="#d4a574" stroke-width="2"/>
+      <text x="370" y="152" text-anchor="middle" fill="#d4a574" font-size="11" font-weight="700" font-family="Helvetica">{{HERO_NUMBER}}</text>
+      <!-- Axis labels -->
+      <text x="40" y="152" text-anchor="middle" fill="#5a6070" font-size="7" font-family="Helvetica">{{DIST_LABEL_1}}</text>
+      <text x="140" y="152" text-anchor="middle" fill="#5a6070" font-size="7" font-family="Helvetica">{{DIST_LABEL_2}}</text>
+      <text x="240" y="152" text-anchor="middle" fill="#5a6070" font-size="7" font-family="Helvetica">{{DIST_LABEL_3}}</text>
+      <text x="340" y="152" text-anchor="middle" fill="#5a6070" font-size="7" font-family="Helvetica">{{DIST_LABEL_4}}</text>
+      <text x="440" y="152" text-anchor="middle" fill="#5a6070" font-size="7" font-family="Helvetica">{{DIST_LABEL_5}}</text>
+      <defs>
+        <linearGradient id="curveGradient" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#c8ccd4" stop-opacity="0.3"/>
+          <stop offset="100%" stop-color="#c8ccd4" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+    </svg>
+  </div>
+
+  <p>{{DISTRIBUTION_EXPLANATION}}</p>
+
+  <div class="accent-line-full"></div>
+
+  <div class="section-title" style="font-size: 14pt; margin-top: 16pt;">CONTEXTUAL POSITIONING</div>
+  <div class="section-subtitle">{{POSITIONING_SUBTITLE}}</div>
+
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-title">{{CARD_1_TITLE}}</div>
+      <div class="card-value">{{CARD_1_VALUE}}</div>
+      <div class="card-desc">{{CARD_1_DESC}}</div>
+    </div>
+    <div class="card">
+      <div class="card-title">{{CARD_2_TITLE}}</div>
+      <div class="card-value">{{CARD_2_VALUE}}</div>
+      <div class="card-desc">{{CARD_2_DESC}}</div>
+    </div>
+    <div class="card">
+      <div class="card-title">{{CARD_3_TITLE}}</div>
+      <div class="card-value">{{CARD_3_VALUE}}</div>
+      <div class="card-desc">{{CARD_3_DESC}}</div>
+    </div>
+    <div class="card">
+      <div class="card-title">{{CARD_4_TITLE}}</div>
+      <div class="card-value">{{CARD_4_VALUE}}</div>
+      <div class="card-desc">{{CARD_4_DESC}}</div>
+    </div>
+  </div>
+
+</div>
+
+
+<!-- ====================================================================
+     PAGE 3: RADAR / PROFILE
+     ==================================================================== -->
+<div class="page">
+
+  <div class="page-header">{{REPORT_TITLE}} — {{SUBJECT_NAME}} — {{REPORT_DATE}} | Page 3</div>
+
+  <div class="section-title">SUBCOMPONENT PROFILE</div>
+  <div class="section-subtitle">{{PROFILE_SUBTITLE}}</div>
+
+  <div class="chart-container">
+
+    <!-- Radar Chart SVG — 6 axes example -->
+    <svg width="260" height="260" viewBox="0 0 260 260" xmlns="http://www.w3.org/2000/svg">
+      <!-- Grid rings -->
+      <polygon points="130,30 217,80 217,180 130,230 43,180 43,80"
+               fill="none" stroke="#2a3045" stroke-width="0.5"/>
+      <polygon points="130,55 196,92.5 196,167.5 130,205 64,167.5 64,92.5"
+               fill="none" stroke="#2a3045" stroke-width="0.5"/>
+      <polygon points="130,80 175,105 175,155 130,180 85,155 85,105"
+               fill="none" stroke="#2a3045" stroke-width="0.5"/>
+      <!-- Axis lines -->
+      <line x1="130" y1="30" x2="130" y2="230" stroke="#2a3045" stroke-width="0.5"/>
+      <line x1="43" y1="80" x2="217" y2="180" stroke="#2a3045" stroke-width="0.5"/>
+      <line x1="43" y1="180" x2="217" y2="80" stroke="#2a3045" stroke-width="0.5"/>
+      <!-- Data polygon — adjust points for actual values -->
+      <polygon points="130,38 212,85 205,175 130,210 55,170 60,90"
+               fill="#d4a574" fill-opacity="0.15" stroke="#d4a574" stroke-width="1.5"/>
+      <!-- Data points -->
+      <circle cx="130" cy="38" r="3" fill="#d4a574"/>
+      <circle cx="212" cy="85" r="3" fill="#d4a574"/>
+      <circle cx="205" cy="175" r="3" fill="#d4a574"/>
+      <circle cx="130" cy="210" r="3" fill="#d4a574"/>
+      <circle cx="55" cy="170" r="3" fill="#d4a574"/>
+      <circle cx="60" cy="90" r="3" fill="#d4a574"/>
+      <!-- Axis labels -->
+      <text x="130" y="20" text-anchor="middle" fill="#c8ccd4" font-size="8" font-family="Helvetica">{{AXIS_1_NAME}}</text>
+      <text x="230" y="80" text-anchor="start" fill="#c8ccd4" font-size="8" font-family="Helvetica">{{AXIS_2_NAME}}</text>
+      <text x="230" y="185" text-anchor="start" fill="#c8ccd4" font-size="8" font-family="Helvetica">{{AXIS_3_NAME}}</text>
+      <text x="130" y="248" text-anchor="middle" fill="#c8ccd4" font-size="8" font-family="Helvetica">{{AXIS_4_NAME}}</text>
+      <text x="30" y="185" text-anchor="end" fill="#c8ccd4" font-size="8" font-family="Helvetica">{{AXIS_5_NAME}}</text>
+      <text x="30" y="80" text-anchor="end" fill="#c8ccd4" font-size="8" font-family="Helvetica">{{AXIS_6_NAME}}</text>
+    </svg>
+
+    <ul class="chart-legend">
+      <li><span>{{AXIS_1_NAME}}</span> <span class="legend-value">{{AXIS_1_VALUE}}</span></li>
+      <li><span>{{AXIS_2_NAME}}</span> <span class="legend-value">{{AXIS_2_VALUE}}</span></li>
+      <li><span>{{AXIS_3_NAME}}</span> <span class="legend-value">{{AXIS_3_VALUE}}</span></li>
+      <li><span>{{AXIS_4_NAME}}</span> <span class="legend-value">{{AXIS_4_VALUE}}</span></li>
+      <li><span>{{AXIS_5_NAME}}</span> <span class="legend-value">{{AXIS_5_VALUE}}</span></li>
+      <li><span>{{AXIS_6_NAME}}</span> <span class="legend-value">{{AXIS_6_VALUE}}</span></li>
+    </ul>
+
+  </div>
+
+  <p>{{PROFILE_ANALYSIS_PARAGRAPH}}</p>
+
+</div>
+
+
+<!-- ====================================================================
+     PAGE 4: EVIDENCE TABLE
+     ==================================================================== -->
+<div class="page">
+
+  <div class="page-header">{{REPORT_TITLE}} — {{SUBJECT_NAME}} — {{REPORT_DATE}} | Page 4</div>
+
+  <div class="section-title">EVIDENCE BASE</div>
+  <div class="section-subtitle">{{EVIDENCE_SUBTITLE}}</div>
+
+  <div class="subsection-title">Source Weighting</div>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 35%;">Signal Source</th>
+        <th style="width: 12%;">Weight</th>
+        <th style="width: 25%;">Indicated Range</th>
+        <th style="width: 28%;">Confidence</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Repeat rows as needed -->
+      <tr>
+        <td>{{SOURCE_1_NAME}}</td>
+        <td>{{SOURCE_1_WEIGHT}}</td>
+        <td>{{SOURCE_1_RANGE}}</td>
+        <td><span class="badge badge-high">{{SOURCE_1_CONFIDENCE}}</span></td>
+      </tr>
+      <tr>
+        <td>{{SOURCE_2_NAME}}</td>
+        <td>{{SOURCE_2_WEIGHT}}</td>
+        <td>{{SOURCE_2_RANGE}}</td>
+        <td><span class="badge badge-high">{{SOURCE_2_CONFIDENCE}}</span></td>
+      </tr>
+      <tr>
+        <td>{{SOURCE_3_NAME}}</td>
+        <td>{{SOURCE_3_WEIGHT}}</td>
+        <td>{{SOURCE_3_RANGE}}</td>
+        <td><span class="badge badge-medium">{{SOURCE_3_CONFIDENCE}}</span></td>
+      </tr>
+      <tr>
+        <td>{{SOURCE_4_NAME}}</td>
+        <td>{{SOURCE_4_WEIGHT}}</td>
+        <td>{{SOURCE_4_RANGE}}</td>
+        <td><span class="badge badge-medium">{{SOURCE_4_CONFIDENCE}}</span></td>
+      </tr>
+      <tr>
+        <td>{{SOURCE_5_NAME}}</td>
+        <td>{{SOURCE_5_WEIGHT}}</td>
+        <td>{{SOURCE_5_RANGE}}</td>
+        <td><span class="badge badge-medium">{{SOURCE_5_CONFIDENCE}}</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="subsection-title">Strongest Signals</div>
+
+  <div class="sub-subsection-title">{{SIGNAL_1_TITLE}}</div>
+  <p>{{SIGNAL_1_ANALYSIS}}</p>
+
+  <div class="sub-subsection-title">{{SIGNAL_2_TITLE}}</div>
+  <p>{{SIGNAL_2_ANALYSIS}}</p>
+
+</div>
+
+
+<!-- ====================================================================
+     PAGE 5: COMPARISON GRID
+     ==================================================================== -->
+<div class="page">
+
+  <div class="page-header">{{REPORT_TITLE}} — {{SUBJECT_NAME}} — {{REPORT_DATE}} | Page 5</div>
+
+  <div class="section-title">{{COMPARISON_TITLE}}</div>
+  <div class="section-subtitle">{{COMPARISON_SUBTITLE}}</div>
+
+  <p>{{COMPARISON_INTRO}}</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 18%;">Figure</th>
+        <th style="width: 10%;">Key Metric</th>
+        <th style="width: 32%;">Signature</th>
+        <th style="width: 40%;">Similarity</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>{{COMP_1_NAME}}</td>
+        <td class="text-amber">{{COMP_1_METRIC}}</td>
+        <td>{{COMP_1_SIGNATURE}}</td>
+        <td>{{COMP_1_SIMILARITY}}</td>
+      </tr>
+      <tr>
+        <td>{{COMP_2_NAME}}</td>
+        <td class="text-amber">{{COMP_2_METRIC}}</td>
+        <td>{{COMP_2_SIGNATURE}}</td>
+        <td>{{COMP_2_SIMILARITY}}</td>
+      </tr>
+      <tr>
+        <td>{{COMP_3_NAME}}</td>
+        <td class="text-amber">{{COMP_3_METRIC}}</td>
+        <td>{{COMP_3_SIGNATURE}}</td>
+        <td>{{COMP_3_SIMILARITY}}</td>
+      </tr>
+      <tr>
+        <td>{{COMP_4_NAME}}</td>
+        <td class="text-amber">{{COMP_4_METRIC}}</td>
+        <td>{{COMP_4_SIGNATURE}}</td>
+        <td>{{COMP_4_SIMILARITY}}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p class="mt-2">{{COMPARISON_SUMMARY}}</p>
+
+</div>
+
+
+<!-- ====================================================================
+     PAGE 6: NARRATIVE ANALYSIS
+     ==================================================================== -->
+<div class="page">
+
+  <div class="page-header">{{REPORT_TITLE}} — {{SUBJECT_NAME}} — {{REPORT_DATE}} | Page 6</div>
+
+  <div class="section-title">{{NARRATIVE_TITLE}}</div>
+  <div class="section-subtitle">{{NARRATIVE_SUBTITLE}}</div>
+
+  <div class="subsection-title">{{NARRATIVE_SECTION_1_TITLE}}</div>
+  <p>{{NARRATIVE_SECTION_1_TEXT}}</p>
+
+  <div class="subsection-title">{{NARRATIVE_SECTION_2_TITLE}}</div>
+  <p>{{NARRATIVE_SECTION_2_TEXT}}</p>
+
+  <div class="subsection-title">{{NARRATIVE_SECTION_3_TITLE}}</div>
+  <p>{{NARRATIVE_SECTION_3_TEXT}}</p>
+
+  <!-- Optional: Callout Box for key insight or warning -->
+  <div class="callout">
+    <div class="callout-title">{{CALLOUT_TITLE}}</div>
+    <p>{{CALLOUT_TEXT}}</p>
+  </div>
+
+</div>
+
+
+<!-- ====================================================================
+     PAGE 7: TRAIT / MATRIX
+     ==================================================================== -->
+<div class="page">
+
+  <div class="page-header">{{REPORT_TITLE}} — {{SUBJECT_NAME}} — {{REPORT_DATE}} | Page 7</div>
+
+  <div class="section-title">{{TRAIT_TITLE}}</div>
+  <div class="section-subtitle">{{TRAIT_SUBTITLE}}</div>
+
+  <p>{{TRAIT_INTRO}}</p>
+
+  <div class="subsection-title">Key Attributes</div>
+
+  <table class="trait-matrix">
+    <thead>
+      <tr>
+        <th style="width: 22%;">Attribute</th>
+        <th style="width: 39%;">Strength</th>
+        <th style="width: 39%;">Risk</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>{{TRAIT_1_NAME}}</td>
+        <td>{{TRAIT_1_STRENGTH}}</td>
+        <td>{{TRAIT_1_RISK}}</td>
+      </tr>
+      <tr>
+        <td>{{TRAIT_2_NAME}}</td>
+        <td>{{TRAIT_2_STRENGTH}}</td>
+        <td>{{TRAIT_2_RISK}}</td>
+      </tr>
+      <tr>
+        <td>{{TRAIT_3_NAME}}</td>
+        <td>{{TRAIT_3_STRENGTH}}</td>
+        <td>{{TRAIT_3_RISK}}</td>
+      </tr>
+      <tr>
+        <td>{{TRAIT_4_NAME}}</td>
+        <td>{{TRAIT_4_STRENGTH}}</td>
+        <td>{{TRAIT_4_RISK}}</td>
+      </tr>
+      <tr>
+        <td>{{TRAIT_5_NAME}}</td>
+        <td>{{TRAIT_5_STRENGTH}}</td>
+        <td>{{TRAIT_5_RISK}}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="subsection-title">{{TRAIT_ANALYSIS_TITLE}}</div>
+  <p>{{TRAIT_ANALYSIS_TEXT}}</p>
+
+</div>
+
+
+<!-- ====================================================================
+     PAGE 8: METHODOLOGY
+     ==================================================================== -->
+<div class="page">
+
+  <div class="page-header">{{REPORT_TITLE}} — {{SUBJECT_NAME}} — {{REPORT_DATE}} | Page 8</div>
+
+  <div class="section-title">ANALYTICAL METHODOLOGY</div>
+  <div class="section-subtitle">{{METHODOLOGY_SUBTITLE}}</div>
+
+  <div class="subsection-title">{{METHOD_SECTION_1_TITLE}}</div>
+  <p>{{METHOD_SECTION_1_TEXT}}</p>
+
+  <div class="subsection-title">{{METHOD_SECTION_2_TITLE}}</div>
+  <p>{{METHOD_SECTION_2_TEXT}}</p>
+
+  <div class="subsection-title">What Would Change the Assessment</div>
+  <ul class="evidence-list">
+    <li>
+      <div class="evidence-title">{{CHANGE_1_TITLE}}</div>
+      <div class="evidence-desc">{{CHANGE_1_DESC}}</div>
+    </li>
+    <li>
+      <div class="evidence-title">{{CHANGE_2_TITLE}}</div>
+      <div class="evidence-desc">{{CHANGE_2_DESC}}</div>
+    </li>
+    <li>
+      <div class="evidence-title">{{CHANGE_3_TITLE}}</div>
+      <div class="evidence-desc">{{CHANGE_3_DESC}}</div>
+    </li>
+  </ul>
+
+</div>
+
+
+<!-- ====================================================================
+     PAGE 9: FOOTER / DISCLAIMER
+     ==================================================================== -->
+<div class="page">
+
+  <div class="page-header">{{REPORT_TITLE}} — {{SUBJECT_NAME}} — {{REPORT_DATE}} | Page 9</div>
+
+  <div class="footer-page">
+    <div class="disclaimer">
+      <div class="generated-date">Generated {{REPORT_DATE}} · {{REPORT_TYPE_DISCLAIMER}}</div>
+      <p>Sources: {{SOURCES_LIST}}</p>
+      <p style="margin-top: 8pt;">{{USAGE_DISCLAIMER}}</p>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
