@@ -113,6 +113,11 @@ additional data would close each gap. "Full coverage" is a valid, stated result.
   access only to supplement. No system or integration is required — only the
   assistant and what you paste in. Anything not established from the material or a
   cited source is an explicit gap.
+- If a step needs a capability you do not have (live web access, file or image
+  reading, a data feed) or a required input is missing, do not fail silently or
+  fabricate. State plainly what is missing, then either proceed with the available
+  material and mark the gap, or — if it blocks the analysis — ask for the specific
+  input needed as a short, labeled list, and continue once it is provided.
 - Every rule must trace to a named mechanic and indicator. Untraceable rules are removed.
 - State the basis for every threshold. A number with no basis is not audit-defensible.
 - Separate strong indicators from weak ones — do not present a weak indicator as sufficient.

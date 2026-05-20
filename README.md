@@ -30,6 +30,7 @@ Each template was extracted and generalized from a production autonomous-agent f
 | **[`methodology/`](methodology/)** | The writing voice, quality standards, and analytical patterns that keep outputs consistent |
 | **[`reference/`](reference/)** | Domain cheat-sheets — AML typologies, compliance, audit, regulatory, financial analysis |
 | **[`quant/`](quant/)** | A dependency-free Python quant library — VaR, Sharpe, Kelly, Monte Carlo, DCF, drawdown |
+| **[`docs/`](docs/)** | How to use the toolkit — the Copilot copy/paste workflow, and how the prompts run on any assistant |
 
 ---
 
@@ -113,6 +114,7 @@ The financial-crime categories cover a full analytical lifecycle — **detect** 
 Every prompt in this library follows the same discipline — documented in full under [`methodology/`](methodology/):
 
 - **Audit-defensible.** Every claim carries a source. Observed fact, allegation, and projection are never blended.
+- **Runs anywhere.** Every prompt is self-contained and assistant-agnostic — no tool, integration, memory, or specific product required. If a capability is missing it degrades gracefully and asks for what it needs. See [running on any assistant](docs/running-on-any-assistant.md).
 - **Structured output.** Each prompt specifies an exact output format — scorecards, severity tiers, confidence ratings — so results are comparable and reusable.
 - **Honest about gaps.** "No adverse findings" and "quiet period" are valid results. Thin evidence lowers the confidence rating; it does not get filled with inference.
 - **Vendor-skeptical.** Self-reported metrics and vendor claims are treated as unverified until corroborated.

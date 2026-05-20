@@ -72,6 +72,21 @@ For a **formatted visual deliverable** — an interactive dashboard or a multi-p
 
 ---
 
+## Making a prompt a reusable tool
+
+Copy/paste is fine for occasional use. For a prompt you run often, most assistants let you save it once as a reusable, named tool — so you never paste the block again:
+
+- **GitHub Copilot** — save the prompt as personal or repository **custom instructions** (e.g. a `.github/copilot-instructions.md` in a working repo), or, in VS Code, keep it as a reusable **prompt file**. The prompt body becomes a tool you invoke by name.
+- **Microsoft 365 Copilot** — create a **Copilot agent**: paste the prompt block in as the agent's instructions, name it (e.g. "Entity Risk Review"), and run it from Copilot Chat whenever you need it.
+- **ChatGPT** — create a **custom GPT** with the prompt as its instructions.
+- **Claude** — create a **Project** and set the prompt as the project's custom instructions.
+
+The pattern is identical everywhere: the prompt block from this repo becomes the instruction body of a saved, named assistant, and the `{{PLACEHOLDERS}}` become the only thing you supply each run. One toolkit prompt → one reusable workplace tool.
+
+Keep this repository as the source of truth: when a prompt here is improved, refresh your saved version from it. And whichever assistant you save it into, the prompt still [runs anywhere](running-on-any-assistant.md) — saving it as an agent does not tie it to that product.
+
+---
+
 ## Patterns that make the toolkit stronger
 
 **Run prompts on a cadence with the delta pattern.** Many prompts (regulatory scans, briefs, monitors) accept an optional `PRIOR OUTPUT` placeholder. Paste last run's result in, and the assistant deprioritizes stale items and reports only what changed. The tracked-matters tables become running ledgers.

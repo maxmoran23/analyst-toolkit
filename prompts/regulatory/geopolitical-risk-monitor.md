@@ -131,6 +131,11 @@ no prior output was supplied, state that this is a baseline run.]
   access only to supplement. No system or integration is required — only the
   assistant and what you paste in. Anything not established from the material or a
   cited source is an explicit gap.
+- If a step needs a capability you do not have (live web access, file or image
+  reading, a data feed) or a required input is missing, do not fail silently or
+  fabricate. State plainly what is missing, then either proceed with the available
+  material and mark the gap, or — if it blocks the analysis — ask for the specific
+  input needed as a short, labeled list, and continue once it is provided.
 - Public sources only. Primary sources (OFAC, FATF, UN, EU, UK) preferred; cite
   one for every material claim.
 - Separate observed fact from allegation from projection. A pending FATF review
