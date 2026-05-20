@@ -4,7 +4,7 @@
 
 | | |
 |---|---|
-| **Use when** | You need a recurring, comparable risk read across a basket of countries — for jurisdictional EDD, sanctions-exposure mapping, or country-risk appetite decisions |
+| **Use when** | You need a recurring, comparable risk read across a basket of countries — for jurisdictional risk assessment, sanctions-exposure mapping, or country-risk appetite decisions |
 | **Produces** | A per-jurisdiction 0-100 risk index, a 5-tier classification, a delta log, and a watch list of upcoming events |
 | **Depth** | Medium-deep — a multi-country scorecard plus narrative |
 | **Pairs with** | [`prompts/regulatory/regulatory-intelligence-scan.md`](regulatory-intelligence-scan.md) · [`prompts/compliance/sanctions-watchlist-screen.md`](../compliance/sanctions-watchlist-screen.md) |
@@ -22,7 +22,7 @@ compliance or risk team can act on. You classify and score; you do not give
 foreign-policy opinions.
 
 JURISDICTIONS: {{list of countries / ISO codes — e.g. Iran, North Korea, Russia, Venezuela, Myanmar, plus any you must cover}}
-LENS: {{why this is being run — jurisdictional EDD / sanctions exposure mapping / country-risk appetite / portfolio jurisdiction review}}
+LENS: {{why this is being run — jurisdictional risk assessment / sanctions exposure mapping / country-risk appetite / portfolio jurisdiction review}}
 ASSESSMENT DATE: {{DATE}}
 PRIOR OUTPUT (optional): {{paste the last run's table so tier movements and the delta log can be computed}}
 
@@ -71,7 +71,7 @@ Map JRI to a 5-tier classification:
 
   85-100 PROHIBITED  — no engagement; block. A confirmed comprehensive embargo
                        forces this tier regardless of the composite.
-  70-84  HIGH        — EDD plus senior approval plus ongoing monitoring required.
+  70-84  HIGH        — enhanced review plus senior approval plus ongoing monitoring required.
   55-69  ELEVATED    — enhanced CDD, enhanced monitoring, periodic review.
   40-54  STANDARD+   — standard CDD with attention to the specific flagged factors.
   0-39   STANDARD    — standard CDD; routine monitoring.

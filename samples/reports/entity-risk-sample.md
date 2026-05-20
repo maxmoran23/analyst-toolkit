@@ -1,11 +1,11 @@
 > ILLUSTRATIVE SAMPLE — synthetic/illustrative content produced for format demonstration. Not a real assessment.
 
-# EDD Assessment — Meridian Digital Exchange
+# Entity Risk Assessment — Meridian Digital Exchange
 
 Composite Risk Score: 57/100 — ELEVATED
 Assessment date: 2026-05-19 | Basis: Public sources only (OSINT)
 
-> **Fictional entity notice.** "Meridian Digital Exchange" does not exist. It is a composite invented solely to demonstrate the output structure of the Enhanced Due Diligence prompt. Every name, figure, jurisdiction, regulator reference, and event below is synthetic. Nothing here should be read as a statement about any real company.
+> **Fictional entity notice.** "Meridian Digital Exchange" does not exist. It is a composite invented solely to demonstrate the output structure of the Entity Risk Assessment prompt. Every name, figure, jurisdiction, regulator reference, and event below is synthetic. Nothing here should be read as a statement about any real company.
 
 ## Executive Summary
 

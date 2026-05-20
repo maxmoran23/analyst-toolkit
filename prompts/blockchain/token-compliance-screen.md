@@ -7,7 +7,7 @@
 | **Use when** | You need a structured read on a token or digital asset — listing review, treasury or counterparty screening, or a compliance-lens assessment of an emerging token |
 | **Produces** | A 0-100 composite token score, a 5-tier rating, a 7-dimension breakdown, matched AML typologies with evidence, and a disposition |
 | **Depth** | Deep — a multi-section screen |
-| **Pairs with** | [`prompts/compliance/onchain-sanctions-monitor.md`](onchain-sanctions-monitor.md) · [`prompts/compliance/defi-protocol-risk.md`](defi-protocol-risk.md) |
+| **Pairs with** | [`prompts/blockchain/onchain-sanctions-monitor.md`](onchain-sanctions-monitor.md) · [`prompts/blockchain/defi-protocol-risk.md`](defi-protocol-risk.md) |
 
 ---
 

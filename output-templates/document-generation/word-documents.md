@@ -2,7 +2,7 @@
 
 ## Purpose
 Produce professional-grade Word documents (`.docx`) with an AI assistant — reports,
-memos, proposals, due-diligence reviews, risk assessments, control matrices, letters,
+memos, proposals, risk assessments, control matrices, letters,
 and standard operating procedures. Target consulting / Big-Four quality standards.
 
 ## What you need
@@ -31,9 +31,9 @@ assistant choose the tool available to it.
 
 ### Document Types & Outlines
 
-#### Enhanced Due Diligence (EDD) Report
+#### Entity Risk Assessment Report
 ```
-COVER PAGE: "Enhanced Due Diligence Report — [Entity Name]"
+COVER PAGE: "Entity Risk Assessment — [Entity Name]"
   Date | Analyst | Classification | Version
 
 1. EXECUTIVE SUMMARY (1 page max)
@@ -150,8 +150,8 @@ DOCUMENT CONTROL
 
 ## Prompt Examples
 
-**One-shot EDD report:**
-> "Create a Word doc EDD report for [Entity]. Include risk assessment, ownership
+**One-shot risk assessment:**
+> "Create a Word doc entity risk assessment for [Entity]. Include risk assessment, ownership
 > analysis, and regulatory standing. Export to PDF when done."
 
 **Control matrix:**

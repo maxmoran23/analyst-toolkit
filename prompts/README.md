@@ -1,6 +1,6 @@
 # Prompts
 
-24 paste-ready analytical prompt templates. Each one turns an AI assistant into a specific kind of analyst — a due diligence reviewer, a regulatory monitor, a deep researcher — with a defined method, a scoring rubric, and a structured output format.
+29 paste-ready analytical prompt templates. Each one turns an AI assistant into a specific kind of analyst — an entity risk reviewer, a sanctions screener, a transaction-monitoring analyst, a blockchain investigator, a regulatory monitor, a deep researcher — with a defined method, a scoring rubric, and a structured output format.
 
 ## How each file is built
 
@@ -17,20 +17,28 @@ Every prompt file has the same anatomy:
 
 **The `{{PLACEHOLDER}}` convention.** Inside every prompt block, `{{LIKE THIS}}` marks something you replace before sending. Replace all of them — an unfilled placeholder produces a vague result.
 
-These are written for interactive use — paste into GitHub Copilot, Claude, or ChatGPT and run. See [`../docs/using-with-copilot.md`](../docs/using-with-copilot.md) for the full workflow.
+These are written for interactive use — paste into GitHub Copilot, Microsoft 365 Copilot, Claude, or ChatGPT and run. See [`../docs/using-with-copilot.md`](../docs/using-with-copilot.md) for the full workflow.
 
 ## Catalog
 
-### [`compliance/`](compliance/) — due diligence and financial-crime screening
-- **[enhanced-due-diligence](compliance/enhanced-due-diligence.md)** — 8-domain weighted risk assessment of an entity; 0-100 composite, 5-tier rating, disposition recommendation
-- **[onchain-sanctions-monitor](compliance/onchain-sanctions-monitor.md)** — screen blockchain addresses for sanctions, mixer, and AML-typology exposure
-- **[defi-protocol-risk](compliance/defi-protocol-risk.md)** — score a DeFi protocol on TVL, yield, contract, governance, and bridge risk
-- **[token-compliance-screen](compliance/token-compliance-screen.md)** — screen a digital asset on both thesis quality and AML red flags
-- **[sanctions-watchlist-screen](compliance/sanctions-watchlist-screen.md)** — screen a name/entity/address against OFAC + EU/UN/UK lists with hit disposition
+### [`compliance/`](compliance/) — financial crime & compliance
+The financial-crime files cover a full analytical lifecycle: **detect** → **monitor** → **investigate** → **assess** → **report**.
+- **[entity-risk-assessment](compliance/entity-risk-assessment.md)** — 8-domain weighted risk assessment of an entity; 0-100 composite, 5-tier rating, disposition recommendation
+- **[sanctions-watchlist-screen](compliance/sanctions-watchlist-screen.md)** — screen a name, entity, or address against OFAC + EU/UN/UK lists with hit disposition
+- **[typology-detection-mapping](compliance/typology-detection-mapping.md)** — decompose an AML typology into red-flag indicators and transaction-monitoring rule logic
+- **[alert-triage](compliance/alert-triage.md)** — work a transaction-monitoring alert to a documented close / escalate / refer disposition
+- **[investigation-narrative](compliance/investigation-narrative.md)** — draft a chronological, evidence-sourced narrative of investigated activity
 
-### [`regulatory/`](regulatory/) — regulatory landscape monitoring
+### [`blockchain/`](blockchain/) — blockchain intelligence
+- **[onchain-sanctions-monitor](blockchain/onchain-sanctions-monitor.md)** — screen blockchain addresses for sanctions, mixer, and AML-typology exposure
+- **[fund-flow-tracing](blockchain/fund-flow-tracing.md)** — trace funds hop by hop across a chain; counterparties, mixers, exchanges, attribution confidence
+- **[defi-protocol-risk](blockchain/defi-protocol-risk.md)** — score a DeFi protocol on TVL, yield, contract, governance, and bridge risk
+- **[token-compliance-screen](blockchain/token-compliance-screen.md)** — screen a digital asset on both thesis quality and AML red flags
+
+### [`regulatory/`](regulatory/) — regulatory landscape & obligations
 - **[regulatory-intelligence-scan](regulatory/regulatory-intelligence-scan.md)** — severity-rated briefing on what changed in a regulatory landscape
 - **[geopolitical-risk-monitor](regulatory/geopolitical-risk-monitor.md)** — per-jurisdiction sanctions, conflict, and regulatory-risk scoring
+- **[obligation-extraction](regulatory/obligation-extraction.md)** — turn a regulation or filing into a structured register of obligations and deadlines
 
 ### [`research/`](research/) — deep research and idea work
 - **[deep-research-storm](research/deep-research-storm.md)** — multi-perspective deep research into a cited long-form article
@@ -59,4 +67,4 @@ These are written for interactive use — paste into GitHub Copilot, Claude, or 
 
 ## Chaining prompts
 
-Output from one prompt is often input to another. A `frontier-scan` finding worth a full treatment goes into `deep-research-storm`. Several completed assessments feed `cross-source-synthesis`. A regulatory finding feeds an `intelligence-brief`. The shared severity vocabulary (CRITICAL / HIGH / MEDIUM / LOW) and confidence ratings (HIGH / MODERATE / LOW) are deliberately consistent across the library so outputs compose.
+Output from one prompt is often input to another. Within financial crime, the categories chain into a workflow: `typology-detection-mapping` defines what to look for, `alert-triage` and `onchain-sanctions-monitor` catch it, `fund-flow-tracing` follows it, `entity-risk-assessment` sizes the counterparty, and `investigation-narrative` writes it up. Across categories: a `frontier-scan` finding worth a deep look feeds `deep-research-storm`; several finished assessments feed `cross-source-synthesis`; a regulatory finding feeds an `intelligence-brief`. The shared severity vocabulary (CRITICAL / HIGH / MEDIUM / LOW) and confidence ratings (HIGH / MODERATE / LOW) are deliberately consistent across the library so outputs compose.

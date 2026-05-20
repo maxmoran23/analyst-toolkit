@@ -3,7 +3,7 @@
 A working reference for digital-asset anti-money-laundering (AML) and
 counter-terrorist-financing (CFT) work — the regulatory frameworks, the core
 laundering typologies with detection logic, a risk-scoring model, and key risk
-indicators. Use it when producing enhanced due diligence assessments, control
+indicators. Use it when producing entity risk assessments, control
 matrices, regulatory analyses, typology mappings, or risk assessments.
 
 All citations point to public bodies and public documents. This is general
@@ -106,7 +106,7 @@ are illustrative starting points, not universal standards.
 | Sanctions-screening true-positive rate | > 0.5% | Screening logs |
 | SAR filing latency | > 30 days from detection | Filing records |
 | Alert clearance within SLA | < 60% | Transaction-monitoring system |
-| Customer EDD refresh on schedule | < 85% | KYC system |
+| High-risk customer review refresh on schedule | < 85% | KYC system |
 | Beneficial-ownership coverage | < 95% of legal entities | KYC system |
 | Sanctions-list refresh latency | > 24 hours from publication | List-pull logs |
 | Independent-testing exception rate | > 10% of controls | Testing workpapers |
@@ -151,7 +151,7 @@ For the full writing standard, see
 ## Related references
 
 - [`compliance-documents.md`](compliance-documents.md) — document structures for
-  EDD reports, risk assessments, control matrices, SAR narratives, policies
+  entity risk assessments, control matrices, SAR narratives, policies
 - [`regulatory-intelligence.md`](regulatory-intelligence.md) — tracking and
   analyzing regulatory developments
 - [`audit-documentation.md`](audit-documentation.md) — control testing,

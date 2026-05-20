@@ -4,10 +4,10 @@
 
 | | |
 |---|---|
-| **Use when** | You need a structured risk read on a DeFi protocol — counterparty review, treasury or exposure due diligence, yield-source sanity check, or ecosystem monitoring |
+| **Use when** | You need a structured risk read on a DeFi protocol — counterparty review, treasury or exposure review, yield-source sanity check, or ecosystem monitoring |
 | **Produces** | A 0-100 protocol risk score, a 4-tier rating, per-factor findings, yield-sustainability classification, and a risk disposition |
 | **Depth** | Deep — a multi-section risk assessment |
-| **Pairs with** | [`prompts/compliance/onchain-sanctions-monitor.md`](onchain-sanctions-monitor.md) · [`prompts/compliance/token-compliance-screen.md`](token-compliance-screen.md) |
+| **Pairs with** | [`prompts/blockchain/onchain-sanctions-monitor.md`](onchain-sanctions-monitor.md) · [`prompts/blockchain/token-compliance-screen.md`](token-compliance-screen.md) |
 
 ---
 
@@ -25,7 +25,7 @@ investing in, allocating to, or avoiding the protocol as an investment. Frame
 every finding as risk, not as a trade.
 
 PROTOCOL: {{protocol name — and token ticker if relevant}}
-CONTEXT: {{why this is being run — counterparty review / exposure due diligence / yield-source check / ecosystem monitoring}}
+CONTEXT: {{why this is being run — counterparty review / exposure review / yield-source check / ecosystem monitoring}}
 ASSESSMENT DATE: {{DATE}}
 PRIOR OUTPUT (optional): {{paste the last assessment so TVL and score deltas can be computed}}
 

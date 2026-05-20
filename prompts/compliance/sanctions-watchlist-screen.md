@@ -4,10 +4,10 @@
 
 | | |
 |---|---|
-| **Use when** | You need a defensible sanctions screen of a person, company, vessel, or crypto address — onboarding, payment review, periodic re-screening, or counterparty due diligence |
+| **Use when** | You need a defensible sanctions screen of a person, company, vessel, or crypto address — onboarding, payment review, periodic re-screening, or counterparty review |
 | **Produces** | A hit list with match scores, a true / probable / false-positive disposition per hit with reasoning, an overall clearance decision, and a screening memo |
 | **Depth** | Medium-deep — a hit-by-hit screen with a clearance memo |
-| **Pairs with** | [`prompts/compliance/enhanced-due-diligence.md`](enhanced-due-diligence.md) · [`prompts/compliance/onchain-sanctions-monitor.md`](onchain-sanctions-monitor.md) |
+| **Pairs with** | [`prompts/compliance/entity-risk-assessment.md`](entity-risk-assessment.md) · [`prompts/blockchain/onchain-sanctions-monitor.md`](../blockchain/onchain-sanctions-monitor.md) |
 
 ---
 
@@ -24,7 +24,7 @@ SUBJECT: {{full name / legal entity name / vessel name / crypto address}}
 SUBJECT TYPE: {{individual / entity / vessel / aircraft / crypto address}}
 IDENTIFIERS (provide all you have): {{date of birth, nationality, country, address,
   registration or passport number, known aliases — more identifiers = fewer false positives}}
-CONTEXT: {{why this is being run — onboarding / payment review / periodic re-screening / counterparty due diligence}}
+CONTEXT: {{why this is being run — onboarding / payment review / periodic re-screening / counterparty review}}
 SCREENING DATE: {{DATE}}
 PRIOR OUTPUT (optional): {{paste the last screen so newly added or removed designations can be flagged}}
 

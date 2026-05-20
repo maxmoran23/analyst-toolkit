@@ -19,7 +19,7 @@ Columns follow the template spec (Control ID · Domain · Control Name · Descri
 | Control ID | Domain | Control Name | Description | Type | Frequency | Owner |
 |---|---|---|---|---|---|---|
 | CDD-01 | CDD | Customer Identification Program (CIP) | Collect and verify identifying information for every customer at account opening; document verification method and outcome. | Preventive | Continuous | Onboarding Operations |
-| CDD-03 | CDD | Enhanced Due Diligence (EDD) | Apply heightened due diligence to high-risk customers — additional information, source-of-funds review, senior approval before onboarding. | Preventive | Continuous | Financial Crimes Unit |
+| CDD-03 | CDD | High-Risk Customer Review | Apply heightened scrutiny to high-risk customers — additional information, source-of-funds review, senior approval before onboarding. | Preventive | Continuous | Financial Crimes Unit |
 | CDD-05 | CDD | Beneficial Ownership Identification | Identify and verify natural-person beneficial owners and a controlling individual for legal-entity customers. | Preventive | Continuous | Onboarding Operations |
 | TM-01 | TM | Automated Transaction Monitoring System | Operate an automated system that screens transactions against typology-based detection scenarios and generates alerts. | Detective | Continuous | Transaction Monitoring |
 | TM-02 | TM | Alert Investigation & Disposition | Investigate every generated alert within defined SLA; document rationale for closure or escalation. | Detective | Daily | Transaction Monitoring |
@@ -34,7 +34,7 @@ Columns follow the template spec (Control ID · Domain · Control Name · Descri
 | Control ID | Testing Method | Evidence Type | Last Tested | Effectiveness | Gap / Issue | Remediation Plan | Target Date | Status |
 |---|---|---|---|---|---|---|---|---|
 | CDD-01 | Inspection | Account-opening records sample | 2026-04-22 | Effective | None identified in the tested sample. | N/A | — | Closed |
-| CDD-03 | Re-performance | EDD case files | 2026-04-24 | Partially Effective | 3 of 25 high-risk files lacked documented senior approval prior to onboarding. | Reinforce approval-gate control; add system block preventing activation without recorded approval. | 2026-07-31 | In Progress |
+| CDD-03 | Re-performance | High-risk customer case files | 2026-04-24 | Partially Effective | 3 of 25 high-risk files lacked documented senior approval prior to onboarding. | Reinforce approval-gate control; add system block preventing activation without recorded approval. | 2026-07-31 | In Progress |
 | CDD-05 | Inspection | Beneficial-ownership certifications | 2026-04-25 | Effective | None identified; certifications complete and verified in the tested sample. | N/A | — | Closed |
 | TM-01 | Observation | System configuration / scenario inventory | 2026-04-28 | Effective | Scenario coverage maps to the institution's risk assessment. | N/A | — | Closed |
 | TM-02 | Re-performance | Alert investigation records | 2026-04-29 | Partially Effective | 4 of 40 alerts closed without sufficient documented rationale; 2 closed outside SLA. | Refresher training on disposition documentation; SLA exception reporting added to monthly MI. | 2026-08-15 | In Progress |

@@ -7,7 +7,7 @@
 | **Use when** | You need a structured screen of one or more wallet addresses or transactions — watchlist monitoring, counterparty wallet review, alert triage, or investigation support |
 | **Produces** | A 0-100 risk score per address, a 4-tier rating, sanctions/mixer/pattern findings, entity clustering, and a severity-rated report |
 | **Depth** | Deep — a multi-section monitoring report |
-| **Pairs with** | [`prompts/compliance/sanctions-watchlist-screen.md`](sanctions-watchlist-screen.md) · [`prompts/compliance/token-compliance-screen.md`](token-compliance-screen.md) |
+| **Pairs with** | [`prompts/compliance/sanctions-watchlist-screen.md`](../compliance/sanctions-watchlist-screen.md) · [`prompts/blockchain/token-compliance-screen.md`](token-compliance-screen.md) |
 
 ---
 

@@ -8,10 +8,10 @@ Rendered example outputs — what the toolkit's prompts and templates actually p
 
 ## Interactive dashboards
 
-### Enhanced Due Diligence dashboard
-[`dashboards/edd-sample.html`](dashboards/edd-sample.html) — the output of [`prompts/compliance/enhanced-due-diligence.md`](../prompts/compliance/enhanced-due-diligence.md) rendered into the [Dashboard BIG](../output-templates/dashboards/) template. An 8-domain risk assessment of a fictional digital-asset exchange: weighted 0-100 composite, scorecard, radar and bar charts, per-domain narrative, red flags, disposition.
+### Entity Risk Assessment dashboard
+[`dashboards/entity-risk-sample.html`](dashboards/entity-risk-sample.html) — the output of [`prompts/compliance/entity-risk-assessment.md`](../prompts/compliance/entity-risk-assessment.md) rendered into the [Dashboard BIG](../output-templates/dashboards/) template. An 8-domain risk assessment of a fictional digital-asset exchange: weighted 0-100 composite, scorecard, radar and bar charts, per-domain narrative, red flags, disposition.
 
-![EDD dashboard preview](previews/edd-sample-preview.png)
+![Entity risk assessment dashboard preview](previews/entity-risk-preview.png)
 
 ### Regulatory intelligence dashboard
 [`dashboards/regulatory-landscape-sample.html`](dashboards/regulatory-landscape-sample.html) — a regulatory-landscape view rendered into the [3-tab deep-dive](../output-templates/dashboards/) template. Severity-tagged developments, a tracked-matters ledger, and upcoming deadlines for the digital-asset regulatory landscape.
@@ -26,7 +26,7 @@ Rendered example outputs — what the toolkit's prompts and templates actually p
 
 | Sample | Produced by | What it shows |
 |--------|-------------|---------------|
-| [`reports/edd-sample.md`](reports/edd-sample.md) | [enhanced-due-diligence](../prompts/compliance/enhanced-due-diligence.md) | The same EDD assessment as a markdown report — the prose form of the dashboard above |
+| [`reports/entity-risk-sample.md`](reports/entity-risk-sample.md) | [entity-risk-assessment](../prompts/compliance/entity-risk-assessment.md) | The same entity risk assessment as a markdown report — the prose form of the dashboard above |
 | [`reports/deep-research-sample.md`](reports/deep-research-sample.md) | [deep-research-storm](../prompts/research/deep-research-storm.md) | A cited, multi-section research article — *The Evolution of Stablecoin Regulation, 2022-2026* |
 | [`reports/intelligence-brief-sample.md`](reports/intelligence-brief-sample.md) | [intelligence-brief](../prompts/briefs/intelligence-brief.md) | A morning anchor brief — prioritized, scannable, sourced |
 

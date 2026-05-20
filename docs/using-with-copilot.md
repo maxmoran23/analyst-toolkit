@@ -12,7 +12,7 @@ Every reusable block in this repo is one of two kinds. Knowing which you have te
 
 | Kind | Lives in | What you do with it |
 |------|----------|---------------------|
-| **A prompt** | [`prompts/`](../prompts/) | Paste it in, fill the `{{PLACEHOLDERS}}`, and the assistant *performs an analysis* — it becomes a due diligence reviewer, a regulatory monitor, a researcher. |
+| **A prompt** | [`prompts/`](../prompts/) | Paste it in, fill the `{{PLACEHOLDERS}}`, and the assistant *performs an analysis* — it becomes an entity risk reviewer, a sanctions screener, a regulatory monitor, a researcher. |
 | **An output template** | [`output-templates/`](../output-templates/) | Paste it in alongside your content and ask the assistant to *populate the format* — a dashboard, a PDF report, a control matrix. |
 
 The two compose: run a prompt to produce the analysis, then hand the result plus an output template to the assistant to render a finished deliverable.
@@ -27,11 +27,19 @@ The two compose: run a prompt to produce the analysis, then hand the result plus
 4. **Paste and run.** Drop it into Copilot Chat (or your assistant of choice) and send.
 5. **Check it against the spec.** The prompt file's `## Output structure` section tells you what a complete result looks like. If the assistant skipped a section or a source, ask it to complete that part.
 
-### In GitHub Copilot specifically
+### Working in Copilot
 
-- **Copilot Chat** (VS Code, JetBrains, or github.com) is the natural home for these — open the chat panel, paste the filled prompt block, send.
-- For best results, give the assistant something to work from: paste in source material, attach files, or — if your Copilot has web access — tell it to research. A prompt with no inputs and no web access will produce a structured *template* of an answer, not a researched one.
-- Copilot works file-by-file. To produce a deliverable, open a new file, run the prompt in chat, and paste the result in (next section).
+**GitHub Copilot Chat** (VS Code, JetBrains, or github.com) — open the chat panel, paste the filled prompt block, send. To produce a deliverable, open a new file, run the prompt in chat, and paste the result in.
+
+**Microsoft 365 Copilot** — paste a prompt into Copilot Chat, then take the result into the app that fits the deliverable:
+
+| Output | App | How |
+|--------|-----|-----|
+| Prose — an entity risk assessment, an investigation narrative, a regulatory writeup | **Word** | Run the prompt in Copilot Chat, paste the output into a document, ask Word's Copilot to apply formatting |
+| Tables — a control matrix, a risk register, an obligation register | **Excel** | Ask Copilot to render the output as a table, then paste it into a sheet |
+| Messages — the communication templates | **Outlook** | Paste an email template plus your content and let Copilot draft the message |
+
+In any Copilot, give the assistant something to work from: paste source material, attach files, or — if your Copilot has web access — tell it to research. A prompt with no inputs and no web access produces a structured *template* of an answer, not a researched one.
 
 ---
 
@@ -64,7 +72,9 @@ For a **formatted visual deliverable** — an interactive dashboard or a multi-p
 
 | You want to... | Go to |
 |----------------|-------|
-| Assess an entity's risk | [`prompts/compliance/enhanced-due-diligence.md`](../prompts/compliance/enhanced-due-diligence.md) |
+| Assess an entity's risk | [`prompts/compliance/entity-risk-assessment.md`](../prompts/compliance/entity-risk-assessment.md) |
+| Screen against sanctions lists | [`prompts/compliance/sanctions-watchlist-screen.md`](../prompts/compliance/sanctions-watchlist-screen.md) |
+| Trace blockchain fund flows | [`prompts/blockchain/fund-flow-tracing.md`](../prompts/blockchain/fund-flow-tracing.md) |
 | Track a regulatory area | [`prompts/regulatory/regulatory-intelligence-scan.md`](../prompts/regulatory/regulatory-intelligence-scan.md) |
 | Research a topic deeply | [`prompts/research/deep-research-storm.md`](../prompts/research/deep-research-storm.md) |
 | Produce a recurring brief | [`prompts/briefs/intelligence-brief.md`](../prompts/briefs/intelligence-brief.md) |

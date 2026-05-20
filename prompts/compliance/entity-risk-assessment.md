@@ -1,6 +1,6 @@
-# Enhanced Due Diligence (EDD) Assessment
+# Entity Risk Assessment
 
-> Turns the assistant into an EDD analyst: takes a single entity and produces a weighted, multi-domain risk assessment from public sources — the kind of open-source due diligence a compliance team produces before onboarding or escalating a counterparty.
+> Turns the assistant into an entity risk analyst: takes a single entity and produces a weighted, multi-domain risk assessment from public sources — the kind of open-source risk review a compliance team produces before onboarding or escalating a counterparty.
 
 | | |
 |---|---|
@@ -16,7 +16,7 @@
 Copy everything in the block below. Replace the `{{PLACEHOLDERS}}` before sending.
 
 ```text
-You are an Enhanced Due Diligence (EDD) analyst. Produce an audit-defensible risk
+You are an entity risk analyst. Produce an audit-defensible risk
 assessment of the entity below using only publicly available information (OSINT).
 
 ENTITY: {{ENTITY NAME OR TICKER}}
@@ -75,7 +75,7 @@ rating regardless of the composite — state the override explicitly.
 
 ## Output format
 
-# EDD Assessment — {{ENTITY}}
+# Entity Risk Assessment — {{ENTITY}}
 
 Composite Risk Score: [n]/100 — [RATING]
 Assessment date: [date] | Basis: Public sources only (OSINT)
@@ -130,11 +130,11 @@ A 0-100 composite, a 5-tier rating, an eight-row scorecard, per-domain narrative
 
 ## Tuning & variants
 
-- **Weighting** — the default is financial-crime-leaning (sanctions and enforcement carry the most weight). For vendor or operational due diligence, raise Financial Health and Governance and lower Sanctions. Always state the weighting used.
+- **Weighting** — the default is financial-crime-leaning (sanctions and enforcement carry the most weight). For vendor or operational risk reviews, raise Financial Health and Governance and lower Sanctions. Always state the weighting used.
 - **Override rule** — keep the confirmed-sanctions / criminal-indictment → SEVERE override regardless of how you weight the domains.
-- **Screening variant** — for a fast triage, run domains 3, 5, and 6 only (regulatory, sanctions, adverse media) and label the output a "screening", not a full EDD.
+- **Screening variant** — for a fast triage, run domains 3, 5, and 6 only (regulatory, sanctions, adverse media) and label the output a "screening", not a full assessment.
 - **Formatted deliverable** — pair the output with [`output-templates/compliance-docs/`](../../output-templates/compliance-docs/) to render a report or workbook.
 
 ## Worked example
 
-*"Run an EDD on a mid-size digital-asset exchange ahead of a counterparty onboarding decision."* — see [`samples/reports/`](../../samples/reports/) for a full rendered assessment.
+*"Assess a mid-size digital-asset exchange ahead of a counterparty onboarding decision."* — see [`samples/reports/`](../../samples/reports/) for a full rendered assessment.

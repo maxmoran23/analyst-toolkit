@@ -32,7 +32,7 @@ output-quality-standards.md  →  Is the finished deliverable good enough to shi
 
 A worked example, end to end:
 
-1. You run a prompt — say, an enhanced due diligence assessment.
+1. You run a prompt — say, an entity risk assessment.
 2. **`analytical-patterns.md`** governs the analysis: you rank sources by the
    hierarchy, tag each finding with a severity tier, keep observed facts separate
    from allegations, and rate the output's quality.

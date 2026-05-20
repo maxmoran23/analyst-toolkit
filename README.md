@@ -1,12 +1,12 @@
 # analyst-toolkit
 
-**A copy/paste library of battle-tested prompts and output templates for AI-assisted analytical work — compliance, regulatory, research, market intelligence, and quantitative analysis.**
+**A copy/paste library of prompts and output templates for AI-assisted analytical work — built around a financial-crime, compliance, and blockchain-intelligence core, and extending into regulatory, research, market, and quantitative analysis.**
 
 ---
 
 ## What this is
 
-A library of reusable, paste-ready **prompt templates** and **document templates** for analytical work. Every prompt is a self-contained block you drop into an AI assistant — GitHub Copilot, Claude, ChatGPT — to get a rigorous, structured, audit-defensible result: an enhanced due diligence assessment, a regulatory intelligence scan, a deep research report, a risk-scored analysis, a populated dashboard.
+A library of reusable, paste-ready **prompt templates** and **document templates** for analytical work. Every prompt is a self-contained block you drop into an AI assistant — GitHub Copilot, Microsoft 365 Copilot, Claude, ChatGPT — to get a rigorous, structured, audit-defensible result: an entity risk assessment, a sanctions screen, a transaction-alert disposition, a regulatory intelligence scan, a fund-flow trace, a deep research report, a populated dashboard.
 
 It is **not a framework to run**. There is nothing to install, no runtime, no scheduler. You browse, copy, paste, fill in the `{{PLACEHOLDERS}}`, and run. The work product is the prompt itself — the analytical method, the scoring rubric, the output structure, and the quality bar baked into each one.
 
@@ -14,9 +14,9 @@ Each template was extracted and generalized from a production autonomous-agent f
 
 > Looking for the architecture to *run* agents like these autonomously on a schedule — state, self-repair, budget management? That is the companion repo: **[Claude-Agent-Fleet](https://github.com/maxmoran23/Claude-Agent-Fleet)**. This repo is the content; that repo is the runtime.
 
-![Enhanced Due Diligence dashboard — illustrative sample](samples/previews/edd-sample-preview.png)
+![Entity risk assessment dashboard — illustrative sample](samples/previews/entity-risk-preview.png)
 
-*Above: a sample Enhanced Due Diligence assessment — the output of one prompt plus one template. [See all samples](samples/).*
+*Above: a sample entity risk assessment — the output of one prompt plus one template. [See all samples](samples/).*
 
 ---
 
@@ -24,7 +24,7 @@ Each template was extracted and generalized from a production autonomous-agent f
 
 | Directory | What's in it |
 |-----------|--------------|
-| **[`prompts/`](prompts/)** | 24 paste-ready analytical prompt templates — the "codes" you give an assistant |
+| **[`prompts/`](prompts/)** | 29 paste-ready analytical prompt templates across 7 categories — the "codes" you give an assistant |
 | **[`output-templates/`](output-templates/)** | Document scaffolds — interactive dashboards, PDF reports, compliance documents, communications |
 | **[`samples/`](samples/)** | Rendered example outputs with previews — what the prompts and templates actually produce |
 | **[`methodology/`](methodology/)** | The writing voice, quality standards, and analytical patterns that keep outputs consistent |
@@ -47,20 +47,31 @@ Full workflow, including the Copilot copy/paste loop and getting output into cle
 
 ## Prompt catalog
 
-### Compliance & due diligence — [`prompts/compliance/`](prompts/compliance/)
+The financial-crime categories cover a full analytical lifecycle — **detect** (typology mapping) → **monitor** (alert triage, on-chain screening) → **investigate** (fund-flow tracing) → **assess** (entity and token risk) → **report** (investigation narrative).
+
+### Financial crime & compliance — [`prompts/compliance/`](prompts/compliance/)
 | Prompt | What it does |
 |--------|--------------|
-| [enhanced-due-diligence](prompts/compliance/enhanced-due-diligence.md) | 8-domain weighted risk assessment of an entity — 0-100 composite, 5-tier rating, disposition |
-| [onchain-sanctions-monitor](prompts/compliance/onchain-sanctions-monitor.md) | Screen blockchain addresses for sanctions, mixer, and AML-typology exposure |
-| [defi-protocol-risk](prompts/compliance/defi-protocol-risk.md) | Score a DeFi protocol on TVL, yield, contract, governance, and bridge risk |
-| [token-compliance-screen](prompts/compliance/token-compliance-screen.md) | Screen a digital asset on both thesis quality and AML red flags |
-| [sanctions-watchlist-screen](prompts/compliance/sanctions-watchlist-screen.md) | Screen a name/entity/address against OFAC + EU/UN/UK lists with hit disposition |
+| [entity-risk-assessment](prompts/compliance/entity-risk-assessment.md) | 8-domain weighted risk assessment of an entity — 0-100 composite, 5-tier rating, disposition |
+| [sanctions-watchlist-screen](prompts/compliance/sanctions-watchlist-screen.md) | Screen a name, entity, or address against OFAC + EU/UN/UK lists with hit disposition |
+| [typology-detection-mapping](prompts/compliance/typology-detection-mapping.md) | Decompose an AML typology into red-flag indicators and transaction-monitoring rule logic |
+| [alert-triage](prompts/compliance/alert-triage.md) | Work a transaction-monitoring alert to a documented close / escalate / refer disposition |
+| [investigation-narrative](prompts/compliance/investigation-narrative.md) | Draft a chronological, evidence-sourced narrative of investigated activity |
+
+### Blockchain intelligence — [`prompts/blockchain/`](prompts/blockchain/)
+| Prompt | What it does |
+|--------|--------------|
+| [onchain-sanctions-monitor](prompts/blockchain/onchain-sanctions-monitor.md) | Screen blockchain addresses for sanctions, mixer, and AML-typology exposure |
+| [fund-flow-tracing](prompts/blockchain/fund-flow-tracing.md) | Trace funds hop by hop across a chain — counterparties, mixers, exchanges, attribution |
+| [defi-protocol-risk](prompts/blockchain/defi-protocol-risk.md) | Score a DeFi protocol on TVL, yield, contract, governance, and bridge risk |
+| [token-compliance-screen](prompts/blockchain/token-compliance-screen.md) | Screen a digital asset on both thesis quality and AML red flags |
 
 ### Regulatory — [`prompts/regulatory/`](prompts/regulatory/)
 | Prompt | What it does |
 |--------|--------------|
 | [regulatory-intelligence-scan](prompts/regulatory/regulatory-intelligence-scan.md) | Severity-rated briefing on what changed in a regulatory landscape |
 | [geopolitical-risk-monitor](prompts/regulatory/geopolitical-risk-monitor.md) | Per-jurisdiction sanctions, conflict, and regulatory-risk scoring |
+| [obligation-extraction](prompts/regulatory/obligation-extraction.md) | Turn a regulation or filing into a structured register of obligations and deadlines |
 
 ### Research — [`prompts/research/`](prompts/research/)
 | Prompt | What it does |

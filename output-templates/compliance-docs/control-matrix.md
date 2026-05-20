@@ -53,7 +53,7 @@ and ratings to the specific institution and assessment scope.
 **CDD Domain (6):**
 - CDD-01: Customer Identification Program (CIP)
 - CDD-02: Customer Due Diligence (standard)
-- CDD-03: Enhanced Due Diligence (EDD)
+- CDD-03: High-Risk Customer Review
 - CDD-04: Ongoing Monitoring / Periodic Review
 - CDD-05: Beneficial Ownership Identification
 - CDD-06: PEP Screening

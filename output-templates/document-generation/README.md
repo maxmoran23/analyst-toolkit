@@ -14,7 +14,7 @@ mechanism available to it.
 
 | File | Format | Covers |
 |------|--------|--------|
-| `word-documents.md` | `.docx` | Reports, memos, proposals, EDD reviews, risk assessments, control matrices, SOPs. Includes full section outlines for each document type and formatting conventions. |
+| `word-documents.md` | `.docx` | Reports, memos, proposals, risk assessments, control matrices, SOPs. Includes full section outlines for each document type and formatting conventions. |
 | `presentations.md` | `.pptx` | Briefing decks, pitch decks, training materials, regulatory briefings. Includes slide-by-slide outlines and design principles (one idea per slide, the 6x6 rule). |
 | `spreadsheets.md` | `.xlsx` | Financial models, data analysis, tracking sheets, control matrices, risk registers, reconciliations. Includes multi-sheet structures and formatting standards. |
 | `pdf-tools.md` | `.pdf` | Reading, extracting, form-filling, merging, splitting, batch processing, and generating PDFs from other formats. |

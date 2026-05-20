@@ -1,7 +1,7 @@
 # Compliance Documents
 
 A cheat-sheet for producing professional-grade compliance and financial-crime
-documentation — enhanced due diligence reports, risk assessments, control
+documentation — entity risk assessment reports, risk assessments, control
 matrices, suspicious-activity-report narratives, policy documents, and
 transaction-monitoring rule documentation. The structures below target
 bank- and consulting-quality standards.
@@ -28,7 +28,7 @@ For severity tiers and the observed/alleged distinction, see
 
 ## Document library
 
-### 1. Enhanced Due Diligence (EDD) report
+### 1. Entity risk assessment report
 
 **Purpose:** A deep-dive assessment of a high-risk entity, customer, or
 counterparty.
@@ -93,7 +93,7 @@ product, geography, or business line.
 
 | Domain | # Controls | Focus |
 |--------|-----------|-------|
-| Customer Due Diligence (CDD) | 6 | KYC, EDD, ongoing monitoring, beneficial ownership |
+| Customer Due Diligence (CDD) | 6 | KYC, high-risk customer review, ongoing monitoring, beneficial ownership |
 | Transaction Monitoring (TM) | 5 | Rules, alerts, tuning, coverage |
 | Sanctions Screening | 4 | OFAC, list management, real-time and retrospective screening |
 | SAR Filing | 4 | Detection, investigation, filing, tracking |

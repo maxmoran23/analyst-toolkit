@@ -16,7 +16,7 @@ an unfamiliar domain.
 | Document | Covers |
 |----------|--------|
 | [`aml-typologies.md`](aml-typologies.md) | Crypto / digital-asset AML: the US and international regulatory frameworks, fifteen core laundering typologies with detection signals, an 8-dimension risk-scoring model, and key risk indicators. |
-| [`compliance-documents.md`](compliance-documents.md) | Document structures for compliance work: enhanced due diligence reports, AML/CFT risk assessments, control matrices, SAR narratives, policy documents, and transaction-monitoring rule documentation. |
+| [`compliance-documents.md`](compliance-documents.md) | Document structures for compliance work: entity and AML/CFT risk assessments, control matrices, SAR narratives, policy documents, and transaction-monitoring rule documentation. |
 | [`audit-documentation.md`](audit-documentation.md) | Internal-audit and SOX-style work: testing workpapers, sample selection, deficiency classification, and the audit-trail finding structure. |
 | [`regulatory-intelligence.md`](regulatory-intelligence.md) | Tracking regulatory change: the source hierarchy, the six analysis dimensions, tracking categories, the key regulatory bodies, and a regulatory-alert output format. |
 | [`financial-analysis.md`](financial-analysis.md) | Financial modeling: variance analysis, financial-statement analysis, scenario modeling, and portfolio analysis. |
@@ -42,7 +42,7 @@ audit-documentation.md      →  the controls are tested for effectiveness
 ```
 
 `financial-analysis.md` stands somewhat apart — it supports the financial-health
-dimension of an EDD assessment, the quantitative side of a risk model, and
+dimension of an entity risk assessment, the quantitative side of a risk model, and
 standalone financial work.
 
 ---
