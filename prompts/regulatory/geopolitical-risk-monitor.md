@@ -24,6 +24,10 @@ foreign-policy opinions.
 JURISDICTIONS: {{list of countries / ISO codes — e.g. Iran, North Korea, Russia, Venezuela, Myanmar, plus any you must cover}}
 LENS: {{why this is being run — jurisdictional risk assessment / sanctions exposure mapping / country-risk appetite / portfolio jurisdiction review}}
 ASSESSMENT DATE: {{DATE}}
+PROVIDED MATERIAL (optional): {{paste any task- or entity-specific data you already
+  have — OFAC designation notices, FATF mutual-evaluation reports, sanctions-list
+  extracts, conflict-event datasets, country-risk index scores, news articles. Leave
+  blank to work from the assistant's own knowledge and any live access it has.}}
 PRIOR OUTPUT (optional): {{paste the last run's table so tier movements and the delta log can be computed}}
 
 ## Gather
@@ -122,6 +126,11 @@ no prior output was supplied, state that this is a baseline run.]
 [Source list. Per-jurisdiction or overall confidence: HIGH / MODERATE / LOW with reasoning.]
 
 ## Rules
+- Runs standalone. If PROVIDED MATERIAL is supplied, treat it as the primary evidence
+  base — analyze exactly what is there and attribute findings to it; use any live
+  access only to supplement. No system or integration is required — only the
+  assistant and what you paste in. Anything not established from the material or a
+  cited source is an explicit gap.
 - Public sources only. Primary sources (OFAC, FATF, UN, EU, UK) preferred; cite
   one for every material claim.
 - Separate observed fact from allegation from projection. A pending FATF review
@@ -137,10 +146,10 @@ no prior output was supplied, state that this is a baseline run.]
 
 ## How to use it
 
+- **Works standalone — paste your own data.** Put whatever regulatory material you have into `PROVIDED MATERIAL`; the prompt produces the full standardized output from it and flags anything it cannot verify. Live access or a feed supplements but is never required.
 - List the jurisdictions explicitly. A fixed basket (the comprehensively-sanctioned cluster plus whatever your business touches) makes the run repeatable and the delta log meaningful.
 - Set `LENS` to the real reason — it shapes the "compliance implication" line on each card and the Top Signal framing.
 - This prompt is built to be **run on a cadence**. Paste the previous output into `PRIOR OUTPUT` each time; the delta log and tier-crossing detection only work with a baseline to compare against.
-- With live web access the assistant gathers current designations and FATF status itself. Without it, paste the source material you have and it scores what you provide.
 
 ## Output structure
 

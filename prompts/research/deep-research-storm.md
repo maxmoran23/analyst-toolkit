@@ -25,6 +25,10 @@ sources disagree.
 TOPIC: {{the topic — be specific; "the regulatory outlook for X" beats "X"}}
 PURPOSE: {{why you need this — a decision, a briefing, background, a reference document}}
 DEPTH TARGET: {{e.g. 3,000 words / "as long as the evidence supports"}}
+PROVIDED MATERIAL (optional): {{paste any task- or entity-specific data you already
+  have — research papers, official filings, datasets, news articles, primary
+  documents, your own notes. Leave blank to work from the assistant's own knowledge
+  and any live access it has.}}
 PRIOR ARTICLE (optional): {{paste an earlier version to get a delta and avoid repetition}}
 
 If the topic is ambiguous, resolve to the most useful interpretation and state the
@@ -88,6 +92,11 @@ kept distinct. Tables for any 3+ item comparison.]
 2. ...
 
 ## Rules
+- Runs standalone. If PROVIDED MATERIAL is supplied, treat it as the primary evidence
+  base — analyze exactly what is there and attribute findings to it; use any live
+  access only to supplement. No system or integration is required — only the
+  assistant and what you paste in. Anything not established from the material or a
+  cited source is an explicit gap.
 - Every material claim carries an inline citation tied to the Sources list.
 - Distinguish observed evidence from interpretation, and both from speculation.
 - Never fabricate a source, a statistic, a quote, or a citation. If a fact cannot
@@ -102,8 +111,8 @@ kept distinct. Tables for any 3+ item comparison.]
 
 ## How to use it
 
+- **Works standalone — paste your own data.** Put whatever research material you have into `PROVIDED MATERIAL`; the prompt produces the full standardized output from it and flags anything it cannot verify. Live access or a feed supplements but is never required.
 - The `PERSPECTIVES` stage is what makes this different from a plain summary — it forces the article to cover viewpoints a single-pass answer would miss. Let the assistant show its outline; if a perspective is missing, ask for it before the body is written.
-- Give the assistant live web and document access for best results. If it has none, paste the source material you have collected and it will synthesize what you provide, noting the narrower base.
 - For a genuinely deep result, set a real depth target. "As long as the evidence supports" produces a more honest article than a fixed word count.
 - Re-running on the same topic later: paste the prior article into `PRIOR ARTICLE` and ask for a **delta** — what is new, what changed, what was superseded.
 

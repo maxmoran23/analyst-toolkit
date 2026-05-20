@@ -111,6 +111,11 @@ Implication: [what it means]
 [Themes/patterns that scored < 50 — listed, not elaborated.]
 
 ## Rules
+- Runs standalone. The pasted SOURCES are the primary evidence base — synthesize
+  exactly what is there and attribute every finding to a source label; use any live
+  access only to supplement. No system or integration is required — only the
+  assistant and the inputs you paste in. Anything not established from the sources is
+  an explicit blind spot or gap, not an invented signal.
 - Cite the source label for every claim. A claim traceable to no source is removed.
 - Separate what a source states from what you infer by combining sources — label
   the second as synthesis.
@@ -126,7 +131,7 @@ Implication: [what it means]
 
 ## How to use it
 
-- Label your sources clearly (`[A]`, `[B]`, `[C]`) so the citations in the brief are traceable. The value of this prompt depends on every claim pointing back to a specific input.
+- **Works standalone — paste your own sources.** Put the inputs you want synthesized into `SOURCES`; the prompt produces the full standardized brief from them and flags anything it cannot verify. No system or feed is required — only the assistant and the sources you paste in. Label your sources clearly (`[A]`, `[B]`, `[C]`) so the citations in the brief are traceable — the value of this prompt depends on every claim pointing back to a specific input.
 - This works best with 3+ genuinely independent sources. Two sources that share an origin will not produce real amplified signals — the prompt will flag that.
 - The blind-spot section is often the most useful output. It tells you what to go find next.
 - Run it repeatedly on a moving topic: paste the previous synthesis into `PRIOR SYNTHESIS` and the multi-cycle pattern section becomes a running ledger of what is building.

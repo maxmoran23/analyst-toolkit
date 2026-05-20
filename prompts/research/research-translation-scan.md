@@ -26,6 +26,9 @@ RESEARCH STREAM: {{what to scan — e.g. recent AI/ML papers, a journal's latest
 PRACTITIONER PROFILE: {{who this is for — their role, what they build or decide, so
                        "who should care" and "what to do" are concrete}}
 LOOKBACK WINDOW: {{e.g. last 7 days / this month / the set provided}}
+PROVIDED MATERIAL (optional): {{paste any task- or entity-specific data you already
+  have — papers, abstracts, preprint listings, release notes, conference proceedings.
+  Leave blank to work from the assistant's own knowledge and any live access it has.}}
 PRIOR SCAN (optional): {{paste the last scan so already-covered items are not repeated
                         and the themes tracker carries forward}}
 
@@ -94,6 +97,11 @@ What to do: [concrete next step]
 |-------|-----------|----------|--------------------|
 
 ## Rules
+- Runs standalone. If PROVIDED MATERIAL is supplied, treat it as the primary evidence
+  base — analyze exactly what is there and attribute findings to it; use any live
+  access only to supplement. No system or integration is required — only the
+  assistant and what you paste in. Anything not established from the material or a
+  cited source is an explicit gap.
 - Reject aggressively. A short briefing of 3 real items beats a long list padded
   with increments. Report the rejection count honestly.
 - Never include a paper or result whose source you cannot verify. Prefer omission to
@@ -110,6 +118,7 @@ What to do: [concrete next step]
 
 ## How to use it
 
+- **Works standalone — paste your own data.** Put whatever research material you have into `PROVIDED MATERIAL`; the prompt produces the full standardized output from it and flags anything it cannot verify. Live access or a feed supplements but is never required.
 - Fill in `PRACTITIONER PROFILE` carefully — it is what turns "this paper exists" into "here is why it matters to you and what to do". A generic profile produces a generic briefing.
 - Give the assistant live search access to scan a real feed; or paste a batch of papers/abstracts and it will filter and translate the set you provide.
 - The noise-rejection count is a feature. A scan that rejects 40 of 45 items and translates 5 is doing its job — coverage is not the goal, filtering is.

@@ -27,6 +27,10 @@ STARTING CAPITAL: {{e.g. $100,000 — used only on the first run}}
 CURRENT STATE (optional): {{paste the prior run's portfolio — positions, cash, P&L,
   per-strategy history; omit on the first run to start flat}}
 AS-OF DATE: {{DATE}}
+PROVIDED MATERIAL (optional): {{paste any task- or entity-specific data you already
+  have — current prices, volume figures, price history, technical readings, market
+  news. Leave blank to work from the assistant's own knowledge and any live access
+  it has.}}
 
 ## Strategies
 
@@ -147,6 +151,11 @@ Or "No trades — no signal cleared the conviction and risk gates."]
 so it can be pasted back as CURRENT STATE next time.]
 
 ## Rules
+- Runs standalone. If PROVIDED MATERIAL is supplied, treat it as the primary evidence
+  base — analyze exactly what is there and attribute findings to it; use any live
+  access only to supplement. No system or integration is required — only the
+  assistant and what you paste in. Anything not established from the material or a
+  cited source is an explicit gap.
 - This is a paper simulation. Never describe a trade as real or advise the reader
   to place one. No buy/sell/hold recommendations for a real portfolio.
 - The hard risk constraints are absolute. Document any candidate that breached
@@ -163,6 +172,7 @@ so it can be pasted back as CURRENT STATE next time.]
 
 ## How to use it
 
+- **Works standalone — paste your own data.** Put whatever market material you have into `PROVIDED MATERIAL`; the prompt produces the full standardized output from it and flags anything it cannot verify. Live access or a feed supplements but is never required.
 - This is a **paper simulation for learning and discipline practice** — there is no real money and no advice. The framing line is in the prompt; keep it.
 - Run it **repeatedly** to build a track record. On the first run, omit `CURRENT STATE` to start flat. On every run after, paste the prior run's "Updated State" block into `CURRENT STATE` — that block carries the positions, cash, and value history the metrics depend on.
 - Give the assistant live price access so it can mark the book. Without it, paste current prices and it will mark to what you provide.

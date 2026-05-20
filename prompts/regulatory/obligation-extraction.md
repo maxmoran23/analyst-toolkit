@@ -105,6 +105,11 @@ non-obligation content, and — if only a reference was supplied — restate tha
 register must be verified against the source text.]
 
 ## Rules
+- Runs standalone. The pasted DOCUMENT is the primary evidence base — extract exactly
+  what is there and attribute every obligation to it; use any live access only to
+  verify a citation when only a reference was supplied. No system or integration is
+  required — only the assistant and what you paste in. Anything not established from
+  the document is an explicit ambiguity or gap, not an invented obligation.
 - Extract obligations from the supplied text only. Do not add requirements from general
   knowledge of the subject; if the document omits something expected, that is an
   ambiguity to flag, not an obligation to invent.
@@ -123,7 +128,7 @@ register must be verified against the source text.]
 
 ## How to use it
 
-- Paste the actual document text into `DOCUMENT` whenever you can. Working from the full text produces a register tied to exact citations; working from a reference alone produces a register the assistant will explicitly tell you to verify.
+- **Works standalone — paste your own document.** Put the regulation, rule, or guidance text into `DOCUMENT`; the prompt produces the full standardized register from it and flags anything it cannot verify. No system or feed is required — only the assistant and what you paste in. Working from the full text produces a register tied to exact citations; working from a reference alone produces a register the assistant will explicitly tell you to verify against the source.
 - Set `READER / PERSPECTIVE` precisely. A single rule can impose different obligations on a bank, a money-services business, and a digital-asset exchange — the perspective tells the assistant which obligations are in scope and which carve-outs apply.
 - For a long document, run it in sections (e.g. one part at a time) and concatenate the registers — this keeps every obligation traceable to a precise citation rather than a vague span.
 - The register is an operational starting point, not a legal opinion. Route the "Ambiguities & Open Questions" list to counsel; route the obligation rows to the owners who will implement them.

@@ -95,6 +95,11 @@ a valid result.]
 HIGH / MODERATE / LOW, with reasoning.]
 
 ## Rules
+- Runs standalone. The INPUT STREAMS you paste are the primary evidence base —
+  consolidate exactly what is there and attribute every item to its stream; use any
+  live access only to supplement (e.g. to date or sanity-check a figure). No system
+  or integration is required — only the assistant and what you paste in. Anything not
+  established from the streams or a cited source is an explicit gap.
 - Aggregate only. Every item must trace to one of the supplied input streams —
   do not introduce findings the streams do not contain.
 - Attribute every item to its source stream. Merged items name all their sources.
@@ -111,6 +116,7 @@ HIGH / MODERATE / LOW, with reasoning.]
 
 ## How to use it
 
+- **Works standalone — paste your own data.** Put whatever intelligence feeds you have into `INPUT STREAMS`; the prompt produces the full standardized dashboard from them and flags anything it cannot verify. Live access supplements but is never required — the aggregator synthesizes what you paste, no system or integration behind it.
 - Name each feed in `INPUT STREAMS` and paste its latest content. The aggregator is only as good as what you give it — clear stream names produce clear section headings.
 - This prompt is built to be **run repeatedly**. Paste the previous dashboard into `PRIOR DASHBOARD` — the assistant then produces a clean "What Changed" delta and deprioritizes stale items.
 - It pairs naturally with the other prompts in this toolkit: run a sentiment tracker, a regime monitor, and a regulatory scan, then feed all three outputs in here as streams to get one consolidated view.

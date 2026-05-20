@@ -25,6 +25,10 @@ not recommend taking positions on any market.
 TOPIC FOCUS: {{e.g. macro & rates / geopolitics / a specific event or election}}
 COMPARISON EVIDENCE: {{what to compare against — headlines, official forecasts,
   polling, your own prior view; paste any specific numbers you have}}
+PROVIDED MATERIAL (optional): {{paste any task- or entity-specific data you already
+  have — prediction-market odds, implied probabilities, trading volumes, market
+  listings, resolution dates. Leave blank to work from the assistant's own knowledge
+  and any live access it has.}}
 PRIOR SCAN (optional): {{paste the last output to track drift and resolutions}}
 
 ## Gather
@@ -119,6 +123,11 @@ market's consensus proved correct.]
 [Source list. Overall confidence: HIGH / MODERATE / LOW, with reasoning.]
 
 ## Rules
+- Runs standalone. If PROVIDED MATERIAL is supplied, treat it as the primary evidence
+  base — analyze exactly what is there and attribute findings to it; use any live
+  access only to supplement. No system or integration is required — only the
+  assistant and what you paste in. Anything not established from the material or a
+  cited source is an explicit gap.
 - Cite the market and the comparison source for every divergence.
 - Separate the market-implied probability (observed) from the comparison evidence
   from your own read (projected). Keep the three explicitly distinct.
@@ -135,6 +144,7 @@ market's consensus proved correct.]
 
 ## How to use it
 
+- **Works standalone — paste your own data.** Put whatever market material you have into `PROVIDED MATERIAL`; the prompt produces the full standardized output from it and flags anything it cannot verify. Live access or a feed supplements but is never required.
 - Set `TOPIC FOCUS` tightly and give real `COMPARISON EVIDENCE` — the divergence detection is only as good as the thing you compare against. Pasting specific forecast or polling numbers sharpens it considerably.
 - This prompt is built to be **run repeatedly**. Paste the prior scan into `PRIOR SCAN` — the assistant then tracks probability drift, ages out resolved markets, and the watchlist becomes a running ledger.
 - Give the assistant live web access so it can read current market prices and comparison sources. Without it, paste the odds and comparison material you have collected.

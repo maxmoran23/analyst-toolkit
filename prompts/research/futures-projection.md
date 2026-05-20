@@ -28,6 +28,10 @@ METRICS TO TRACK: {{the quantitative metrics to forecast — or write "you propo
                     and the assistant will select 8-15 measurable, decision-relevant
                     metrics and justify each}}
 PURPOSE: {{the decision or thesis this informs}}
+PROVIDED MATERIAL (optional): {{paste any task- or entity-specific data you already
+  have — historical time series, baseline figures, industry reports, expert
+  forecasts, analyst notes. Leave blank to work from the assistant's own knowledge
+  and any live access it has.}}
 PRIOR PROJECTION (optional): {{paste an earlier projection to get a delta — which
                               curves moved, and why}}
 
@@ -110,6 +114,11 @@ Wildcards / tail risks: [event — which metrics it breaks — rough likelihood]
 [The 0-100 rating, the scoring behind it, and the single biggest limit on confidence.]
 
 ## Rules
+- Runs standalone. If PROVIDED MATERIAL is supplied, treat it as the primary evidence
+  base — analyze exactly what is there and attribute findings to it; use any live
+  access only to supplement. No system or integration is required — only the
+  assistant and what you paste in. Anything not established from the material or a
+  cited source is an explicit gap.
 - Every number is a central forecast plus an 80% band. A bare point estimate with no
   band is not allowed.
 - Bands must widen toward the horizon. Tight far-future bands signal overconfidence;
@@ -127,6 +136,7 @@ Wildcards / tail risks: [event — which metrics it breaks — rough likelihood]
 
 ## How to use it
 
+- **Works standalone — paste your own data.** Put whatever research material you have into `PROVIDED MATERIAL`; the prompt produces the full standardized output from it and flags anything it cannot verify. Live access or a feed supplements but is never required.
 - Either name the `METRICS TO TRACK` yourself or let the assistant propose them — proposed metrics come with a justification for each, which is useful if you are not sure what is measurable.
 - The `Key Assumptions` section is where to focus your scrutiny. The numbers are only as good as those assumptions; if one looks wrong, you can mentally re-run the projection without re-prompting.
 - Confidence-band width is a feature, not a hedge. A projection with wide far-horizon bands is being honest about a long horizon — distrust one with suspiciously tight 10-years-out numbers.

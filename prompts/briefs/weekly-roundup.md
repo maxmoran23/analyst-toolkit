@@ -23,6 +23,10 @@ week's priorities, and name the blockers plainly.
 REVIEW SCOPE: {{e.g. markets + portfolio / a set of projects / an operation / a research program}}
 WEEK ENDING: {{DATE}}
 INPUTS: {{paste the week's source material — daily briefs, status notes, metrics, logs — or grant live access}}
+PROVIDED MATERIAL (optional): {{paste any task- or entity-specific data you already
+  have — daily briefs, status notes, a metrics export, project logs, meeting notes.
+  Leave blank to work from the assistant's own knowledge and any live access it
+  has.}}
 PRIOR WEEK'S ROUNDUP (optional): {{paste last week's roundup for week-over-week comparison}}
 
 ## Method
@@ -106,6 +110,11 @@ Scope: [review scope]
 [Inputs used. Overall confidence: HIGH / MODERATE / LOW, with reasoning.]
 
 ## Rules
+- Runs standalone. If PROVIDED MATERIAL is supplied, treat it as the primary evidence
+  base — analyze exactly what is there and attribute findings to it; use any live
+  access only to supplement. No system or integration is required — only the
+  assistant and what you paste in. Anything not established from the material or a
+  cited source is an explicit gap.
 - Cite a source for every finding and every metric. Separate observed results
   from forecasts.
 - Grade honestly. A weak week graded a weak week is the point — do not inflate
@@ -121,6 +130,7 @@ Scope: [review scope]
 
 ## How to use it
 
+- **Works standalone — paste your own data.** Put whatever review material you have into `PROVIDED MATERIAL`; the prompt produces the full standardized output from it and flags anything it cannot verify. Live access or a feed supplements but is never required.
 - Set `REVIEW SCOPE` to whatever you run a weekly cadence on — a portfolio, a project portfolio, an operation, a research program. The scorecard dimensions are written to generalize; rename them to fit.
 - Paste the week's raw material into `INPUTS` — daily briefs, status notes, metrics, logs. If you run the daily [`intelligence-brief.md`](intelligence-brief.md), feeding the week's briefs in is the fastest path.
 - This prompt is designed to be **run every week**. Paste the prior roundup into `PRIOR WEEK'S ROUNDUP` — the metrics table becomes a running week-over-week ledger and the scorecard gains a trend line.

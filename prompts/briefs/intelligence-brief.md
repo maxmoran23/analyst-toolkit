@@ -25,6 +25,10 @@ BRIEF TYPE: {{morning anchor brief / midday delta update / afternoon check-in / 
 DOMAINS TO COVER: {{e.g. markets, regulatory, on-chain, portfolio, projects, fleet health}}
 DATE & TIME: {{DATE, TIME with timezone}}
 INPUTS: {{paste source material — feeds, channel posts, headlines, data — or grant live access}}
+PROVIDED MATERIAL (optional): {{paste any task- or entity-specific data you already
+  have — feed exports, channel/chat posts, headlines, a metrics snapshot, status
+  notes. Leave blank to work from the assistant's own knowledge and any live access
+  it has.}}
 PRIOR BRIEF (optional): {{paste the previous brief so this run reports only the delta}}
 
 If the brief type is not recognized, default to "morning anchor brief".
@@ -97,6 +101,11 @@ Domains: [covered set] | Basis: [inputs used] | [Day grade line — evening only
 [Inputs used. Overall confidence: HIGH / MODERATE / LOW, with one line of reasoning.]
 
 ## Rules
+- Runs standalone. If PROVIDED MATERIAL is supplied, treat it as the primary evidence
+  base — analyze exactly what is there and attribute findings to it; use any live
+  access only to supplement. No system or integration is required — only the
+  assistant and what you paste in. Anything not established from the material or a
+  cited source is an explicit gap.
 - Report the delta. If a prior brief was supplied, do not repeat items it
   already covered unless there is a material update.
 - Cite a source for every development. Separate observed fact from claim and
@@ -113,6 +122,7 @@ Domains: [covered set] | Basis: [inputs used] | [Day grade line — evening only
 
 ## How to use it
 
+- **Works standalone — paste your own data.** Put whatever briefing material you have into `PROVIDED MATERIAL`; the prompt produces the full standardized output from it and flags anything it cannot verify. Live access or a feed supplements but is never required.
 - Set `BRIEF TYPE` to the variant you want — it controls depth and framing (see below). Set `DOMAINS TO COVER` tightly; a brief over 4-6 domains stays sharper than one that tries to cover everything.
 - This prompt is built to be **run repeatedly through the day**. Paste the prior brief into `PRIOR BRIEF` each time — the morning brief becomes the baseline for midday, midday for the afternoon, and so on. Each run then reports only the delta.
 - Give the assistant live access to your feeds if it has it; otherwise paste the source material into `INPUTS`.

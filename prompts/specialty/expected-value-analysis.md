@@ -27,6 +27,10 @@ YOUR PROBABILITY ESTIMATE: {{your independent estimate that the outcome occurs, 
 ESTIMATE BASIS: {{how the estimate was derived — model, base rate, comparables, expert read}}
 BANKROLL / CAPITAL BASE: {{total capital this position is sized against}}
 RISK POSTURE (optional): {{default = quarter-Kelly; state if different}}
+PROVIDED MATERIAL (optional): {{paste any supporting data behind your estimate —
+  model output, base-rate tables, comparables, line history, an expert read, a prior
+  analysis. Leave blank to work from the inputs above plus the assistant's own
+  knowledge and any live access it has.}}
 
 If the probability estimate has no stated basis, say so and treat the whole
 analysis as low-confidence — an unsupported probability is the weakest link in
@@ -128,6 +132,12 @@ error in p_est. Whether the position is robust or fragile.]
 [TAKE or PASS, with reasoning. If the edge is thin or the estimate weak, say so.]
 
 ## Rules
+- Runs standalone. The numeric inputs above are the user's own data; if PROVIDED
+  MATERIAL is supplied, treat it as the primary evidence base for the probability
+  estimate — analyze exactly what is there and attribute the estimate's strength to
+  it; use any live access only to supplement. No system or integration is required —
+  only the assistant and what you paste in. Anything not established from the inputs,
+  the material, or a cited source is an explicit gap that lowers confidence.
 - Show every conversion and every formula input. A reader must be able to
   reproduce EV and f* from the numbers stated.
 - The probability estimate is the load-bearing input. Separate it clearly from
@@ -147,6 +157,7 @@ error in p_est. Whether the position is robust or fragile.]
 
 ## How to use it
 
+- **Works standalone — paste your own data.** The numeric inputs are your data already; put any supporting position material — model output, base-rate tables, comparables, line history — into `PROVIDED MATERIAL`, and the prompt produces the full standardized output from it and flags anything it cannot verify. Live access or a feed supplements but is never required.
 - Replace the placeholders. The two that matter most are `YOUR PROBABILITY ESTIMATE` and `ESTIMATE BASIS` — the entire analysis is only as good as that estimate, and the prompt is built to flag it when the basis is thin.
 - Works on any market-priced discrete outcome: a prediction-market contract, a quoted-odds proposition, a binary event with an implied price. Frame the opportunity and the quote precisely.
 - If you have a model or base rate behind your probability, state it in `ESTIMATE BASIS` — that is what lifts the confidence rating from LOW to MODERATE or HIGH.

@@ -25,6 +25,10 @@ LOCATION: {{the market — a town, ZIP code, or neighborhood, with state/region}
 ANALYSIS PURPOSE: {{why this is being run — buy decision / hold review / market monitoring / investment screen}}
 PROPERTY FOCUS (optional): {{e.g. single-family / multi-family / condos / all residential}}
 AS OF: {{DATE}}
+PROVIDED MATERIAL (optional): {{paste any task- or entity-specific data you already
+  have — listing exports, recent sales/closing records, rent comps, demographic or
+  permit data, a prior market report. Leave blank to work from the assistant's own
+  knowledge and any live access it has.}}
 PRIOR REPORT (optional): {{paste the last report to get a what-changed delta}}
 
 ## Method
@@ -153,6 +157,11 @@ and the conditions or triggers that would change the call.]
 [Source list. Overall confidence: HIGH / MODERATE / LOW, with reasoning.]
 
 ## Rules
+- Runs standalone. If PROVIDED MATERIAL is supplied, treat it as the primary evidence
+  base — analyze exactly what is there and attribute findings to it; use any live
+  access only to supplement. No system or integration is required — only the
+  assistant and what you paste in. Anything not established from the material or a
+  cited source is an explicit information gap.
 - Public data only. Cite a source for every figure — listings, sales, rents,
   demographics, rates.
 - Separate observed data from estimates from projections. A projection is
@@ -169,9 +178,10 @@ and the conditions or triggers that would change the call.]
 
 ## How to use it
 
+- **Works standalone — paste your own data.** Put whatever market material you have into `PROVIDED MATERIAL`; the prompt produces the full standardized output from it and flags anything it cannot verify. Live access or a feed supplements but is never required.
 - Set `LOCATION` precisely — a named town with its state, a ZIP code, or a defined neighborhood. The tighter the boundary, the sharper the report.
 - `ANALYSIS PURPOSE` shapes the recommendation at the end — a buy decision, a hold review, or passive monitoring all lead to different closing calls.
-- Give the assistant live web access so it can pull current listing, sales, and demographic data. Without it, paste in the market data you have collected and it will analyze what you provide — expect more Information Gaps.
+- Give the assistant live web access so it can pull current listing, sales, and demographic data. With or without it, the report runs from whatever you place in `PROVIDED MATERIAL` — expect more Information Gaps when the data you supply is thinner.
 - This prompt is built to be **re-run on the same market over time**. Paste the prior report into `PRIOR REPORT` and ask for a delta — what moved in inventory, pricing, the transformation signals, and the health score.
 
 ## Output structure

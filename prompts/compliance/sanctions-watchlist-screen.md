@@ -26,6 +26,10 @@ IDENTIFIERS (provide all you have): {{date of birth, nationality, country, addre
   registration or passport number, known aliases — more identifiers = fewer false positives}}
 CONTEXT: {{why this is being run — onboarding / payment review / periodic re-screening / counterparty review}}
 SCREENING DATE: {{DATE}}
+PROVIDED MATERIAL (optional): {{paste any subject- or list-specific data you already
+  have — retrieved sanctions-list entries, alias records, identifier documents, a
+  prior screen, prior dispositions. Leave blank to work from the assistant's own
+  knowledge and any live access it has.}}
 PRIOR OUTPUT (optional): {{paste the last screen so newly added or removed designations can be flagged}}
 
 ## Lists to screen
@@ -118,6 +122,11 @@ their absence limits confidence.]
 [Lists and data vintage used. Overall confidence: HIGH / MODERATE / LOW with reasoning.]
 
 ## Rules
+- Runs standalone. If PROVIDED MATERIAL is supplied, treat it as the primary evidence
+  base — screen and disposition exactly what is there and attribute findings to it; use
+  any live access only to supplement. No system or integration is required — only the
+  assistant and what you paste in. Anything not established from the material or a
+  cited source is an explicit gap.
 - Public sanctions-list data only. Name and cite the list, program, and entry
   reference for every hit.
 - A false positive must be cleared by a NAMED discriminating identifier — never
@@ -138,10 +147,11 @@ their absence limits confidence.]
 
 ## How to use it
 
+- **Works standalone — paste your own data.** Put whatever subject material you have into `PROVIDED MATERIAL`; the prompt produces the full standardized output from it and flags anything it cannot verify. Live access or a feed supplements but is never required.
 - Provide every identifier you have. The single biggest driver of false-positive resolution is identifier data — a date of birth or nationality turns a common-name "probable" into a defensible "clear".
 - Set `SUBJECT TYPE` accurately; vessels, aircraft, entities, individuals, and crypto addresses appear differently in list data and are matched on different fields.
 - This prompt is built to support **periodic re-screening**. Paste the previous screen into `PRIOR OUTPUT` and the assistant flags designations added or removed since.
-- With live web access the assistant screens against current list data. Without it, paste the list entries you have retrieved and it dispositions against what you provide — and labels the screen provisional.
+- With live web access the assistant screens against current list data. Without it, the assistant dispositions against the list entries you supply in `PROVIDED MATERIAL` and labels the screen provisional.
 
 ## Output structure
 

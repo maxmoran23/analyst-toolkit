@@ -26,6 +26,10 @@ ALERT DETAILS: {{rule that fired, alert reason, date, score or severity if assig
 CUSTOMER PROFILE & CONTEXT: {{customer type, occupation or business, expected activity, account age, products, KYC risk rating, prior alert history}}
 FLAGGED TRANSACTIONS: {{the transactions in scope — amounts, dates, directions, counterparties, channels, instruments}}
 EXPECTED-ACTIVITY BASELINE (optional): {{stated expected volume / pattern, or recent typical activity to compare against}}
+PROVIDED MATERIAL (optional): {{paste any case-specific data you already have —
+  transaction exports, KYC records, counterparty details, customer correspondence,
+  prior alerts or dispositions, investigative notes. Leave blank to work from the
+  assistant's own knowledge and any live access it has.}}
 
 If a needed input is missing, state the gap and how it limits the disposition — do not
 invent the missing facts.
@@ -115,6 +119,11 @@ so a reviewer or examiner can follow the decision without the rest of this docum
 [What was not available and how it limits confidence. "None material" is valid if true.]
 
 ## Rules
+- Runs standalone. If PROVIDED MATERIAL is supplied, treat it as the primary evidence
+  base — analyze exactly what is there and attribute findings to it; use any live
+  access only to supplement. No system or integration is required — only the
+  assistant and what you paste in. Anything not established from the material or a
+  cited source is an explicit gap.
 - Always present both supporting and contradicting factors. A one-sided triage is not credible.
 - A disposition to close requires a benign explanation that actually fits the facts —
   not the absence of proof of wrongdoing.
@@ -128,6 +137,7 @@ so a reviewer or examiner can follow the decision without the rest of this docum
 
 ## How to use it
 
+- **Works standalone — paste your own data.** Put whatever transaction material you have into `PROVIDED MATERIAL`; the prompt produces the full standardized output from it and flags anything it cannot verify. Live access or a feed supplements but is never required.
 - The quality of `CUSTOMER PROFILE & CONTEXT` drives the quality of the triage. The same $40,000 wire is routine for one customer and a clear anomaly for another — give the assistant the occupation, expected activity, and prior alert history.
 - Supply the `EXPECTED-ACTIVITY BASELINE` whenever you have it. Without a baseline the assistant can still triage, but the deviation analysis is sharper when it has something concrete to compare against.
 - This prompt produces a *recommendation*. The disposition decision, and any decision to file a regulatory report, stays with the analyst and the institution's escalation process.

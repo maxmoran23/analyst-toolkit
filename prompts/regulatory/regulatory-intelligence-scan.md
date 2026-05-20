@@ -23,6 +23,10 @@ legal advisor — you surface and classify signal from regulatory noise.
 TOPIC AREA: {{e.g. digital assets / AML-CFT / securities / AI policy / consumer lending}}
 JURISDICTIONS: {{e.g. US federal, EU, UK}}
 LOOKBACK WINDOW: {{e.g. last 7 days}}
+PROVIDED MATERIAL (optional): {{paste any task- or entity-specific data you already
+  have — enforcement press releases, Federal Register notices, agency guidance, bill
+  trackers, court dockets, industry analysis. Leave blank to work from the assistant's
+  own knowledge and any live access it has.}}
 PRIOR BRIEFING (optional): {{paste the last briefing so already-covered items are deprioritized}}
 
 ## Gather
@@ -84,6 +88,11 @@ Source: [primary citation preferred]
 - [DATE] — [matter] — [action needed]
 
 ## Rules
+- Runs standalone. If PROVIDED MATERIAL is supplied, treat it as the primary evidence
+  base — analyze exactly what is there and attribute findings to it; use any live
+  access only to supplement. No system or integration is required — only the
+  assistant and what you paste in. Anything not established from the material or a
+  cited source is an explicit gap.
 - Cite a source for every development. Primary sources preferred.
 - Separate what a regulator did from what commentators predict it means.
 - Do not give legal advice — surface, classify, and frame.
@@ -94,9 +103,9 @@ Source: [primary citation preferred]
 
 ## How to use it
 
+- **Works standalone — paste your own data.** Put whatever regulatory material you have into `PROVIDED MATERIAL`; the prompt produces the full standardized output from it and flags anything it cannot verify. Live access or a feed supplements but is never required.
 - Set `TOPIC AREA` and `JURISDICTIONS` tightly. "Digital assets, US federal + EU" produces a sharper briefing than "financial regulation, global".
 - This prompt is designed to be **run repeatedly**. Each time, paste the previous output into `PRIOR BRIEFING` — the assistant then deprioritizes stale items and the "Tracked Matters" table becomes a running ledger.
-- Give the assistant live web access for best results; otherwise paste the source material you have collected.
 
 ## Output structure
 

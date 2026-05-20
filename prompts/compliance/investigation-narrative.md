@@ -27,6 +27,10 @@ TRANSACTIONS & TIMELINE: {{the activity — dates, amounts, directions, counterp
 INVESTIGATION FINDINGS: {{what the investigation established — KYC results, customer responses, counterparty information, prior alerts or reports, external research}}
 WHY THE ACTIVITY IS NOTABLE: {{the suspicion or concern that drove the investigation}}
 PURPOSE: {{regulatory suspicious-activity filing narrative / internal investigation memo / case-closure record}}
+PROVIDED MATERIAL (optional): {{paste any case-specific data you already have — account
+  statements, transaction exports, KYC files, customer correspondence, counterparty
+  records, prior alerts or reports. Leave blank to work from the assistant's own
+  knowledge and any live access it has.}}
 
 If a fact needed for the narrative is missing or unconfirmed, treat it as a gap — state
 it as unknown. Do not infer it and do not write around it silently.
@@ -100,6 +104,11 @@ List any figure that is estimated or approximate and label it as such.]
 flagged as unknown — and how that limits the account. "None" is valid if true.]
 
 ## Rules
+- Runs standalone. If PROVIDED MATERIAL is supplied, treat it as the primary evidence
+  base — build the narrative from exactly what is there and attribute every fact to it;
+  use any live access only to supplement. No system or integration is required — only
+  the assistant and what you paste in. Anything not established from the material or a
+  cited source is an explicit gap.
 - Strict chronology. If exact timing is unknown, say so rather than implying an order.
 - Every monetary amount is explicit and sourced. Every total reconciles to its parts.
 - Plain language. Define terms on first use. No unexplained jargon, no marketing tone.
@@ -115,6 +124,7 @@ flagged as unknown — and how that limits the account. "None" is valid if true.
 
 ## How to use it
 
+- **Works standalone — paste your own data.** Put whatever case material you have into `PROVIDED MATERIAL`; the prompt produces the full standardized output from it and flags anything it cannot verify. Live access or a feed supplements but is never required.
 - Paste the transaction data as completely as you can into `TRANSACTIONS & TIMELINE`. The narrative is only as accurate as the records behind it; the assistant writes from what you give it and flags what you do not.
 - `WHY THE ACTIVITY IS NOTABLE` sets the frame for the introduction and the conclusion — be precise about the actual concern, not a generic one.
 - Set `PURPOSE` deliberately. A regulatory suspicious-activity filing narrative, an internal memo, and a closure record share the same structure but differ in emphasis and tone; the assistant adjusts to the purpose you state.

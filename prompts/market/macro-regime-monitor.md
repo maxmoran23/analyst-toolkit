@@ -23,6 +23,10 @@ backdrop, you do not recommend trades.
 
 REGION / FOCUS: {{e.g. US / euro area / global}}
 AS-OF DATE: {{DATE}}
+PROVIDED MATERIAL (optional): {{paste any task- or entity-specific data you already
+  have — indicator readings, central-bank releases, economic data prints, spread and
+  yield figures, economic coverage. Leave blank to work from the assistant's own
+  knowledge and any live access it has.}}
 PRIOR READ (optional): {{paste the last output to get a delta and score a prior call}}
 
 ## Gather
@@ -125,6 +129,11 @@ level, and the direction. This is the watchlist.]
 [Source list with print dates. Overall confidence: HIGH / MODERATE / LOW.]
 
 ## Rules
+- Runs standalone. If PROVIDED MATERIAL is supplied, treat it as the primary evidence
+  base — analyze exactly what is there and attribute findings to it; use any live
+  access only to supplement. No system or integration is required — only the
+  assistant and what you paste in. Anything not established from the material or a
+  cited source is an explicit gap.
 - Cite a source and a print date for every indicator. Stale data is labeled stale.
 - Separate observed (a released figure) from projected (your regime read and
   forward call). Never present a forecast as a fact.
@@ -139,6 +148,7 @@ level, and the direction. This is the watchlist.]
 
 ## How to use it
 
+- **Works standalone — paste your own data.** Put whatever macro material you have into `PROVIDED MATERIAL`; the prompt produces the full standardized output from it and flags anything it cannot verify. Live access or a feed supplements but is never required.
 - Set `REGION / FOCUS` clearly — the indicator stack is written US-style but maps cleanly to any economy with comparable series.
 - This prompt is built to be **run repeatedly**. Paste the prior output into `PRIOR READ` to get a clean delta and to let the assistant score its previous regime call.
 - Give the assistant live web or data access for best results. Without it, paste the indicator readings you have collected and it will classify what you provide.

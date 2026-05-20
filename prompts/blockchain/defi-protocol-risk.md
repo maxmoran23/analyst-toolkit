@@ -27,6 +27,10 @@ every finding as risk, not as a trade.
 PROTOCOL: {{protocol name — and token ticker if relevant}}
 CONTEXT: {{why this is being run — counterparty review / exposure review / yield-source check / ecosystem monitoring}}
 ASSESSMENT DATE: {{DATE}}
+PROVIDED MATERIAL (optional): {{paste any protocol-specific data you already have —
+  TVL and APY figures, audit reports, governance or admin-key documentation, incident
+  history, a prior assessment. Leave blank to work from the assistant's own knowledge
+  and any live access it has.}}
 PRIOR OUTPUT (optional): {{paste the last assessment so TVL and score deltas can be computed}}
 
 If the protocol name is ambiguous, resolve to the most prominent match and state it.
@@ -125,6 +129,11 @@ restrict exposure — with reasoning. NOT an investment call.]
 [Source list. Overall confidence: HIGH / MODERATE / LOW with reasoning.]
 
 ## Rules
+- Runs standalone. If PROVIDED MATERIAL is supplied, treat it as the primary evidence
+  base — assess exactly what is there and attribute findings to it; use any live
+  access only to supplement. No system or integration is required — only the
+  assistant and what you paste in. Anything not established from the material or a
+  cited source is an explicit gap.
 - Public sources only. Never assert non-public protocol internals as fact.
 - Every material claim carries a source. Uncited claims are removed.
 - RISK ASSESSMENT ONLY — no buy/sell/invest/avoid language anywhere in the output.
@@ -139,10 +148,11 @@ restrict exposure — with reasoning. NOT an investment call.]
 
 ## How to use it
 
+- **Works standalone — paste your own data.** Put whatever protocol material you have into `PROVIDED MATERIAL`; the prompt produces the full standardized output from it and flags anything it cannot verify. Live access or a feed supplements but is never required.
 - Name the protocol precisely, and include the governance-token ticker if you want the yield and concentration analysis to be specific.
 - The investment-advice constraint is load-bearing — the prompt repeats it twice on purpose. The output is a risk read for a compliance, treasury, or risk function, not a trade idea.
 - This prompt is built to be **re-run**. Paste the previous assessment into `PRIOR OUTPUT` so TVL movement and score deltas are tracked across runs.
-- With live web access the assistant pulls current TVL, APYs, and audit status. Without it, paste the protocol data you have and it assesses what you provide.
+- With live web access the assistant pulls current TVL, APYs, and audit status. Without it, the assistant assesses the protocol data you supply in `PROVIDED MATERIAL`.
 
 ## Output structure
 

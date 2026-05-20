@@ -27,6 +27,10 @@ INPUT SIGNALS: {{paste the raw material — recent developments, research, tools
                 unrelated, the better the cross-pollination.}}
 SOLVER PROFILE: {{optional — your skills, resources, constraints, so "feasibility" and
                   "relevance" are scored against what you can actually execute}}
+PROVIDED MATERIAL (optional): {{paste any task- or entity-specific data you already
+  have — research findings, product or tool announcements, market-trend reports,
+  regulatory changes, competitor moves, field notes. Leave blank to work from the
+  assistant's own knowledge and any live access it has.}}
 PRIOR IDEAS (optional): {{paste earlier ideas so new output does not repeat them}}
 
 ## Method
@@ -91,6 +95,11 @@ Next step: [the single most useful thing to do to validate or advance it]
 search was real and prevents re-proposing dead ends.]
 
 ## Rules
+- Runs standalone. If PROVIDED MATERIAL is supplied, treat it as the primary evidence
+  base — analyze exactly what is there and attribute findings to it; use any live
+  access only to supplement. No system or integration is required — only the
+  assistant and what you paste in. Anything not established from the material or a
+  cited source is an explicit gap.
 - Every idea must trace to specific input signals — name them. An idea grounded in
   no input is free association, not synthesis; drop it.
 - The enabling insight ("why now") is mandatory and must be specific. "AI is getting
@@ -106,6 +115,7 @@ search was real and prevents re-proposing dead ends.]
 
 ## How to use it
 
+- **Works standalone — paste your own data.** Put whatever source material you have into `PROVIDED MATERIAL`; the prompt produces the full standardized output from it and flags anything it cannot verify. Live access or a feed supplements but is never required.
 - The quality of the output depends on the inputs. Feed it deliberately *unrelated* material — a research finding, a market shift, a new tool, a regulatory change — and the unexpected intersections do the work. Similar inputs produce obvious ideas.
 - Fill in `SOLVER PROFILE` if the ideas need to be executable by a specific person or team. Without it, "feasibility" and "relevance" are scored in the abstract.
 - Read the `Rejected Intersections` section — it tells you which combinations are dead ends and saves you from re-proposing them next time.

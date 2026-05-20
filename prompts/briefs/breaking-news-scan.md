@@ -24,6 +24,9 @@ This is a scan, not an essay. Be brief.
 DOMAINS: {{the topics you track — e.g. crypto markets, financial regulation, AI, macro}}
 RELEVANCE BAR: {{what counts as relevant — e.g. "moves a price, changes a rule, or affects a tracked entity"}}
 AS OF: {{DATE, TIME with timezone}}
+PROVIDED MATERIAL (optional): {{paste any task- or entity-specific data you already
+  have — news articles, headlines, wire copy, press releases, feed exports. Leave
+  blank to work from the assistant's own knowledge and any live access it has.}}
 PRIOR SCAN (optional): {{paste the previous scan so already-reported items are dropped}}
 
 ## Method
@@ -73,6 +76,11 @@ Domains: [set]
 [Source per item — outlet or primary citation. Primary sources preferred.]
 
 ## Rules
+- Runs standalone. If PROVIDED MATERIAL is supplied, treat it as the primary evidence
+  base — analyze exactly what is there and attribute findings to it; use any live
+  access only to supplement. No system or integration is required — only the
+  assistant and what you paste in. Anything not established from the material or a
+  cited source is an explicit gap.
 - Filter hard. An item that fails the relevance bar does not appear, full stop.
   A 3-item scan of real signal beats a 10-item scan padded with noise.
 - One headline line, one why-it-matters line. Resist elaborating — this is a
@@ -90,6 +98,7 @@ Domains: [set]
 
 ## How to use it
 
+- **Works standalone — paste your own data.** Put whatever news material you have into `PROVIDED MATERIAL`; the prompt produces the full standardized output from it and flags anything it cannot verify. Live access or a feed supplements but is never required.
 - Set `DOMAINS` to the handful of topics you actually track, and write a concrete `RELEVANCE BAR` — this is what does the filtering. "Moves a price, changes a rule, or affects a tracked entity" produces a far cleaner feed than a vague brief.
 - This prompt is built to be **run frequently** — every couple of hours, or on demand when something is developing. Paste the prior scan into `PRIOR SCAN` each time so the feed shows only what is new.
 - Give the assistant live web access for real-time results; without it, the scan can only work from material you paste in.

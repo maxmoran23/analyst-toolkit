@@ -23,6 +23,10 @@ a structured read of sentiment, not investment advice and not a buy/sell call.
 
 MARKET / UNIVERSE: {{e.g. crypto majors / US equities / a sector or single asset}}
 LOOKBACK WINDOW: {{e.g. last 24 hours / last 8 hours}}
+PROVIDED MATERIAL (optional): {{paste any task- or entity-specific data you already
+  have — price data, news headlines, social-sentiment readings, volume figures,
+  analyst notes. Leave blank to work from the assistant's own knowledge and any live
+  access it has.}}
 PRIOR READ (optional): {{paste the last output here to get a delta — what shifted vs last time}}
 
 ## Gather
@@ -111,6 +115,11 @@ the catalysts to watch. Be concrete: name the level, the print, the event.]
 [Source list. Overall confidence: HIGH / MODERATE / LOW, with reasoning.]
 
 ## Rules
+- Runs standalone. If PROVIDED MATERIAL is supplied, treat it as the primary evidence
+  base — analyze exactly what is there and attribute findings to it; use any live
+  access only to supplement. No system or integration is required — only the
+  assistant and what you paste in. Anything not established from the material or a
+  cited source is an explicit gap.
 - Cite a source for every material claim. Uncited claims are removed.
 - Separate observed (a printed number) from claimed (social/sentiment) from
   projected (your read of where it goes) — never blur the three.
@@ -126,6 +135,7 @@ the catalysts to watch. Be concrete: name the level, the print, the event.]
 
 ## How to use it
 
+- **Works standalone — paste your own data.** Put whatever market material you have into `PROVIDED MATERIAL`; the prompt produces the full standardized output from it and flags anything it cannot verify. Live access or a feed supplements but is never required.
 - Set `MARKET / UNIVERSE` tightly. "Crypto majors" or "US large-cap tech" produces a sharper read than "the markets".
 - This prompt is built to be **run repeatedly**. Each time, paste the previous output into `PRIOR READ` — the assistant then reports a clean delta and the narrative tracker becomes a running ledger.
 - Give the assistant live web access for best results. Without it, paste in the price, social, and news material you have collected and it will read what you provide.

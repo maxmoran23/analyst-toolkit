@@ -22,6 +22,10 @@ assessment of the entity below using only publicly available information (OSINT)
 ENTITY: {{ENTITY NAME OR TICKER}}
 CONTEXT: {{why this is being run — onboarding / periodic review / escalation / M&A screening / counterparty risk}}
 ASSESSMENT DATE: {{DATE}}
+PROVIDED MATERIAL (optional): {{paste any entity-specific data you already have —
+  corporate records, filings, registry extracts, news articles, screening results, a
+  prior assessment. Leave blank to work from the assistant's own knowledge and any
+  live access it has.}}
 
 If the entity name is ambiguous, resolve to the most prominent match and state the assumption.
 
@@ -107,6 +111,11 @@ with reasoning. List the conditions or the escalation triggers.]
 [Source list. Overall confidence: HIGH / MODERATE / LOW, with reasoning.]
 
 ## Rules
+- Runs standalone. If PROVIDED MATERIAL is supplied, treat it as the primary evidence
+  base — assess exactly what is there and attribute findings to it; use any live
+  access only to supplement. No system or integration is required — only the
+  assistant and what you paste in. Anything not established from the material or a
+  cited source is an explicit information gap.
 - Public sources only. Never assert non-public or speculative information as fact.
 - Every material claim carries a source. Uncited claims are removed.
 - "No adverse findings" is a legitimate, valuable result — do not manufacture risk.
@@ -121,7 +130,7 @@ with reasoning. List the conditions or the escalation triggers.]
 
 - Replace the three placeholders. `CONTEXT` matters most — it shapes the disposition recommendation at the end.
 - Works on public companies, private companies, crypto / digital-asset service providers, and vendors. For thinly-documented private entities, expect more Information Gaps and a lower confidence rating — that is the correct, honest output, not a failure.
-- If the assistant has live web access, let it gather. If it does not, paste in the source material you have collected and it will assess what you provide.
+- **Works standalone — paste your own data.** Drop whatever entity-specific material you have into `PROVIDED MATERIAL` — filings, registry extracts, news, a prior assessment. The prompt produces the full standardized assessment from what you give it and marks anything it cannot establish as an information gap. Live web access, if available, supplements but is never required.
 - Re-running on the same entity later: paste the prior assessment and ask for a **delta** — what changed, and which domains crossed a tier threshold.
 
 ## Output structure

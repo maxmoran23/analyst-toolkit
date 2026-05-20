@@ -24,6 +24,10 @@ information only.
 TOKEN: {{token name / ticker — and contract address or chain if known}}
 CONTEXT: {{why this is being run — listing review / treasury or counterparty screening / emerging-token assessment}}
 SCREENING DATE: {{DATE}}
+PROVIDED MATERIAL (optional): {{paste any token-specific data you already have —
+  whitepaper, team and funding details, on-chain holder distribution, treasury-wallet
+  activity, audit reports, regulatory actions, a prior screen. Leave blank to work
+  from the assistant's own knowledge and any live access it has.}}
 PRIOR OUTPUT (optional): {{paste the last screen so score deltas can be computed}}
 
 If the ticker is ambiguous, resolve to the most prominent match and state the assumption.
@@ -138,6 +142,11 @@ investment advice.]
 [Source list. Overall confidence: HIGH / MODERATE / LOW with reasoning.]
 
 ## Rules
+- Runs standalone. If PROVIDED MATERIAL is supplied, treat it as the primary evidence
+  base — screen exactly what is there and attribute findings to it; use any live
+  access only to supplement. No system or integration is required — only the
+  assistant and what you paste in. Anything not established from the material or a
+  cited source is an explicit gap.
 - Public sources only. Never assert non-public information as fact.
 - Every material claim carries a source. Uncited claims are removed.
 - Apply the compliance overrides — a CRITICAL typology indicator caps the score at
@@ -155,10 +164,11 @@ investment advice.]
 
 ## How to use it
 
+- **Works standalone — paste your own data.** Put whatever token material you have into `PROVIDED MATERIAL`; the prompt produces the full standardized output from it and flags anything it cannot verify. Live access or a feed supplements but is never required.
 - Include the contract address or chain if you have it — it lets the assistant ground the holder-concentration and treasury-behavior findings in on-chain data.
 - The two axes are deliberately kept separate: a token can have an excellent thesis and still fail the screen on compliance. The override rules enforce exactly that.
 - This prompt is built to be **re-run**. Paste the previous output into `PRIOR OUTPUT` to track score deltas across runs.
-- With live web access the assistant gathers current market and on-chain data. Without it, paste the token data you have and it screens what you provide.
+- With live web access the assistant gathers current market and on-chain data. Without it, the assistant screens the token data you supply in `PROVIDED MATERIAL`.
 
 ## Output structure
 

@@ -24,6 +24,10 @@ open-source information.
 ADDRESSES / TRANSACTIONS: {{paste addresses or tx hashes, with chain — ETH / BTC / SOL / TRX / BNB / other}}
 CONTEXT: {{why this is being screened — watchlist monitoring / counterparty review / alert triage / investigation support}}
 SCREENING DATE: {{DATE}}
+PROVIDED MATERIAL (optional): {{paste any address-specific data you already have —
+  block-explorer exports, transaction history, counterparty labels, designated-address
+  lists, a prior screen. Leave blank to work from the assistant's own knowledge and
+  any live access it has.}}
 PRIOR OUTPUT (optional): {{paste the last screen so volume baselines and score deltas can be computed}}
 
 If an address is ambiguous or you cannot resolve the chain, state the assumption.
@@ -124,6 +128,11 @@ recommends; it does not file regulatory reports.]
 [Source list. Overall confidence: HIGH / MODERATE / LOW with reasoning.]
 
 ## Rules
+- Runs standalone. If PROVIDED MATERIAL is supplied, treat it as the primary evidence
+  base — screen exactly what is there and attribute findings to it; use any live
+  access only to supplement. No system or integration is required — only the
+  assistant and what you paste in. Anything not established from the material or a
+  cited source is an explicit gap.
 - On-chain and public sources only. Never assert attribution you cannot evidence.
 - Every material claim carries a source (tx hash, explorer link, sanctions-list
   reference).
@@ -142,10 +151,11 @@ recommends; it does not file regulatory reports.]
 
 ## How to use it
 
+- **Works standalone — paste your own data.** Put whatever address material you have into `PROVIDED MATERIAL`; the prompt produces the full standardized output from it and flags anything it cannot verify. Live access or a feed supplements but is never required.
 - Always include the chain for each address — the assistant screens ETH, BTC, SOL, TRX, and BNB addresses against the appropriate explorer, and behavior differs by chain.
 - `CONTEXT` shapes the disposition section. "Alert triage" produces a tighter clear/escalate call than "investigation support".
 - This prompt is built to be **re-run on a watchlist**. Paste the previous output into `PRIOR OUTPUT` so volume anomalies are measured against a real baseline and score deltas appear.
-- With live block-explorer access the assistant pulls current data. Without it, paste the transaction data you have collected and it screens what you provide.
+- With live block-explorer access the assistant pulls current data. Without it, the assistant screens the transaction data you supply in `PROVIDED MATERIAL`.
 
 ## Output structure
 

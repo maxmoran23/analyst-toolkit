@@ -27,6 +27,10 @@ ORIGINAL REASONING: {{the stated case for it — the evidence and logic used. If
                       was recorded, write "not recorded" and the judge will note the
                       absence of an evidence trail.}}
 CONTEXT / DATE: {{when the call was made and what was known then}}
+PROVIDED MATERIAL (optional): {{paste any task- or entity-specific data you already
+  have — the source documents behind the call, supporting data, analyst notes,
+  evidence that was available at the time, related precedents. Leave blank to work
+  from the assistant's own knowledge and any live access it has.}}
 OUTCOME (optional): {{what actually happened, if known — used as a footnote, NOT as
                       the basis for the score}}
 
@@ -118,6 +122,11 @@ reasoning — the one fix that would most improve the next call like it.]
 call that lost, or a flawed call that won, is stated as exactly that.]
 
 ## Rules
+- Runs standalone. If PROVIDED MATERIAL is supplied, treat it as the primary evidence
+  base — analyze exactly what is there and attribute findings to it; use any live
+  access only to supplement. No system or integration is required — only the
+  assistant and what you paste in. Anything not established from the material or a
+  cited source is an explicit gap.
 - Score the REASONING, not the outcome. A correct prediction from bad logic is a weak
   call; a wrong prediction from sound logic, given what was knowable, is a strong one.
 - Both debaters must cite specific evidence. An argument with no evidence is dropped.
@@ -132,6 +141,7 @@ call that lost, or a flawed call that won, is stated as exactly that.]
 
 ## How to use it
 
+- **Works standalone — paste your own data.** Put whatever source material you have into `PROVIDED MATERIAL`; the prompt produces the full standardized output from it and flags anything it cannot verify. Live access or a feed supplements but is never required.
 - Paste the `ORIGINAL REASONING` in full. The judge scores the quality of the stated case — if no reasoning was recorded, that absence is itself a low score on evidence and honesty.
 - Keep `OUTCOME` separate and optional. The whole point is to judge the decision independently of luck — supply the outcome only as a footnote.
 - Use it forward (pressure-test a thesis before you commit) and backward (post-mortem a call to learn from it). Backward use over many calls builds a real sense of your own calibration.

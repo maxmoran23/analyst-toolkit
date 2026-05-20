@@ -24,6 +24,10 @@ a monitoring team can implement — not a general description of the crime.
 TYPOLOGY: {{e.g. structuring / trade-based money laundering / mixer use / mule networks / layering / funnel accounts}}
 BUSINESS CONTEXT: {{the institution type and products — e.g. retail bank, money-services business, digital-asset exchange, payments processor}}
 AVAILABLE DATA (optional): {{what fields the monitoring system can actually see — transactions, KYC, counterparty, device, on-chain; affects which rules are buildable}}
+PROVIDED MATERIAL (optional): {{paste any task-specific data you already have — a
+  current rule inventory, a typology write-up or FATF/FinCEN reference, sample alert
+  data, a data dictionary, a prior mapping. Leave blank to work from the assistant's
+  own knowledge and any live access it has.}}
 
 If the typology is broad, scope it to the most common operating pattern and state the assumption.
 
@@ -104,6 +108,11 @@ and a tuning / back-testing approach. Be specific — "segment by customer type"
 additional data would close each gap. "Full coverage" is a valid, stated result.]
 
 ## Rules
+- Runs standalone. If PROVIDED MATERIAL is supplied, treat it as the primary evidence
+  base — analyze exactly what is there and attribute findings to it; use any live
+  access only to supplement. No system or integration is required — only the
+  assistant and what you paste in. Anything not established from the material or a
+  cited source is an explicit gap.
 - Every rule must trace to a named mechanic and indicator. Untraceable rules are removed.
 - State the basis for every threshold. A number with no basis is not audit-defensible.
 - Separate strong indicators from weak ones — do not present a weak indicator as sufficient.
@@ -116,6 +125,7 @@ additional data would close each gap. "Full coverage" is a valid, stated result.
 
 ## How to use it
 
+- **Works standalone — paste your own data.** Put whatever typology material you have into `PROVIDED MATERIAL`; the prompt produces the full standardized output from it and flags anything it cannot verify. Live access or a feed supplements but is never required.
 - Set `TYPOLOGY` to one scheme. Mapping "structuring" and "trade-based money laundering" in the same run produces shallower rules for both — run it once per typology and assemble a library.
 - `BUSINESS CONTEXT` shapes everything downstream. The structuring red flags for a cash-intensive retail bank differ from those for a digital-asset exchange; name the institution and its products.
 - Fill `AVAILABLE DATA` whenever you can. It is the difference between a wish-list of rules and a buildable set — the assistant will mark rules unbuildable instead of assuming a field exists.

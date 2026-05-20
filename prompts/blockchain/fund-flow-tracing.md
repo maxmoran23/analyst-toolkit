@@ -27,6 +27,10 @@ ASSET & CHAIN: {{e.g. ETH on Ethereum / BTC on Bitcoin / USDT on Tron — name t
 TRACING OBJECTIVE: {{e.g. trace stolen funds forward to a cash-out point / establish source of funds backward / map counterparty exposure}}
 DIRECTION & DEPTH: {{forward (where funds went) or backward (where funds came from); how many hops to trace — e.g. up to 5 hops}}
 KNOWN CONTEXT (optional): {{anything already known — the incident, a suspected entity, labels you already have}}
+PROVIDED MATERIAL (optional): {{paste any trace-specific data you already have —
+  block-explorer transaction exports, hop lists, counterparty or address labels,
+  exchange attributions, a prior trace. Leave blank to work from the assistant's own
+  knowledge and any live access it has.}}
 
 If the starting point is ambiguous or the chain is not stated, say so and state the
 assumption you proceed on.
@@ -119,6 +123,11 @@ known-clean source. State whether exposure is direct, near, or distant-through-o
 analysis cannot establish, and how that bounds the conclusions.]
 
 ## Rules
+- Runs standalone. If PROVIDED MATERIAL is supplied, treat it as the primary evidence
+  base — trace exactly what is there and attribute findings to it; use any live
+  access only to supplement. No system or integration is required — only the
+  assistant and what you paste in. Anything not established from the material or a
+  cited source is an explicit gap.
 - Trace actual on-chain paths. Every hop carries a transaction hash; an un-cited hop is removed.
 - This is a multi-hop flow trace, not a single-address screen — follow the value.
 - Separate observed on-chain facts from attribution inference. Label every attribution
@@ -136,10 +145,11 @@ analysis cannot establish, and how that bounds the conclusions.]
 
 ## How to use it
 
+- **Works standalone — paste your own data.** Put whatever transaction material you have into `PROVIDED MATERIAL`; the prompt produces the full standardized output from it and flags anything it cannot verify. Live access or a feed supplements but is never required.
 - Name the chain explicitly in `ASSET & CHAIN`. Tracing mechanics differ between an account-model chain (Ethereum) and a UTXO chain (Bitcoin); the assistant adapts, but only if it knows which it is on.
 - Set `DIRECTION & DEPTH` deliberately. Forward tracing answers "where did the stolen funds go"; backward tracing answers "where did this money come from". Cap the depth — an uncapped trace fans out exponentially and loses focus.
 - Fill `KNOWN CONTEXT` with anything you already have — the incident, a suspected entity, labels in hand. It sharpens attribution and stops the assistant from re-deriving what you already know.
-- Give the assistant live chain-data access where possible. Without it, paste the transaction data you have collected; the assistant traces what you provide and flags where the trail runs past your data.
+- Give the assistant live chain-data access where possible. Without it, the assistant traces the transaction data you supply in `PROVIDED MATERIAL` and flags where the trail runs past your data.
 - Treat attribution as investigative leads, not conclusions. A HIGH-confidence cluster is still an on-chain inference — confirming a real-world identity needs off-chain evidence (an exchange information request, legal process).
 
 ## Output structure

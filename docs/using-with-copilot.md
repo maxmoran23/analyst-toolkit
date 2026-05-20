@@ -43,6 +43,22 @@ In any Copilot, give the assistant something to work from: paste source material
 
 ---
 
+## Working from your own data
+
+Every prompt is a **standalone tool** — it needs no system, integration, or live feed behind it. The intended workflow on a work machine: you have specific, ad-hoc material in front of you — an entity to assess, a document to parse, an alert to work, a set of transactions — and you want it turned into a standardized, refined deliverable.
+
+Each prompt has a **`PROVIDED MATERIAL (optional)`** slot among its inputs. (A few prompts whose whole purpose is to process a document or dataset — `obligation-extraction`, `cross-source-synthesis`, `intelligence-dashboard-aggregator` — take that material as their main input instead.) Paste your data there:
+
+- Documents and filings, regulatory text, agency notices
+- Records, exports, transaction lists, screening results, registry extracts
+- Prior notes, a previous run's output, text extracted from anywhere
+
+The assistant then works **primarily from what you pasted** — it analyzes exactly what is there, attributes findings to it, and marks anything it cannot establish as an explicit information gap rather than inventing it. A live feed or web access, if your assistant has one, only supplements; it is never required. The output is the same standardized, structured deliverable either way.
+
+This is the core of the copy/paste loop: **your ad-hoc data in, a refined standardized deliverable out** — no setup, no system.
+
+---
+
 ## Getting output into clean files
 
 The prompts emit Markdown. To turn a result into a saved artifact:

@@ -27,6 +27,9 @@ FRONTIER AREA: {{the emerging or speculative domain — be specific}}
 LOOKBACK WINDOW: {{e.g. last 7 days / this month / the material provided}}
 PURPOSE: {{why you are tracking this — strategic awareness, a thesis, intellectual
           monitoring}}
+PROVIDED MATERIAL (optional): {{paste any task- or entity-specific data you already
+  have — papers, preprints, news articles, lab announcements, claim write-ups. Leave
+  blank to work from the assistant's own knowledge and any live access it has.}}
 PRIOR SCAN (optional): {{paste the last scan so covered items are not repeated and
                         the themes tracker carries forward}}
 
@@ -106,6 +109,11 @@ Key question: [what needs to happen next]
 |-------|-----------|-------|--------------------|
 
 ## Rules
+- Runs standalone. If PROVIDED MATERIAL is supplied, treat it as the primary evidence
+  base — analyze exactly what is there and attribute findings to it; use any live
+  access only to supplement. No system or integration is required — only the
+  assistant and what you paste in. Anything not established from the material or a
+  cited source is an explicit gap.
 - Every finding carries a tier. An ungraded finding does not go in the scan.
 - The counter-steelman is mandatory on every T1-T3 finding and must be the strongest
   honest version of the skeptic case — not a token sentence.
@@ -122,6 +130,7 @@ Key question: [what needs to happen next]
 
 ## How to use it
 
+- **Works standalone — paste your own data.** Put whatever research material you have into `PROVIDED MATERIAL`; the prompt produces the full standardized output from it and flags anything it cannot verify. Live access or a feed supplements but is never required.
 - This prompt is for areas where the evidence is genuinely mixed — early science, frontier technology, contested claims. The tier system is what lets you track them without your briefing drifting into credulity.
 - The two non-negotiable mechanisms are the **tier on every finding** and the **counter-steelman on every high-tier finding**. If either is missing or thin, ask the assistant to redo it — they are the entire point of the method.
 - Give the assistant live search access for a real scan, or paste the material you have gathered and it will tier and stress-test the set.
