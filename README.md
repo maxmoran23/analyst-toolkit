@@ -16,7 +16,14 @@ Each template was extracted and generalized from a production autonomous-agent f
 
 ![Entity risk assessment dashboard — illustrative sample](samples/previews/entity-risk-preview.png)
 
-*Above: a sample entity risk assessment — the output of one prompt plus one template. [See all samples](samples/).*
+<table>
+  <tr>
+    <td width="50%"><img src="samples/previews/regulatory-landscape-preview.png" alt="Regulatory landscape dashboard — illustrative sample"></td>
+    <td width="50%"><img src="output-templates/dashboards/previews/deep-dive-dashboard-preview.png" alt="Deep-dive dashboard template"></td>
+  </tr>
+</table>
+
+*Above: outputs and templates from the toolkit — a sample entity risk assessment (one prompt plus one template), a regulatory-landscape view, and the lightweight deep-dive dashboard template. [See all samples](samples/) · [dashboard templates](output-templates/dashboards/).*
 
 ---
 
@@ -28,7 +35,7 @@ Each template was extracted and generalized from a production autonomous-agent f
 | **[`output-templates/`](output-templates/)** | Document scaffolds — interactive dashboards, PDF reports, compliance documents, communications |
 | **[`samples/`](samples/)** | Rendered example outputs with previews — what the prompts and templates actually produce |
 | **[`methodology/`](methodology/)** | The writing voice, quality standards, and analytical patterns that keep outputs consistent |
-| **[`reference/`](reference/)** | Domain cheat-sheets — AML typologies, compliance, audit, regulatory, financial analysis |
+| **[`reference/`](reference/)** | Domain cheat-sheets — AML typologies, blockchain entity typologies, compliance, audit, regulatory, financial analysis |
 | **[`quant/`](quant/)** | A dependency-free Python quant library — VaR, Sharpe, Kelly, Monte Carlo, DCF, drawdown |
 | **[`docs/`](docs/)** | How to use the toolkit — the Copilot copy/paste workflow, and how the prompts run on any assistant |
 

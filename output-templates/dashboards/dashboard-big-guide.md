@@ -5,6 +5,10 @@ dashboard template. Open it in a browser, populate it with your data, and you
 have a Bloomberg-terminal-grade analytical view of a topic — no build step, no
 framework, no server.
 
+![dashboard-big.html populated into a finished entity risk assessment](../../samples/previews/entity-risk-preview.png)
+
+*Above: `dashboard-big.html` fully populated — a finished entity risk assessment. The heavyweight template's payoff is depth; the full sample is in [`samples/`](../../samples/).*
+
 ## What it is
 
 `dashboard-big.html` is a master template for **exhaustive** analytical

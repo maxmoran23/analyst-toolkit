@@ -31,7 +31,17 @@ If the entity name is ambiguous, resolve to the most prominent match and state t
 
 ## Method
 
-Assess the entity across eight risk domains. For each domain: gather public evidence,
+First, classify the entity. Before scoring, identify the entity's type. If it does
+not touch blockchain, classify it as a public or private company. If it does,
+identify the specific typology — centralized exchange, stablecoin issuer, custodian,
+DeFi protocol, DAO, blockchain network, miner, staking provider, crypto fund, or a
+traditional entity merely exposed to crypto (a treasury holder, an ETF issuer, a
+bank with a crypto desk). The typology determines which regulatory regimes attach
+and which risk domains dominate — and which tests do NOT apply: an entity that only
+holds crypto on its balance sheet is not a money transmitter and must not be
+assessed as one. State the entity typology in the output.
+
+Then assess the entity across eight risk domains. For each domain: gather public evidence,
 summarize what you found, then assign a 0-100 risk score (0 = no observable risk,
 100 = severe / disqualifying risk). Cite a source for every material claim. Distinguish
 observed fact from allegation from unverified claim — never present an allegation as a finding.
@@ -82,7 +92,7 @@ rating regardless of the composite — state the override explicitly.
 # Entity Risk Assessment — {{ENTITY}}
 
 Composite Risk Score: [n]/100 — [RATING]
-Assessment date: [date] | Basis: Public sources only (OSINT)
+Entity typology: [type / family] | Assessment date: [date] | Basis: Public sources only (OSINT)
 
 ## Executive Summary
 [3-5 sentences: what the entity is, the headline risk picture, the disposition recommendation.]
@@ -127,6 +137,9 @@ with reasoning. List the conditions or the escalation triggers.]
 - Allegations are labeled as allegations; pending matters are labeled as pending.
 - If evidence is thin, say so and lower the confidence rating — do not fill gaps
   with inference.
+- Never emit an empty or placeholder section. A core domain with no adverse
+  evidence gets an explicit clearance line ("No adverse findings identified"),
+  not a hollow heading. Optional detail with no content is omitted, not left blank.
 ```
 
 ---
@@ -134,6 +147,7 @@ with reasoning. List the conditions or the escalation triggers.]
 ## How to use it
 
 - Replace the three placeholders. `CONTEXT` matters most — it shapes the disposition recommendation at the end.
+- **Classify the entity first.** For anything touching blockchain, identify its typology before scoring — see [`reference/blockchain-entity-typologies.md`](../../reference/blockchain-entity-typologies.md). The type determines which regulatory regimes apply and which domains carry the rating.
 - Works on public companies, private companies, crypto / digital-asset service providers, and vendors. For thinly-documented private entities, expect more Information Gaps and a lower confidence rating — that is the correct, honest output, not a failure.
 - **Works standalone — paste your own data.** Drop whatever entity-specific material you have into `PROVIDED MATERIAL` — filings, registry extracts, news, a prior assessment. The prompt produces the full standardized assessment from what you give it and marks anything it cannot establish as an information gap. Live web access, if available, supplements but is never required.
 - Re-running on the same entity later: paste the prior assessment and ask for a **delta** — what changed, and which domains crossed a tier threshold.

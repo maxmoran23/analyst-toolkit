@@ -11,6 +11,21 @@ populated with your own data — by hand or, faster, by an AI assistant.
 | `deep-dive-dashboard.html`    | Lightweight, three-tab, single-topic dashboard      |
 | `deep-dive-guide.md`          | Full usage guide for `deep-dive-dashboard.html`     |
 
+## Previews
+
+**`dashboard-big.html`**, populated into a finished entity risk assessment — the
+heavyweight template's payoff is depth, ten-to-twenty interlocking sections:
+
+![dashboard-big.html populated into an entity risk assessment](../../samples/previews/entity-risk-preview.png)
+
+**`deep-dive-dashboard.html`**, the lightweight three-tab template as shipped —
+KPI cards, charts, and tables, ready to populate in minutes:
+
+![deep-dive-dashboard.html template](previews/deep-dive-dashboard-preview.png)
+
+*Previews are 1440×900. The full populated samples — the entity risk assessment
+above and a regulatory-landscape deep-dive — are in [`samples/`](../../samples/).*
+
 ## Which template to use
 
 The two templates sit at opposite ends of a weight spectrum. Pick by the depth

@@ -93,6 +93,15 @@ regardless of the weighted composite — for example, an active OFAC designation
 criminal indictment for fraud or money laundering, or a multi-billion-dollar
 adverse judgment. State the override explicitly when it applies.
 
+**Score floors.** Short of the all-or-nothing override, specific confirmed facts
+can set a *minimum* under an individual dimension without forcing the whole
+composite — operating as a VASP without required registration, a stablecoin with
+no reserve attestation, a mixer with no AML controls, a recent crypto-specific
+enforcement settlement. A floor is a minimum, never a cap; the highest applicable
+floor governs; and a VASP-specific floor never applies to a non-VASP. Which floors
+are in scope depends on the entity typology — see
+[`blockchain-entity-typologies.md`](blockchain-entity-typologies.md).
+
 ---
 
 ## Key risk indicators (KRIs)
@@ -150,6 +159,9 @@ For the full writing standard, see
 
 ## Related references
 
+- [`blockchain-entity-typologies.md`](blockchain-entity-typologies.md) —
+  classifying the entity itself: 23 blockchain entity typologies, the
+  classification protocol, and typology-aware scoring
 - [`compliance-documents.md`](compliance-documents.md) — document structures for
   entity risk assessments, control matrices, SAR narratives, policies
 - [`regulatory-intelligence.md`](regulatory-intelligence.md) — tracking and

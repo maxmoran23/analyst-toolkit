@@ -11,11 +11,12 @@ an unfamiliar domain.
 
 ---
 
-## The five references
+## The six references
 
 | Document | Covers |
 |----------|--------|
 | [`aml-typologies.md`](aml-typologies.md) | Crypto / digital-asset AML: the US and international regulatory frameworks, fifteen core laundering typologies with detection signals, an 8-dimension risk-scoring model, and key risk indicators. |
+| [`blockchain-entity-typologies.md`](blockchain-entity-typologies.md) | Classifying the entity you are assessing: 23 blockchain entity typologies across four families, the classification protocol, the crypto-service exposure framework, and typology-aware scoring. |
 | [`compliance-documents.md`](compliance-documents.md) | Document structures for compliance work: entity and AML/CFT risk assessments, control matrices, SAR narratives, policy documents, and transaction-monitoring rule documentation. |
 | [`audit-documentation.md`](audit-documentation.md) | Internal-audit and SOX-style work: testing workpapers, sample selection, deficiency classification, and the audit-trail finding structure. |
 | [`regulatory-intelligence.md`](regulatory-intelligence.md) | Tracking regulatory change: the source hierarchy, the six analysis dimensions, tracking categories, the key regulatory bodies, and a regulatory-alert output format. |
@@ -40,6 +41,11 @@ compliance-documents.md     →  updated policies, controls, risk assessments
         ▼
 audit-documentation.md      →  the controls are tested for effectiveness
 ```
+
+`blockchain-entity-typologies.md` is the classification layer that sits *above*
+this chain — it tells you what kind of entity you are assessing before the
+`aml-typologies.md` scoring model is applied, so the same entity type is always
+assessed the same way.
 
 `financial-analysis.md` stands somewhat apart — it supports the financial-health
 dimension of an entity risk assessment, the quantitative side of a risk model, and

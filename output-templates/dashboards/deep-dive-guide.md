@@ -5,6 +5,10 @@ interactive HTML report for ad-hoc analytical deep-dives. Open it in a browser,
 drop in your data, and you have a clean three-tab dashboard with charts, tables,
 and KPI cards — no build step, no dependencies beyond one CDN script.
 
+![deep-dive-dashboard.html template — three tabs, KPI cards, charts](previews/deep-dive-dashboard-preview.png)
+
+*Above: the `deep-dive-dashboard.html` template as shipped — three tabs, KPI cards, and charts, ready to populate.*
+
 ## What it is
 
 A reusable HTML template for one-off investigations that don't warrant the
