@@ -85,6 +85,12 @@ The pattern is identical everywhere: the prompt block from this repo becomes the
 
 Keep this repository as the source of truth: when a prompt here is improved, refresh your saved version from it. And whichever assistant you save it into, the prompt still [runs anywhere](running-on-any-assistant.md) — saving it as an agent does not tie it to that product.
 
+### A higher-leverage variant — the methodology base
+
+The same "save once" pattern applies at a higher level. Instead of saving one prompt as a named agent, save the **four methodology files** (`methodology/analytical-patterns.md`, `audit-defensible-writing.md`, `output-quality-standards.md`, `report-templates.md`) as a single base — and every subsequent prompt in that environment can be a thin one-liner that scopes the task and names the output format. The base supplies the framework; the thin prompt supplies the request.
+
+This is the right setup when you do many varied analytical tasks in the same environment — instead of one saved prompt per task type, you have one saved framework that handles them all. See **[methodology-as-base.md](methodology-as-base.md)** for the full setup walkthrough and the thin-prompt patterns it enables.
+
 ---
 
 ## Patterns that make the toolkit stronger

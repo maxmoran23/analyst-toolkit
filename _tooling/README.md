@@ -6,15 +6,16 @@ These scripts maintain the `standalone/` directory. End users do not need to run
 
 | File | Purpose |
 |---|---|
-| `universal_renderer_appendix.md` | The "Render as a formatted deliverable" block (~700 lines) appended to every standalone file. Edit this single file to evolve the Word / Excel / PDF / HTML rendering instructions across the whole library at once. |
-| `append_renderer.py` | Idempotent script that re-builds every `standalone/*.md` by appending the universal appendix + per-file customization block. Per-file customizations are inline in the script's `PER_FILE` dict. Safe to re-run — replaces the prior appendix in each file rather than duplicating it. |
-| `validate_embedded.py` | Sanity-checks every fenced code block in `standalone/*.md`: Python blocks parse with `ast`, HTML blocks parse with `html.parser`. Catches syntax drift in the embedded templates. |
+| `append_renderer.py` | Idempotent script that re-builds every `standalone/*.md` by appending the renderer block (extracted from `methodology/report-templates.md` between `<!-- BEGIN_RENDERER_APPENDIX -->` and `<!-- END_RENDERER_APPENDIX -->` sentinels) plus a per-file customization block. Per-file customizations are inline in the script's `PER_FILE` dict. Safe to re-run — replaces the prior appendix in each file rather than duplicating it. |
+| `validate_embedded.py` | Sanity-checks every fenced code block in a directory: Python blocks parse with `ast`, HTML blocks parse with `html.parser`. Catches syntax drift in the embedded templates. Run against `standalone/` or `methodology/`. |
+
+The renderer content itself **lives in `methodology/report-templates.md`** (the 4th methodology file), not here. That file is the single source of truth — the script extracts its body between the sentinels and embeds that body into every standalone file.
 
 ## When to re-run
 
-- After editing `universal_renderer_appendix.md` (style change, new color, palette update): `python3 _tooling/append_renderer.py .` from the repo root.
+- After editing the renderer section in `methodology/report-templates.md` (style change, new color, palette update, fix to a code skeleton): `python3 _tooling/append_renderer.py .` from the repo root.
 - After editing a per-file customization in `append_renderer.py`'s `PER_FILE` dict: same command.
-- Before committing changes to `standalone/`: `python3 _tooling/validate_embedded.py standalone/` to make sure nothing parses badly.
+- Before committing changes to `standalone/` or `methodology/report-templates.md`: `python3 _tooling/validate_embedded.py standalone` and `python3 _tooling/validate_embedded.py methodology` to make sure nothing parses badly.
 
 ## Why the script approach instead of hand-editing each standalone file
 

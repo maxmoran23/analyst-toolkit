@@ -31,28 +31,54 @@ Each template was extracted and generalized from a production autonomous-agent f
 
 | Directory | What's in it |
 |-----------|--------------|
-| **[`standalone/`](standalone/)** | **Single-file copy/paste prompts** — each one a complete instruction set, no cross-references, no other files needed. Best for saving as a Copilot agent / Claude Project, or sharing one file with a teammate |
+| **[`methodology/`](methodology/)** | **The 4-file framework base** — analytical patterns, audit-defensible writing voice, quality standards per output type, and the multi-format report-templates renderer. Load all four as Copilot agent / Claude Project / ChatGPT custom GPT instructions once; every task becomes a thin prompt after that. |
+| **[`standalone/`](standalone/)** | **Single-file copy/paste prompts** — each one a complete instruction set, no cross-references, no other files needed; embeds the same renderer as `methodology/report-templates.md`. Best for one-off use or sharing one file with a teammate |
 | **[`prompts/`](prompts/)** | 29 paste-ready analytical prompt templates across 7 categories — the broader library; each file pairs a prompt block with how-to and tuning sections |
 | **[`output-templates/`](output-templates/)** | Document scaffolds — interactive dashboards, PDF reports, compliance documents, communications |
 | **[`samples/`](samples/)** | Rendered example outputs with previews — what the prompts and templates actually produce |
-| **[`methodology/`](methodology/)** | The writing voice, quality standards, and analytical patterns that keep outputs consistent |
 | **[`reference/`](reference/)** | Domain cheat-sheets — AML typologies, blockchain entity typologies, compliance, audit, regulatory, financial analysis |
 | **[`quant/`](quant/)** | A dependency-free Python quant library — VaR, Sharpe, Kelly, Monte Carlo, DCF, drawdown |
 | **[`docs/`](docs/)** | How to use the toolkit — the Copilot copy/paste workflow, and how the prompts run on any assistant |
 
 ---
 
-## Two ways in
+## Three ways in
 
-**Want one file you can paste whole into an assistant — or save as a Copilot agent / Claude Project?** Use **[`standalone/`](standalone/)**. Every file there is self-contained: the whole file *is* the prompt, no markdown links to other files in the repo, and each one starts with a Preflight step where the assistant explicitly checks your inputs and asks for clarification before producing anything partial. Each file also embeds a **multi-format renderer** — ask for a Word doc, an Excel workbook, a PDF narrative report, or an interactive HTML dashboard after the analysis runs, and the same single file tells the assistant exactly how to produce it (no need for any other file in this repo). Covers universal analyst work (document summary, comparison matrix, meeting prep, decision memo, weekly digest, action items) and the flagship financial-crime / intelligence prompts.
+The toolkit supports three workflows. Pick the one that matches how you use AI assistants day to day.
 
-**Want to browse the full library — see how prompts connect to samples, reference material, and other prompts?** Use **[`prompts/`](prompts/)** (catalog below). Each file has:
+### 1. Methodology base + thin prompts (set up once)
+
+**Best for:** a work machine where you'll do many varied analytical tasks, and want every output to come out at the same quality bar without re-pasting a long prompt each time.
+
+Load all four files from **[`methodology/`](methodology/)** as your assistant's base instructions — Copilot agent custom instructions, Claude Project custom instructions, ChatGPT custom GPT instructions, or `.github/copilot-instructions.md` in a working repo. The four files cover **how to think** ([`analytical-patterns.md`](methodology/analytical-patterns.md)), **how to write it down** ([`audit-defensible-writing.md`](methodology/audit-defensible-writing.md)), **when it's done** ([`output-quality-standards.md`](methodology/output-quality-standards.md)), and **how to render it as Word / Excel / PDF / HTML** ([`report-templates.md`](methodology/report-templates.md)).
+
+Then every task is a thin prompt that scopes the work; the four files supply the framework:
+
+> *"Do an 8-domain entity risk assessment on [ENTITY]. Render as a Word doc."*
+>
+> *"Compare these three vendors on [criteria]. Render as an Excel workbook."*
+>
+> *"Triage this transaction alert. [profile + transactions]. Render as both Word and PDF."*
+
+The methodology files apply the voice, the analytical discipline, the quality floor, and the rendering form. See [`methodology/report-templates.md`](methodology/report-templates.md) for more thin-prompt patterns.
+
+### 2. Single-file standalone (no setup, copy/paste once per task)
+
+**Best for:** one-off use, sharing one file with a teammate who has no setup, or demoing the "look at the quality difference" pattern.
+
+Use a file from **[`standalone/`](standalone/)**. Every file there is fully self-contained: the whole file *is* the prompt, no markdown links to other files in the repo, each one starts with a Preflight step (assistant explicitly checks your inputs and asks for clarification before producing anything partial), and each one embeds the same multi-format renderer as `methodology/report-templates.md`. Paste one file, supply your inputs, optionally ask for a Word / Excel / PDF / HTML deliverable — all from that single paste. Covers universal analyst work (document summary, comparison matrix, meeting prep, decision memo, weekly digest, action items) and the flagship financial-crime / intelligence prompts.
+
+### 3. Browse the catalog (find a prompt, copy the block)
+
+**Best for:** discovering what the library covers, picking the right template for a new task, or seeing how prompts pair with samples and reference material.
+
+Use **[`prompts/`](prompts/)** (catalog below). Each file has:
 
 1. A summary table — when to use it and what it produces.
 2. A single fenced ```text``` block under `## The prompt` — copy that, fill the `{{PLACEHOLDERS}}`, paste into any assistant.
 3. How-to-use, output-structure, and tuning sections for the human reader.
 
-Need a formatted deliverable from either workflow? Pair the result with an **[`output-templates/`](output-templates/)** scaffold.
+Need a formatted deliverable from this workflow? Pair the result with an **[`output-templates/`](output-templates/)** scaffold, or carry the analysis output into the renderer in [`methodology/report-templates.md`](methodology/report-templates.md).
 
 Full workflow, including the Copilot copy/paste loop and getting output into clean files: **[docs/using-with-copilot.md](docs/using-with-copilot.md)**.
 

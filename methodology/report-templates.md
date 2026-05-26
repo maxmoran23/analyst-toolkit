@@ -1,3 +1,88 @@
+# Report Templates — multi-format rendering
+
+The fourth methodology file, alongside [`analytical-patterns.md`](analytical-patterns.md) (how to think), [`audit-defensible-writing.md`](audit-defensible-writing.md) (how to write it down), and [`output-quality-standards.md`](output-quality-standards.md) (when it is done). This one defines **how to render it** — the visual and structural form the output takes when the user wants a Word doc, an Excel workbook, a PDF report, or an interactive HTML dashboard, instead of (or in addition to) the prose result in chat.
+
+Read these four together. The prompts assume them.
+
+---
+
+## How this fits with the other three
+
+```
+analytical-patterns.md       →  How do I think?
+audit-defensible-writing.md  →  How do I write it down?
+output-quality-standards.md  →  Is the deliverable good enough to ship?
+report-templates.md (this)   →  How do I render it as Word / Excel / PDF / HTML?
+```
+
+`output-quality-standards.md` defines the **floors** — the minimum each deliverable type must hit before it ships. `report-templates.md` defines the **forms** — the style spec, color palette, typography, layout, and working code skeletons that produce a deliverable above that floor.
+
+The four documents reinforce each other:
+
+- A Word report is **structured** per `analytical-patterns.md`'s severity rubric and source hierarchy.
+- Its **prose** is governed by `audit-defensible-writing.md`'s voice rules.
+- Its **finish** clears `output-quality-standards.md`'s floor for DOCX (cover page, sourced findings, methodology, sources).
+- Its **form** — the cover layout, the scorecard table style, the header / footer, the color choices — is governed by this file.
+
+The result is consistent across every prompt in the library and every assistant the prompts run on: same severity colors, same accent-by-topic system, same typography, same audit-defensible voice. A reviewer who has seen one deliverable from the toolkit recognizes the next one as part of the same family.
+
+---
+
+## The four modes — one analysis, four faces
+
+The same analytical output can be rendered four ways. Each is best for a different use:
+
+| Mode | Format | Best for |
+|---|---|---|
+| **A** | Word document (`.docx`) | Stakeholder hand-off, signature workflows, redlining, regulatory submissions |
+| **B** | Excel workbook (`.xlsx`) | Multi-section data, scorecards, registers, anything the reader will sort or filter |
+| **C** | PDF narrative report (`.pdf`) | Formal one-time deliverable, print, archival, polished hand-off |
+| **D** | Interactive HTML dashboard (`.html`) | Browseable multi-section read, drill-down, share-as-a-link, ongoing monitoring |
+
+The user invokes a mode when they want it: *"render as Word doc"*, *"give me the Excel"*, *"produce a PDF"*, *"build the HTML dashboard"*, *"all formats"*. Without a request, the analysis stays as the prose output the prompt produced — rendering is a follow-on, not the default.
+
+The renderer below is what makes that follow-on possible without any further input from the user or any other file from this repository.
+
+---
+
+## Two ways this file gets used
+
+This is the most flexible methodology file in the set because there are two distinct workflows that depend on it:
+
+### Workflow 1 — methodology base + thin prompt (set up once, use many times)
+
+Load all four methodology files (these and the other three) **once** as the assistant's base instructions:
+
+- **GitHub Copilot** — `.github/copilot-instructions.md` in your working repo
+- **Microsoft 365 Copilot** — agent instructions
+- **Claude** — Project custom instructions
+- **ChatGPT** — custom GPT instructions
+
+Then every task in that environment becomes a **thin prompt**: just describe what you want, what format, and supply the material. The four methodology files supply the framework. Examples:
+
+> "Do an 8-domain risk assessment on Coinbase. Render as a PDF narrative report."
+
+> "Compare these three KYT vendors on detection coverage, integration cost, false-positive rate, sanctions screening, and support quality. Render as an Excel workbook with a comparison-matrix tab and an option-detail tab per vendor."
+
+> "Triage this transaction-monitoring alert and produce the audit-ready disposition memo as a Word doc. Customer profile + transactions below."
+
+The thin prompt scopes the work; the methodology files apply the voice, the analytical patterns, the quality bar, and the rendering form. This is the cleanest plug-and-play setup for a work machine — once configured, the cost-per-task is a one-line prompt.
+
+### Workflow 2 — single-file standalone (no setup, copy/paste once per task)
+
+Use one of the files in [`../standalone/`](../standalone/) instead. Each one embeds the full renderer below inline, so the user pastes a single file and gets the analysis + the formatted artifact from that one paste — no methodology files, no other repo files needed. Best when the user is doing one specific kind of analysis, or sharing the file with a teammate who has no setup.
+
+Both workflows produce equivalent output. The standalone files are derived from this file (see [`../_tooling/`](../_tooling/)) — they all carry the same renderer block between sentinels.
+
+---
+
+## When to deviate
+
+Adapt the templates to the analysis. Drop sections that don't apply. Add sections the analysis surfaces. Change the accent color to match the topic. The point of the renderer is to produce a consistent visual family, not to enforce a rigid template — every analysis is different, and forcing an entity risk assessment into a comparison-matrix layout (or vice versa) produces a worse deliverable than tuning the template.
+
+The non-negotiables (the things you do not deviate on regardless of analysis) are at the end, in **Common rules for all four modes**. Severity tags. Source citations. Confidence ratings. Footer metadata. Those travel unchanged into every artifact.
+
+<!-- BEGIN_RENDERER_APPENDIX -->
 ---
 
 ## Render as a formatted deliverable (Word, Excel, PDF, or interactive HTML)
@@ -883,3 +968,77 @@ renderGaps(); renderDisposition(); renderFooter(); watchScroll();
 - **"Generated {date}, basis: {OSINT / provided material / training-data}"** in the footer of every artifact. The reader of a hand-off needs to know how the analysis was sourced.
 - **One artifact, one file.** Do not split the deliverable into multiple files unless the user explicitly asks. Excel can use multiple tabs in one workbook; HTML is one self-contained `.html`; PDF is one file; Word is one `.docx`.
 - **No emojis in the artifact** unless the user explicitly asks. The repo's quality bar is bank-grade; emojis read as informal and undercut that.
+
+<!-- END_RENDERER_APPENDIX -->
+
+---
+
+## Thin-prompt patterns
+
+Once the four methodology files are loaded as the assistant's base instructions, the prompt itself can be very short — because the framework is already in place. A few patterns that work well:
+
+### Pattern 1 — "Do X. Render as Y."
+
+The most common pattern. Name the analysis type and the format.
+
+> "Do an entity risk assessment on [ENTITY]. Render as a Word doc."
+>
+> "Compare [OPTION A] vs [OPTION B] vs [OPTION C] on [criteria]. Render as an Excel workbook."
+>
+> "Summarize this document for [READER & PURPOSE]. Render as a PDF report."
+>
+> "Build a one-page decision memo on [DECISION] across [OPTIONS]. Render as a Word doc."
+
+### Pattern 2 — "Do X. Show me the output, then render in [formats]."
+
+When the user wants to read the analysis in chat first and then decide whether to render.
+
+> "Triage this transaction-monitoring alert. Show me the disposition recommendation first; then if I confirm, render the audit-ready memo as both Word and PDF."
+
+### Pattern 3 — "Use my data. Produce X in [format]."
+
+When the user has source material to paste.
+
+> "Here are the transactions. Customer profile: [PROFILE]. Alert details: [ALERT]. Triage and render as a Word doc."
+>
+> "Here is the regulation text. Reader: compliance team, deciding whether it changes our program. Summarize and render as a one-page PDF."
+
+### Pattern 4 — "Recurring digest"
+
+When the prompt is going to run on a schedule and the methodology files are stable.
+
+> "Weekly comms digest for week of [DATE]. Priorities: [LIST]. Source material below. Render as HTML dashboard."
+>
+> "Breaking news scan. Domains: crypto markets, financial regulation, AI. As of [TIMESTAMP]. Render as HTML dashboard."
+
+### What makes thin prompts work
+
+Three things:
+
+1. The four methodology files are loaded as base instructions. Without that, the prompt has nothing to inherit from and the output reverts to assistant-generic quality.
+2. The thin prompt names the analysis type **specifically enough** — "do a risk assessment" is too vague; "do an 8-domain entity risk assessment" or "do an enhanced due diligence on a digital-asset service provider" gives the assistant a recognizable structure to apply.
+3. The thin prompt names the format. If it does not, the assistant gives prose in chat — which is fine when prose is what you wanted, and a problem when you needed a workbook.
+
+When the analysis type does not map cleanly to a known pattern, fall back to a [`../standalone/`](../standalone/) file or one of the [`../prompts/`](../prompts/) catalog templates — they spell out the structure the methodology base does not encode.
+
+---
+
+## Maintenance — single source of truth
+
+This file is the **authoritative source** for the renderer content. The same content appears embedded in every file under [`../standalone/`](../standalone/), between the same `<!-- BEGIN_RENDERER_APPENDIX -->` and `<!-- END_RENDERER_APPENDIX -->` sentinels.
+
+To evolve the rendering instructions across the entire library at once:
+
+1. Edit this file's renderer section (everything between the sentinels).
+2. Run [`../_tooling/append_renderer.py`](../_tooling/append_renderer.py) from the repo root.
+3. Every standalone file's renderer block is replaced with the new content. Per-file customization at the bottom of each standalone file is preserved.
+
+To validate the embedded code blocks after a change:
+
+```bash
+python3 _tooling/validate_embedded.py standalone/
+```
+
+Catches Python syntax errors in the generator skeletons and HTML parse errors in the dashboard template.
+
+The script is idempotent — running it on an unchanged source produces byte-identical output across all standalone files.

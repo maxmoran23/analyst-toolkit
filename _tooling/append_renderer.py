@@ -13,8 +13,28 @@ from pathlib import Path
 
 ROOT = Path(sys.argv[1] if len(sys.argv) > 1 else ".")
 HERE = Path(__file__).resolve().parent
-UNIVERSAL = (HERE / "universal_renderer_appendix.md").read_text()
-SENTINEL = "## Render as a formatted deliverable"
+SOURCE_FILE = HERE.parent / "methodology" / "report-templates.md"
+SENTINEL_BEGIN = "<!-- BEGIN_RENDERER_APPENDIX -->"
+SENTINEL_END = "<!-- END_RENDERER_APPENDIX -->"
+SENTINEL = "## Render as a formatted deliverable"  # marks where to truncate in target files
+
+
+def _extract_universal() -> str:
+    text = SOURCE_FILE.read_text()
+    start = text.find(SENTINEL_BEGIN)
+    end = text.find(SENTINEL_END)
+    if start == -1 or end == -1 or end < start:
+        raise SystemExit(
+            f"FATAL: cannot find sentinel pair in {SOURCE_FILE}. "
+            f"Expected '{SENTINEL_BEGIN}' and '{SENTINEL_END}'."
+        )
+    # Take everything after the BEGIN sentinel line, up to (not including) the END sentinel line
+    inner = text[start + len(SENTINEL_BEGIN):end]
+    # Normalize leading/trailing whitespace so the result is exactly one '\n' before content
+    return inner.strip("\n") + "\n"
+
+
+UNIVERSAL = _extract_universal()
 
 # Per-file customization block (appended AFTER the universal appendix in each file).
 # Keys are file stems (no .md).
