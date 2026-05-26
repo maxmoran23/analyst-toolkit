@@ -28,6 +28,19 @@ INPUT STREAMS: {{name each feed and paste its latest content — e.g. a sentimen
   report, a regulatory scan, a news digest, an on-chain monitor}}
 PRIOR DASHBOARD (optional): {{paste the last dashboard to get a clean delta}}
 
+## Preflight
+
+Before producing any output, scan the inputs above. If any required input is missing,
+ambiguous, or contradictory, STOP. Do not produce a partial draft and do not guess at
+the missing context. Ask the user once, in a single short message, with a numbered list
+of the specific clarifications you need (one item per line, no preamble or apology).
+Wait for the user's reply before continuing. If the user replies "proceed with what you
+have", continue and clearly flag every gap in the Information Gaps section of the
+output.
+
+If all required inputs are present, proceed silently to the next section below — do not
+acknowledge this step in the output.
+
 ## Method
 
 1. Parse each input stream — pull the concrete items out of every feed: findings,

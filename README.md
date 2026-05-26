@@ -31,7 +31,8 @@ Each template was extracted and generalized from a production autonomous-agent f
 
 | Directory | What's in it |
 |-----------|--------------|
-| **[`prompts/`](prompts/)** | 29 paste-ready analytical prompt templates across 7 categories — the "codes" you give an assistant |
+| **[`standalone/`](standalone/)** | **Single-file copy/paste prompts** — each one a complete instruction set, no cross-references, no other files needed. Best for saving as a Copilot agent / Claude Project, or sharing one file with a teammate |
+| **[`prompts/`](prompts/)** | 29 paste-ready analytical prompt templates across 7 categories — the broader library; each file pairs a prompt block with how-to and tuning sections |
 | **[`output-templates/`](output-templates/)** | Document scaffolds — interactive dashboards, PDF reports, compliance documents, communications |
 | **[`samples/`](samples/)** | Rendered example outputs with previews — what the prompts and templates actually produce |
 | **[`methodology/`](methodology/)** | The writing voice, quality standards, and analytical patterns that keep outputs consistent |
@@ -41,13 +42,17 @@ Each template was extracted and generalized from a production autonomous-agent f
 
 ---
 
-## Start here
+## Two ways in
 
-1. **Browse [`prompts/`](prompts/)** and find the template that matches your task.
-2. **Copy the prompt block** — each file has one fenced block under `## The prompt`.
-3. **Replace the `{{PLACEHOLDERS}}`** with your inputs.
-4. **Run it** in any capable AI assistant.
-5. Need a formatted deliverable? Pair the result with an **[`output-templates/`](output-templates/)** scaffold.
+**Want one file you can paste whole into an assistant — or save as a Copilot agent / Claude Project?** Use **[`standalone/`](standalone/)**. Every file there is self-contained: the whole file *is* the prompt, no markdown links to other files in the repo, and each one starts with a Preflight step where the assistant explicitly checks your inputs and asks for clarification before producing anything partial. Covers universal analyst work (document summary, comparison matrix, meeting prep, decision memo, weekly digest, action items) and the flagship financial-crime / intelligence prompts.
+
+**Want to browse the full library — see how prompts connect to samples, reference material, and other prompts?** Use **[`prompts/`](prompts/)** (catalog below). Each file has:
+
+1. A summary table — when to use it and what it produces.
+2. A single fenced ```text``` block under `## The prompt` — copy that, fill the `{{PLACEHOLDERS}}`, paste into any assistant.
+3. How-to-use, output-structure, and tuning sections for the human reader.
+
+Need a formatted deliverable from either workflow? Pair the result with an **[`output-templates/`](output-templates/)** scaffold.
 
 Full workflow, including the Copilot copy/paste loop and getting output into clean files: **[docs/using-with-copilot.md](docs/using-with-copilot.md)**.
 

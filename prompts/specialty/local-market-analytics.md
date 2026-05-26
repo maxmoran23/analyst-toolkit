@@ -31,6 +31,19 @@ PROVIDED MATERIAL (optional): {{paste any task- or entity-specific data you alre
   knowledge and any live access it has.}}
 PRIOR REPORT (optional): {{paste the last report to get a what-changed delta}}
 
+## Preflight
+
+Before producing any output, scan the inputs above. If any required input is missing,
+ambiguous, or contradictory, STOP. Do not produce a partial draft and do not guess at
+the missing context. Ask the user once, in a single short message, with a numbered list
+of the specific clarifications you need (one item per line, no preamble or apology).
+Wait for the user's reply before continuing. If the user replies "proceed with what you
+have", continue and clearly flag every gap in the Information Gaps section of the
+output.
+
+If all required inputs are present, proceed silently to the next section below — do not
+acknowledge this step in the output.
+
 ## Method
 
 Work through six analytical streams, then synthesize. Cite a public source for
