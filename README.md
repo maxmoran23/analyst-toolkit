@@ -44,7 +44,7 @@ Each template was extracted and generalized from a production autonomous-agent f
 
 ## Two ways in
 
-**Want one file you can paste whole into an assistant — or save as a Copilot agent / Claude Project?** Use **[`standalone/`](standalone/)**. Every file there is self-contained: the whole file *is* the prompt, no markdown links to other files in the repo, and each one starts with a Preflight step where the assistant explicitly checks your inputs and asks for clarification before producing anything partial. Covers universal analyst work (document summary, comparison matrix, meeting prep, decision memo, weekly digest, action items) and the flagship financial-crime / intelligence prompts.
+**Want one file you can paste whole into an assistant — or save as a Copilot agent / Claude Project?** Use **[`standalone/`](standalone/)**. Every file there is self-contained: the whole file *is* the prompt, no markdown links to other files in the repo, and each one starts with a Preflight step where the assistant explicitly checks your inputs and asks for clarification before producing anything partial. Each file also embeds a **multi-format renderer** — ask for a Word doc, an Excel workbook, a PDF narrative report, or an interactive HTML dashboard after the analysis runs, and the same single file tells the assistant exactly how to produce it (no need for any other file in this repo). Covers universal analyst work (document summary, comparison matrix, meeting prep, decision memo, weekly digest, action items) and the flagship financial-crime / intelligence prompts.
 
 **Want to browse the full library — see how prompts connect to samples, reference material, and other prompts?** Use **[`prompts/`](prompts/)** (catalog below). Each file has:
 

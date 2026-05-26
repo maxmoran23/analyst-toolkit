@@ -2,6 +2,8 @@
 
 Every file in this directory is a **complete, self-contained instruction set**. Copy one whole file into any AI assistant (GitHub Copilot, Microsoft 365 Copilot, Claude, ChatGPT, or anything comparable), reply with your inputs when asked, and the assistant performs the analysis to a defensible standard. **No other file from this repo is needed** — no references, no companion docs, no zip downloads.
 
+Each file now also embeds a **multi-format renderer**: after the analysis runs, ask for a Word doc, an Excel workbook, a PDF narrative report, or an interactive HTML dashboard, and the same single file tells the assistant how to produce it — to the same visual quality bar as the dedicated templates in `../output-templates/`, but without needing any of those files. The renderer ships working Python skeletons (`python-docx`, `openpyxl`, `reportlab`) plus a self-contained HTML+Chart.js dashboard template.
+
 These are the right files to reach for when you want a **single markdown reference** you can keep on a work machine, paste into a Copilot agent's custom instructions, drop into a Claude Project, or share as one block.
 
 ---
@@ -13,6 +15,7 @@ These are the right files to reach for when you want a **single markdown referen
 | **Shape** | Human-facing wrapper + an isolated ```text``` prompt block + tuning sections | Tiny header for the human, then the whole file *is* the prompt |
 | **Cross-references** | Yes — links to `samples/`, `reference/`, paired prompts | None — every reference inlined or removed |
 | **Preflight clarification** | Buried in the Rules section at the bottom of the prompt block | A named **Preflight** step before Method — assistant explicitly stops and asks if any required input is missing |
+| **Multi-format output** | Linked to `output-templates/` files | Embedded inline — Word, Excel, PDF, and interactive HTML rendering in every file |
 | **Designed for** | Browsing the library, copying just the prompt block | Single-file copy/paste; saved as a Copilot agent / Claude Project; sharing one file with a teammate |
 
 The two directories cover the same kinds of work; pick the shape that matches how you use it.
@@ -67,9 +70,24 @@ You are a [role]. [what you do.]
 
 ## Rules
 [the quality bar — sourcing, hedging, "no fabrication", etc.]
+
+---
+
+## Render as a formatted deliverable (Word, Excel, PDF, or interactive HTML)
+[universal renderer — color palette, typography, accent table]
+### Mode A — Word document (.docx)         [python-docx skeleton]
+### Mode B — Excel workbook (.xlsx)        [openpyxl skeleton]
+### Mode C — PDF narrative report (.pdf)   [HTML+CSS template OR reportlab skeleton]
+### Mode D — Interactive HTML dashboard    [single-file HTML + Chart.js template]
+### Common rules for all four modes
+
+## Per-analysis customization
+[file-specific notes: which format suits this analysis, which sections/tabs/page-types/dashboard-sections to use]
 ```
 
 The **Preflight** step is the most important difference from naive prompting. Without it, assistants tend to best-effort guess with whatever the user provided and bury the gaps in a footer. With it, the assistant stops, asks a numbered list of clarifications, and waits — producing nothing partial.
+
+The **Render as a formatted deliverable** appendix means the same file produces both the analysis *and* the artifact. After the analysis runs, the user says "render as Word doc" / "give me the Excel version" / "build the HTML dashboard" / "all formats" and the assistant produces the artifact directly (if the environment supports file output) or generates a self-contained Python script the user runs locally. Style is consistent across all four formats — dark theme, severity color system, accent-by-topic, audit-defensible voice.
 
 ---
 
@@ -77,17 +95,27 @@ The **Preflight** step is the most important difference from naive prompting. Wi
 
 Three ways, in order of how often you do the task:
 
-**Occasional** — copy the file, paste it into the assistant's chat, supply your inputs when it asks.
+**Occasional** — copy the file, paste it into the assistant's chat, supply your inputs when it asks. To get a formatted artifact, ask: "render as Word doc" / "give me the Excel" / "produce a PDF" / "build the HTML dashboard" / "all formats".
 
 **Recurring** — save the file *once* as the assistant's custom instructions:
 - **GitHub Copilot** — paste into `.github/copilot-instructions.md` in a working repo, or save as a reusable prompt file in VS Code.
-- **Microsoft 365 Copilot** — create a Copilot agent, paste the file into the agent's instructions, name it ("Document Summarizer", "Decision Memo", etc.), and run it from Copilot Chat.
+- **Microsoft 365 Copilot** — create a Copilot agent, paste the file into the agent's instructions, name it ("Document Summarizer", "Decision Memo", etc.), and run it from Copilot Chat. M365 Copilot can produce the Word / Excel / PowerPoint deliverable directly from the spec without running any local code.
 - **Claude** — create a Project, paste the file into the Project's custom instructions.
 - **ChatGPT** — create a custom GPT with the file as its instructions.
 
-Then you only supply your inputs each time.
+Then you only supply your inputs each time, and request whichever output format the situation calls for.
 
 **For sharing** — send the whole file to a teammate. It runs identically in their assistant of choice.
+
+## Optional Python libraries (for code-based artifact generation)
+
+The renderer is set up so the assistant produces a self-contained Python script when its environment can't generate the artifact directly. To run those scripts the user only needs:
+
+```bash
+pip install python-docx openpyxl reportlab
+```
+
+For Mode C (PDF), `reportlab` covers Path C2 (pure-Python). Path C1 (HTML to PDF) needs only a browser — the assistant generates HTML, the user prints to PDF. For Mode D (HTML dashboard), no install is needed — the assistant emits a single self-contained `.html` file the user opens in any browser; Chart.js is loaded from a CDN.
 
 ---
 
