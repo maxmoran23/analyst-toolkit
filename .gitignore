@@ -21,3 +21,7 @@ node_modules/
 # Logs / scratch
 *.log
 scratch/
+
+# JVM / Gradle (quant-jvm)
+quant-jvm/build/
+quant-jvm/.gradle/
