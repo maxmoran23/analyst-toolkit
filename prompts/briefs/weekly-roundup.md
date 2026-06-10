@@ -8,6 +8,7 @@
 | **Produces** | Top findings of the week, a graded performance scorecard, a week-over-week metrics table, next-week priorities, and a blocker list |
 | **Depth** | Medium-deep — a structured review, longer than a daily brief |
 | **Pairs with** | [`prompts/briefs/intelligence-brief.md`](intelligence-brief.md) · [`output-templates/dashboards/`](../../output-templates/dashboards/) |
+| **Run-time needs** | **None — the prompt block below is fully self-contained.** For the strict voice + a Word / Excel / PDF / HTML deliverable, also attach [`BASE.md`](../../BASE.md) — one prompt + `BASE.md`, never a third file. |
 
 ---
 
@@ -169,3 +170,9 @@ A composite week grade in the header, five ranked findings, a six-row weighted s
 ## Worked example
 
 *"Run a weekly roundup across my four active projects for the week ending Friday; here is last week's roundup and this week's status notes."* — the assistant returns ranked findings, a graded scorecard with a trend line, a week-over-week metrics table, and a blocker list with unblock actions.
+
+<!-- RUNTIME_CONTRACT -->
+
+---
+
+**Run-time contract** — links on this page are for browsing the repository, not dependencies. The ```` ```text ```` block above is complete as pasted: every rubric, rule, and output structure it relies on is inside it. The only companion file that ever adds anything is [`BASE.md`](../../BASE.md) (audit-defensible voice, quality floor, and the Word / Excel / PDF / HTML renderer). One prompt + `BASE.md` = the full toolkit quality system. Never a third file.

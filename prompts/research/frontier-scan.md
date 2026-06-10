@@ -8,6 +8,7 @@
 | **Produces** | A tier-graded scan: each finding at T1-T5, a mandatory skeptic rebuttal on high-tier items, an activity level, and a themes tracker |
 | **Depth** | Medium — a disciplined briefing built around strict evidence grading |
 | **Pairs with** | [`prompts/research/research-translation-scan.md`](research-translation-scan.md) · [`prompts/research/deep-research-storm.md`](deep-research-storm.md) |
+| **Run-time needs** | **None — the prompt block below is fully self-contained.** For the strict voice + a Word / Excel / PDF / HTML deliverable, also attach [`BASE.md`](../../BASE.md) — one prompt + `BASE.md`, never a third file. |
 
 ---
 
@@ -168,3 +169,9 @@ An activity level and a tier-count line up top, a lead finding, findings ordered
 ## Worked example
 
 *"Scan the emerging research in [a fast-moving, speculative field] over the last month. Grade everything on the evidence tiers and give me the skeptic's best rebuttal on anything you rate T1-T3."* — the assistant returns a tier-graded scan with a mandatory counter-argument on every high-tier finding and an activity level.
+
+<!-- RUNTIME_CONTRACT -->
+
+---
+
+**Run-time contract** — links on this page are for browsing the repository, not dependencies. The ```` ```text ```` block above is complete as pasted: every rubric, rule, and output structure it relies on is inside it. The only companion file that ever adds anything is [`BASE.md`](../../BASE.md) (audit-defensible voice, quality floor, and the Word / Excel / PDF / HTML renderer). One prompt + `BASE.md` = the full toolkit quality system. Never a third file.

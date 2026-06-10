@@ -8,6 +8,7 @@
 | **Produces** | A 0-100 protocol risk score, a 4-tier rating, per-factor findings, yield-sustainability classification, and a risk disposition |
 | **Depth** | Deep — a multi-section risk assessment |
 | **Pairs with** | [`prompts/blockchain/onchain-sanctions-monitor.md`](onchain-sanctions-monitor.md) · [`prompts/blockchain/token-compliance-screen.md`](token-compliance-screen.md) |
+| **Run-time needs** | **None — the prompt block below is fully self-contained.** For the strict voice + a Word / Excel / PDF / HTML deliverable, also attach [`BASE.md`](../../BASE.md) — one prompt + `BASE.md`, never a third file. |
 
 ---
 
@@ -186,3 +187,9 @@ A 0-100 composite, a 4-tier rating, a per-factor scorecard, factor narratives, a
 ## Worked example
 
 *"Assess a mid-size lending protocol ahead of a counterparty exposure decision; here is last week's assessment."* — the assistant returns a scored risk read, classifies the yield as fee-based or emission-driven, and flags TVL movement against the prior baseline.
+
+<!-- RUNTIME_CONTRACT -->
+
+---
+
+**Run-time contract** — links on this page are for browsing the repository, not dependencies. The ```` ```text ```` block above is complete as pasted: every rubric, rule, and output structure it relies on is inside it. The only companion file that ever adds anything is [`BASE.md`](../../BASE.md) (audit-defensible voice, quality floor, and the Word / Excel / PDF / HTML renderer). One prompt + `BASE.md` = the full toolkit quality system. Never a third file.

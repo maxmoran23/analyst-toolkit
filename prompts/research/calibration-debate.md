@@ -8,6 +8,7 @@
 | **Produces** | A steelmanned pro case, a steelmanned con case, a five-dimension verdict, a 0-100 defensibility score, and the single biggest lesson |
 | **Depth** | Medium — a structured debate and verdict |
 | **Pairs with** | [`prompts/research/idea-generation.md`](idea-generation.md) · [`prompts/research/cross-source-synthesis.md`](cross-source-synthesis.md) |
+| **Run-time needs** | **None — the prompt block below is fully self-contained.** For the strict voice + a Word / Excel / PDF / HTML deliverable, also attach [`BASE.md`](../../BASE.md) — one prompt + `BASE.md`, never a third file. |
 
 ---
 
@@ -179,3 +180,9 @@ A three-argument steelmanned pro case, a three-argument steelmanned con case, a 
 ## Worked example
 
 *"Here is a call I made three months ago and the reasoning behind it. Argue both sides and tell me how defensible the reasoning was — I want to know if it was a good decision, not just whether it worked."* — the assistant returns a steelmanned debate, a scored verdict, and the biggest lesson.
+
+<!-- RUNTIME_CONTRACT -->
+
+---
+
+**Run-time contract** — links on this page are for browsing the repository, not dependencies. The ```` ```text ```` block above is complete as pasted: every rubric, rule, and output structure it relies on is inside it. The only companion file that ever adds anything is [`BASE.md`](../../BASE.md) (audit-defensible voice, quality floor, and the Word / Excel / PDF / HTML renderer). One prompt + `BASE.md` = the full toolkit quality system. Never a third file.

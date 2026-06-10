@@ -8,6 +8,7 @@
 | **Produces** | A short ranked feed of headline-style items, each with a severity tag and a one-line significance note |
 | **Depth** | Light — a scan, not an analysis. Terse by design |
 | **Pairs with** | [`prompts/briefs/intelligence-brief.md`](intelligence-brief.md) · [`prompts/regulatory/regulatory-intelligence-scan.md`](../regulatory/regulatory-intelligence-scan.md) |
+| **Run-time needs** | **None — the prompt block below is fully self-contained.** For the strict voice + a Word / Excel / PDF / HTML deliverable, also attach [`BASE.md`](../../BASE.md) — one prompt + `BASE.md`, never a third file. |
 
 ---
 
@@ -137,3 +138,9 @@ A severity-tagged feed of 5-8 (or fewer) headline-style items, each a single lin
 ## Worked example
 
 *"Scan crypto markets and financial regulation for anything breaking in the last two hours; here is the previous scan."* — the assistant returns a severity-ranked feed of new items only, each a headline plus a one-line why-it-matters, and drops everything the prior scan already had.
+
+<!-- RUNTIME_CONTRACT -->
+
+---
+
+**Run-time contract** — links on this page are for browsing the repository, not dependencies. The ```` ```text ```` block above is complete as pasted: every rubric, rule, and output structure it relies on is inside it. The only companion file that ever adds anything is [`BASE.md`](../../BASE.md) (audit-defensible voice, quality floor, and the Word / Excel / PDF / HTML renderer). One prompt + `BASE.md` = the full toolkit quality system. Never a third file.

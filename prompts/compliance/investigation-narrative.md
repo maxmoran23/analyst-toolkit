@@ -8,6 +8,7 @@
 | **Produces** | A complete written narrative: introduction, chronological body, conclusion, plus a figure-source check and a list of facts that could not be established |
 | **Depth** | Medium-to-deep — a complete written deliverable, length scaled to the case |
 | **Pairs with** | [`prompts/compliance/alert-triage.md`](alert-triage.md) · [`methodology/audit-defensible-writing.md`](../../methodology/audit-defensible-writing.md) |
+| **Run-time needs** | **None — the prompt block below is fully self-contained.** For the strict voice + a Word / Excel / PDF / HTML deliverable, also attach [`BASE.md`](../../BASE.md) — one prompt + `BASE.md`, never a third file. |
 
 ---
 
@@ -158,8 +159,14 @@ An introduction that frames the case, a chronological body that walks the activi
 - **Filing-narrative mode** — set `PURPOSE` to the regulatory suspicious-activity filing narrative and ask for a tighter, self-contained account that leads with the subject, the activity, and why it is suspicious.
 - **Length control** — for a small case, ask for a single-section narrative; for a complex multi-account case, ask for dated sub-headings and a per-account thread within the chronology.
 - **Rewrite pass** — paste an existing draft narrative and ask the assistant to apply the quality rubric only: fix the chronology, quantify the vague figures, source the unsourced, and cut anything that overreaches the evidence.
-- **Voice** — pair with [`methodology/audit-defensible-writing.md`](../../methodology/audit-defensible-writing.md) to hold the draft to a consistent, examiner-ready writing standard.
+- **Voice** — attach [`BASE.md`](../../BASE.md) to hold the draft to a consistent, examiner-ready writing standard (Part 1 of that file is the full audit-defensible voice spec).
 
 ## Worked example
 
 *"Write the investigation narrative for a closed case: a customer received nine inbound wires from unrelated third parties over six weeks and moved the funds out within days each time; KYC review found no business explanation."* — the assistant produces a dated chronological account, every wire amount sourced and totaled, concluding that the activity is unexplained and a regulatory report is recommended.
+
+<!-- RUNTIME_CONTRACT -->
+
+---
+
+**Run-time contract** — links on this page are for browsing the repository, not dependencies. The ```` ```text ```` block above is complete as pasted: every rubric, rule, and output structure it relies on is inside it. The only companion file that ever adds anything is [`BASE.md`](../../BASE.md) (audit-defensible voice, quality floor, and the Word / Excel / PDF / HTML renderer). One prompt + `BASE.md` = the full toolkit quality system. Never a third file.

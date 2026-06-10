@@ -8,6 +8,7 @@
 | **Produces** | A virtual trade log, a marked-to-market portfolio, risk-adjusted metrics, per-strategy attribution, and a 0-100 portfolio-health score |
 | **Depth** | Deep — a full portfolio-management workpaper |
 | **Pairs with** | [`prompts/market/market-sentiment-tracker.md`](market-sentiment-tracker.md) · [`output-templates/dashboards/`](../../output-templates/dashboards/) |
+| **Run-time needs** | **None — the prompt block below is fully self-contained.** For the strict voice + a Word / Excel / PDF / HTML deliverable, also attach [`BASE.md`](../../BASE.md) — one prompt + `BASE.md`, never a third file. |
 
 ---
 
@@ -210,3 +211,9 @@ A 0-100 health score, a portfolio snapshot, a simulated trade log, an open-posit
 ## Worked example
 
 *"Run the simulated portfolio for today; here is the prior run's state block."* — the assistant marks the book to market, checks stops, generates and sizes any simulated trades within the risk rules, and returns a health score with full strategy attribution.
+
+<!-- RUNTIME_CONTRACT -->
+
+---
+
+**Run-time contract** — links on this page are for browsing the repository, not dependencies. The ```` ```text ```` block above is complete as pasted: every rubric, rule, and output structure it relies on is inside it. The only companion file that ever adds anything is [`BASE.md`](../../BASE.md) (audit-defensible voice, quality floor, and the Word / Excel / PDF / HTML renderer). One prompt + `BASE.md` = the full toolkit quality system. Never a third file.

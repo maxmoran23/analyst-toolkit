@@ -1,0 +1,27 @@
+name: validate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Embedded code blocks parse (standalone)
+        run: python3 _tooling/validate_embedded.py standalone
+
+      - name: Embedded code blocks parse (methodology)
+        run: python3 _tooling/validate_embedded.py methodology
+
+      - name: BASE.md in sync with methodology sources
+        run: python3 _tooling/build_base.py --check
+
+      - name: Two-file rule — self-containment and pairing budget
+        run: python3 _tooling/validate_self_containment.py

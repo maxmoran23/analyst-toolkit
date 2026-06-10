@@ -2,6 +2,8 @@
 
 The four files in [`../methodology/`](../methodology/) form a self-contained analytical framework. Loaded **once** as your assistant's base instructions, they turn every subsequent task into a thin prompt — you describe what you want and in what format, and the four files supply the voice, the analytical discipline, the quality floor, and the rendering form.
 
+**Shortcut: one file instead of four.** [`../BASE.md`](../BASE.md) is the same four documents consolidated into a single attachable file. If your assistant makes multi-file setup awkward — or you want to attach the base per task instead of installing it — use `BASE.md` and skip the four-file setup entirely. Everything below works identically with either form.
+
 This guide shows the setup for each major assistant, then the thin-prompt patterns that work once the base is in place.
 
 ---

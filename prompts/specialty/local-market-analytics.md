@@ -8,6 +8,7 @@
 | **Produces** | A market-health score, an inventory and pricing read, transformation signals, multi-scenario projections, and a thesis with a recommendation |
 | **Depth** | Deep — a multi-section institutional research report |
 | **Pairs with** | [`output-templates/dashboards/`](../../output-templates/dashboards/) · [`samples/reports/`](../../samples/reports/) |
+| **Run-time needs** | **None — the prompt block below is fully self-contained.** For the strict voice + a Word / Excel / PDF / HTML deliverable, also attach [`BASE.md`](../../BASE.md) — one prompt + `BASE.md`, never a third file. |
 
 ---
 
@@ -218,3 +219,9 @@ A 0-100 market-health composite with a five-tier rating, an eight-row weighted s
 ## Worked example
 
 *"Run a local market analysis on a target ZIP code ahead of a multi-family purchase decision; here is last quarter's report."* — see [`samples/reports/`](../../samples/reports/) for a full rendered analysis with the scorecard, transformation read, and three-scenario projections.
+
+<!-- RUNTIME_CONTRACT -->
+
+---
+
+**Run-time contract** — links on this page are for browsing the repository, not dependencies. The ```` ```text ```` block above is complete as pasted: every rubric, rule, and output structure it relies on is inside it. The only companion file that ever adds anything is [`BASE.md`](../../BASE.md) (audit-defensible voice, quality floor, and the Word / Excel / PDF / HTML renderer). One prompt + `BASE.md` = the full toolkit quality system. Never a third file.

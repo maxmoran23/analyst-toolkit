@@ -8,6 +8,7 @@
 | **Produces** | A per-jurisdiction 0-100 risk index, a 5-tier classification, a delta log, and a watch list of upcoming events |
 | **Depth** | Medium-deep — a multi-country scorecard plus narrative |
 | **Pairs with** | [`prompts/regulatory/regulatory-intelligence-scan.md`](regulatory-intelligence-scan.md) · [`prompts/compliance/sanctions-watchlist-screen.md`](../compliance/sanctions-watchlist-screen.md) |
+| **Run-time needs** | **None — the prompt block below is fully self-contained.** For the strict voice + a Word / Excel / PDF / HTML deliverable, also attach [`BASE.md`](../../BASE.md) — one prompt + `BASE.md`, never a third file. |
 
 ---
 
@@ -183,3 +184,9 @@ A top-signal callout, a sortable jurisdiction risk table, per-country cards, a d
 ## Worked example
 
 *"Score the comprehensively-sanctioned jurisdictions plus three emerging-market countries we are reviewing for risk appetite; here is last month's table."* — the assistant returns an updated risk table, flags any tier crossings in the delta log, and refreshes the watch list.
+
+<!-- RUNTIME_CONTRACT -->
+
+---
+
+**Run-time contract** — links on this page are for browsing the repository, not dependencies. The ```` ```text ```` block above is complete as pasted: every rubric, rule, and output structure it relies on is inside it. The only companion file that ever adds anything is [`BASE.md`](../../BASE.md) (audit-defensible voice, quality floor, and the Word / Excel / PDF / HTML renderer). One prompt + `BASE.md` = the full toolkit quality system. Never a third file.

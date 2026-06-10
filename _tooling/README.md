@@ -7,7 +7,10 @@ These scripts maintain the `standalone/` directory. End users do not need to run
 | File | Purpose |
 |---|---|
 | `append_renderer.py` | Idempotent script that re-builds every `standalone/*.md` by appending the renderer block (extracted from `methodology/report-templates.md` between `<!-- BEGIN_RENDERER_APPENDIX -->` and `<!-- END_RENDERER_APPENDIX -->` sentinels) plus a per-file customization block. Per-file customizations are inline in the script's `PER_FILE` dict. Safe to re-run — replaces the prior appendix in each file rather than duplicating it. |
+| `build_base.py` | Assembles the repo-root `BASE.md` (the single universal companion file) from the four `methodology/` sources — the three discipline files concatenated as Parts 1-3 with sibling links rewritten to in-file references, plus the sentinel-delimited renderer block as Part 4. `--check` mode rebuilds in memory and exits non-zero if `BASE.md` has drifted (CI gate). Never hand-edit `BASE.md`. |
+| `apply_runtime_contract.py` | Idempotently stamps every `prompts/<category>/*.md` with the two-file-rule contract: a `**Run-time needs**` row in the metadata table and a `<!-- RUNTIME_CONTRACT -->` footer. Re-run after adding or editing any prompt file. |
 | `validate_embedded.py` | Sanity-checks every fenced code block in a directory: Python blocks parse with `ast`, HTML blocks parse with `html.parser`. Catches syntax drift in the embedded templates. Run against `standalone/` or `methodology/`. |
+| `validate_self_containment.py` | Enforces the two-file rule (CI gate): no repo-file references inside any paste payload, the run-time contract present in every prompt file, standalone files reference nothing, and no file instructs attaching a companion other than `BASE.md`. Prints the per-feature pairing budget (must be ≤ 2 everywhere). |
 
 The renderer content itself **lives in `methodology/report-templates.md`** (the 4th methodology file), not here. That file is the single source of truth — the script extracts its body between the sentinels and embeds that body into every standalone file.
 

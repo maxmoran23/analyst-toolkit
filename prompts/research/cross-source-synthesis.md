@@ -8,6 +8,7 @@
 | **Produces** | A synthesis brief: cross-cutting themes (confidence-scored), contradiction log, amplified signals, and a blind-spot list |
 | **Depth** | Medium — a focused synthesis, not a re-report of each source |
 | **Pairs with** | [`prompts/research/deep-research-storm.md`](deep-research-storm.md) · [`output-templates/dashboards/`](../../output-templates/dashboards/) |
+| **Run-time needs** | **None — the prompt block below is fully self-contained.** For the strict voice + a Word / Excel / PDF / HTML deliverable, also attach [`BASE.md`](../../BASE.md) — one prompt + `BASE.md`, never a third file. |
 
 ---
 
@@ -168,3 +169,9 @@ An executive summary of cross-source-only findings, confidence-scored cross-cutt
 ## Worked example
 
 *"Here are four separate briefings on the same regulatory topic from this month — synthesize them, tell me where they disagree, and tell me what none of them covered."* — the assistant returns confidence-scored themes, a contradiction table, and a blind-spot list.
+
+<!-- RUNTIME_CONTRACT -->
+
+---
+
+**Run-time contract** — links on this page are for browsing the repository, not dependencies. The ```` ```text ```` block above is complete as pasted: every rubric, rule, and output structure it relies on is inside it. The only companion file that ever adds anything is [`BASE.md`](../../BASE.md) (audit-defensible voice, quality floor, and the Word / Excel / PDF / HTML renderer). One prompt + `BASE.md` = the full toolkit quality system. Never a third file.

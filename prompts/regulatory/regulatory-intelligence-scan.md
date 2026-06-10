@@ -8,6 +8,7 @@
 | **Produces** | A severity-rated briefing: top signal, developments, tracked-matter status, upcoming deadlines |
 | **Depth** | Medium — a focused briefing, not a treatise |
 | **Pairs with** | [`prompts/regulatory/geopolitical-risk-monitor.md`](geopolitical-risk-monitor.md) · [`output-templates/dashboards/`](../../output-templates/dashboards/) |
+| **Run-time needs** | **None — the prompt block below is fully self-contained.** For the strict voice + a Word / Excel / PDF / HTML deliverable, also attach [`BASE.md`](../../BASE.md) — one prompt + `BASE.md`, never a third file. |
 
 ---
 
@@ -139,3 +140,9 @@ A single top-signal callout, severity-ordered developments each with an authorit
 ## Worked example
 
 *"Scan digital-asset regulation across US federal and EU for the last 7 days; here is last week's briefing."* — the assistant returns a severity-ranked briefing and updates the tracked-matters ledger in place.
+
+<!-- RUNTIME_CONTRACT -->
+
+---
+
+**Run-time contract** — links on this page are for browsing the repository, not dependencies. The ```` ```text ```` block above is complete as pasted: every rubric, rule, and output structure it relies on is inside it. The only companion file that ever adds anything is [`BASE.md`](../../BASE.md) (audit-defensible voice, quality floor, and the Word / Excel / PDF / HTML renderer). One prompt + `BASE.md` = the full toolkit quality system. Never a third file.

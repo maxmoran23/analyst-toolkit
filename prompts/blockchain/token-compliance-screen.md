@@ -8,6 +8,7 @@
 | **Produces** | A 0-100 composite token score, a 5-tier rating, a 7-dimension breakdown, matched AML typologies with evidence, and a disposition |
 | **Depth** | Deep — a multi-section screen |
 | **Pairs with** | [`prompts/blockchain/onchain-sanctions-monitor.md`](onchain-sanctions-monitor.md) · [`prompts/blockchain/defi-protocol-risk.md`](defi-protocol-risk.md) |
+| **Run-time needs** | **None — the prompt block below is fully self-contained.** For the strict voice + a Word / Excel / PDF / HTML deliverable, also attach [`BASE.md`](../../BASE.md) — one prompt + `BASE.md`, never a third file. |
 
 ---
 
@@ -202,3 +203,9 @@ A 0-100 composite, a 5-tier rating, a seven-dimension breakdown, separate thesis
 ## Worked example
 
 *"Screen a trending small-cap token for a listing review — assess the thesis and the AML red flags; here is last week's screen."* — the assistant returns a scored two-axis screen, applies a score cap if a critical typology matches, and gives a clear disposition.
+
+<!-- RUNTIME_CONTRACT -->
+
+---
+
+**Run-time contract** — links on this page are for browsing the repository, not dependencies. The ```` ```text ```` block above is complete as pasted: every rubric, rule, and output structure it relies on is inside it. The only companion file that ever adds anything is [`BASE.md`](../../BASE.md) (audit-defensible voice, quality floor, and the Word / Excel / PDF / HTML renderer). One prompt + `BASE.md` = the full toolkit quality system. Never a third file.

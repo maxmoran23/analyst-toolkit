@@ -8,6 +8,7 @@
 | **Produces** | 2-4 scored ideas: core concept, enabling insight, a 0-100 composite score, 5-tier rating, and a development next step |
 | **Depth** | Medium — a focused set of well-developed ideas, not a long list |
 | **Pairs with** | [`prompts/research/research-translation-scan.md`](research-translation-scan.md) · [`prompts/research/calibration-debate.md`](calibration-debate.md) |
+| **Run-time needs** | **None — the prompt block below is fully self-contained.** For the strict voice + a Word / Excel / PDF / HTML deliverable, also attach [`BASE.md`](../../BASE.md) — one prompt + `BASE.md`, never a third file. |
 
 ---
 
@@ -148,8 +149,14 @@ A ranked set of 2-4 ideas, each with a core concept, a mandatory "why now" enabl
 - **Weighting** — the default leans toward novelty and signal strength. For ideas you intend to build immediately, raise Technical Feasibility and Revenue Clarity; for a research agenda, raise Novelty and Impact. State any change.
 - **Single-domain mode** — drop the cross-domain framing and feed inputs from one field to generate focused improvements rather than novel combinations.
 - **Volume mode** — for a wide-net first pass, ask for 8-10 ideas at lower development depth, then re-run this prompt on the top 3 for full treatment.
-- **Pair with debate** — take the top idea into [`calibration-debate.md`](calibration-debate.md) to stress-test it before committing.
+- **Stress-test next** — as a separate follow-on task, run the top idea through the [calibration-debate](calibration-debate.md) prompt before committing to it.
 
 ## Worked example
 
 *"Here are five unrelated developments from this week — two AI research results, a regulatory shift, a new open-source tool, and a market trend. Generate scored ideas at their intersections."* — the assistant returns 2-4 ranked ideas, each tracing to specific inputs.
+
+<!-- RUNTIME_CONTRACT -->
+
+---
+
+**Run-time contract** — links on this page are for browsing the repository, not dependencies. The ```` ```text ```` block above is complete as pasted: every rubric, rule, and output structure it relies on is inside it. The only companion file that ever adds anything is [`BASE.md`](../../BASE.md) (audit-defensible voice, quality floor, and the Word / Excel / PDF / HTML renderer). One prompt + `BASE.md` = the full toolkit quality system. Never a third file.

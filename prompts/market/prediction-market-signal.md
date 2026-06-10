@@ -8,6 +8,7 @@
 | **Produces** | A categorized market scan, implied probabilities, a 0-100 divergence index per market, a 4-tier surface ranking, and a resolution calendar |
 | **Depth** | Medium — a focused signal briefing with a scored ranking |
 | **Pairs with** | [`prompts/market/macro-regime-monitor.md`](macro-regime-monitor.md) · [`prompts/regulatory/geopolitical-risk-monitor.md`](../regulatory/geopolitical-risk-monitor.md) |
+| **Run-time needs** | **None — the prompt block below is fully self-contained.** For the strict voice + a Word / Excel / PDF / HTML deliverable, also attach [`BASE.md`](../../BASE.md) — one prompt + `BASE.md`, never a third file. |
 
 ---
 
@@ -181,3 +182,9 @@ A categorized scan, a ranked divergence table with implied probabilities and a 0
 ## Worked example
 
 *"Mine prediction markets on US rates and recession odds; compare against the latest official forecasts; here is last week's scan."* — the assistant returns a ranked divergence table, flags where the crowd disagrees with the forecasts, and updates the resolution calendar.
+
+<!-- RUNTIME_CONTRACT -->
+
+---
+
+**Run-time contract** — links on this page are for browsing the repository, not dependencies. The ```` ```text ```` block above is complete as pasted: every rubric, rule, and output structure it relies on is inside it. The only companion file that ever adds anything is [`BASE.md`](../../BASE.md) (audit-defensible voice, quality floor, and the Word / Excel / PDF / HTML renderer). One prompt + `BASE.md` = the full toolkit quality system. Never a third file.

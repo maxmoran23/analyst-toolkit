@@ -2,6 +2,8 @@
 
 This toolkit is built for one motion: **find a template, copy it, paste it into an assistant, get a structured result.** Nothing to install, no account tied to anything. It works the same in GitHub Copilot, Claude, ChatGPT, or any capable assistant.
 
+**Attachment budget: two files, maximum.** Any prompt works pasted alone. For the full quality system — the audit-defensible voice, the quality floor, and the Word / Excel / PDF / HTML renderer — also paste or attach [`../BASE.md`](../BASE.md). That is the complete recipe for every feature in the library; you never need a third file, and nothing a prompt file links to is required at run time.
+
 This guide covers the workflow end to end.
 
 ---

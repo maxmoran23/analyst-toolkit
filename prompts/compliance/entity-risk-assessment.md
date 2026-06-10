@@ -8,6 +8,7 @@
 | **Produces** | An 8-domain risk scorecard, 0-100 weighted composite, 5-tier rating, red flags, and a disposition recommendation |
 | **Depth** | Deep — expect a multi-section report |
 | **Pairs with** | [`output-templates/compliance-docs/`](../../output-templates/compliance-docs/) · [`samples/reports/`](../../samples/reports/) |
+| **Run-time needs** | **None — the prompt block below is fully self-contained.** For the strict voice + a Word / Excel / PDF / HTML deliverable, also attach [`BASE.md`](../../BASE.md) — one prompt + `BASE.md`, never a third file. |
 
 ---
 
@@ -179,3 +180,9 @@ A 0-100 composite, a 5-tier rating, an eight-row scorecard, per-domain narrative
 ## Worked example
 
 *"Assess a mid-size digital-asset exchange ahead of a counterparty onboarding decision."* — see [`samples/reports/`](../../samples/reports/) for a full rendered assessment.
+
+<!-- RUNTIME_CONTRACT -->
+
+---
+
+**Run-time contract** — links on this page are for browsing the repository, not dependencies. The ```` ```text ```` block above is complete as pasted: every rubric, rule, and output structure it relies on is inside it. The only companion file that ever adds anything is [`BASE.md`](../../BASE.md) (audit-defensible voice, quality floor, and the Word / Excel / PDF / HTML renderer). One prompt + `BASE.md` = the full toolkit quality system. Never a third file.

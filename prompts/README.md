@@ -2,6 +2,8 @@
 
 29 paste-ready analytical prompt templates. Each one turns an AI assistant into a specific kind of analyst — an entity risk reviewer, a sanctions screener, a transaction-monitoring analyst, a blockchain investigator, a regulatory monitor, a deep researcher — with a defined method, a scoring rubric, and a structured output format.
 
+**The two-file rule.** Every prompt block here is fully self-contained as pasted — no other file is required at run time. The only companion that ever adds anything is [`../BASE.md`](../BASE.md) (the audit-defensible voice, the quality floor, and the Word / Excel / PDF / HTML renderer in one document). One prompt + `BASE.md` is the entire quality system; there is never a third file, and CI enforces it. Links inside these files are browse-time navigation only — each file states this in its **Run-time needs** row and its run-time contract footer.
+
 ## How each file is built
 
 Every prompt file has the same anatomy:

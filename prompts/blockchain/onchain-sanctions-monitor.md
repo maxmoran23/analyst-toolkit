@@ -8,6 +8,7 @@
 | **Produces** | A 0-100 risk score per address, a 4-tier rating, sanctions/mixer/pattern findings, entity clustering, and a severity-rated report |
 | **Depth** | Deep — a multi-section monitoring report |
 | **Pairs with** | [`prompts/compliance/sanctions-watchlist-screen.md`](../compliance/sanctions-watchlist-screen.md) · [`prompts/blockchain/token-compliance-screen.md`](token-compliance-screen.md) |
+| **Run-time needs** | **None — the prompt block below is fully self-contained.** For the strict voice + a Word / Excel / PDF / HTML deliverable, also attach [`BASE.md`](../../BASE.md) — one prompt + `BASE.md`, never a third file. |
 
 ---
 
@@ -189,3 +190,9 @@ A per-address 0-100 risk score, a 4-tier rating, a screening table, dedicated sa
 ## Worked example
 
 *"Screen these eight watchlist wallets across ETH and BTC for sanctions and mixer exposure; here is yesterday's screen."* — the assistant returns a scored screening table, traces any sanctioned-address paths, and flags volume anomalies against the prior baseline.
+
+<!-- RUNTIME_CONTRACT -->
+
+---
+
+**Run-time contract** — links on this page are for browsing the repository, not dependencies. The ```` ```text ```` block above is complete as pasted: every rubric, rule, and output structure it relies on is inside it. The only companion file that ever adds anything is [`BASE.md`](../../BASE.md) (audit-defensible voice, quality floor, and the Word / Excel / PDF / HTML renderer). One prompt + `BASE.md` = the full toolkit quality system. Never a third file.

@@ -6,6 +6,8 @@ Read these four together. The prompts assume them.
 
 Loaded as a **base** into any assistant (Copilot agent custom instructions, Claude Project, ChatGPT custom GPT, GitHub Copilot repo-level instructions), these four files become the framework that turns a thin task prompt into a structured, sourced, properly rendered deliverable. See `report-templates.md` for the thin-prompt patterns this enables.
 
+**Need it as one file?** [`../BASE.md`](../BASE.md) is these four documents consolidated into a single attachable file — built for environments where attaching multiple files is costly or impossible. It is generated from this directory by `_tooling/build_base.py`; edit the four sources here, rebuild, and CI verifies the two never drift. Never hand-edit `BASE.md`.
+
 ---
 
 ## The four documents

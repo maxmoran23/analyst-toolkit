@@ -8,6 +8,7 @@
 | **Produces** | A hit list with match scores, a true / probable / false-positive disposition per hit with reasoning, an overall clearance decision, and a screening memo |
 | **Depth** | Medium-deep — a hit-by-hit screen with a clearance memo |
 | **Pairs with** | [`prompts/compliance/entity-risk-assessment.md`](entity-risk-assessment.md) · [`prompts/blockchain/onchain-sanctions-monitor.md`](../blockchain/onchain-sanctions-monitor.md) |
+| **Run-time needs** | **None — the prompt block below is fully self-contained.** For the strict voice + a Word / Excel / PDF / HTML deliverable, also attach [`BASE.md`](../../BASE.md) — one prompt + `BASE.md`, never a third file. |
 
 ---
 
@@ -185,3 +186,9 @@ A headline clearance result, the subject record, a hit-by-hit section with match
 ## Worked example
 
 *"Screen this individual — name, DOB, and nationality provided — against OFAC, EU, UN, and UK lists for an onboarding decision."* — the assistant returns a hit list with match scores, dispositions each hit with an identifier-by-identifier comparison, and issues a clear / escalate / block decision.
+
+<!-- RUNTIME_CONTRACT -->
+
+---
+
+**Run-time contract** — links on this page are for browsing the repository, not dependencies. The ```` ```text ```` block above is complete as pasted: every rubric, rule, and output structure it relies on is inside it. The only companion file that ever adds anything is [`BASE.md`](../../BASE.md) (audit-defensible voice, quality floor, and the Word / Excel / PDF / HTML renderer). One prompt + `BASE.md` = the full toolkit quality system. Never a third file.

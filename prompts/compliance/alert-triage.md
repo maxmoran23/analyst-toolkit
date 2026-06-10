@@ -8,6 +8,7 @@
 | **Produces** | A disposition recommendation, an analytical rationale, factors for and against, recommended next steps, and an audit-ready disposition memo |
 | **Depth** | Medium — a focused case workup, not a full investigation |
 | **Pairs with** | [`prompts/compliance/typology-detection-mapping.md`](typology-detection-mapping.md) · [`prompts/compliance/investigation-narrative.md`](investigation-narrative.md) |
+| **Run-time needs** | **None — the prompt block below is fully self-contained.** For the strict voice + a Word / Excel / PDF / HTML deliverable, also attach [`BASE.md`](../../BASE.md) — one prompt + `BASE.md`, never a third file. |
 
 ---
 
@@ -175,3 +176,9 @@ A single disposition, an alert summary, a profile-comparison section, a typology
 ## Worked example
 
 *"Triage a structuring alert on a retail customer — six cash deposits just under the reporting threshold in eight days; customer is a salaried teacher with two years of routine low-volume activity."* — the assistant compares the activity to the profile, finds no benign explanation that fits, and returns a REFER recommendation with a disposition memo.
+
+<!-- RUNTIME_CONTRACT -->
+
+---
+
+**Run-time contract** — links on this page are for browsing the repository, not dependencies. The ```` ```text ```` block above is complete as pasted: every rubric, rule, and output structure it relies on is inside it. The only companion file that ever adds anything is [`BASE.md`](../../BASE.md) (audit-defensible voice, quality floor, and the Word / Excel / PDF / HTML renderer). One prompt + `BASE.md` = the full toolkit quality system. Never a third file.

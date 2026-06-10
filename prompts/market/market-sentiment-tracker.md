@@ -8,6 +8,7 @@
 | **Produces** | A 0-100 composite heat score, a 5-dimension sentiment read, narrative tracker, regime classification, and named change-catalysts |
 | **Depth** | Medium — a focused briefing with a scored dashboard |
 | **Pairs with** | [`prompts/market/macro-regime-monitor.md`](macro-regime-monitor.md) · [`output-templates/dashboards/`](../../output-templates/dashboards/) |
+| **Run-time needs** | **None — the prompt block below is fully self-contained.** For the strict voice + a Word / Excel / PDF / HTML deliverable, also attach [`BASE.md`](../../BASE.md) — one prompt + `BASE.md`, never a third file. |
 
 ---
 
@@ -172,3 +173,9 @@ A 0-100 composite heat score with a 5-tier label, a sentiment dashboard table, a
 ## Worked example
 
 *"Track sentiment across crypto majors over the last 8 hours; here is the prior read."* — the assistant returns a scored heat dashboard, an updated narrative tracker, and a named list of what would change the story.
+
+<!-- RUNTIME_CONTRACT -->
+
+---
+
+**Run-time contract** — links on this page are for browsing the repository, not dependencies. The ```` ```text ```` block above is complete as pasted: every rubric, rule, and output structure it relies on is inside it. The only companion file that ever adds anything is [`BASE.md`](../../BASE.md) (audit-defensible voice, quality floor, and the Word / Excel / PDF / HTML renderer). One prompt + `BASE.md` = the full toolkit quality system. Never a third file.

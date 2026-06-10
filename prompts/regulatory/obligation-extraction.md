@@ -8,6 +8,7 @@
 | **Produces** | A structured obligation register, a scope-and-applicability summary, and an ambiguities / open-questions list |
 | **Depth** | Medium-to-deep — scales with the length of the source document |
 | **Pairs with** | [`prompts/regulatory/regulatory-intelligence-scan.md`](regulatory-intelligence-scan.md) · [`reference/regulatory-intelligence.md`](../../reference/regulatory-intelligence.md) |
+| **Run-time needs** | **None — the prompt block below is fully self-contained.** For the strict voice + a Word / Excel / PDF / HTML deliverable, also attach [`BASE.md`](../../BASE.md) — one prompt + `BASE.md`, never a third file. |
 
 ---
 
@@ -165,3 +166,9 @@ A scope-and-applicability orientation, the obligation register as a seven-column
 ## Worked example
 
 *"Extract the obligation register from this final AML recordkeeping rule, read from the perspective of a money-services business; here is the full rule text."* — the assistant returns a scope summary, a citation-anchored obligation table, a deadline list, and an open-questions list for the two provisions whose applicability threshold is ambiguous.
+
+<!-- RUNTIME_CONTRACT -->
+
+---
+
+**Run-time contract** — links on this page are for browsing the repository, not dependencies. The ```` ```text ```` block above is complete as pasted: every rubric, rule, and output structure it relies on is inside it. The only companion file that ever adds anything is [`BASE.md`](../../BASE.md) (audit-defensible voice, quality floor, and the Word / Excel / PDF / HTML renderer). One prompt + `BASE.md` = the full toolkit quality system. Never a third file.

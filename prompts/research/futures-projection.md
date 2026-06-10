@@ -8,6 +8,7 @@
 | **Produces** | A year-by-year forecast table per metric (central + confidence band), phase narratives, stated assumptions, wildcards, and a self-assessed confidence rating |
 | **Depth** | Deep — a multi-section projection document |
 | **Pairs with** | [`prompts/research/frontier-scan.md`](frontier-scan.md) · [`output-templates/dashboards/`](../../output-templates/dashboards/) |
+| **Run-time needs** | **None — the prompt block below is fully self-contained.** For the strict voice + a Word / Excel / PDF / HTML deliverable, also attach [`BASE.md`](../../BASE.md) — one prompt + `BASE.md`, never a third file. |
 
 ---
 
@@ -174,3 +175,9 @@ A base hypothesis, a headline trajectory, a year-by-year forecast table per metr
 ## Worked example
 
 *"Project the next ten years for [a specific industry] — give me year-by-year forecasts on the metrics that matter, with confidence bands, the phases in between, and every assumption you are relying on."* — the assistant returns a base hypothesis, per-metric forecast tables with bands, phase narratives, an assumptions list, and a confidence rating.
+
+<!-- RUNTIME_CONTRACT -->
+
+---
+
+**Run-time contract** — links on this page are for browsing the repository, not dependencies. The ```` ```text ```` block above is complete as pasted: every rubric, rule, and output structure it relies on is inside it. The only companion file that ever adds anything is [`BASE.md`](../../BASE.md) (audit-defensible voice, quality floor, and the Word / Excel / PDF / HTML renderer). One prompt + `BASE.md` = the full toolkit quality system. Never a third file.

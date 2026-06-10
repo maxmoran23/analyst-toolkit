@@ -8,6 +8,7 @@
 | **Produces** | A hop-by-hop fund-flow map, counterparty / entity identification, a risk-exposure summary, an attribution-confidence rating, and recommended next steps |
 | **Depth** | Deep — a multi-section tracing report |
 | **Pairs with** | [`prompts/blockchain/onchain-sanctions-monitor.md`](onchain-sanctions-monitor.md) · [`reference/aml-typologies.md`](../../reference/aml-typologies.md) |
+| **Run-time needs** | **None — the prompt block below is fully self-contained.** For the strict voice + a Word / Excel / PDF / HTML deliverable, also attach [`BASE.md`](../../BASE.md) — one prompt + `BASE.md`, never a third file. |
 
 ---
 
@@ -184,3 +185,9 @@ A summary, a hop-by-hop flow table, a counterparty-identification table, a risk-
 ## Worked example
 
 *"Trace ETH stolen in a protocol exploit forward up to 6 hops from the attacker's address; objective is to reach a cash-out point."* — the assistant returns a hop-by-hop map, flags a mixer at hop 3 and the interrupted trace past it, identifies an exchange deposit on a partially traceable branch, and recommends an exchange information request.
+
+<!-- RUNTIME_CONTRACT -->
+
+---
+
+**Run-time contract** — links on this page are for browsing the repository, not dependencies. The ```` ```text ```` block above is complete as pasted: every rubric, rule, and output structure it relies on is inside it. The only companion file that ever adds anything is [`BASE.md`](../../BASE.md) (audit-defensible voice, quality floor, and the Word / Excel / PDF / HTML renderer). One prompt + `BASE.md` = the full toolkit quality system. Never a third file.

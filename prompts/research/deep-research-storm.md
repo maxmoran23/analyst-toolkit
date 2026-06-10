@@ -8,6 +8,7 @@
 | **Produces** | A 2,500-5,000 word cited article: perspective-driven outline, per-section evidence, contradiction reconciliation, open questions |
 | **Depth** | Deep — expect a long, structured article |
 | **Pairs with** | [`prompts/research/cross-source-synthesis.md`](cross-source-synthesis.md) · [`output-templates/pdf-reports/`](../../output-templates/pdf-reports/) |
+| **Run-time needs** | **None — the prompt block below is fully self-contained.** For the strict voice + a Word / Excel / PDF / HTML deliverable, also attach [`BASE.md`](../../BASE.md) — one prompt + `BASE.md`, never a third file. |
 
 ---
 
@@ -148,3 +149,9 @@ A TL;DR, a background section, 5-8 evidence sections each built from a perspecti
 ## Worked example
 
 *"Deep research on the current state of stablecoin regulation across major jurisdictions — I need a reference document, not a summary."* — the assistant builds a perspective-driven outline, gathers evidence per section, and returns a long-form cited article with a contradiction section and open questions.
+
+<!-- RUNTIME_CONTRACT -->
+
+---
+
+**Run-time contract** — links on this page are for browsing the repository, not dependencies. The ```` ```text ```` block above is complete as pasted: every rubric, rule, and output structure it relies on is inside it. The only companion file that ever adds anything is [`BASE.md`](../../BASE.md) (audit-defensible voice, quality floor, and the Word / Excel / PDF / HTML renderer). One prompt + `BASE.md` = the full toolkit quality system. Never a third file.

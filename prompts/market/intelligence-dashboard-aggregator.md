@@ -8,6 +8,7 @@
 | **Produces** | A KPI bar, a top-line summary, severity-tagged sections per stream, a cross-stream connections section, and a delta vs. the prior dashboard |
 | **Depth** | Medium — a synthesis layer over inputs you already have |
 | **Pairs with** | [`prompts/briefs/`](../briefs/) · [`output-templates/dashboards/`](../../output-templates/dashboards/) |
+| **Run-time needs** | **None — the prompt block below is fully self-contained.** For the strict voice + a Word / Excel / PDF / HTML deliverable, also attach [`BASE.md`](../../BASE.md) — one prompt + `BASE.md`, never a third file. |
 
 ---
 
@@ -155,3 +156,9 @@ A top-line cross-stream summary, a compact KPI bar, one severity-ranked section 
 ## Worked example
 
 *"Consolidate today's sentiment report, regulatory scan, and news digest into one dashboard; here is yesterday's."* — the assistant returns a single dashboard with a top-line read, severity-ranked sections per feed, the signals where feeds corroborate each other, and a clean delta.
+
+<!-- RUNTIME_CONTRACT -->
+
+---
+
+**Run-time contract** — links on this page are for browsing the repository, not dependencies. The ```` ```text ```` block above is complete as pasted: every rubric, rule, and output structure it relies on is inside it. The only companion file that ever adds anything is [`BASE.md`](../../BASE.md) (audit-defensible voice, quality floor, and the Word / Excel / PDF / HTML renderer). One prompt + `BASE.md` = the full toolkit quality system. Never a third file.

@@ -8,6 +8,7 @@
 | **Produces** | A filtered briefing: signal items with a practical translation each, a noise-rejection count, and a running themes tracker |
 | **Depth** | Medium — a focused briefing built on ruthless filtering |
 | **Pairs with** | [`prompts/research/frontier-scan.md`](frontier-scan.md) · [`prompts/research/idea-generation.md`](idea-generation.md) |
+| **Run-time needs** | **None — the prompt block below is fully self-contained.** For the strict voice + a Word / Excel / PDF / HTML deliverable, also attach [`BASE.md`](../../BASE.md) — one prompt + `BASE.md`, never a third file. |
 
 ---
 
@@ -156,3 +157,9 @@ A top-signal callout, severity-ordered signal items each carrying a full practic
 ## Worked example
 
 *"Scan this week's notable AI/ML papers, throw out the increments, and tell me — as someone who builds analytics tools — which few matter and what I should do about each."* — the assistant returns a filtered briefing with a practical translation per item and a rejection count.
+
+<!-- RUNTIME_CONTRACT -->
+
+---
+
+**Run-time contract** — links on this page are for browsing the repository, not dependencies. The ```` ```text ```` block above is complete as pasted: every rubric, rule, and output structure it relies on is inside it. The only companion file that ever adds anything is [`BASE.md`](../../BASE.md) (audit-defensible voice, quality floor, and the Word / Excel / PDF / HTML renderer). One prompt + `BASE.md` = the full toolkit quality system. Never a third file.

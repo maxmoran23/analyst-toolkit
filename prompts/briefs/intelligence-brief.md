@@ -8,6 +8,7 @@
 | **Produces** | A prioritized briefing: top takeaways, domain sections ordered by importance, a calendar/watch list, and an optional day grade |
 | **Depth** | Medium — a focused executive briefing, not a treatise. The variant sets the length |
 | **Pairs with** | [`prompts/briefs/weekly-roundup.md`](weekly-roundup.md) · [`prompts/briefs/breaking-news-scan.md`](breaking-news-scan.md) |
+| **Run-time needs** | **None — the prompt block below is fully self-contained.** For the strict voice + a Word / Excel / PDF / HTML deliverable, also attach [`BASE.md`](../../BASE.md) — one prompt + `BASE.md`, never a third file. |
 
 ---
 
@@ -161,3 +162,9 @@ Three top takeaways, domain sections ordered by significance (lead / include / f
 ## Worked example
 
 *"Produce a midday delta update across markets and regulatory; here is this morning's brief and the feed activity since."* — the assistant returns a short, delta-only update and flags the quiet domains in one line each.
+
+<!-- RUNTIME_CONTRACT -->
+
+---
+
+**Run-time contract** — links on this page are for browsing the repository, not dependencies. The ```` ```text ```` block above is complete as pasted: every rubric, rule, and output structure it relies on is inside it. The only companion file that ever adds anything is [`BASE.md`](../../BASE.md) (audit-defensible voice, quality floor, and the Word / Excel / PDF / HTML renderer). One prompt + `BASE.md` = the full toolkit quality system. Never a third file.

@@ -8,6 +8,7 @@
 | **Produces** | A typology profile, a red-flag indicator list, detection-rule specifications, a data-requirements list, and false-positive / tuning notes |
 | **Depth** | Deep — a multi-section design document |
 | **Pairs with** | [`reference/aml-typologies.md`](../../reference/aml-typologies.md) · [`prompts/compliance/alert-triage.md`](alert-triage.md) |
+| **Run-time needs** | **None — the prompt block below is fully self-contained.** For the strict voice + a Word / Excel / PDF / HTML deliverable, also attach [`BASE.md`](../../BASE.md) — one prompt + `BASE.md`, never a third file. |
 
 ---
 
@@ -163,3 +164,9 @@ A typology profile, a mechanics table, a strength-rated indicator list, per-rule
 ## Worked example
 
 *"Map the funnel-account typology for a money-services business — we can see transactions and KYC but not device data."* — the assistant decomposes the typology, derives the red flags, and returns rule specs with the device-dependent rules explicitly flagged as unbuildable.
+
+<!-- RUNTIME_CONTRACT -->
+
+---
+
+**Run-time contract** — links on this page are for browsing the repository, not dependencies. The ```` ```text ```` block above is complete as pasted: every rubric, rule, and output structure it relies on is inside it. The only companion file that ever adds anything is [`BASE.md`](../../BASE.md) (audit-defensible voice, quality floor, and the Word / Excel / PDF / HTML renderer). One prompt + `BASE.md` = the full toolkit quality system. Never a third file.

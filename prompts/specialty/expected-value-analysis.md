@@ -8,6 +8,7 @@
 | **Produces** | An edge calculation, an expected-value figure, a Kelly-criterion sizing ladder, a risk-of-ruin read, and a take / pass call |
 | **Depth** | Medium — a rigorous quantitative workpaper |
 | **Pairs with** | [`quant/`](../../quant/) · [`methodology/`](../../methodology/) |
+| **Run-time needs** | **None — the prompt block below is fully self-contained.** For the strict voice + a Word / Excel / PDF / HTML deliverable, also attach [`BASE.md`](../../BASE.md) — one prompt + `BASE.md`, never a third file. |
 
 ---
 
@@ -196,3 +197,9 @@ An inputs table, an edge-and-EV calculation with every conversion shown, a three
 ## Worked example
 
 *"I can take a contract priced at $0.55; my model puts the true probability at 0.64 against a base rate of comparable events. Bankroll is $20,000. Size it."* — the assistant converts the price to an implied probability, computes the edge and EV, returns the full-/half-/quarter-Kelly ladder in dollars, applies the cap, and gives a take/pass call with a confidence rating tied to the model's strength.
+
+<!-- RUNTIME_CONTRACT -->
+
+---
+
+**Run-time contract** — links on this page are for browsing the repository, not dependencies. The ```` ```text ```` block above is complete as pasted: every rubric, rule, and output structure it relies on is inside it. The only companion file that ever adds anything is [`BASE.md`](../../BASE.md) (audit-defensible voice, quality floor, and the Word / Excel / PDF / HTML renderer). One prompt + `BASE.md` = the full toolkit quality system. Never a third file.
