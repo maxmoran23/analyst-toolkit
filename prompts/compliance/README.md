@@ -9,5 +9,6 @@ These prompts cover a full financial-crime analytical lifecycle: detect, monitor
 | [typology-detection-mapping](typology-detection-mapping.md) | Decompose an AML typology into red-flag indicators and transaction-monitoring rule logic |
 | [alert-triage](alert-triage.md) | Work a transaction-monitoring alert to a documented close / escalate / refer disposition |
 | [investigation-narrative](investigation-narrative.md) | Draft a chronological, evidence-sourced narrative of investigated activity |
+| [customer-file-review](customer-file-review.md) | Review a customer risk file for completeness and risk-rating defensibility; deficiencies by severity, remediation actions |
 
 Every prompt is a standalone copy/paste tool — see the [prompt catalog](../README.md) for how the files are built and the [repository overview](../../README.md) for the full toolkit.

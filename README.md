@@ -2,13 +2,15 @@
 
 [![validate](https://github.com/maxmoran23/analyst-toolkit/actions/workflows/validate.yml/badge.svg)](https://github.com/maxmoran23/analyst-toolkit/actions/workflows/validate.yml)
 
-**A copy/paste library of prompts and output templates for AI-assisted analytical work — built around a financial-crime, compliance, and blockchain-intelligence core, and extending into regulatory, research, market, and quantitative analysis.**
+**A copy/paste library of prompts and output templates for AI-assisted analytical work at financial institutions — covering financial-crime compliance, blockchain intelligence, regulatory analysis, controls and independent testing, governance reporting, research, market, and quantitative analysis.**
 
 ---
 
 ## What this is
 
-A library of reusable, paste-ready **prompt templates** and **document templates** for analytical work. Every prompt is a self-contained block you drop into an AI assistant — GitHub Copilot, Microsoft 365 Copilot, Claude, ChatGPT — to get a rigorous, structured, audit-defensible result: an entity risk assessment, a sanctions screen, a transaction-alert disposition, a regulatory intelligence scan, a fund-flow trace, a deep research report, a populated dashboard.
+A library of reusable, paste-ready **prompt templates** and **document templates** for analytical work. Every prompt is a self-contained block you drop into an AI assistant — GitHub Copilot, Microsoft 365 Copilot, Claude, ChatGPT — to get a rigorous, structured, audit-defensible result: an entity risk assessment, a sanctions screen, a transaction-alert disposition, a control-testing workpaper, a policy gap analysis, a committee reporting pack, a regulatory intelligence scan, a fund-flow trace, a deep research report, a populated dashboard.
+
+The library is written for the full range of teams inside a financial institution — financial-crime compliance, risk, internal audit and testing, regulatory affairs, data and model governance, and research — and for any analyst outside one doing comparable work. Nothing here assumes a specific firm, vendor, or toolchain.
 
 It is **not a framework to run**. There is nothing to install, no runtime, no scheduler. You browse, copy, paste, fill in the `{{PLACEHOLDERS}}`, and run. The work product is the prompt itself — the analytical method, the scoring rubric, the output structure, and the quality bar baked into each one.
 
@@ -49,7 +51,7 @@ There is never a third file. [`BASE.md`](BASE.md) is the entire 4-file methodolo
 | **[`BASE.md`](BASE.md)** | **The one companion file** — the entire methodology framework (voice + method + quality bar + renderer) consolidated into a single attachable document. Any prompt + `BASE.md` = full toolkit quality. Generated from `methodology/`; CI keeps it in sync. |
 | **[`methodology/`](methodology/)** | **The 4-file framework base** — analytical patterns, audit-defensible writing voice, quality standards per output type, and the multi-format report-templates renderer. Load all four as Copilot agent / Claude Project / ChatGPT custom GPT instructions once; every task becomes a thin prompt after that. Prefer one file? Use [`BASE.md`](BASE.md). |
 | **[`standalone/`](standalone/)** | **Single-file copy/paste prompts** — each one a complete instruction set, no cross-references, no other files needed; embeds the same renderer as `methodology/report-templates.md`. Best for one-off use or sharing one file with a teammate |
-| **[`prompts/`](prompts/)** | 29 paste-ready analytical prompt templates across 7 categories — the broader library; each file pairs a prompt block with how-to and tuning sections |
+| **[`prompts/`](prompts/)** | 39 paste-ready analytical prompt templates across 8 categories — the broader library; each file pairs a prompt block with how-to and tuning sections |
 | **[`output-templates/`](output-templates/)** | Document scaffolds — interactive dashboards, PDF reports, compliance documents, communications |
 | **[`samples/`](samples/)** | Rendered example outputs with previews — what the prompts and templates actually produce |
 | **[`reference/`](reference/)** | Domain cheat-sheets — AML typologies, blockchain entity typologies, compliance, audit, regulatory, financial analysis |
@@ -103,7 +105,7 @@ Full workflow, including the Copilot copy/paste loop and getting output into cle
 
 ## Prompt catalog
 
-The financial-crime categories cover a full analytical lifecycle — **detect** (typology mapping) → **monitor** (alert triage, on-chain screening) → **investigate** (fund-flow tracing) → **assess** (entity and token risk) → **report** (investigation narrative).
+The financial-crime categories cover a full analytical lifecycle — **detect** (typology mapping) → **monitor** (alert triage, on-chain screening) → **investigate** (fund-flow tracing) → **assess** (entity and token risk) → **report** (investigation narrative). The controls and regulatory categories cover the assurance lifecycle around it — **document** (control matrix, risk register) → **test** (testing workpaper, QA scorecard) → **govern** (model governance, data quality) → **report and respond** (committee pack, policy gap analysis, exam response).
 
 ### Financial crime & compliance — [`prompts/compliance/`](prompts/compliance/)
 | Prompt | What it does |
@@ -113,6 +115,7 @@ The financial-crime categories cover a full analytical lifecycle — **detect** 
 | [typology-detection-mapping](prompts/compliance/typology-detection-mapping.md) | Decompose an AML typology into red-flag indicators and transaction-monitoring rule logic |
 | [alert-triage](prompts/compliance/alert-triage.md) | Work a transaction-monitoring alert to a documented close / escalate / refer disposition |
 | [investigation-narrative](prompts/compliance/investigation-narrative.md) | Draft a chronological, evidence-sourced narrative of investigated activity |
+| [customer-file-review](prompts/compliance/customer-file-review.md) | Review a customer risk file for completeness and risk-rating defensibility |
 
 ### Blockchain intelligence — [`prompts/blockchain/`](prompts/blockchain/)
 | Prompt | What it does |
@@ -128,6 +131,18 @@ The financial-crime categories cover a full analytical lifecycle — **detect** 
 | [regulatory-intelligence-scan](prompts/regulatory/regulatory-intelligence-scan.md) | Severity-rated briefing on what changed in a regulatory landscape |
 | [geopolitical-risk-monitor](prompts/regulatory/geopolitical-risk-monitor.md) | Per-jurisdiction sanctions, conflict, and regulatory-risk scoring |
 | [obligation-extraction](prompts/regulatory/obligation-extraction.md) | Turn a regulation or filing into a structured register of obligations and deadlines |
+| [policy-gap-analysis](prompts/regulatory/policy-gap-analysis.md) | Clause-level gap analysis of an internal policy against a regulation, with traceability matrix |
+| [exam-response-pack](prompts/regulatory/exam-response-pack.md) | Parse an examination or information request into a response pack with evidence mapping and QC checklist |
+
+### Controls, testing & governance — [`prompts/controls/`](prompts/controls/)
+| Prompt | What it does |
+|--------|--------------|
+| [control-matrix-builder](prompts/controls/control-matrix-builder.md) | Build a six-domain AML/CFT control inventory — 27-control reference framework, gap register, remediation view |
+| [risk-register-builder](prompts/controls/risk-register-builder.md) | Build a compliance risk register — inherent L×I scoring, residual ratings, appetite comparison, dual heat maps |
+| [independent-testing-workpaper](prompts/controls/independent-testing-workpaper.md) | Design and document a control test to audit standard — sample methodology, exceptions, effectiveness conclusion |
+| [qa-review-scorecard](prompts/controls/qa-review-scorecard.md) | Score completed work items against a weighted QA rubric — pass rate, error taxonomy, coaching themes |
+| [model-governance-review](prompts/controls/model-governance-review.md) | Assess a model, rule set, or AI-assisted tool against model-risk-management expectations |
+| [data-quality-review](prompts/controls/data-quality-review.md) | Assess a dataset across six quality dimensions with source-to-use lineage and a remediation register |
 
 ### Research — [`prompts/research/`](prompts/research/)
 | Prompt | What it does |
@@ -155,6 +170,7 @@ The financial-crime categories cover a full analytical lifecycle — **detect** 
 | [intelligence-brief](prompts/briefs/intelligence-brief.md) | A prioritized, scannable briefing — morning / midday / afternoon / evening variants |
 | [weekly-roundup](prompts/briefs/weekly-roundup.md) | A weekly review with a multi-dimension performance scorecard |
 | [breaking-news-scan](prompts/briefs/breaking-news-scan.md) | A terse, relevance-filtered breaking-news headline scan |
+| [committee-reporting-pack](prompts/briefs/committee-reporting-pack.md) | Assemble a governance-committee reporting pack — KPI/KRI dashboard, escalations, prior-action tracker |
 
 ### Specialty — [`prompts/specialty/`](prompts/specialty/)
 | Prompt | What it does |
