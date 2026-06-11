@@ -2,7 +2,7 @@
 
 Rendered example outputs — what the toolkit's prompts and templates actually produce.
 
-> Every sample here is **illustrative**: synthetic data, and where an entity is assessed it is **fictional**. "Meridian Digital Exchange" is invented. These exist to show output format and quality, not to assess any real company.
+> Every sample here is **illustrative**: synthetic data, and where an entity is assessed it is **fictional**. "Meridian Digital Exchange" and "Harborview Financial Group" are invented. These exist to show output format and quality, not to assess any real company.
 
 ---
 
@@ -18,7 +18,17 @@ Rendered example outputs — what the toolkit's prompts and templates actually p
 
 ![Regulatory dashboard preview](previews/regulatory-landscape-preview.png)
 
-> Both files are self-contained HTML — download and open in any browser; the only external dependency is the Chart.js CDN.
+### Control matrix dashboard
+[`dashboards/control-matrix-sample.html`](dashboards/control-matrix-sample.html) — the output of [`prompts/controls/control-matrix-builder.md`](../prompts/controls/control-matrix-builder.md) rendered as an interactive HTML deliverable. A 27-control AML/CFT matrix for a fictional mid-size financial institution: the full nine-attribute control inventory across all six domains, effectiveness ratings (including honest NOT ASSESSED), a domain coverage summary, and a severity-tagged gap register with remediation owners and horizons.
+
+![Control matrix dashboard preview](previews/control-matrix-preview.png)
+
+### Committee reporting pack dashboard
+[`dashboards/committee-pack-sample.html`](dashboards/committee-pack-sample.html) — the output of [`prompts/briefs/committee-reporting-pack.md`](../prompts/briefs/committee-reporting-pack.md) rendered as an interactive HTML deliverable. A quarterly compliance-committee pack for the same fictional institution: decisions sought before items for noting, a 13-metric KPI/KRI dashboard with thresholds and word-form status and trend (WITHIN / APPROACHING / BREACH, UP / DOWN / FLAT), severity-rated escalations each ending in a stated ask, an overdue-first action tracker, and a two-cycle forward calendar.
+
+![Committee pack dashboard preview](previews/committee-pack-preview.png)
+
+> All four files are self-contained HTML — download and open in any browser; the only external dependency is the Chart.js CDN.
 
 ---
 

@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AML/CFT Control Matrix — Harborview Financial Group (Illustrative Sample)</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" integrity="sha384-9nhczxUqK87bcKHh20fSQcTGD4qq5GhayNYSYWqwBkINBhOfQLg/P5HG5lF1urn4" crossorigin="anonymous"></script>
+<meta name="theme-color" content="#0a0a0f">
+<style>
+/* ============================================================
+   ANALYST TOOLKIT — CONTROL MATRIX SAMPLE DASHBOARD
+   27-control AML/CFT matrix, rendered in the
+   dashboard-big visual system. Single file, no build step.
+   ALL CONTENT IS SYNTHETIC AND ILLUSTRATIVE.
+   ============================================================ */
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root,[data-theme="dark"]{
+  --bg:#0a0a0f;--bg2:#111118;--bg3:#1a1a24;--bg4:#22222e;
+  --text:#f5f5f7;--text2:#a1a1a6;--text3:#6e6e73;
+  /* ACCENT — controls/assurance blue */
+  --accent:#0a84ff;--accent2:#3d9bff;
+  --pink:#ff375f;--orange:#ff9f0a;--green:#30d158;--blue:#0a84ff;
+  --purple:#bf5af2;--teal:#64d2ff;--yellow:#ffd60a;--indigo:#5e5ce6;
+  --red:#ef4444;--amber:#f59e0b;--cyan:#22d3ee;
+  --card:rgba(28,28,35,.7);--card-border:rgba(255,255,255,.07);
+  --glass:rgba(255,255,255,.04);--glass-border:rgba(255,255,255,.08);
+  --radius:16px;--radius-sm:10px;
+  --font:-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',sans-serif;
+  --mono:'SF Mono','Fira Code',ui-monospace,Menlo,monospace;
+  --nav-bg:rgba(10,10,15,.85);
+  --blob-opacity:.6;--blob-blend:screen;
+  --scrollbar-thumb:var(--bg4);
+  --replay-g1:rgba(80,140,255,.32);--replay-g2:rgba(60,120,230,.28);--replay-g3:rgba(100,210,255,.18);
+  --replay-g4:rgba(245,158,11,.14);
+}
+[data-theme="light"]{
+  --bg:#f4f6fb;--bg2:#ffffff;--bg3:#e9edf5;--bg4:#dde3ee;
+  --text:#10131a;--text2:#4a4f5c;--text3:#8b909c;
+  --card:rgba(255,255,255,.9);--card-border:rgba(15,25,55,.08);
+  --glass:rgba(15,25,55,.035);--glass-border:rgba(15,25,55,.08);
+  --nav-bg:rgba(244,246,251,.92);
+  --blob-opacity:.4;--blob-blend:multiply;
+  --scrollbar-thumb:#c4ccdc;
+  --replay-g1:rgba(80,140,255,.4);--replay-g2:rgba(60,120,230,.32);--replay-g3:rgba(100,210,255,.3);
+  --replay-g4:rgba(245,158,11,.28);
+}
+[data-theme="light"] .card{box-shadow:0 1px 3px rgba(15,25,55,.06)}
+[data-theme="light"] .nav-btn:hover,[data-theme="light"] .nav-btn.active{background:rgba(15,25,55,.07);color:var(--text)}
+
+.theme-toggle{position:fixed;top:12px;right:20px;z-index:200;width:36px;height:36px;border-radius:50%;border:1px solid var(--glass-border);background:var(--glass);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);color:var(--text);font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .3s}
+.theme-toggle:hover{background:var(--bg3);border-color:var(--accent)}
+
+html{font-size:16px;scroll-behavior:smooth}
+body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;line-height:1.5;position:relative;transition:background .4s,color .4s}
+a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
+::-webkit-scrollbar{width:6px;height:6px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--scrollbar-thumb);border-radius:3px}
+
+/* ANIMATED BACKGROUND */
+.liquid-bg{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;overflow:hidden;opacity:var(--blob-opacity);pointer-events:none;transition:opacity .4s}
+.liquid-blob{position:absolute;border-radius:50%;filter:blur(100px);mix-blend-mode:var(--blob-blend);transition:background .4s}
+.blob-1{width:700px;height:700px;background:radial-gradient(circle,var(--replay-g1),transparent 70%);top:-15%;left:-10%;animation:bm1 16s ease-in-out infinite alternate}
+.blob-2{width:600px;height:600px;background:radial-gradient(circle,var(--replay-g2),transparent 70%);top:20%;right:-8%;animation:bm2 20s ease-in-out infinite alternate}
+.blob-3{width:650px;height:650px;background:radial-gradient(circle,var(--replay-g3),transparent 70%);bottom:-10%;left:15%;animation:bm3 18s ease-in-out infinite alternate}
+.blob-4{width:480px;height:480px;background:radial-gradient(circle,var(--replay-g4),transparent 70%);top:55%;left:45%;animation:bm4 22s ease-in-out infinite alternate}
+@keyframes bm1{0%{transform:translate(0,0) scale(1)}100%{transform:translate(18vw,22vh) scale(1.25)}}
+@keyframes bm2{0%{transform:translate(0,0) scale(1)}100%{transform:translate(-22vw,-16vh) scale(.88)}}
+@keyframes bm3{0%{transform:translate(0,0) scale(1)}100%{transform:translate(10vw,-26vh) scale(1.12)}}
+@keyframes bm4{0%{transform:translate(0,0) scale(.85)}100%{transform:translate(-16vw,10vh) scale(1.18)}}
+
+/* TYPOGRAPHY */
+h1{font-size:2.4rem;font-weight:700;letter-spacing:-.03em;line-height:1.1}
+h1 span{background:linear-gradient(135deg,var(--accent),var(--teal),var(--indigo));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+h3{font-size:1.1rem;font-weight:600}
+.section-title{font-size:1.25rem;font-weight:700;letter-spacing:-.02em;margin-bottom:1rem;display:flex;align-items:center;gap:.6rem}
+.section-title .num{font-family:var(--mono);font-size:.85rem;color:var(--accent);background:var(--glass);border:1px solid var(--glass-border);padding:.15rem .5rem;border-radius:6px}
+.label{font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text3)}
+.mono{font-family:var(--mono)}
+
+/* LAYOUT */
+.container{max-width:1380px;margin:0 auto;padding:0 2rem}
+.section{padding:1.75rem 0;position:relative}
+.grid{display:grid;gap:1.25rem}
+.grid-2{grid-template-columns:repeat(2,1fr)}.grid-3{grid-template-columns:repeat(3,1fr)}.grid-4{grid-template-columns:repeat(4,1fr)}
+.split-7-5{display:grid;grid-template-columns:7fr 5fr;gap:1.25rem}
+.split-5-7{display:grid;grid-template-columns:5fr 7fr;gap:1.25rem}
+@media(max-width:1100px){.grid-4{grid-template-columns:repeat(2,1fr)}.grid-3{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:900px){.grid-2,.grid-3,.grid-4,.split-7-5,.split-5-7{grid-template-columns:1fr}}
+
+/* SAMPLE BANNER */
+.sample-banner{background:repeating-linear-gradient(45deg,rgba(245,158,11,.14),rgba(245,158,11,.14) 14px,rgba(245,158,11,.07) 14px,rgba(245,158,11,.07) 28px);border-bottom:1px solid rgba(245,158,11,.4);color:var(--amber);text-align:center;padding:.55rem 1rem;font-size:.78rem;font-weight:700;letter-spacing:.04em;display:flex;align-items:center;justify-content:center;gap:.6rem;flex-wrap:wrap}
+.sample-banner .dot{width:7px;height:7px;border-radius:50%;background:var(--amber);box-shadow:0 0 8px var(--amber);animation:pulseDot 2s ease-in-out infinite}
+@keyframes pulseDot{0%,100%{opacity:1}50%{opacity:.35}}
+
+/* HERO */
+.hero{padding:2.4rem 0 1.6rem;text-align:center;background:linear-gradient(180deg,rgba(10,132,255,.08) 0%,transparent 62%);position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50%;left:50%;transform:translateX(-50%);width:760px;height:760px;background:radial-gradient(circle,rgba(10,132,255,.12) 0%,transparent 70%);pointer-events:none}
+.hero-logo{width:58px;height:58px;margin:0 auto .9rem;background:linear-gradient(135deg,var(--accent),var(--indigo));border-radius:20px;display:flex;align-items:center;justify-content:center;font-size:1.05rem;font-weight:800;letter-spacing:.04em;box-shadow:0 0 38px rgba(10,132,255,.32);animation:pulseGlow 3.4s ease-in-out infinite}
+@keyframes pulseGlow{0%,100%{box-shadow:0 0 18px rgba(10,132,255,.2)}50%{box-shadow:0 0 38px rgba(10,132,255,.4)}}
+.hero-sub{color:var(--text2);font-size:1.02rem;margin-top:.5rem}
+.hero-meta{color:var(--text3);font-size:.78rem;margin-top:.35rem;font-family:var(--mono)}
+.rating-badge{display:inline-flex;align-items:center;gap:.5rem;border-radius:100px;padding:.5rem 1.3rem;font-size:.92rem;font-weight:700;margin-top:1rem;letter-spacing:.03em}
+.rating-elevated{background:linear-gradient(135deg,rgba(245,158,11,.18),rgba(255,159,10,.12));border:1px solid rgba(245,158,11,.4);color:var(--amber)}
+.stat-row{display:flex;gap:.85rem;flex-wrap:wrap;justify-content:center;margin-top:1.4rem}
+.stat-chip{display:flex;flex-direction:column;align-items:center;padding:.7rem 1.15rem;border-radius:var(--radius);background:var(--glass);border:1px solid var(--glass-border);min-width:118px}
+.stat-chip .sc-value{font-size:1.55rem;font-weight:700;letter-spacing:-.02em}
+.stat-chip .sc-label{font-size:.6rem;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;margin-top:.2rem;text-align:center}
+
+/* NAV */
+.nav{position:sticky;top:0;z-index:100;background:var(--nav-bg);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--card-border);transition:background .4s}
+.nav-inner{display:flex;align-items:center;gap:.2rem;padding:.5rem 0;overflow-x:auto;scrollbar-width:none}.nav-inner::-webkit-scrollbar{display:none}
+.nav-btn{padding:.32rem .72rem;border-radius:100px;border:none;background:transparent;color:var(--text2);font-size:.76rem;font-weight:500;cursor:pointer;white-space:nowrap;transition:all .2s;font-family:var(--font)}
+.nav-btn:hover,.nav-btn.active{background:var(--bg3);color:var(--text)}
+
+/* CARDS */
+.card{background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius);padding:1.25rem;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);transition:transform .25s,border-color .25s,box-shadow .25s;position:relative;overflow:hidden}
+.card:hover{transform:translateY(-2px);border-color:rgba(255,255,255,.14);box-shadow:0 12px 40px rgba(0,0,0,.3)}
+.card-accent-red{border-left:3px solid var(--red)}.card-accent-amber{border-left:3px solid var(--amber)}
+.card-accent-cyan{border-left:3px solid var(--cyan)}.card-accent-green{border-left:3px solid var(--green)}
+.card-accent-blue{border-left:3px solid var(--blue)}.card-accent-purple{border-left:3px solid var(--purple)}
+.glass-card{background:var(--glass);border:1px solid var(--glass-border);border-radius:var(--radius);padding:1.4rem;backdrop-filter:blur(16px)}
+
+.section-gradient-1{background:linear-gradient(180deg,rgba(10,132,255,.04) 0%,transparent 100%)}
+.section-gradient-2{background:linear-gradient(180deg,rgba(94,92,230,.04) 0%,transparent 100%)}
+.section-gradient-3{background:linear-gradient(180deg,rgba(100,210,255,.04) 0%,transparent 100%)}
+.section-gradient-4{background:linear-gradient(180deg,rgba(245,158,11,.04) 0%,transparent 100%)}
+
+/* KPI */
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.75rem;margin-bottom:1.1rem}
+.kpi{background:var(--glass);border:1px solid var(--glass-border);border-radius:var(--radius);padding:.85rem .9rem;text-align:center}
+.kpi-label{font-size:.58rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text3)}
+.kpi-val{font-size:1.45rem;font-weight:700;margin-top:.18rem}
+.kpi-sub{font-size:.65rem;margin-top:.15rem;color:var(--text3)}
+
+/* TABLES */
+.data-table{width:100%;border-collapse:collapse;font-size:.8rem}
+.data-table th{text-align:left;padding:.6rem .7rem;color:var(--text3);font-weight:600;font-size:.66rem;text-transform:uppercase;letter-spacing:.05em;border-bottom:1px solid var(--card-border);white-space:nowrap}
+.data-table td{padding:.6rem .7rem;border-bottom:1px solid var(--glass-border);color:var(--text2);vertical-align:top}
+.data-table tr:hover td{background:rgba(255,255,255,.03)}
+.data-table .row-total td{border-top:2px solid var(--card-border);border-bottom:none;font-weight:700;color:var(--text);background:rgba(10,132,255,.06)}
+.data-table .row-domain td{background:rgba(10,132,255,.05);color:var(--text);font-weight:700;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase}
+.score-pill{display:inline-flex;align-items:center;justify-content:center;min-width:42px;padding:.2rem .5rem;border-radius:7px;font-family:var(--mono);font-weight:700;font-size:.8rem}
+.sbar-track{width:100%;min-width:80px;height:7px;background:var(--bg3);border-radius:4px;overflow:hidden}
+.sbar-fill{height:100%;border-radius:4px}
+
+/* SEVERITY / EFFECTIVENESS COLOR HELPERS */
+.sv-low{color:var(--green)}.sv-mod{color:var(--cyan)}.sv-elev{color:var(--amber)}.sv-high{color:var(--orange)}.sv-sev{color:var(--red)}
+.bg-eff{background:rgba(48,209,88,.16);color:var(--green)}
+.bg-part{background:rgba(245,158,11,.18);color:var(--amber)}
+.bg-ineff{background:rgba(239,68,68,.18);color:var(--red)}
+.bg-na{background:rgba(110,110,115,.18);color:var(--text2)}
+.bg-mod{background:rgba(34,211,238,.16);color:var(--cyan)}
+.bg-high{background:rgba(255,159,10,.18);color:var(--orange)}
+.bg-sev{background:rgba(239,68,68,.18);color:var(--red)}
+.bg-low2{background:rgba(110,110,115,.18);color:var(--text2)}
+
+/* PILLS / BADGES */
+.pill{display:inline-block;padding:3px 10px;border-radius:12px;font-size:.68rem;font-weight:600;margin:2px 3px}
+.pill-green{background:rgba(48,209,88,.12);color:var(--green);border:1px solid rgba(48,209,88,.3)}
+.pill-cyan{background:rgba(34,211,238,.12);color:var(--cyan);border:1px solid rgba(34,211,238,.3)}
+.pill-amber{background:rgba(245,158,11,.12);color:var(--amber);border:1px solid rgba(245,158,11,.3)}
+.pill-red{background:rgba(239,68,68,.12);color:var(--red);border:1px solid rgba(239,68,68,.3)}
+.pill-blue{background:rgba(10,132,255,.12);color:var(--blue);border:1px solid rgba(10,132,255,.3)}
+.pill-grey{background:var(--glass);color:var(--text3);border:1px solid var(--glass-border)}
+.eff-tag{font-size:.6rem;font-weight:800;letter-spacing:.04em;padding:2px 7px;border-radius:5px;white-space:nowrap}
+.type-tag{font-family:var(--mono);font-size:.62rem;font-weight:700;padding:1px 6px;border-radius:5px;border:1px solid var(--glass-border);background:var(--glass);color:var(--text2);white-space:nowrap}
+
+/* FINDINGS (gap register) */
+.finding{padding:11px 15px;border-left:3px solid var(--card-border);margin-bottom:9px;background:var(--glass);border-radius:0 8px 8px 0;font-size:.82rem;line-height:1.6}
+.finding-critical{border-left-color:var(--red)}.finding-high{border-left-color:var(--orange)}
+.finding-medium{border-left-color:var(--cyan)}.finding-low{border-left-color:var(--text3)}
+.finding .f-head{display:flex;align-items:center;gap:.55rem;margin-bottom:.3rem;flex-wrap:wrap}
+.finding .f-title{font-weight:700;color:var(--text);font-size:.86rem}
+.sev-tag{font-weight:800;font-size:.62rem;letter-spacing:.06em;padding:2px 7px;border-radius:5px}
+.finding .f-body{color:var(--text2)}
+.finding .f-link{margin-top:.35rem;font-size:.7rem;color:var(--text3);font-family:var(--mono)}
+
+/* METHOD STEPS */
+.method-step{display:flex;gap:.7rem;padding:.5rem 0;font-size:.8rem;color:var(--text2);line-height:1.55}
+.method-step .ms-n{font-family:var(--mono);font-size:.72rem;color:var(--accent);flex-shrink:0;font-weight:700}
+
+/* CONFIDENCE METER */
+.conf-meter{display:flex;gap:.3rem;margin-top:.4rem}
+.conf-seg{flex:1;height:8px;border-radius:3px;background:var(--bg3)}
+.conf-seg.on{background:var(--amber)}
+
+/* GAP ITEM */
+.gap-item{display:flex;gap:.7rem;align-items:flex-start;padding:.6rem 0;border-bottom:1px solid var(--glass-border);font-size:.82rem}
+.gap-item:last-child{border-bottom:none}
+.gap-num{width:24px;height:24px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;flex-shrink:0;background:rgba(10,132,255,.16);color:var(--accent2);font-family:var(--mono)}
+
+/* FOOTER */
+.footer{text-align:center;padding:2.6rem 0 2rem;color:var(--text3);font-size:.78rem;border-top:1px solid var(--card-border);margin-top:2rem}
+.footer .fnote{margin-top:.5rem;font-size:.7rem;opacity:.75;max-width:760px;margin-left:auto;margin-right:auto;line-height:1.6}
+
+.fade-in{opacity:0;transform:translateY(18px);transition:opacity .55s ease,transform .55s ease}
+.fade-in.visible{opacity:1;transform:translateY(0)}
+
+@media print{
+  .nav,.theme-toggle{display:none!important}
+  body{background:#0a0a0f!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .section,.card,.glass-card,.finding{break-inside:avoid}
+}
+</style>
+</head>
+<body>
+
+<button class="theme-toggle" onclick="toggleTheme()" title="Toggle light/dark mode" id="theme-btn">&#9790;</button>
+
+<div class="liquid-bg">
+  <div class="liquid-blob blob-1"></div>
+  <div class="liquid-blob blob-2"></div>
+  <div class="liquid-blob blob-3"></div>
+  <div class="liquid-blob blob-4"></div>
+</div>
+
+<!-- ============================================================
+     ILLUSTRATIVE SAMPLE BANNER — required, always visible
+     ============================================================ -->
+<div class="sample-banner">
+  <span class="dot"></span>
+  ILLUSTRATIVE SAMPLE &mdash; synthetic data, fictional institution, for format demonstration only
+  <span class="dot"></span>
+</div>
+
+<!-- ============================================================
+     HERO
+     ============================================================ -->
+<section class="hero" id="hero"><div class="container">
+  <div class="hero-logo">CM</div>
+  <h1><span>AML/CFT Control Matrix</span></h1>
+  <p class="hero-sub">Harborview Financial Group &mdash; a fictional mid-size financial institution</p>
+  <p class="hero-meta">Fictional institution &middot; Assessment date 2026-06-10 &middot; Context: examination readiness &middot; Framework: 27-control reference, 6 domains</p>
+  <div class="rating-badge rating-elevated">Program posture: PARTIALLY EFFECTIVE &mdash; transaction-monitoring domain drives the gap register</div>
+  <div class="stat-row">
+    <div class="stat-chip"><span class="sc-value">27</span><span class="sc-label">Controls</span></div>
+    <div class="stat-chip"><span class="sc-value">6</span><span class="sc-label">Domains</span></div>
+    <div class="stat-chip"><span class="sc-value sv-low">13</span><span class="sc-label">Effective</span></div>
+    <div class="stat-chip"><span class="sc-value sv-elev">8</span><span class="sc-label">Partially Effective</span></div>
+    <div class="stat-chip"><span class="sc-value sv-sev">2</span><span class="sc-label">Ineffective</span></div>
+    <div class="stat-chip"><span class="sc-value" style="color:var(--text3)">4</span><span class="sc-label">Not Assessed</span></div>
+    <div class="stat-chip"><span class="sc-value sv-high">8</span><span class="sc-label">Open Gaps</span></div>
+  </div>
+</div></section>
+
+<!-- ============================================================
+     STICKY NAV
+     ============================================================ -->
+<nav class="nav"><div class="container"><div class="nav-inner" id="nav"></div></div></nav>
+
+<div class="container">
+
+  <!-- ====================================================
+       1. EXECUTIVE SUMMARY
+       ==================================================== -->
+  <section class="section section-gradient-1" id="sec-summary">
+    <div class="section-title"><span class="num">01</span> Executive Summary</div>
+    <div class="split-7-5">
+      <div class="card card-accent-blue">
+        <p style="font-size:.92rem;line-height:1.72;color:var(--text2)">
+          <strong style="color:var(--text)">Harborview Financial Group</strong> is a fictional mid-size financial
+          institution invented to demonstrate the control matrix output format. The synthetic profile: retail and
+          commercial banking, domestic wires and correspondent payments, no cash-intensive branch network, and a
+          small digital-asset custody pilot launched in 2025. The matrix below inventories
+          <strong style="color:var(--text)">27 controls across the six-domain reference framework</strong> &mdash;
+          customer due diligence, transaction monitoring, sanctions screening, regulatory reporting, governance,
+          and technology &mdash; in examination-readiness context.
+        </p>
+        <p style="font-size:.92rem;line-height:1.72;color:var(--text2);margin-top:.85rem">
+          In this illustrative scenario the program is structurally complete: every reference control exists in some
+          form, and 13 of 27 rate <strong style="color:var(--green)">EFFECTIVE</strong> on recent operating evidence.
+          The weakness is concentrated, not pervasive. The
+          <strong style="color:var(--text)">transaction-monitoring domain carries both INEFFECTIVE ratings</strong>
+          &mdash; rule tuning has not run since a 2024 system migration (TM-03) and no typology-to-rule coverage
+          assessment exists (TM-05) &mdash; and the alert-disposition backlog (TM-02) compounds the exposure. Four
+          controls rate NOT ASSESSED because no testing or operating evidence was available; under the matrix rules
+          that is the honest rating, never an inferred one.
+        </p>
+        <p style="font-size:.92rem;line-height:1.72;color:var(--text2);margin-top:.85rem">
+          The gap register lists <strong style="color:var(--amber)">8 gaps: 1 CRITICAL, 3 HIGH, 3 MEDIUM, 1 LOW</strong>.
+          The CRITICAL gap (untuned monitoring thresholds on a live transaction population) is the remediation
+          priority; the matrix is the inventory, the gap register is the action list.
+        </p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:1rem">
+        <div class="glass-card">
+          <div class="label" style="margin-bottom:.7rem">Program Snapshot &mdash; Synthetic</div>
+          <div style="display:flex;flex-direction:column;gap:.5rem;font-size:.82rem">
+            <div style="display:flex;justify-content:space-between;gap:1rem"><span style="color:var(--text3)">Institution type</span><span style="font-weight:600">Mid-size bank (fictional)</span></div>
+            <div style="display:flex;justify-content:space-between;gap:1rem"><span style="color:var(--text3)">Products</span><span style="font-weight:600">Retail, commercial, payments</span></div>
+            <div style="display:flex;justify-content:space-between;gap:1rem"><span style="color:var(--text3)">Digital-asset exposure</span><span style="font-weight:600">Custody pilot (2025)</span></div>
+            <div style="display:flex;justify-content:space-between;gap:1rem"><span style="color:var(--text3)">Cash channel</span><span style="font-weight:600">Limited &mdash; excluded</span></div>
+            <div style="display:flex;justify-content:space-between;gap:1rem"><span style="color:var(--text3)">Assessment context</span><span style="font-weight:600">Examination readiness</span></div>
+            <div style="display:flex;justify-content:space-between;gap:1rem"><span style="color:var(--text3)">Evidence basis</span><span style="font-weight:600">Provided documentation only</span></div>
+          </div>
+        </div>
+        <div class="glass-card">
+          <div class="label" style="margin-bottom:.55rem">Headline</div>
+          <div style="font-size:.96rem;font-weight:700;color:var(--amber);margin-bottom:.3rem">Concentrated weakness in transaction monitoring</div>
+          <div style="font-size:.78rem;color:var(--text2);line-height:1.55">22 of 27 controls rate EFFECTIVE or PARTIALLY EFFECTIVE. Both INEFFECTIVE ratings and the CRITICAL gap sit in one domain.</div>
+          <div class="label" style="margin:.85rem 0 .3rem">Overall confidence</div>
+          <div style="font-size:.82rem;font-weight:600;color:var(--amber)">MODERATE</div>
+          <div class="conf-meter"><span class="conf-seg on"></span><span class="conf-seg on"></span><span class="conf-seg on"></span><span class="conf-seg"></span><span class="conf-seg"></span></div>
+          <div style="font-size:.7rem;color:var(--text3);margin-top:.35rem">4 of 27 ratings rest on no operating evidence (NOT ASSESSED).</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="kpi-row" style="margin-top:1.25rem">
+      <div class="kpi"><div class="kpi-label">Controls rated on evidence</div><div class="kpi-val">23<span style="font-size:.85rem;color:var(--text3)">/27</span></div><div class="kpi-sub">4 NOT ASSESSED</div></div>
+      <div class="kpi"><div class="kpi-label">Preventive / Detective</div><div class="kpi-val">15<span style="font-size:.85rem;color:var(--text3)"> / 12</span></div><div class="kpi-sub">Type mix across the matrix</div></div>
+      <div class="kpi"><div class="kpi-label">Weakest domain</div><div class="kpi-val sv-sev">TM</div><div class="kpi-sub">2 of 5 controls INEFFECTIVE</div></div>
+      <div class="kpi"><div class="kpi-label">Strongest domain</div><div class="kpi-val sv-low">SAN</div><div class="kpi-sub">3 of 4 EFFECTIVE</div></div>
+      <div class="kpi"><div class="kpi-label">Critical gaps</div><div class="kpi-val sv-sev">1</div><div class="kpi-sub">GAP-01 &middot; 90-day horizon</div></div>
+      <div class="kpi"><div class="kpi-label">Scope exclusions</div><div class="kpi-val">2</div><div class="kpi-sub">Cash thresholds, trade finance</div></div>
+    </div>
+  </section>
+
+  <!-- ====================================================
+       2. EFFECTIVENESS OVERVIEW
+       ==================================================== -->
+  <section class="section section-gradient-2" id="sec-overview">
+    <div class="section-title"><span class="num">02</span> Effectiveness Overview</div>
+    <div class="grid grid-3">
+      <div class="card">
+        <h3 style="margin-bottom:.3rem">Effectiveness Mix</h3>
+        <p style="font-size:.74rem;color:var(--text3);margin-bottom:.6rem">27 controls by rating. NOT ASSESSED means no evidence &mdash; never a guess.</p>
+        <div style="position:relative;height:240px"><canvas id="effDonut"></canvas></div>
+      </div>
+      <div class="card" style="grid-column:span 2">
+        <h3 style="margin-bottom:.3rem">Effectiveness by Domain</h3>
+        <p style="font-size:.74rem;color:var(--text3);margin-bottom:.6rem">Stacked count of controls per domain. The transaction-monitoring bar carries both INEFFECTIVE ratings.</p>
+        <div style="position:relative;height:240px"><canvas id="domainBar"></canvas></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================================================
+       3. CONTROL INVENTORY
+       ==================================================== -->
+  <section class="section section-gradient-1" id="sec-inventory">
+    <div class="section-title"><span class="num">03</span> Control Inventory &mdash; 27 Controls</div>
+    <p style="font-size:.8rem;color:var(--text3);margin:-.4rem 0 1rem">
+      Type: <span class="type-tag">PREV</span> preventive &middot; <span class="type-tag">DET</span> detective.
+      Owners are roles, never named individuals. Testing method is one of inquiry / observation / inspection / re-performance.
+    </p>
+    <div class="card" style="padding:1rem 1.1rem;overflow-x:auto">
+      <table class="data-table">
+        <thead><tr>
+          <th>ID</th><th>Control objective</th><th>Mechanism (who / what / how often / evidence)</th>
+          <th>Type</th><th>Frequency</th><th>Owner (role)</th><th>Testing</th><th>Effectiveness</th>
+        </tr></thead>
+        <tbody id="inventory-body"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ====================================================
+       4. DOMAIN COVERAGE SUMMARY
+       ==================================================== -->
+  <section class="section section-gradient-3" id="sec-coverage">
+    <div class="section-title"><span class="num">04</span> Domain Coverage Summary</div>
+    <div class="split-7-5">
+      <div class="card" style="padding:1rem 1.1rem;overflow-x:auto">
+        <table class="data-table">
+          <thead><tr>
+            <th>Domain</th><th style="text-align:center">Controls</th><th style="text-align:center">Effective</th>
+            <th style="text-align:center">Partially</th><th style="text-align:center">Ineffective</th>
+            <th style="text-align:center">Not assessed</th><th>Coverage read</th>
+          </tr></thead>
+          <tbody id="coverage-body"></tbody>
+        </table>
+      </div>
+      <div class="card card-accent-cyan">
+        <h3 style="margin-bottom:.6rem">Reading the Coverage Table</h3>
+        <p style="font-size:.8rem;color:var(--text2);line-height:1.62">
+          Coverage is structural completeness; effectiveness is operating reality. In this synthetic scenario every
+          reference control exists, so the program would pass a checklist review &mdash; the table shows why that is
+          not the same as passing an examination. Transaction monitoring has full structural coverage and the worst
+          operating record in the matrix.
+        </p>
+        <p style="font-size:.8rem;color:var(--text2);line-height:1.62;margin-top:.7rem">
+          The digital-asset custody pilot expands TM and SAN expectations (wallet screening, on-chain monitoring).
+          Those expansions are inventoried under TM-04 and SAN-04 rather than as new control IDs, and both carry
+          gaps in the register.
+        </p>
+        <div class="label" style="margin:.85rem 0 .3rem">Scope exclusions (stated, justified)</div>
+        <div style="font-size:.76rem;color:var(--text2);line-height:1.6">
+          Cash-threshold controls &mdash; no material cash channel. Trade-finance controls &mdash; product not offered.
+          Exclusions inventoried so an examiner sees a decision, not an omission.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================================================
+       5. GAP REGISTER
+       ==================================================== -->
+  <section class="section section-gradient-4" id="sec-gaps">
+    <div class="section-title"><span class="num">05</span> Gap Register</div>
+    <div class="split-7-5">
+      <div>
+        <div id="gap-list"></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:1rem">
+        <div class="glass-card">
+          <div class="label" style="margin-bottom:.6rem">Gap Severity Mix</div>
+          <div style="position:relative;height:170px"><canvas id="gapDonut"></canvas></div>
+        </div>
+        <div class="glass-card">
+          <div class="label" style="margin-bottom:.55rem">Reading the register</div>
+          <p style="font-size:.78rem;color:var(--text2);line-height:1.6">
+            Every gap ties to a control ID, carries exactly one severity, and names a remediation owner by role and a
+            target horizon. The CRITICAL tag is reserved for absent-or-ineffective controls with material exposed
+            risk &mdash; here, untuned monitoring on a live transaction population. "No gaps identified" would also be
+            a valid, stated result; this scenario simply is not that.
+          </p>
+        </div>
+        <div class="glass-card">
+          <div class="label" style="margin-bottom:.6rem">Remediation Horizon</div>
+          <div style="display:flex;flex-direction:column;gap:.4rem;font-size:.76rem">
+            <div style="display:flex;justify-content:space-between"><span style="color:var(--text3)">Within 90 days</span><span class="pill pill-red" style="margin:0">GAP-01</span></div>
+            <div style="display:flex;justify-content:space-between"><span style="color:var(--text3)">Within 120 days</span><span class="pill pill-amber" style="margin:0">GAP-02 &middot; GAP-03 &middot; GAP-05</span></div>
+            <div style="display:flex;justify-content:space-between"><span style="color:var(--text3)">Within 180 days</span><span class="pill pill-cyan" style="margin:0">GAP-04 &middot; GAP-06 &middot; GAP-07</span></div>
+            <div style="display:flex;justify-content:space-between"><span style="color:var(--text3)">Within 270 days</span><span class="pill pill-grey" style="margin:0">GAP-08</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================================================
+       6. SCOPE, METHOD & CONFIDENCE
+       ==================================================== -->
+  <section class="section section-gradient-2" id="sec-method">
+    <div class="section-title"><span class="num">06</span> Scope, Method &amp; Confidence</div>
+    <div class="grid grid-3">
+      <div class="card">
+        <h3 style="margin-bottom:.7rem">Method</h3>
+        <div class="method-step"><span class="ms-n">01</span><span>Scope the program from the description; state exclusions and why each is justified.</span></div>
+        <div class="method-step"><span class="ms-n">02</span><span>Build the inventory against the 27-control, six-domain reference framework; state the final count.</span></div>
+        <div class="method-step"><span class="ms-n">03</span><span>Specify all nine attributes per control &mdash; a control a tester cannot fail is rewritten until it can fail.</span></div>
+        <div class="method-step"><span class="ms-n">04</span><span>Map provided documentation to the framework: matched / partial / absent.</span></div>
+        <div class="method-step"><span class="ms-n">05</span><span>Rate effectiveness only where evidence exists; otherwise NOT ASSESSED.</span></div>
+        <div class="method-step"><span class="ms-n">06</span><span>Log every gap with severity, remediation, role owner, and target horizon.</span></div>
+      </div>
+      <div class="card">
+        <h3 style="margin-bottom:.7rem">Assumptions &amp; Gaps</h3>
+        <div class="gap-item"><span class="gap-num">A1</span><span><strong style="color:var(--text)">Synthetic evidence base.</strong> Ratings assume the fictional testing results described in the scenario; in a live run every EFFECTIVE rating cites the test or operating evidence behind it.</span></div>
+        <div class="gap-item"><span class="gap-num">A2</span><span><strong style="color:var(--text)">Custody pilot scale.</strong> The digital-asset pilot is assumed immaterial by volume; if it scales, TM-04 and SAN-04 split into dedicated on-chain controls.</span></div>
+        <div class="gap-item"><span class="gap-num">A3</span><span><strong style="color:var(--text)">Four controls unassessed.</strong> TM-04, GOV-05, TECH-01, TECH-03 have no operating evidence in the scenario &mdash; rated NOT ASSESSED, not inferred.</span></div>
+      </div>
+      <div class="card card-accent-amber">
+        <h3 style="margin-bottom:.5rem">Overall Confidence</h3>
+        <div style="font-size:1.5rem;font-weight:800;color:var(--amber)">MODERATE</div>
+        <div class="conf-meter" style="margin:.5rem 0 .7rem"><span class="conf-seg on"></span><span class="conf-seg on"></span><span class="conf-seg on"></span><span class="conf-seg"></span><span class="conf-seg"></span></div>
+        <p style="font-size:.79rem;color:var(--text2);line-height:1.6">
+          23 of 27 ratings rest on (synthetic) testing or operating evidence; 4 rest on none and are flagged
+          NOT ASSESSED. The inventory itself is complete against the reference framework, so structural confidence
+          is high &mdash; effectiveness confidence is what caps the overall rating at MODERATE.
+        </p>
+        <div style="background:var(--glass);border:1px solid var(--glass-border);border-radius:var(--radius-sm);padding:.7rem;margin-top:.8rem;font-size:.73rem;color:var(--text3);line-height:1.55">
+          <strong style="color:var(--text2)">Scope note.</strong> Owners are roles, never people. All content is
+          generic to a financial institution &mdash; no proprietary or institution-identifying detail.
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <p><strong>AML/CFT Control Matrix &mdash; Harborview Financial Group</strong> &middot; Illustrative sample generated <span id="gen-date"></span> &middot; Confidence: MODERATE</p>
+  <p class="fnote">
+    This dashboard is a format demonstration for the <span class="mono">analyst-toolkit</span> repository &mdash; the
+    output of <span class="mono">prompts/controls/control-matrix-builder.md</span> rendered as an interactive HTML
+    deliverable. Harborview Financial Group is a fictional institution. All controls, ratings, gaps, owners, and
+    dates are synthetic and were invented solely to show the structure of a control matrix deliverable. Nothing here
+    describes any real institution, program, or person. Not legal or compliance advice.
+  </p>
+</footer>
+
+<script>
+/* ============================================================
+   CONTROL MATRIX SAMPLE — ENGINE  (all data synthetic / illustrative)
+   Built with safe DOM construction — no innerHTML on dynamic data.
+   ============================================================ */
+
+function toggleTheme(){
+  var t=document.documentElement.getAttribute('data-theme')==='light'?'dark':'light';
+  document.documentElement.setAttribute('data-theme',t);
+  document.getElementById('theme-btn').textContent=t==='light'?'☀':'☾';
+}
+
+/* ---- tiny DOM helper: el(tag, props, ...children) ---- */
+function el(tag,props){
+  var node=document.createElement(tag);
+  if(props){
+    for(var k in props){
+      if(k==='class')node.className=props[k];
+      else if(k==='style')node.setAttribute('style',props[k]);
+      else if(k==='text')node.textContent=props[k];
+      else node.setAttribute(k,props[k]);
+    }
+  }
+  for(var i=2;i<arguments.length;i++){
+    var c=arguments[i];
+    if(c==null)continue;
+    if(Array.isArray(c)){c.forEach(function(x){if(x!=null)node.appendChild(typeof x==='string'?document.createTextNode(x):x)});}
+    else node.appendChild(typeof c==='string'?document.createTextNode(c):c);
+  }
+  return node;
+}
+
+/* ---- EFFECTIVENESS VOCAB ---- */
+var EFF={
+  E:  {label:'EFFECTIVE',           cls:'bg-eff',  color:'#30d158'},
+  P:  {label:'PARTIALLY EFFECTIVE', cls:'bg-part', color:'#f59e0b'},
+  I:  {label:'INEFFECTIVE',         cls:'bg-ineff',color:'#ef4444'},
+  NA: {label:'NOT ASSESSED',        cls:'bg-na',   color:'#6e6e73'}
+};
+
+/* ---- DOMAINS ---- */
+var DOMAINS=[
+  {key:'CDD', name:'Customer Due Diligence',  read:'Solid core; review-cycle backlog in the medium-risk segment'},
+  {key:'TM',  name:'Transaction Monitoring',  read:'Weakest domain: untuned rules, no coverage assessment, SLA backlog'},
+  {key:'SAN', name:'Sanctions Screening',     read:'Strongest domain; one manual-channel dependency'},
+  {key:'REP', name:'Regulatory Reporting',    read:'Filing discipline strong; follow-up tracking informal'},
+  {key:'GOV', name:'Governance',              read:'Structure sound; independent-testing cycle overdue'},
+  {key:'TECH',name:'Technology & Data',       read:'Post-migration validation debt; two controls never tested'}
+];
+
+/* ---- 27 CONTROLS ---- */
+var CONTROLS=[
+  /* CDD */
+  {id:'CDD-01',dom:'CDD',obj:'Verify customer identity before account activation',mech:'Onboarding staff collect and verify identity documents against approved sources for every new customer; verification recorded in the onboarding system before activation.',type:'PREV',freq:'Per onboarding',owner:'Onboarding Operations Manager',test:'Re-performance',eff:'E'},
+  {id:'CDD-02',dom:'CDD',obj:'Risk-rate every customer at onboarding',mech:'A documented risk-rating model scores every new relationship on customer type, products, geography, and channel; rating stored with rationale and drives the review cycle.',type:'PREV',freq:'Per onboarding',owner:'Financial Crime Risk Manager',test:'Inspection',eff:'E'},
+  {id:'CDD-03',dom:'CDD',obj:'Apply heightened due diligence to higher-risk customers',mech:'Higher-risk customers receive additional verification, source-of-funds inquiry, and senior approval before activation; the heightened file is evidenced and re-approved on the review cycle.',type:'PREV',freq:'Per onboarding + cycle',owner:'Financial Crime Risk Manager',test:'Inspection',eff:'P'},
+  {id:'CDD-04',dom:'CDD',obj:'Re-review customers on risk-based periodic cycles',mech:'High-risk files reviewed annually, medium every two years, low every three; reviews logged with completion dates and refreshed risk ratings.',type:'DET',freq:'Risk-based cycle',owner:'CDD Operations Lead',test:'Inspection',eff:'P'},
+  {id:'CDD-05',dom:'CDD',obj:'Identify and verify beneficial owners',mech:'Ownership collected to the regulatory threshold at onboarding for legal-entity customers, verified against registry documents, and refreshed on trigger events.',type:'PREV',freq:'Per onboarding + triggers',owner:'Onboarding Operations Manager',test:'Re-performance',eff:'E'},
+  {id:'CDD-06',dom:'CDD',obj:'Screen and approve politically exposed persons',mech:'All parties screened against PEP sources at onboarding and on list updates; confirmed matches require senior management approval before the relationship proceeds.',type:'PREV',freq:'Onboarding + list updates',owner:'Screening Operations Lead',test:'Re-performance',eff:'E'},
+  /* TM */
+  {id:'TM-01',dom:'TM',obj:'Monitor transactions with documented rule coverage',mech:'Automated monitoring runs documented rules across all in-scope products daily; rule library lists objective, logic, thresholds, and the typology each rule addresses.',type:'DET',freq:'Daily (automated)',owner:'Head of Financial Crime Analytics',test:'Inspection',eff:'P'},
+  {id:'TM-02',dom:'TM',obj:'Investigate and disposition alerts within SLA',mech:'Analysts disposition every alert with documented rationale within a 30-day SLA; aging reported weekly to the financial crime officer.',type:'DET',freq:'Continuous',owner:'TM Investigations Manager',test:'Inspection',eff:'P'},
+  {id:'TM-03',dom:'TM',obj:'Tune rules and thresholds on a defined cycle',mech:'Annual tuning cycle: above/below-threshold testing per rule, documented threshold decisions, and sign-off by the analytics head.',type:'DET',freq:'Annual',owner:'Head of Financial Crime Analytics',test:'Re-performance',eff:'I'},
+  {id:'TM-04',dom:'TM',obj:'Detect below-threshold and aggregated activity',mech:'Aggregation rules total related transactions across accounts and time windows, including custody-pilot flows, to catch structuring below single-transaction thresholds.',type:'DET',freq:'Daily (automated)',owner:'Head of Financial Crime Analytics',test:'Re-performance',eff:'NA'},
+  {id:'TM-05',dom:'TM',obj:'Map rule coverage to the typology inventory',mech:'A coverage assessment maps every relevant typology to the rule(s) addressing it, identifies uncovered typologies, and is refreshed annually and on new-product launch.',type:'DET',freq:'Annual + new product',owner:'Financial Crime Risk Manager',test:'Inspection',eff:'I'},
+  /* SAN */
+  {id:'SAN-01',dom:'SAN',obj:'Screen parties in real time at onboarding and on change',mech:'All new parties and party-data changes screened in real time before activation; potential matches block processing until cleared by a screening analyst.',type:'PREV',freq:'Real-time',owner:'Screening Operations Lead',test:'Re-performance',eff:'E'},
+  {id:'SAN-02',dom:'SAN',obj:'Screen against all required sanctions lists',mech:'Screening sources cover the required government and supranational lists; list inventory reviewed quarterly against regulatory expectations and update logs retained.',type:'PREV',freq:'Continuous',owner:'Screening Operations Lead',test:'Inspection',eff:'E'},
+  {id:'SAN-03',dom:'SAN',obj:'Rescreen the customer base on list updates',mech:'Full-base retrospective screening triggered automatically on every list update; completion and match-disposition evidence retained per run.',type:'DET',freq:'Per list update',owner:'Screening Operations Lead',test:'Re-performance',eff:'E'},
+  {id:'SAN-04',dom:'SAN',obj:'Screen transactions and jurisdictions in payment flows',mech:'Payment messages screened for sanctioned parties, banks, and jurisdictions pre-release; one legacy payment channel relies on a manual end-of-day review pending automation.',type:'PREV',freq:'Per transaction',owner:'Payments Compliance Manager',test:'Re-performance',eff:'P'},
+  /* REP */
+  {id:'REP-01',dom:'REP',obj:'Detect and refer suspicious activity from all sources',mech:'Referral channels from monitoring, staff escalation, and fraud routes feed a single case queue; every referral acknowledged and triaged within five business days.',type:'DET',freq:'Continuous',owner:'TM Investigations Manager',test:'Inspection',eff:'E'},
+  {id:'REP-02',dom:'REP',obj:'Investigate and document to a defined standard',mech:'Case files follow a documented standard: evidence gathered, parties identified, narrative drafted, decision rationale recorded whether filed or not.',type:'DET',freq:'Per case',owner:'TM Investigations Manager',test:'Inspection',eff:'E'},
+  {id:'REP-03',dom:'REP',obj:'File regulatory reports within statutory deadlines',mech:'Filing deadlines tracked per case from decision date; quality review precedes submission and confirmation receipts are retained.',type:'PREV',freq:'Per filing',owner:'Regulatory Reporting Manager',test:'Re-performance',eff:'E'},
+  {id:'REP-04',dom:'REP',obj:'Track filings and run continuing-activity reviews',mech:'Filed cases logged with follow-up review dates; continuing activity re-reviewed on the regulatory cycle and supplemental filings made where required.',type:'DET',freq:'Per regulatory cycle',owner:'Regulatory Reporting Manager',test:'Inspection',eff:'P'},
+  /* GOV */
+  {id:'GOV-01',dom:'GOV',obj:'Maintain board-approved policy reviewed on a cycle',mech:'AML/CFT policy approved by the board annually; procedures reviewed on the same cycle and version history retained.',type:'PREV',freq:'Annual',owner:'Chief Compliance Officer',test:'Inspection',eff:'E'},
+  {id:'GOV-02',dom:'GOV',obj:'Designate a compliance officer with authority and resources',mech:'A designated officer holds documented authority, direct board access, and an annually reassessed staffing and budget plan.',type:'PREV',freq:'Standing',owner:'Chief Compliance Officer',test:'Inquiry',eff:'E'},
+  {id:'GOV-03',dom:'GOV',obj:'Report program status to board and senior management',mech:'Quarterly reporting covers metrics, escalations, gap remediation, and regulatory developments; minutes evidence challenge and follow-up.',type:'DET',freq:'Quarterly',owner:'Chief Compliance Officer',test:'Inspection',eff:'E'},
+  {id:'GOV-04',dom:'GOV',obj:'Train staff by role with completion tracking',mech:'Role-based training assigned annually with completion tracked to the individual; escalation for non-completion past 30 days.',type:'PREV',freq:'Annual + onboarding',owner:'Compliance Training Lead',test:'Inspection',eff:'P'},
+  {id:'GOV-05',dom:'GOV',obj:'Independently test the program on a defined cycle',mech:'Independent testing of all six domains on a defined multi-year cycle by a function outside the first line; findings tracked to closure.',type:'DET',freq:'Defined cycle',owner:'Head of Internal Audit',test:'Inspection',eff:'NA'},
+  /* TECH */
+  {id:'TECH-01',dom:'TECH',obj:'Validate screening and monitoring systems and models',mech:'Pre-implementation and periodic validation of matching logic, rule execution, and model performance, with documented test plans and results.',type:'PREV',freq:'Pre-implementation + periodic',owner:'Model Risk Manager',test:'Re-performance',eff:'NA'},
+  {id:'TECH-02',dom:'TECH',obj:'Assure data quality on feeds into screening and monitoring',mech:'Completeness and accuracy checks on every source feed, with reconciliation counts, rejected-record handling, and alerting on threshold breaches.',type:'DET',freq:'Daily (automated)',owner:'Data Governance Lead',test:'Re-performance',eff:'P'},
+  {id:'TECH-03',dom:'TECH',obj:'Manage vendor and third-party risk for outsourced functions',mech:'Outsourced screening and data vendors risk-assessed at onboarding and annually; performance against SLAs reviewed and exit plans maintained.',type:'PREV',freq:'Annual',owner:'Third-Party Risk Manager',test:'Inquiry',eff:'NA'}
+];
+
+/* ---- GAP REGISTER ---- */
+var GAPS=[
+  {id:'GAP-01',sev:'CRITICAL',cls:'finding-critical',tagcls:'bg-sev',ctrl:'TM-03',
+   t:'Monitoring thresholds untuned since the 2024 system migration',
+   b:'No tuning cycle has run since the monitoring platform migration in 2024. Thresholds were carried over without above/below-threshold testing, so current alert output cannot be evidenced as calibrated to the live transaction population. Material detection exposure on an operating channel. Remediation: full tuning cycle with documented threshold decisions and sign-off.',
+   own:'Head of Financial Crime Analytics',hor:'90 days'},
+  {id:'GAP-02',sev:'HIGH',cls:'finding-high',tagcls:'bg-high',ctrl:'TM-05',
+   t:'No typology-to-rule coverage assessment exists',
+   b:'The rule library is documented but has never been mapped against the typology inventory, so uncovered typologies are unknown — including those introduced by the custody pilot. Remediation: build the coverage map, identify uncovered typologies, and feed gaps into the tuning program.',
+   own:'Financial Crime Risk Manager',hor:'120 days'},
+  {id:'GAP-03',sev:'HIGH',cls:'finding-high',tagcls:'bg-high',ctrl:'TM-02',
+   t:'Alert-disposition backlog breaches the 30-day SLA',
+   b:'38% of open alerts exceed the 30-day disposition SLA in the synthetic period, with aging concentrated in rules producing high false-positive volume — itself a symptom of GAP-01. Remediation: backlog workdown plan plus interim resource allocation, tracked weekly.',
+   own:'TM Investigations Manager',hor:'120 days'},
+  {id:'GAP-04',sev:'HIGH',cls:'finding-high',tagcls:'bg-high',ctrl:'GOV-05',
+   t:'Independent testing cycle overdue',
+   b:'The last full-scope independent test concluded more than 18 months ago and the current cycle has not been scheduled. Until it runs, four controls remain NOT ASSESSED and the program lacks current third-line evidence. Remediation: schedule and complete the full-scope test.',
+   own:'Head of Internal Audit',hor:'180 days'},
+  {id:'GAP-05',sev:'MEDIUM',cls:'finding-medium',tagcls:'bg-mod',ctrl:'CDD-04',
+   t:'Periodic-review backlog in the medium-risk segment',
+   b:'Medium-risk reviews are running roughly one quarter behind cycle; high-risk reviews are current. Compensating control: trigger-event reviews continue to fire. Remediation: workdown schedule restoring the cycle.',
+   own:'CDD Operations Lead',hor:'120 days'},
+  {id:'GAP-06',sev:'MEDIUM',cls:'finding-medium',tagcls:'bg-mod',ctrl:'TECH-01',
+   t:'No post-migration validation of screening and monitoring systems',
+   b:'Neither the screening matching logic nor monitoring rule execution has been independently validated since the 2024 migration. Remediation: commission validation of both systems; sequence after the GAP-01 tuning cycle so validated thresholds are tested.',
+   own:'Model Risk Manager',hor:'180 days'},
+  {id:'GAP-07',sev:'MEDIUM',cls:'finding-medium',tagcls:'bg-mod',ctrl:'SAN-04',
+   t:'Manual end-of-day screening on one legacy payment channel',
+   b:'One legacy channel is screened by manual end-of-day review rather than pre-release automation, creating an intraday window. Volume is low and the compensating review is evidenced. Remediation: onboard the channel to the automated screening path.',
+   own:'Payments Compliance Manager',hor:'180 days'},
+  {id:'GAP-08',sev:'LOW',cls:'finding-low',tagcls:'bg-low2',ctrl:'REP-04',
+   t:'Continuing-activity reviews tracked in a spreadsheet',
+   b:'Follow-up review dates are tracked in a standalone spreadsheet without workflow audit trail. No missed review was identified in the synthetic period — a formalization issue, not an exposure. Remediation: migrate tracking into the case-management workflow.',
+   own:'Regulatory Reporting Manager',hor:'270 days'}
+];
+
+/* ---- INVENTORY TABLE ---- */
+var ib=document.getElementById('inventory-body');
+DOMAINS.forEach(function(d){
+  var rows=CONTROLS.filter(function(c){return c.dom===d.key});
+  ib.appendChild(el('tr',{class:'row-domain'},
+    el('td',{colspan:'8',text:d.key+' — '+d.name+' ('+rows.length+' controls)'})));
+  rows.forEach(function(c){
+    var e=EFF[c.eff];
+    ib.appendChild(el('tr',null,
+      el('td',null,el('span',{class:'mono',style:'color:var(--text);font-weight:700;font-size:.74rem',text:c.id})),
+      el('td',{style:'color:var(--text);font-weight:600;min-width:180px',text:c.obj}),
+      el('td',{style:'font-size:.74rem;min-width:260px',text:c.mech}),
+      el('td',null,el('span',{class:'type-tag',text:c.type})),
+      el('td',{style:'font-size:.72rem;white-space:nowrap',text:c.freq}),
+      el('td',{style:'font-size:.72rem',text:c.owner}),
+      el('td',{style:'font-size:.72rem',text:c.test}),
+      el('td',null,el('span',{class:'eff-tag '+e.cls,text:e.label}))
+    ));
+  });
+});
+
+/* ---- COVERAGE SUMMARY ---- */
+var cb=document.getElementById('coverage-body');
+var totals={n:0,E:0,P:0,I:0,NA:0};
+DOMAINS.forEach(function(d){
+  var rows=CONTROLS.filter(function(c){return c.dom===d.key});
+  var cnt={E:0,P:0,I:0,NA:0};
+  rows.forEach(function(c){cnt[c.eff]++});
+  totals.n+=rows.length;totals.E+=cnt.E;totals.P+=cnt.P;totals.I+=cnt.I;totals.NA+=cnt.NA;
+  function cell(v,color){return el('td',{style:'text-align:center'},
+    el('span',{class:'score-pill',style:'background:'+(v?color:'var(--glass)')+';color:'+(v?'#0a0a0f':'var(--text3)'),text:String(v)}));}
+  cb.appendChild(el('tr',null,
+    el('td',{style:'color:var(--text);font-weight:600',text:d.key+' — '+d.name}),
+    el('td',{style:'text-align:center;font-family:var(--mono);font-weight:700;color:var(--text)',text:String(rows.length)}),
+    cell(cnt.E,'rgba(48,209,88,.85)'),cell(cnt.P,'rgba(245,158,11,.85)'),
+    cell(cnt.I,'rgba(239,68,68,.85)'),cell(cnt.NA,'rgba(140,140,148,.85)'),
+    el('td',{style:'font-size:.74rem',text:d.read})
+  ));
+});
+cb.appendChild(el('tr',{class:'row-total'},
+  el('td',null,'TOTAL'),
+  el('td',{style:'text-align:center;font-family:var(--mono)',text:String(totals.n)}),
+  el('td',{style:'text-align:center;font-family:var(--mono);color:var(--green)',text:String(totals.E)}),
+  el('td',{style:'text-align:center;font-family:var(--mono);color:var(--amber)',text:String(totals.P)}),
+  el('td',{style:'text-align:center;font-family:var(--mono);color:var(--red)',text:String(totals.I)}),
+  el('td',{style:'text-align:center;font-family:var(--mono);color:var(--text3)',text:String(totals.NA)}),
+  el('td',{style:'font-size:.74rem',text:'13 effective / 8 partially effective / 2 ineffective / 4 not assessed'})
+));
+
+/* ---- GAP REGISTER CARDS ---- */
+var gl=document.getElementById('gap-list');
+GAPS.forEach(function(g){
+  gl.appendChild(el('div',{class:'finding '+g.cls},
+    el('div',{class:'f-head'},
+      el('span',{class:'sev-tag '+g.tagcls,text:g.sev}),
+      el('span',{class:'f-title',text:g.id+' · '+g.t})),
+    el('div',{class:'f-body',text:g.b}),
+    el('div',{class:'f-link',text:'Control: '+g.ctrl+'   ·   Owner: '+g.own+'   ·   Target: '+g.hor})
+  ));
+});
+
+/* ---- CHARTS ---- */
+var cgrid='rgba(255,255,255,.06)', ctick='#8b909c';
+Chart.defaults.font.family="-apple-system,BlinkMacSystemFont,sans-serif";
+Chart.defaults.color=ctick;
+
+new Chart(document.getElementById('effDonut'),{
+  type:'doughnut',
+  data:{labels:['Effective','Partially effective','Ineffective','Not assessed'],
+    datasets:[{data:[13,8,2,4],
+      backgroundColor:['#30d158','#f59e0b','#ef4444','#6e6e73'],
+      borderColor:'#0a0a0f',borderWidth:2,cutout:'62%'}]},
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{position:'bottom',labels:{color:ctick,font:{size:10},boxWidth:12,padding:8}},
+      tooltip:{callbacks:{label:function(c){return c.label+': '+c.parsed+' of 27'}}}}}
+});
+
+var domKeys=DOMAINS.map(function(d){return d.key});
+function domCount(eff){return DOMAINS.map(function(d){
+  return CONTROLS.filter(function(c){return c.dom===d.key&&c.eff===eff}).length});}
+new Chart(document.getElementById('domainBar'),{
+  type:'bar',
+  data:{labels:domKeys,datasets:[
+    {label:'Effective',data:domCount('E'),backgroundColor:'#30d158cc',borderRadius:4},
+    {label:'Partially effective',data:domCount('P'),backgroundColor:'#f59e0bcc',borderRadius:4},
+    {label:'Ineffective',data:domCount('I'),backgroundColor:'#ef4444cc',borderRadius:4},
+    {label:'Not assessed',data:domCount('NA'),backgroundColor:'#6e6e73cc',borderRadius:4}
+  ]},
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{position:'bottom',labels:{color:ctick,font:{size:10},boxWidth:12,padding:8}}},
+    scales:{x:{stacked:true,grid:{display:false},ticks:{color:ctick,font:{size:10}}},
+      y:{stacked:true,grid:{color:cgrid},ticks:{color:ctick,font:{size:9},stepSize:1}}}}
+});
+
+new Chart(document.getElementById('gapDonut'),{
+  type:'doughnut',
+  data:{labels:['CRITICAL','HIGH','MEDIUM','LOW'],datasets:[{data:[1,3,3,1],
+    backgroundColor:['#ef4444','#ff9f0a','#22d3ee','#6e6e73'],borderColor:'#0a0a0f',borderWidth:2,cutout:'62%'}]},
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{position:'bottom',labels:{color:ctick,font:{size:10},boxWidth:12,padding:10}},
+      tooltip:{callbacks:{label:function(c){return c.label+': '+c.parsed+' gap'+(c.parsed>1?'s':'')}}}}}
+});
+
+/* ---- NAV ---- */
+var SECTIONS=[
+  ['sec-summary','Summary'],['sec-overview','Effectiveness'],['sec-inventory','Inventory'],
+  ['sec-coverage','Coverage'],['sec-gaps','Gap Register'],['sec-method','Method']
+];
+var nav=document.getElementById('nav');
+SECTIONS.forEach(function(s){
+  var b=el('button',{class:'nav-btn','data-nav':s[0],text:s[1]});
+  b.addEventListener('click',function(){document.getElementById(s[0]).scrollIntoView({behavior:'smooth'})});
+  nav.appendChild(b);
+});
+
+/* fade-in */
+var obs=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target)}})},{threshold:.08});
+document.querySelectorAll('.card,.glass-card,.finding').forEach(function(eln){eln.classList.add('fade-in');obs.observe(eln)});
+
+/* active nav */
+var navObs=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){
+  document.querySelectorAll('.nav-btn[data-nav]').forEach(function(b){b.classList.remove('active')});
+  var b=document.querySelector('.nav-btn[data-nav="'+e.target.id+'"]');
+  if(b){b.classList.add('active');b.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'})}
+}})},{rootMargin:'-35% 0px -55% 0px',threshold:0});
+SECTIONS.forEach(function(s){var eln=document.getElementById(s[0]);if(eln)navObs.observe(eln)});
+
+document.getElementById('gen-date').textContent=new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
+</script>
+</body>
+</html>

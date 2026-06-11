@@ -40,6 +40,8 @@ The two directories cover the same kinds of work; pick the shape that matches ho
 | [entity-risk-assessment.md](entity-risk-assessment.md) | 8-domain weighted risk assessment of an entity — 0-100 composite, 5-tier rating, red flags, disposition |
 | [breaking-news-scan.md](breaking-news-scan.md) | Terse severity-tagged headline feed across your domains; filters hard, returns "quiet scan" rather than padding |
 | [alert-triage.md](alert-triage.md) | Transaction-monitoring alert worked to a defensible disposition with for/against factors and an audit-ready memo |
+| [control-matrix-builder.md](control-matrix-builder.md) | Structured, testable AML/CFT control inventory across six domains — nine-attribute matrix, domain coverage summary, severity-tagged gap register |
+| [committee-reporting-pack.md](committee-reporting-pack.md) | Committee-ready reporting pack — decisions sought vs. items for noting, threshold-coded KPI/KRI dashboard, severity-rated escalations, action tracker, forward calendar |
 
 ---
 

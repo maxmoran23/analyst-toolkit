@@ -38,9 +38,13 @@ There is never a third file. [`BASE.md`](BASE.md) is the entire 4-file methodolo
     <td width="50%"><img src="samples/previews/regulatory-landscape-preview.png" alt="Regulatory landscape dashboard — illustrative sample"></td>
     <td width="50%"><img src="output-templates/dashboards/previews/deep-dive-dashboard-preview.png" alt="Deep-dive dashboard template"></td>
   </tr>
+  <tr>
+    <td width="50%"><img src="samples/previews/control-matrix-preview.png" alt="AML/CFT control matrix dashboard — illustrative sample"></td>
+    <td width="50%"><img src="samples/previews/committee-pack-preview.png" alt="Governance committee reporting pack — illustrative sample"></td>
+  </tr>
 </table>
 
-*Above: outputs and templates from the toolkit — a sample entity risk assessment (one prompt plus one template), a regulatory-landscape view, and the lightweight deep-dive dashboard template. [See all samples](samples/) · [dashboard templates](output-templates/dashboards/).*
+*Above: outputs and templates from the toolkit — a sample entity risk assessment (one prompt plus one template), a regulatory-landscape view, the lightweight deep-dive dashboard template, and rendered samples from the controls category (27-control AML/CFT matrix, quarterly committee reporting pack). [See all samples](samples/) · [dashboard templates](output-templates/dashboards/).*
 
 ---
 
@@ -85,7 +89,7 @@ The methodology files apply the voice, the analytical discipline, the quality fl
 
 **Best for:** one-off use, sharing one file with a teammate who has no setup, or demoing the "look at the quality difference" pattern.
 
-Use a file from **[`standalone/`](standalone/)**. Every file there is fully self-contained: the whole file *is* the prompt, no markdown links to other files in the repo, each one starts with a Preflight step (assistant explicitly checks your inputs and asks for clarification before producing anything partial), and each one embeds the same multi-format renderer as `methodology/report-templates.md`. Paste one file, supply your inputs, optionally ask for a Word / Excel / PDF / HTML deliverable — all from that single paste. Covers universal analyst work (document summary, comparison matrix, meeting prep, decision memo, weekly digest, action items) and the flagship financial-crime / intelligence prompts.
+Use a file from **[`standalone/`](standalone/)**. Every file there is fully self-contained: the whole file *is* the prompt, no markdown links to other files in the repo, each one starts with a Preflight step (assistant explicitly checks your inputs and asks for clarification before producing anything partial), and each one embeds the same multi-format renderer as `methodology/report-templates.md`. Paste one file, supply your inputs, optionally ask for a Word / Excel / PDF / HTML deliverable — all from that single paste. Covers universal analyst work (document summary, comparison matrix, meeting prep, decision memo, weekly digest, action items), the flagship financial-crime / intelligence prompts, and the assurance templates (control matrix builder, committee reporting pack).
 
 ### 3. Browse the catalog (find a prompt, copy the block)
 

@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Compliance Committee Reporting Pack — Q1 2026 (Illustrative Sample)</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" integrity="sha384-9nhczxUqK87bcKHh20fSQcTGD4qq5GhayNYSYWqwBkINBhOfQLg/P5HG5lF1urn4" crossorigin="anonymous"></script>
+<meta name="theme-color" content="#0a0a0f">
+<style>
+/* ============================================================
+   ANALYST TOOLKIT — COMMITTEE REPORTING PACK SAMPLE DASHBOARD
+   Quarterly compliance-committee pack, rendered in the
+   dashboard-big visual system. Single file, no build step.
+   ALL CONTENT IS SYNTHETIC AND ILLUSTRATIVE.
+   ============================================================ */
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root,[data-theme="dark"]{
+  --bg:#0a0a0f;--bg2:#111118;--bg3:#1a1a24;--bg4:#22222e;
+  --text:#f5f5f7;--text2:#a1a1a6;--text3:#6e6e73;
+  /* ACCENT — governance indigo */
+  --accent:#5e5ce6;--accent2:#7d7bff;
+  --pink:#ff375f;--orange:#ff9f0a;--green:#30d158;--blue:#0a84ff;
+  --purple:#bf5af2;--teal:#64d2ff;--yellow:#ffd60a;--indigo:#5e5ce6;
+  --red:#ef4444;--amber:#f59e0b;--cyan:#22d3ee;
+  --card:rgba(28,28,35,.7);--card-border:rgba(255,255,255,.07);
+  --glass:rgba(255,255,255,.04);--glass-border:rgba(255,255,255,.08);
+  --radius:16px;--radius-sm:10px;
+  --font:-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',sans-serif;
+  --mono:'SF Mono','Fira Code',ui-monospace,Menlo,monospace;
+  --nav-bg:rgba(10,10,15,.85);
+  --blob-opacity:.6;--blob-blend:screen;
+  --scrollbar-thumb:var(--bg4);
+  --replay-g1:rgba(94,92,230,.34);--replay-g2:rgba(120,90,230,.26);--replay-g3:rgba(80,140,255,.2);
+  --replay-g4:rgba(245,158,11,.14);
+}
+[data-theme="light"]{
+  --bg:#f4f6fb;--bg2:#ffffff;--bg3:#e9edf5;--bg4:#dde3ee;
+  --text:#10131a;--text2:#4a4f5c;--text3:#8b909c;
+  --card:rgba(255,255,255,.9);--card-border:rgba(15,25,55,.08);
+  --glass:rgba(15,25,55,.035);--glass-border:rgba(15,25,55,.08);
+  --nav-bg:rgba(244,246,251,.92);
+  --blob-opacity:.4;--blob-blend:multiply;
+  --scrollbar-thumb:#c4ccdc;
+  --replay-g1:rgba(94,92,230,.4);--replay-g2:rgba(120,90,230,.32);--replay-g3:rgba(80,140,255,.3);
+  --replay-g4:rgba(245,158,11,.28);
+}
+[data-theme="light"] .card{box-shadow:0 1px 3px rgba(15,25,55,.06)}
+[data-theme="light"] .nav-btn:hover,[data-theme="light"] .nav-btn.active{background:rgba(15,25,55,.07);color:var(--text)}
+
+.theme-toggle{position:fixed;top:12px;right:20px;z-index:200;width:36px;height:36px;border-radius:50%;border:1px solid var(--glass-border);background:var(--glass);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);color:var(--text);font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .3s}
+.theme-toggle:hover{background:var(--bg3);border-color:var(--accent)}
+
+html{font-size:16px;scroll-behavior:smooth}
+body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;line-height:1.5;position:relative;transition:background .4s,color .4s}
+a{color:var(--accent2);text-decoration:none}a:hover{text-decoration:underline}
+::-webkit-scrollbar{width:6px;height:6px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--scrollbar-thumb);border-radius:3px}
+
+/* ANIMATED BACKGROUND */
+.liquid-bg{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;overflow:hidden;opacity:var(--blob-opacity);pointer-events:none;transition:opacity .4s}
+.liquid-blob{position:absolute;border-radius:50%;filter:blur(100px);mix-blend-mode:var(--blob-blend);transition:background .4s}
+.blob-1{width:700px;height:700px;background:radial-gradient(circle,var(--replay-g1),transparent 70%);top:-15%;left:-10%;animation:bm1 16s ease-in-out infinite alternate}
+.blob-2{width:600px;height:600px;background:radial-gradient(circle,var(--replay-g2),transparent 70%);top:20%;right:-8%;animation:bm2 20s ease-in-out infinite alternate}
+.blob-3{width:650px;height:650px;background:radial-gradient(circle,var(--replay-g3),transparent 70%);bottom:-10%;left:15%;animation:bm3 18s ease-in-out infinite alternate}
+.blob-4{width:480px;height:480px;background:radial-gradient(circle,var(--replay-g4),transparent 70%);top:55%;left:45%;animation:bm4 22s ease-in-out infinite alternate}
+@keyframes bm1{0%{transform:translate(0,0) scale(1)}100%{transform:translate(18vw,22vh) scale(1.25)}}
+@keyframes bm2{0%{transform:translate(0,0) scale(1)}100%{transform:translate(-22vw,-16vh) scale(.88)}}
+@keyframes bm3{0%{transform:translate(0,0) scale(1)}100%{transform:translate(10vw,-26vh) scale(1.12)}}
+@keyframes bm4{0%{transform:translate(0,0) scale(.85)}100%{transform:translate(-16vw,10vh) scale(1.18)}}
+
+/* TYPOGRAPHY */
+h1{font-size:2.4rem;font-weight:700;letter-spacing:-.03em;line-height:1.1}
+h1 span{background:linear-gradient(135deg,var(--accent2),var(--teal),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+h3{font-size:1.1rem;font-weight:600}
+.section-title{font-size:1.25rem;font-weight:700;letter-spacing:-.02em;margin-bottom:1rem;display:flex;align-items:center;gap:.6rem}
+.section-title .num{font-family:var(--mono);font-size:.85rem;color:var(--accent2);background:var(--glass);border:1px solid var(--glass-border);padding:.15rem .5rem;border-radius:6px}
+.label{font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text3)}
+.mono{font-family:var(--mono)}
+
+/* LAYOUT */
+.container{max-width:1380px;margin:0 auto;padding:0 2rem}
+.section{padding:1.75rem 0;position:relative}
+.grid{display:grid;gap:1.25rem}
+.grid-2{grid-template-columns:repeat(2,1fr)}.grid-3{grid-template-columns:repeat(3,1fr)}.grid-4{grid-template-columns:repeat(4,1fr)}
+.split-7-5{display:grid;grid-template-columns:7fr 5fr;gap:1.25rem}
+.split-5-7{display:grid;grid-template-columns:5fr 7fr;gap:1.25rem}
+@media(max-width:1100px){.grid-4{grid-template-columns:repeat(2,1fr)}.grid-3{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:900px){.grid-2,.grid-3,.grid-4,.split-7-5,.split-5-7{grid-template-columns:1fr}}
+
+/* SAMPLE BANNER */
+.sample-banner{background:repeating-linear-gradient(45deg,rgba(245,158,11,.14),rgba(245,158,11,.14) 14px,rgba(245,158,11,.07) 14px,rgba(245,158,11,.07) 28px);border-bottom:1px solid rgba(245,158,11,.4);color:var(--amber);text-align:center;padding:.55rem 1rem;font-size:.78rem;font-weight:700;letter-spacing:.04em;display:flex;align-items:center;justify-content:center;gap:.6rem;flex-wrap:wrap}
+.sample-banner .dot{width:7px;height:7px;border-radius:50%;background:var(--amber);box-shadow:0 0 8px var(--amber);animation:pulseDot 2s ease-in-out infinite}
+@keyframes pulseDot{0%,100%{opacity:1}50%{opacity:.35}}
+
+/* HERO */
+.hero{padding:2.4rem 0 1.6rem;text-align:center;background:linear-gradient(180deg,rgba(94,92,230,.09) 0%,transparent 62%);position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50%;left:50%;transform:translateX(-50%);width:760px;height:760px;background:radial-gradient(circle,rgba(94,92,230,.13) 0%,transparent 70%);pointer-events:none}
+.hero-logo{width:58px;height:58px;margin:0 auto .9rem;background:linear-gradient(135deg,var(--accent),var(--purple));border-radius:20px;display:flex;align-items:center;justify-content:center;font-size:1.05rem;font-weight:800;letter-spacing:.04em;box-shadow:0 0 38px rgba(94,92,230,.34);animation:pulseGlow 3.4s ease-in-out infinite}
+@keyframes pulseGlow{0%,100%{box-shadow:0 0 18px rgba(94,92,230,.22)}50%{box-shadow:0 0 38px rgba(94,92,230,.42)}}
+.hero-sub{color:var(--text2);font-size:1.02rem;margin-top:.5rem}
+.hero-meta{color:var(--text3);font-size:.78rem;margin-top:.35rem;font-family:var(--mono)}
+.rating-badge{display:inline-flex;align-items:center;gap:.5rem;border-radius:100px;padding:.5rem 1.3rem;font-size:.92rem;font-weight:700;margin-top:1rem;letter-spacing:.03em}
+.rating-decisions{background:linear-gradient(135deg,rgba(94,92,230,.2),rgba(125,123,255,.1));border:1px solid rgba(125,123,255,.45);color:var(--accent2)}
+.stat-row{display:flex;gap:.85rem;flex-wrap:wrap;justify-content:center;margin-top:1.4rem}
+.stat-chip{display:flex;flex-direction:column;align-items:center;padding:.7rem 1.15rem;border-radius:var(--radius);background:var(--glass);border:1px solid var(--glass-border);min-width:118px}
+.stat-chip .sc-value{font-size:1.55rem;font-weight:700;letter-spacing:-.02em}
+.stat-chip .sc-label{font-size:.6rem;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;margin-top:.2rem;text-align:center}
+
+/* NAV */
+.nav{position:sticky;top:0;z-index:100;background:var(--nav-bg);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--card-border);transition:background .4s}
+.nav-inner{display:flex;align-items:center;gap:.2rem;padding:.5rem 0;overflow-x:auto;scrollbar-width:none}.nav-inner::-webkit-scrollbar{display:none}
+.nav-btn{padding:.32rem .72rem;border-radius:100px;border:none;background:transparent;color:var(--text2);font-size:.76rem;font-weight:500;cursor:pointer;white-space:nowrap;transition:all .2s;font-family:var(--font)}
+.nav-btn:hover,.nav-btn.active{background:var(--bg3);color:var(--text)}
+
+/* CARDS */
+.card{background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius);padding:1.25rem;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);transition:transform .25s,border-color .25s,box-shadow .25s;position:relative;overflow:hidden}
+.card:hover{transform:translateY(-2px);border-color:rgba(255,255,255,.14);box-shadow:0 12px 40px rgba(0,0,0,.3)}
+.card-accent-red{border-left:3px solid var(--red)}.card-accent-amber{border-left:3px solid var(--amber)}
+.card-accent-cyan{border-left:3px solid var(--cyan)}.card-accent-green{border-left:3px solid var(--green)}
+.card-accent-blue{border-left:3px solid var(--blue)}.card-accent-indigo{border-left:3px solid var(--indigo)}
+.glass-card{background:var(--glass);border:1px solid var(--glass-border);border-radius:var(--radius);padding:1.4rem;backdrop-filter:blur(16px)}
+
+.section-gradient-1{background:linear-gradient(180deg,rgba(94,92,230,.04) 0%,transparent 100%)}
+.section-gradient-2{background:linear-gradient(180deg,rgba(10,132,255,.04) 0%,transparent 100%)}
+.section-gradient-3{background:linear-gradient(180deg,rgba(191,90,242,.04) 0%,transparent 100%)}
+.section-gradient-4{background:linear-gradient(180deg,rgba(245,158,11,.04) 0%,transparent 100%)}
+
+/* KPI */
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.75rem;margin-bottom:1.1rem}
+.kpi{background:var(--glass);border:1px solid var(--glass-border);border-radius:var(--radius);padding:.85rem .9rem;text-align:center}
+.kpi-label{font-size:.58rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text3)}
+.kpi-val{font-size:1.45rem;font-weight:700;margin-top:.18rem}
+.kpi-sub{font-size:.65rem;margin-top:.15rem;color:var(--text3)}
+
+/* TABLES */
+.data-table{width:100%;border-collapse:collapse;font-size:.8rem}
+.data-table th{text-align:left;padding:.6rem .7rem;color:var(--text3);font-weight:600;font-size:.66rem;text-transform:uppercase;letter-spacing:.05em;border-bottom:1px solid var(--card-border);white-space:nowrap}
+.data-table td{padding:.6rem .7rem;border-bottom:1px solid var(--glass-border);color:var(--text2);vertical-align:top}
+.data-table tr:hover td{background:rgba(255,255,255,.03)}
+
+/* STATUS / TREND TAGS — words only, per the prompt rules */
+.st-tag{display:inline-flex;align-items:center;justify-content:center;padding:.18rem .55rem;border-radius:6px;font-size:.62rem;font-weight:800;letter-spacing:.05em;white-space:nowrap}
+.st-within{background:rgba(48,209,88,.16);color:var(--green)}
+.st-approach{background:rgba(245,158,11,.18);color:var(--amber)}
+.st-breach{background:rgba(239,68,68,.18);color:var(--red)}
+.st-none{background:rgba(110,110,115,.18);color:var(--text2)}
+.tr-tag{font-family:var(--mono);font-size:.66rem;font-weight:700;white-space:nowrap}
+.tr-fav{color:var(--green)}.tr-adv{color:var(--orange)}.tr-neu{color:var(--text3)}
+
+/* SEVERITY HELPERS */
+.sv-low{color:var(--green)}.sv-mod{color:var(--cyan)}.sv-elev{color:var(--amber)}.sv-high{color:var(--orange)}.sv-sev{color:var(--red)}
+.bg-mod{background:rgba(34,211,238,.16);color:var(--cyan)}
+.bg-high{background:rgba(255,159,10,.18);color:var(--orange)}
+.bg-sev{background:rgba(239,68,68,.18);color:var(--red)}
+.bg-low2{background:rgba(110,110,115,.18);color:var(--text2)}
+
+/* PILLS */
+.pill{display:inline-block;padding:3px 10px;border-radius:12px;font-size:.68rem;font-weight:600;margin:2px 3px}
+.pill-green{background:rgba(48,209,88,.12);color:var(--green);border:1px solid rgba(48,209,88,.3)}
+.pill-cyan{background:rgba(34,211,238,.12);color:var(--cyan);border:1px solid rgba(34,211,238,.3)}
+.pill-amber{background:rgba(245,158,11,.12);color:var(--amber);border:1px solid rgba(245,158,11,.3)}
+.pill-red{background:rgba(239,68,68,.12);color:var(--red);border:1px solid rgba(239,68,68,.3)}
+.pill-indigo{background:rgba(94,92,230,.14);color:var(--accent2);border:1px solid rgba(125,123,255,.35)}
+.pill-grey{background:var(--glass);color:var(--text3);border:1px solid var(--glass-border)}
+
+/* DECISION ITEMS */
+.decision{display:flex;gap:.8rem;align-items:flex-start;padding:.85rem 0;border-bottom:1px solid var(--glass-border);font-size:.85rem;line-height:1.6}
+.decision:last-child{border-bottom:none}
+.decision .d-num{width:26px;height:26px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.74rem;font-weight:800;flex-shrink:0;background:rgba(94,92,230,.2);color:var(--accent2);font-family:var(--mono)}
+.decision .d-rec{margin-top:.3rem;font-size:.72rem;color:var(--accent2);font-weight:700;letter-spacing:.04em;text-transform:uppercase}
+
+/* FINDINGS (escalations) */
+.finding{padding:11px 15px;border-left:3px solid var(--card-border);margin-bottom:9px;background:var(--glass);border-radius:0 8px 8px 0;font-size:.82rem;line-height:1.6}
+.finding-critical{border-left-color:var(--red)}.finding-high{border-left-color:var(--orange)}
+.finding-medium{border-left-color:var(--cyan)}.finding-low{border-left-color:var(--text3)}
+.finding .f-head{display:flex;align-items:center;gap:.55rem;margin-bottom:.3rem;flex-wrap:wrap}
+.finding .f-title{font-weight:700;color:var(--text);font-size:.86rem}
+.sev-tag{font-weight:800;font-size:.62rem;letter-spacing:.06em;padding:2px 7px;border-radius:5px}
+.finding .f-body{color:var(--text2)}
+.finding .f-ask{margin-top:.45rem;font-size:.76rem;color:var(--text);background:rgba(94,92,230,.1);border:1px solid rgba(125,123,255,.25);border-radius:7px;padding:.4rem .6rem}
+.finding .f-ask strong{color:var(--accent2);letter-spacing:.04em;font-size:.66rem}
+.finding .f-link{margin-top:.35rem;font-size:.7rem;color:var(--text3);font-family:var(--mono)}
+
+/* ACTION STATUS */
+.act-tag{display:inline-flex;align-items:center;padding:.18rem .55rem;border-radius:6px;font-size:.6rem;font-weight:800;letter-spacing:.04em;white-space:nowrap}
+.act-overdue{background:rgba(239,68,68,.18);color:var(--red)}
+.act-ontrack{background:rgba(34,211,238,.16);color:var(--cyan)}
+.act-closed{background:rgba(48,209,88,.16);color:var(--green)}
+
+/* TIMELINE (forward calendar) */
+.tl{position:relative;padding-left:1.5rem}
+.tl::before{content:'';position:absolute;left:5px;top:4px;bottom:4px;width:2px;background:linear-gradient(180deg,var(--accent),var(--purple),transparent)}
+.tl-item{position:relative;padding-bottom:1rem}
+.tl-item:last-child{padding-bottom:0}
+.tl-item::before{content:'';position:absolute;left:-1.5rem;top:3px;width:12px;height:12px;border-radius:50%;background:var(--bg);border:2px solid var(--accent2)}
+.tl-item.warn::before{border-color:var(--amber)}
+.tl-item.crit::before{border-color:var(--red)}
+.tl-date{font-size:.66rem;font-family:var(--mono);color:var(--text3);letter-spacing:.03em}
+.tl-title{font-size:.84rem;font-weight:600;color:var(--text);margin:.1rem 0}
+.tl-desc{font-size:.76rem;color:var(--text2);line-height:1.5}
+
+/* METHOD STEPS / GAP ITEMS */
+.method-step{display:flex;gap:.7rem;padding:.5rem 0;font-size:.8rem;color:var(--text2);line-height:1.55}
+.method-step .ms-n{font-family:var(--mono);font-size:.72rem;color:var(--accent2);flex-shrink:0;font-weight:700}
+.gap-item{display:flex;gap:.7rem;align-items:flex-start;padding:.6rem 0;border-bottom:1px solid var(--glass-border);font-size:.82rem}
+.gap-item:last-child{border-bottom:none}
+.gap-num{width:24px;height:24px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;flex-shrink:0;background:rgba(94,92,230,.18);color:var(--accent2);font-family:var(--mono)}
+
+/* CONFIDENCE METER */
+.conf-meter{display:flex;gap:.3rem;margin-top:.4rem}
+.conf-seg{flex:1;height:8px;border-radius:3px;background:var(--bg3)}
+.conf-seg.on{background:var(--green)}
+
+/* FOOTER */
+.footer{text-align:center;padding:2.6rem 0 2rem;color:var(--text3);font-size:.78rem;border-top:1px solid var(--card-border);margin-top:2rem}
+.footer .fnote{margin-top:.5rem;font-size:.7rem;opacity:.75;max-width:760px;margin-left:auto;margin-right:auto;line-height:1.6}
+
+.fade-in{opacity:0;transform:translateY(18px);transition:opacity .55s ease,transform .55s ease}
+.fade-in.visible{opacity:1;transform:translateY(0)}
+
+@media print{
+  .nav,.theme-toggle{display:none!important}
+  body{background:#0a0a0f!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .section,.card,.glass-card,.finding{break-inside:avoid}
+}
+</style>
+</head>
+<body>
+
+<button class="theme-toggle" onclick="toggleTheme()" title="Toggle light/dark mode" id="theme-btn">&#9790;</button>
+
+<div class="liquid-bg">
+  <div class="liquid-blob blob-1"></div>
+  <div class="liquid-blob blob-2"></div>
+  <div class="liquid-blob blob-3"></div>
+  <div class="liquid-blob blob-4"></div>
+</div>
+
+<!-- ============================================================
+     ILLUSTRATIVE SAMPLE BANNER — required, always visible
+     ============================================================ -->
+<div class="sample-banner">
+  <span class="dot"></span>
+  ILLUSTRATIVE SAMPLE &mdash; synthetic data, fictional institution, for format demonstration only
+  <span class="dot"></span>
+</div>
+
+<!-- ============================================================
+     HERO
+     ============================================================ -->
+<section class="hero" id="hero"><div class="container">
+  <div class="hero-logo">CP</div>
+  <h1><span>Compliance Committee Reporting Pack</span></h1>
+  <p class="hero-sub">Harborview Financial Group &mdash; a fictional mid-size financial institution &mdash; Q1 2026</p>
+  <p class="hero-meta">Fictional institution &middot; Prepared 2026-04-08 &middot; Period: Q1 2026 (Jan&ndash;Mar) &middot; Forum: quarterly compliance committee</p>
+  <div class="rating-badge rating-decisions">2 decisions sought &middot; 5 escalations &middot; 2 actions overdue</div>
+  <div class="stat-row">
+    <div class="stat-chip"><span class="sc-value" style="color:var(--accent2)">2</span><span class="sc-label">Decisions Sought</span></div>
+    <div class="stat-chip"><span class="sc-value">13</span><span class="sc-label">Metrics Reported</span></div>
+    <div class="stat-chip"><span class="sc-value sv-sev">2</span><span class="sc-label">Breach</span></div>
+    <div class="stat-chip"><span class="sc-value sv-elev">3</span><span class="sc-label">Approaching</span></div>
+    <div class="stat-chip"><span class="sc-value sv-high">2</span><span class="sc-label">High Escalations</span></div>
+    <div class="stat-chip"><span class="sc-value sv-sev">2</span><span class="sc-label">Actions Overdue</span></div>
+    <div class="stat-chip"><span class="sc-value sv-low">4</span><span class="sc-label">Actions Closed</span></div>
+  </div>
+</div></section>
+
+<!-- ============================================================
+     STICKY NAV
+     ============================================================ -->
+<nav class="nav"><div class="container"><div class="nav-inner" id="nav"></div></div></nav>
+
+<div class="container">
+
+  <!-- ====================================================
+       1. EXECUTIVE SUMMARY — decisions first
+       ==================================================== -->
+  <section class="section section-gradient-1" id="sec-summary">
+    <div class="section-title"><span class="num">01</span> Executive Summary</div>
+    <div class="split-7-5">
+      <div class="card card-accent-indigo">
+        <h3 style="margin-bottom:.4rem;color:var(--accent2)">Decisions sought</h3>
+        <div class="decision"><span class="d-num">1</span>
+          <span><strong style="color:var(--text)">Approve transaction-monitoring remediation funding.</strong>
+          Alert disposition within the 30-day SLA breached its 85% threshold (62% this quarter, from 71%). The
+          remediation plan &mdash; a full rule-tuning cycle plus a six-analyst backlog workdown &mdash; requires
+          funding approval this cycle to hold the 90-day target.
+          <div class="d-rec">Recommendation: approve</div></span></div>
+        <div class="decision"><span class="d-num">2</span>
+          <span><strong style="color:var(--text)">Approve the revised customer risk-rating methodology.</strong>
+          The revised methodology (validated in Q1, parallel-run complete) is submitted for approval effective
+          Q3 2026. Override rates under the parallel run fell within tolerance.
+          <div class="d-rec">Recommendation: approve, with annual revalidation condition</div></span></div>
+        <h3 style="margin:1.1rem 0 .5rem">Items for noting</h3>
+        <ul style="padding-left:1.1rem;display:flex;flex-direction:column;gap:.4rem;font-size:.84rem;color:var(--text2);line-height:1.6">
+          <li>Two of 13 metrics in BREACH (alert SLA, overdue findings) and three APPROACHING; seven WITHIN threshold and one without a threshold. The breach picture is concentrated in transaction monitoring.</li>
+          <li>Five escalations this period: 2 HIGH, 2 MEDIUM, 1 LOW. No CRITICAL escalation &mdash; no appetite breach, regulatory breach, or externally reportable incident in the quarter.</li>
+          <li>Action tracker: 10 actions &mdash; 2 OVERDUE (both with revised dates and reasons), 4 on track, 4 closed this period.</li>
+          <li>Filing discipline held: 100% of regulatory filings within statutory deadline for the eighth consecutive quarter.</li>
+          <li>One measurement gap: the referral-to-filing conversion KRI has no threshold and cannot be governed until one is set; proposal due next cycle.</li>
+        </ul>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:1rem">
+        <div class="glass-card">
+          <div class="label" style="margin-bottom:.7rem">Pack Header &mdash; Synthetic</div>
+          <div style="display:flex;flex-direction:column;gap:.5rem;font-size:.82rem">
+            <div style="display:flex;justify-content:space-between;gap:1rem"><span style="color:var(--text3)">Committee</span><span style="font-weight:600">Compliance Committee</span></div>
+            <div style="display:flex;justify-content:space-between;gap:1rem"><span style="color:var(--text3)">Period</span><span style="font-weight:600">Q1 2026</span></div>
+            <div style="display:flex;justify-content:space-between;gap:1rem"><span style="color:var(--text3)">Prepared</span><span style="font-weight:600">2026-04-08</span></div>
+            <div style="display:flex;justify-content:space-between;gap:1rem"><span style="color:var(--text3)">Decisions sought</span><span style="font-weight:600">2</span></div>
+            <div style="display:flex;justify-content:space-between;gap:1rem"><span style="color:var(--text3)">Escalations</span><span style="font-weight:600">0 C / 2 H / 2 M / 1 L</span></div>
+            <div style="display:flex;justify-content:space-between;gap:1rem"><span style="color:var(--text3)">Actions</span><span style="font-weight:600">6 open / 2 overdue / 4 closed</span></div>
+          </div>
+        </div>
+        <div class="glass-card">
+          <div class="label" style="margin-bottom:.55rem">The quarter in one line</div>
+          <div style="font-size:.9rem;font-weight:700;color:var(--text);margin-bottom:.3rem;line-height:1.5">A clean program with one stressed domain: transaction monitoring drives both breaches, both HIGH escalations, and Decision 1.</div>
+          <div class="label" style="margin:.85rem 0 .3rem">Pack confidence</div>
+          <div style="font-size:.82rem;font-weight:600;color:var(--green)">HIGH</div>
+          <div class="conf-meter"><span class="conf-seg on"></span><span class="conf-seg on"></span><span class="conf-seg on"></span><span class="conf-seg on"></span><span class="conf-seg"></span></div>
+          <div style="font-size:.7rem;color:var(--text3);margin-top:.35rem">Inputs complete except one missing threshold, flagged as a measurement gap.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================================================
+       2. KPI / KRI DASHBOARD
+       ==================================================== -->
+  <section class="section section-gradient-2" id="sec-dashboard">
+    <div class="section-title"><span class="num">02</span> KPI / KRI Dashboard</div>
+    <p style="font-size:.8rem;color:var(--text3);margin:-.4rem 0 1rem">
+      Status: <span class="st-tag st-within">WITHIN</span> <span class="st-tag st-approach">APPROACHING</span>
+      <span class="st-tag st-breach">BREACH</span> &middot; Trend in words only &mdash; UP / DOWN / FLAT, favorable or
+      adverse. Commentary appears only where status or trend demands attention; silence means nothing needs it.
+    </p>
+    <div class="card" style="padding:1rem 1.1rem;overflow-x:auto;margin-bottom:1.25rem">
+      <table class="data-table">
+        <thead><tr>
+          <th>Metric</th><th style="text-align:right">Current</th><th style="text-align:right">Prior</th>
+          <th style="text-align:right">Threshold</th><th>Status</th><th>Trend</th><th>Commentary</th>
+        </tr></thead>
+        <tbody id="metrics-body"></tbody>
+      </table>
+    </div>
+    <div class="grid grid-3">
+      <div class="card">
+        <h3 style="margin-bottom:.3rem">Threshold Status Mix</h3>
+        <p style="font-size:.74rem;color:var(--text3);margin-bottom:.6rem">13 metrics by status. The unbounded KRI is a measurement gap, escalated below.</p>
+        <div style="position:relative;height:200px"><canvas id="statusDonut"></canvas></div>
+      </div>
+      <div class="card" style="grid-column:span 2">
+        <h3 style="margin-bottom:.3rem">Alert Disposition Within SLA &mdash; Five Quarters</h3>
+        <p style="font-size:.74rem;color:var(--text3);margin-bottom:.6rem">The breach behind Decision 1. The metric has declined for three consecutive quarters against a static 85% threshold.</p>
+        <div style="position:relative;height:200px"><canvas id="slaLine"></canvas></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================================================
+       3. ESCALATIONS
+       ==================================================== -->
+  <section class="section section-gradient-4" id="sec-escalations">
+    <div class="section-title"><span class="num">03</span> Escalations</div>
+    <div class="split-7-5">
+      <div>
+        <div id="escalation-list"></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:1rem">
+        <div class="glass-card">
+          <div class="label" style="margin-bottom:.6rem">Escalation Severity Mix</div>
+          <div style="position:relative;height:170px"><canvas id="escDonut"></canvas></div>
+        </div>
+        <div class="glass-card">
+          <div class="label" style="margin-bottom:.55rem">Reading the escalations</div>
+          <p style="font-size:.78rem;color:var(--text2);line-height:1.6">
+            Every escalation carries exactly one severity and &mdash; for HIGH and above &mdash; ends with a stated
+            ask, so the committee knows what is wanted. No CRITICAL escalation this period: nothing met the bar of a
+            limit breach, regulatory breach, or externally reportable incident. When in doubt between escalation and
+            noting, this pack escalates &mdash; a committee surprised later is a governance failure.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================================================
+       4. PRIOR-ACTION TRACKER
+       ==================================================== -->
+  <section class="section section-gradient-1" id="sec-actions">
+    <div class="section-title"><span class="num">04</span> Prior-Action Tracker</div>
+    <p style="font-size:.8rem;color:var(--text3);margin:-.4rem 0 1rem">
+      OVERDUE first, then OPEN &mdash; ON TRACK, then CLOSED. Every overdue action carries a revised date and a
+      one-line reason &mdash; an unexplained overdue action would itself be an escalation.
+    </p>
+    <div class="card" style="padding:1rem 1.1rem;overflow-x:auto">
+      <table class="data-table">
+        <thead><tr>
+          <th>#</th><th>Action</th><th>Owner (role)</th><th>Due</th><th>Status</th><th>Note</th>
+        </tr></thead>
+        <tbody id="actions-body"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ====================================================
+       5. FORWARD CALENDAR
+       ==================================================== -->
+  <section class="section section-gradient-3" id="sec-calendar">
+    <div class="section-title"><span class="num">05</span> Forward Calendar</div>
+    <div class="grid grid-2">
+      <div class="card">
+        <h3 style="margin-bottom:1rem">Next Two Reporting Cycles</h3>
+        <div class="tl" id="calendar"></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:1.1rem">
+        <div class="card card-accent-indigo">
+          <h3 style="margin-bottom:.5rem">Appendix Index</h3>
+          <div style="display:flex;flex-direction:column;gap:.5rem;font-size:.8rem;color:var(--text2)">
+            <div><span class="pill pill-indigo" style="margin:0 .4rem 0 0">A</span> Full Q1 metric table with monthly granularity behind every dashboard row</div>
+            <div><span class="pill pill-indigo" style="margin:0 .4rem 0 0">B</span> Transaction-monitoring remediation plan and funding breakdown (Decision 1)</div>
+            <div><span class="pill pill-indigo" style="margin:0 .4rem 0 0">C</span> Revised risk-rating methodology and parallel-run validation results (Decision 2)</div>
+            <div><span class="pill pill-indigo" style="margin:0 .4rem 0 0">D</span> Screening-outage incident report and root-cause analysis (ESC-05)</div>
+          </div>
+        </div>
+        <div class="card card-accent-cyan">
+          <h3 style="margin-bottom:.5rem">Information Gaps</h3>
+          <div class="gap-item"><span class="gap-num">G1</span><span><strong style="color:var(--text)">Referral-conversion KRI has no threshold.</strong> Reported for the second period without a limit; cannot be statused until one is set. Threshold proposal due to the Q2 pack (ESC-04).</span></div>
+          <div class="gap-item"><span class="gap-num">G2</span><span><strong style="color:var(--text)">Training metric excludes contractors.</strong> The completion figure covers employees only; contractor coverage data is not yet captured. Scope extension targeted for Q3.</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================================================
+       6. METHOD & CONFIDENCE
+       ==================================================== -->
+  <section class="section section-gradient-2" id="sec-method">
+    <div class="section-title"><span class="num">06</span> Method &amp; Confidence</div>
+    <div class="grid grid-3">
+      <div class="card">
+        <h3 style="margin-bottom:.7rem">How the pack is assembled</h3>
+        <div class="method-step"><span class="ms-n">01</span><span>Classify every input item: DECISION ITEM, ESCALATION, or NOTING ITEM &mdash; when in doubt, escalate.</span></div>
+        <div class="method-step"><span class="ms-n">02</span><span>Status every metric against its threshold (WITHIN / APPROACHING / BREACH); trend in words only.</span></div>
+        <div class="method-step"><span class="ms-n">03</span><span>Rate escalations on one severity each; CRITICAL and HIGH end with a stated ask.</span></div>
+        <div class="method-step"><span class="ms-n">04</span><span>Reconcile the action tracker against the prior pack; overdue first, every overdue row explained.</span></div>
+        <div class="method-step"><span class="ms-n">05</span><span>Order by severity then materiality &mdash; never alphabetical, never chronological.</span></div>
+        <div class="method-step"><span class="ms-n">06</span><span>Write the executive summary last; lead with the decisions sought.</span></div>
+      </div>
+      <div class="card">
+        <h3 style="margin-bottom:.7rem">Sourcing rules applied</h3>
+        <div class="method-step"><span class="ms-n">R1</span><span>Every figure traces to a supplied metric, item, or action &mdash; nothing invented to fill a row.</span></div>
+        <div class="method-step"><span class="ms-n">R2</span><span>No fabricated thresholds: the unbounded KRI is flagged as a measurement gap, not assigned an invented limit.</span></div>
+        <div class="method-step"><span class="ms-n">R3</span><span>No symbols, arrows, or emojis &mdash; status and trend are words, so the pack survives any export format.</span></div>
+        <div class="method-step"><span class="ms-n">R4</span><span>Quiet sections stay quiet: within-threshold, flat metrics carry no commentary by design.</span></div>
+        <div class="method-step"><span class="ms-n">R5</span><span>The pack reports and recommends; it does not decide. Every ask is explicit.</span></div>
+      </div>
+      <div class="card card-accent-green">
+        <h3 style="margin-bottom:.5rem">Pack Confidence</h3>
+        <div style="font-size:1.5rem;font-weight:800;color:var(--green)">HIGH</div>
+        <div class="conf-meter" style="margin:.5rem 0 .7rem"><span class="conf-seg on"></span><span class="conf-seg on"></span><span class="conf-seg on"></span><span class="conf-seg on"></span><span class="conf-seg"></span></div>
+        <p style="font-size:.79rem;color:var(--text2);line-height:1.6">
+          All 13 metrics carried current and prior values; 12 of 13 carried thresholds; the action log reconciled
+          fully against the prior pack. The single missing threshold and the contractor-scope gap are flagged above
+          and do not affect the decision items.
+        </p>
+        <div style="background:var(--glass);border:1px solid var(--glass-border);border-radius:var(--radius-sm);padding:.7rem;margin-top:.8rem;font-size:.73rem;color:var(--text3);line-height:1.55">
+          <strong style="color:var(--text2)">Scope note.</strong> Owners are role types, never people. All content is
+          generic to a financial institution &mdash; no proprietary or institution-identifying detail.
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <p><strong>Compliance Committee Reporting Pack &mdash; Q1 2026 &mdash; Harborview Financial Group</strong> &middot; Illustrative sample generated <span id="gen-date"></span> &middot; Confidence: HIGH</p>
+  <p class="fnote">
+    This dashboard is a format demonstration for the <span class="mono">analyst-toolkit</span> repository &mdash; the
+    output of <span class="mono">prompts/briefs/committee-reporting-pack.md</span> rendered as an interactive HTML
+    deliverable. Harborview Financial Group is a fictional institution. All metrics, thresholds, escalations,
+    actions, and dates are synthetic and were invented solely to show the structure of a committee reporting pack.
+    Nothing here describes any real institution, committee, or person. Not legal or compliance advice.
+  </p>
+</footer>
+
+<script>
+/* ============================================================
+   COMMITTEE PACK SAMPLE — ENGINE  (all data synthetic / illustrative)
+   Built with safe DOM construction — no innerHTML on dynamic data.
+   ============================================================ */
+
+function toggleTheme(){
+  var t=document.documentElement.getAttribute('data-theme')==='light'?'dark':'light';
+  document.documentElement.setAttribute('data-theme',t);
+  document.getElementById('theme-btn').textContent=t==='light'?'☀':'☾';
+}
+
+/* ---- tiny DOM helper: el(tag, props, ...children) ---- */
+function el(tag,props){
+  var node=document.createElement(tag);
+  if(props){
+    for(var k in props){
+      if(k==='class')node.className=props[k];
+      else if(k==='style')node.setAttribute('style',props[k]);
+      else if(k==='text')node.textContent=props[k];
+      else node.setAttribute(k,props[k]);
+    }
+  }
+  for(var i=2;i<arguments.length;i++){
+    var c=arguments[i];
+    if(c==null)continue;
+    if(Array.isArray(c)){c.forEach(function(x){if(x!=null)node.appendChild(typeof x==='string'?document.createTextNode(x):x)});}
+    else node.appendChild(typeof c==='string'?document.createTextNode(c):c);
+  }
+  return node;
+}
+
+/* ---- KPI / KRI DASHBOARD ---- */
+/* status: W=within, A=approaching, B=breach, N=no threshold
+   trendDir: UP/DOWN/FLAT ; trendRead: fav/adv/neu (favorable / adverse / first period or neutral) */
+var METRICS=[
+  {m:'Alert disposition within 30-day SLA',cur:'62%',pri:'71%',thr:'>= 85%',st:'B',dir:'DOWN',read:'adv',
+   note:'Third consecutive quarterly decline; remediation plan before committee as Decision 1.'},
+  {m:'Open audit / exam findings past due',cur:'1',pri:'1',thr:'0',st:'B',dir:'FLAT',read:'adv',
+   note:'Independent-testing finding past its revised date; see ESC-02.'},
+  {m:'Open alert backlog (count)',cur:'1,150',pri:'890',thr:'<= 1,200',st:'A',dir:'UP',read:'adv',
+   note:'Within limit but rising at a rate that breaches next quarter without the workdown.'},
+  {m:'Sanctions screening system uptime',cur:'99.6%',pri:'99.8%',thr:'>= 99.5%',st:'A',dir:'DOWN',read:'adv',
+   note:'Dip traced to one March maintenance window; see ESC-05.'},
+  {m:'Periodic review completion — medium-risk',cur:'84.6%',pri:'88.0%',thr:'>= 85%',st:'A',dir:'DOWN',read:'adv',
+   note:'Crossed below threshold in March; workdown schedule in the action tracker (#3).'},
+  {m:'Periodic review completion — high-risk',cur:'97.2%',pri:'98.1%',thr:'>= 95%',st:'W',dir:'DOWN',read:'adv',
+   note:'Within threshold; trend adverse for a second period — watch item.'},
+  {m:'Customer risk-rating overrides',cur:'3.1%',pri:'2.4%',thr:'<= 5%',st:'W',dir:'UP',read:'adv',
+   note:'Rise concentrated in the segment moving to the revised methodology (Decision 2).'},
+  {m:'Regulatory filings within statutory deadline',cur:'100%',pri:'100%',thr:'100%',st:'W',dir:'FLAT',read:'fav',note:''},
+  {m:'Watchlist update applied within 24 hours',cur:'100%',pri:'98.7%',thr:'100%',st:'W',dir:'UP',read:'fav',note:''},
+  {m:'New-party screening before activation',cur:'99.9%',pri:'99.9%',thr:'>= 99.9%',st:'W',dir:'FLAT',read:'fav',note:''},
+  {m:'Training completion on time (employees)',cur:'96.8%',pri:'95.2%',thr:'>= 95%',st:'W',dir:'UP',read:'fav',note:''},
+  {m:'Quality-assurance pass rate on case files',cur:'93.4%',pri:'92.8%',thr:'>= 90%',st:'W',dir:'UP',read:'fav',note:''},
+  {m:'Referrals converted to regulatory filings',cur:'41%',pri:'38%',thr:'none set',st:'N',dir:'UP',read:'neu',
+   note:'Measurement gap: a risk indicator without a threshold cannot be governed. See ESC-04.'}
+];
+var ST={W:{label:'WITHIN',cls:'st-within'},A:{label:'APPROACHING',cls:'st-approach'},
+        B:{label:'BREACH',cls:'st-breach'},N:{label:'NO THRESHOLD SET',cls:'st-none'}};
+var TREAD={fav:{label:'favorable',cls:'tr-fav'},adv:{label:'adverse',cls:'tr-adv'},neu:{label:'unbounded',cls:'tr-neu'}};
+
+var mb=document.getElementById('metrics-body');
+METRICS.forEach(function(r){
+  var s=ST[r.st],t=TREAD[r.read];
+  mb.appendChild(el('tr',null,
+    el('td',{style:'color:var(--text);font-weight:600;min-width:230px',text:r.m}),
+    el('td',{style:'text-align:right;font-family:var(--mono);color:var(--text);font-weight:700',text:r.cur}),
+    el('td',{style:'text-align:right;font-family:var(--mono)',text:r.pri}),
+    el('td',{style:'text-align:right;font-family:var(--mono);white-space:nowrap',text:r.thr}),
+    el('td',null,el('span',{class:'st-tag '+s.cls,text:s.label})),
+    el('td',null,el('span',{class:'tr-tag '+t.cls,text:r.dir+' — '+t.label})),
+    el('td',{style:'font-size:.74rem;min-width:220px',text:r.note||'—'})
+  ));
+});
+
+/* ---- ESCALATIONS ---- */
+var ESCALATIONS=[
+  {id:'ESC-01',sev:'HIGH',cls:'finding-high',tagcls:'bg-high',
+   t:'Alert-disposition SLA in breach; backlog approaching its own limit',
+   b:'Disposition within the 30-day SLA fell to 62% against an 85% threshold, the third consecutive quarterly decline, while the open backlog rose to 1,150 against a 1,200 limit. Root cause: alert volume from untuned rules plus two analyst vacancies. Impact: aged alerts delay suspicious-activity referrals, the program’s core detection outcome.',
+   ask:'Approve the remediation funding in Decision 1: full rule-tuning cycle plus six-analyst backlog workdown, 90-day target.',src:'Dashboard rows 1 and 3'},
+  {id:'ESC-02',sev:'HIGH',cls:'finding-high',tagcls:'bg-high',
+   t:'Independent-testing finding past its revised due date',
+   b:'The remaining finding from the prior independent test (monitoring-rule documentation) has passed its once-revised due date, leaving one past-due finding against a zero-tolerance threshold. A finding overdue more than one full cycle escalates at HIGH under the pack’s own rules.',
+   ask:'Direct closure by 2026-05-15 and ask the second line to confirm evidence at the Q2 meeting.',src:'Dashboard row 2; action tracker #1'},
+  {id:'ESC-03',sev:'MEDIUM',cls:'finding-medium',tagcls:'bg-mod',
+   t:'Medium-risk periodic reviews crossed below threshold',
+   b:'Completion fell to 84.6% against an 85% threshold in March, driven by staff rotation into the alert backlog &mdash; a knock-on cost of ESC-01. High-risk reviews remain current at 97.2%. A workdown schedule is in the action tracker (#3) with a Q2 recovery target.',
+   ask:'For noting — no action sought; recovery is tracked through action #3 and reports next cycle.',src:'Dashboard row 5'},
+  {id:'ESC-04',sev:'MEDIUM',cls:'finding-medium',tagcls:'bg-mod',
+   t:'Measurement gap: referral-conversion KRI has no threshold',
+   b:'The referrals-to-filings conversion rate (41%, UP from 38%) is reported without a threshold for a second period. An unbounded risk indicator cannot be statused or governed; under the pack rules that is itself a finding, not a formatting footnote.',
+   ask:'For noting — management will table a threshold proposal with rationale in the Q2 pack.',src:'Dashboard row 13'},
+  {id:'ESC-05',sev:'LOW',cls:'finding-low',tagcls:'bg-low2',
+   t:'Screening uptime dip in one March maintenance window',
+   b:'Uptime registered 99.6% against a 99.5% floor after a planned maintenance window overran by 41 minutes. Queued transactions were screened on resume with zero missed alerts confirmed by reconciliation. Included for completeness; root cause documented in Appendix D.',
+   ask:'For noting — no action sought.',src:'Dashboard row 4; Appendix D'}
+];
+var elist=document.getElementById('escalation-list');
+ESCALATIONS.forEach(function(f){
+  var card=el('div',{class:'finding '+f.cls},
+    el('div',{class:'f-head'},
+      el('span',{class:'sev-tag '+f.tagcls,text:f.sev}),
+      el('span',{class:'f-title',text:f.id+' · '+f.t})),
+    el('div',{class:'f-body',text:f.b}),
+    el('div',{class:'f-ask'},el('strong',null,'ASK — '),f.ask),
+    el('div',{class:'f-link',text:'Source: '+f.src})
+  );
+  elist.appendChild(card);
+});
+
+/* ---- PRIOR-ACTION TRACKER ---- */
+var ACTIONS=[
+  {n:'1',a:'Close the remaining independent-testing finding (monitoring-rule documentation)',o:'Head of Financial Crime Analytics',due:'2026-03-15',st:'OVERDUE',cls:'act-overdue',
+   note:'Revised to 2026-05-15. Reason: documentation rework expanded after the rule library was reconciled; second revision — escalated as ESC-02.'},
+  {n:'2',a:'Automate sanctions screening on the legacy payment channel',o:'Payments Compliance Manager',due:'2026-03-31',st:'OVERDUE',cls:'act-overdue',
+   note:'Revised to 2026-06-30. Reason: vendor delivery slipped one release cycle; manual end-of-day compensating review remains in force and evidenced.'},
+  {n:'3',a:'Restore medium-risk periodic-review completion above threshold',o:'CDD Operations Lead',due:'2026-06-30',st:'OPEN — ON TRACK',cls:'act-ontrack',
+   note:'Workdown schedule agreed; April completion tracking at 86% on the recovery curve.'},
+  {n:'4',a:'Stand up tuning-cycle governance (threshold decisions, sign-off, evidence pack)',o:'Head of Financial Crime Analytics',due:'2026-07-31',st:'OPEN — ON TRACK',cls:'act-ontrack',
+   note:'Scoped as part of the Decision 1 remediation plan; start gated on funding approval.'},
+  {n:'5',a:'Extend training-completion metric to contractor population',o:'Compliance Training Lead',due:'2026-09-30',st:'OPEN — ON TRACK',cls:'act-ontrack',
+   note:'Data feed from the contractor system in build; on plan for Q3 reporting.'},
+  {n:'6',a:'Threshold proposal for the referral-conversion KRI',o:'Financial Crime Risk Manager',due:'2026-07-08',st:'OPEN — ON TRACK',cls:'act-ontrack',
+   note:'Opened this period from ESC-04; benchmark analysis underway.'},
+  {n:'7',a:'Parallel-run validation of the revised customer risk-rating methodology',o:'Model Risk Manager',due:'2026-03-31',st:'CLOSED',cls:'act-closed',
+   note:'Completed 2026-03-24. Validation results in Appendix C; feeds Decision 2.'},
+  {n:'8',a:'Quarterly list-inventory review of sanctions screening sources',o:'Screening Operations Lead',due:'2026-03-31',st:'CLOSED',cls:'act-closed',
+   note:'Completed 2026-03-10. No source changes required; evidence filed.'},
+  {n:'9',a:'Refresh role-based training content for payments staff',o:'Compliance Training Lead',due:'2026-02-28',st:'CLOSED',cls:'act-closed',
+   note:'Completed 2026-02-21. Completion tracked in dashboard row 11.'},
+  {n:'10',a:'Document compensating controls for the legacy-channel manual review',o:'Payments Compliance Manager',due:'2026-01-31',st:'CLOSED',cls:'act-closed',
+   note:'Completed 2026-01-28. Procedure approved and evidenced; supports action #2 interim state.'}
+];
+var ab=document.getElementById('actions-body');
+ACTIONS.forEach(function(r){
+  ab.appendChild(el('tr',null,
+    el('td',{style:'font-family:var(--mono);color:var(--text3)',text:r.n}),
+    el('td',{style:'color:var(--text);font-weight:600;min-width:240px',text:r.a}),
+    el('td',{style:'font-size:.74rem',text:r.o}),
+    el('td',{style:'font-family:var(--mono);white-space:nowrap;font-size:.74rem',text:r.due}),
+    el('td',null,el('span',{class:'act-tag '+r.cls,text:r.st})),
+    el('td',{style:'font-size:.74rem;min-width:240px',text:r.note})
+  ));
+});
+
+/* ---- FORWARD CALENDAR ---- */
+var CAL=[
+  {d:'2026-04-30',cls:'warn',t:'Backlog checkpoint — alert workdown',x:'First monthly checkpoint on the ESC-01 remediation; backlog must be trending below 1,000 to hold the 90-day target.'},
+  {d:'2026-05-15',cls:'crit',t:'Revised due date — independent-testing finding',x:'Closure date directed under ESC-02; second line confirms evidence at the Q2 meeting.'},
+  {d:'2026-06-30',cls:'warn',t:'Legacy-channel screening automation (action #2)',x:'Revised vendor delivery date; compensating manual review retires on completion.'},
+  {d:'2026-07-01',cls:'',t:'Revised risk-rating methodology effective',x:'Subject to Decision 2 approval; first quarter under the new methodology reports in the Q3 pack.'},
+  {d:'2026-07-08',cls:'',t:'Q2 pack — threshold proposal for referral-conversion KRI',x:'Closes the ESC-04 measurement gap; metric becomes governable from Q2.'},
+  {d:'2026-08-15',cls:'warn',t:'Scheduled regulatory examination — fieldwork begins',x:'Known examination window; examination-readiness assessment (control matrix) feeds the preparation file.'}
+];
+var cal=document.getElementById('calendar');
+CAL.forEach(function(e){
+  cal.appendChild(el('div',{class:'tl-item '+e.cls},
+    el('div',{class:'tl-date',text:e.d}),
+    el('div',{class:'tl-title',text:e.t}),
+    el('div',{class:'tl-desc',text:e.x})
+  ));
+});
+
+/* ---- CHARTS ---- */
+var cgrid='rgba(255,255,255,.06)', ctick='#8b909c';
+Chart.defaults.font.family="-apple-system,BlinkMacSystemFont,sans-serif";
+Chart.defaults.color=ctick;
+
+new Chart(document.getElementById('statusDonut'),{
+  type:'doughnut',
+  data:{labels:['WITHIN','APPROACHING','BREACH','NO THRESHOLD'],
+    datasets:[{data:[7,3,2,1],
+      backgroundColor:['#30d158','#f59e0b','#ef4444','#6e6e73'],
+      borderColor:'#0a0a0f',borderWidth:2,cutout:'62%'}]},
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{position:'bottom',labels:{color:ctick,font:{size:10},boxWidth:12,padding:8}},
+      tooltip:{callbacks:{label:function(c){return c.label+': '+c.parsed+' of 13'}}}}}
+});
+
+new Chart(document.getElementById('slaLine'),{
+  type:'line',
+  data:{labels:['Q1 2025','Q2 2025','Q3 2025','Q4 2025','Q1 2026'],
+    datasets:[
+      {label:'Within 30-day SLA',data:[88,84,78,71,62],
+       borderColor:'#7d7bff',backgroundColor:'rgba(94,92,230,.18)',fill:true,
+       pointBackgroundColor:'#7d7bff',pointRadius:4,borderWidth:2,tension:.3},
+      {label:'Threshold (85%)',data:[85,85,85,85,85],
+       borderColor:'rgba(239,68,68,.7)',borderDash:[6,4],pointRadius:0,borderWidth:1.5,fill:false}
+    ]},
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{position:'bottom',labels:{color:ctick,font:{size:10},boxWidth:12,padding:8}},
+      tooltip:{callbacks:{label:function(c){return c.dataset.label+': '+c.parsed.y+'%'}}}},
+    scales:{x:{grid:{display:false},ticks:{color:ctick,font:{size:10}}},
+      y:{min:50,max:100,grid:{color:cgrid},ticks:{color:ctick,font:{size:9},callback:function(v){return v+'%'}}}}}
+});
+
+new Chart(document.getElementById('escDonut'),{
+  type:'doughnut',
+  data:{labels:['HIGH','MEDIUM','LOW'],datasets:[{data:[2,2,1],
+    backgroundColor:['#ff9f0a','#22d3ee','#6e6e73'],borderColor:'#0a0a0f',borderWidth:2,cutout:'62%'}]},
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{position:'bottom',labels:{color:ctick,font:{size:10},boxWidth:12,padding:10}},
+      tooltip:{callbacks:{label:function(c){return c.label+': '+c.parsed+' escalation'+(c.parsed>1?'s':'')}}}}}
+});
+
+/* ---- NAV ---- */
+var SECTIONS=[
+  ['sec-summary','Summary'],['sec-dashboard','KPI / KRI'],['sec-escalations','Escalations'],
+  ['sec-actions','Actions'],['sec-calendar','Calendar'],['sec-method','Method']
+];
+var nav=document.getElementById('nav');
+SECTIONS.forEach(function(s){
+  var b=el('button',{class:'nav-btn','data-nav':s[0],text:s[1]});
+  b.addEventListener('click',function(){document.getElementById(s[0]).scrollIntoView({behavior:'smooth'})});
+  nav.appendChild(b);
+});
+
+/* fade-in */
+var obs=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target)}})},{threshold:.08});
+document.querySelectorAll('.card,.glass-card,.finding').forEach(function(eln){eln.classList.add('fade-in');obs.observe(eln)});
+
+/* active nav */
+var navObs=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){
+  document.querySelectorAll('.nav-btn[data-nav]').forEach(function(b){b.classList.remove('active')});
+  var b=document.querySelector('.nav-btn[data-nav="'+e.target.id+'"]');
+  if(b){b.classList.add('active');b.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'})}
+}})},{rootMargin:'-35% 0px -55% 0px',threshold:0});
+SECTIONS.forEach(function(s){var eln=document.getElementById(s[0]);if(eln)navObs.observe(eln)});
+
+document.getElementById('gen-date').textContent=new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
+</script>
+</body>
+</html>

@@ -434,6 +434,109 @@ For batch triage, structure the workbook differently: Summary becomes a list of 
 - Findings cards: one per factor (for-vs-against), severity used to color-code factor weight
 - `chartConfig`: a horizontal `bar` chart showing observed vs expected for the deviating metric is the most useful chart for a triage dashboard — visually anchors the disposition
 """,
+
+"control-matrix-builder": """
+
+---
+
+## Per-analysis customization — control matrix
+
+This is the canonical **Mode B (Excel)** analysis — a control matrix is a working paper the program owner maintains, filters by domain, and hands to testers row by row. **Mode A (Word)** is the right choice for the formal program document or an examination binder. **Mode C (PDF)** suits a senior-management or board read of the coverage picture. **Mode D (HTML dashboard)** works when the matrix is monitored over time and the gap register is the live action list.
+
+**Mode A (Word) — Heading 1 sections in order:**
+1. Cover (Program / Date / Context / Classification / Control count)
+2. Scope & Exclusions
+3. Control Matrix (the nine-attribute table — landscape orientation; one Heading 2 per domain if the table is split)
+4. Domain Coverage Summary (table with totals row)
+5. Gap Register (severity-tagged table)
+6. Mapping to Existing Controls *(if provided)*
+7. Assumptions & Gaps
+8. Confidence
+
+**Mode B (Excel) tabs:**
+
+| Tab | Headers | Severity column? |
+|---|---|---|
+| Summary | Program · Date · Context · Controls · Gaps by severity · Confidence | no |
+| Control Matrix | ID · Domain · Objective · Description · Type · Frequency · Owner (role) · Testing method · Effectiveness | the Effectiveness column (EFFECTIVE green / PARTIALLY EFFECTIVE yellow / INEFFECTIVE red / NOT ASSESSED gray) |
+| Domain Coverage | Domain · Controls · Effective · Partially effective · Ineffective · Not assessed | no — but add a totals row |
+| Gap Register | Gap ID · Related control · Severity · Description · Remediation · Owner (role) · Target horizon | yes |
+| Existing-Controls Mapping *(if provided)* | Existing control · Framework match · Match status · What is missing · Keep / retire | the Match status column (matched / partial / absent) |
+| Assumptions | Assumption · Basis · What would confirm it | no |
+
+Add data-validation dropdowns on Effectiveness and Severity so the workbook becomes a living inventory; freeze the ID column as well as the header row on the Control Matrix tab.
+
+**Mode C (PDF) page sequence:**
+- Page 1 Cover — hero stat = total control count; caption = "CONTROLS ACROSS 6 DOMAINS"; KPI row = effective / partially effective / not assessed / open gaps
+- Page 2 — Scope & Exclusions + framework basis
+- Page 3 — Domain Coverage Summary with a stacked bar chart of effectiveness per domain
+- Page 4-5 — Control Matrix (landscape, multi-page; group by domain)
+- Page 6 — Gap Register (severity-ordered)
+- Page 7 — Assumptions + Confidence + Methodology
+
+If any gap is rated CRITICAL, the cover carries a prominent red "CRITICAL GAP(S) OPEN" badge under the caption — the reader must see it before the inventory.
+
+**Mode D (HTML dashboard) DATA wiring:**
+- `reportType`: "AML/CFT CONTROL MATRIX"
+- `accent`: `#0a84ff` (regulatory blue) is the default; switch to `#22d3ee` if the program has digital-asset exposure
+- `kpis`: `[ {label: "Controls", value: n}, {label: "Effective", value: n}, {label: "Not Assessed", value: n}, {label: "Open Gaps", value: n, delta: "n CRITICAL" if any} ]`
+- `navSections`: Summary · Scope · Control Matrix · Domain Coverage · Gap Register · Assumptions
+- `scorecard`: headers `["ID", "Domain", "Objective", "Type", "Frequency", "Effectiveness"]`; rows are the controls (the full nine-attribute detail lives in per-control cards or a second table)
+- Findings cards: one per gap-register entry, severity-coded — the gap register is the action list and deserves card treatment
+- `chartConfig`: a stacked `bar` chart of effectiveness counts per domain (six bars, four series) is the canonical visualization — it shows coverage shape and assessment debt in one read
+""",
+
+"committee-reporting-pack": """
+
+---
+
+## Per-analysis customization — committee reporting pack
+
+This is the canonical **Mode A (Word)** analysis — the circulated committee pack is a paginated document members read, annotate, and minute against. **Mode C (PDF)** is the second choice for the final distributed version. **Mode B (Excel)** is the right choice for the recurring dashboard-and-action-tracker core when the same metrics report every cycle. **Mode D (HTML dashboard)** suits a standing committee view kept current between meetings.
+
+**Mode A (Word) — Heading 1 sections in order:**
+1. Pack header (Committee / Period / Prepared date / scoreboard line as a callout)
+2. Executive Summary (Heading 2: Decisions sought — numbered; Heading 2: Items for noting — bulleted)
+3. KPI / KRI Dashboard (table — Status cells shaded WITHIN green / APPROACHING yellow / BREACH red)
+4. Escalations (Heading 2 per escalation, severity-ordered, each ending with the stated ask in bold)
+5. Prior-Action Tracker (table — overdue rows shaded, listed first)
+6. Forward Calendar (bulleted, soonest first)
+7. Appendix Index
+8. Information Gaps + Confidence
+
+**Mode B (Excel) tabs:**
+
+| Tab | Headers | Severity column? |
+|---|---|---|
+| Summary | Committee · Period · Decisions sought · Escalations by severity · Actions open/overdue/closed | no |
+| Dashboard | Metric · Current · Prior · Threshold · Status · Trend · Commentary | the Status column (WITHIN green / APPROACHING yellow / BREACH red / no threshold set gray) |
+| Escalations | Severity · Title · What happened · Impact · Stated ask | yes |
+| Action Tracker | # · Action · Owner type · Due · Status · Note · Revised date | the Status column (OVERDUE red / ON TRACK yellow / CLOSED green) |
+| Forward Calendar | Date · Item · What it requires | by date |
+| Decisions Log | # · Decision sought · Recommendation · Outcome (filled post-meeting) | no |
+
+Running the pack every cycle in the same workbook (one tab set per period, or a period column) turns it into the committee's longitudinal record — trend questions get answered from the workbook, not from memory.
+
+**Mode C (PDF) page sequence:**
+- Page 1 Cover — hero stat = decisions-sought count; caption = "DECISIONS SOUGHT THIS PERIOD"; KPI row = escalations (CRITICAL+HIGH) / metrics in BREACH / actions overdue / actions closed
+- Page 2 — Executive Summary (decisions sought as a numbered callout list, then items for noting)
+- Page 3 — KPI / KRI Dashboard table (status color-coded)
+- Page 4 — Escalations (severity-ordered, each with its stated ask)
+- Page 5 — Prior-Action Tracker (overdue first)
+- Page 6 — Forward Calendar + Appendix Index + Information Gaps
+
+If any escalation is CRITICAL, the cover carries a prominent red "CRITICAL ESCALATION" badge under the caption. A quiet period produces a thin pack — page 1 plus a short page 2 is a valid deliverable, not a failure.
+
+**Mode D (HTML dashboard) DATA wiring:**
+- `reportType`: "COMMITTEE REPORTING PACK"
+- `accent`: `#0a84ff` (regulatory blue) for risk/compliance committees; `#5e5ce6` for an internal operating forum
+- `kpis`: `[ {label: "Decisions Sought", value: n}, {label: "Escalations", value: n, delta: "n CRITICAL/HIGH"}, {label: "Metrics in Breach", value: n}, {label: "Overdue Actions", value: n} ]`
+- `navSections`: Summary · Decisions · Dashboard · Escalations · Action Tracker · Forward Calendar
+- `scorecard`: headers `["Metric", "Current", "Prior", "Threshold", "Status", "Trend"]`; rows are the KPI/KRI dashboard — color the Status cell by WITHIN/APPROACHING/BREACH
+- Findings cards: one per escalation, severity-coded, with the stated ask as the card footer line — the asks are what the committee acts on
+- Status and trend values remain words (UP / DOWN / FLAT, WITHIN / APPROACHING / BREACH) even in the dashboard — color reinforces, it never replaces the word
+- `chartConfig`: a `bar` chart of metric status counts (WITHIN / APPROACHING / BREACH) is the simple default; if PRIOR PACK data exists, a `line` chart of breach counts across periods is the better governance read
+""",
 }
 
 
