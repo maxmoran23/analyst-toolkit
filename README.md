@@ -61,6 +61,7 @@ There is never a third file. [`BASE.md`](BASE.md) is the entire 4-file methodolo
 | **[`reference/`](reference/)** | Domain cheat-sheets — AML typologies, blockchain entity typologies, compliance, audit, regulatory, financial analysis |
 | **[`quant/`](quant/)** | A dependency-free Python quant library — VaR, Sharpe, Kelly, Monte Carlo, DCF, drawdown |
 | **[`quant-jvm/`](quant-jvm/)** | Kotlin/JVM port of `quant/` — same math, same JSON I/O contract, verified by cross-language parity tests |
+| **[`frameworks/`](frameworks/)** | **Runnable scoring engines with validation evidence** — pure-stdlib reference engines for the financial-crime problems that are a measurable scoring/triage problem (sanctions name screening, and more), each with a seeded synthetic-data generator and a harness that emits reproducible accuracy evidence (recall, false-positive reduction, threshold sweeps). A different artifact class from the paste-prompts; runnable, multi-file. |
 | **[`docs/`](docs/)** | How to use the toolkit — the Copilot copy/paste workflow, and how the prompts run on any assistant |
 
 ---

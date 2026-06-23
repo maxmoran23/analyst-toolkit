@@ -25,3 +25,19 @@ jobs:
 
       - name: Two-file rule — self-containment and pairing budget
         run: python3 _tooling/validate_self_containment.py
+
+  frameworks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # Pure-stdlib engines — no dependencies to install. The validation harness
+      # exits non-zero if the engine ever auto-clears a true match (the
+      # false-negative safety gate), so this step IS the safety guarantee.
+      - name: Sanctions name-screening — false-negative safety gate + evidence
+        run: |
+          cd frameworks/sanctions-name-screening
+          python3 run_validation.py --seed 42 --watchlist 4000 --alerts 50000 --no-write

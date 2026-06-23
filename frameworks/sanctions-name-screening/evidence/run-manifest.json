@@ -1,0 +1,10 @@
+{
+  "framework": "sanctions-name-screening",
+  "seed": 42,
+  "watchlist": 4000,
+  "alerts": 50000,
+  "true_matches": 997,
+  "git_sha": "ad43c39",
+  "generated_utc": "2026-06-23 06:09 UTC",
+  "fn_recall_floor": 1.0
+}

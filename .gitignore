@@ -25,3 +25,7 @@ scratch/
 # JVM / Gradle (quant-jvm)
 quant-jvm/build/
 quant-jvm/.gradle/
+
+# frameworks/ synthetic data — regenerated from seed, never committed.
+# The evidence DERIVED from it (evidence/) IS committed; the raw data is not.
+frameworks/*/data/
