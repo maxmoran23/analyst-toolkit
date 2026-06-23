@@ -4,6 +4,8 @@
 
 **A copy/paste library of prompts and output templates for AI-assisted analytical work at financial institutions — covering financial-crime compliance, blockchain intelligence, regulatory analysis, controls and independent testing, governance reporting, research, market, and quantitative analysis.**
 
+> **New here, or not technical?** Start with **[How the system works](docs/how-the-system-works.md)** — a plain-English guide to the whole library for senior reviewers (what it is, what it can and cannot do, why its results can be trusted). Already know your function? Jump straight to your **[team hub](teams/)**.
+
 ---
 
 ## What this is
@@ -62,7 +64,8 @@ There is never a third file. [`BASE.md`](BASE.md) is the entire 4-file methodolo
 | **[`quant/`](quant/)** | A dependency-free Python quant library — VaR, Sharpe, Kelly, Monte Carlo, DCF, drawdown |
 | **[`quant-jvm/`](quant-jvm/)** | Kotlin/JVM port of `quant/` — same math, same JSON I/O contract, verified by cross-language parity tests |
 | **[`frameworks/`](frameworks/)** | **Runnable scoring engines with validation evidence** — pure-stdlib reference engines for the financial-crime problems that are a measurable scoring/triage problem (sanctions name screening, and more), each with a seeded synthetic-data generator and a harness that emits reproducible accuracy evidence (recall, false-positive reduction, threshold sweeps). A different artifact class from the paste-prompts; runnable, multi-file. |
-| **[`docs/`](docs/)** | How to use the toolkit — the Copilot copy/paste workflow, and how the prompts run on any assistant |
+| **[`teams/`](teams/)** | **Start here by your function** — a hub page per financial-crime team (sanctions, transaction monitoring, crypto, KYC, investigations, risk assessment, controls/testing, model governance, regulatory affairs) that bundles the relevant prompts, frameworks, references, and templates in one place, in plain English. Pure navigation over the by-type folders. |
+| **[`docs/`](docs/)** | Usage guides — the Copilot copy/paste workflow, running on any assistant, and **[how-the-system-works.md](docs/how-the-system-works.md)**: a plain-English walkthrough of the whole library for non-technical senior reviewers. |
 
 ---
 
