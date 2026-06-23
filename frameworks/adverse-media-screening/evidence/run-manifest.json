@@ -1,0 +1,9 @@
+{
+  "framework": "adverse-media-screening",
+  "seed": 42,
+  "subjects": 8000,
+  "hits": 50000,
+  "true_hits": 2468,
+  "git_sha": "6d2ef9d",
+  "generated_utc": "2026-06-23 13:12 UTC"
+}

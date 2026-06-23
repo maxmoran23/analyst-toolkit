@@ -1,0 +1,70 @@
+{
+  "operating_point": {
+    "confusion": {
+      "tp": 2468,
+      "fp": 9550,
+      "tn": 37982,
+      "fn": 0,
+      "precision": 0.2054,
+      "recall": 1.0,
+      "specificity": 0.7991,
+      "f1": 0.3407,
+      "false_negative_rate": 0.0,
+      "false_positive_rate": 0.2009
+    },
+    "funnel": {
+      "AUTO_CLEAR": 37982,
+      "ANALYST_REVIEW": 10571,
+      "ESCALATE": 1447
+    },
+    "review_priorities": {
+      "HIGH": 3361,
+      "MEDIUM": 6687,
+      "LOW": 523
+    },
+    "per_category_clear_rate": {
+      "wrong_entity": {
+        "total": 14278,
+        "auto_cleared": 14278,
+        "clear_rate": 1.0
+      },
+      "common_name_ambiguous": {
+        "total": 9550,
+        "auto_cleared": 0,
+        "clear_rate": 0.0
+      },
+      "not_adverse": {
+        "total": 11989,
+        "auto_cleared": 11989,
+        "clear_rate": 1.0
+      },
+      "low_role": {
+        "total": 6043,
+        "auto_cleared": 6043,
+        "clear_rate": 1.0
+      },
+      "stale_immaterial": {
+        "total": 5672,
+        "auto_cleared": 5672,
+        "clear_rate": 1.0
+      }
+    },
+    "fn_count": 0,
+    "fn_leaked_examples": [],
+    "volume": {
+      "total_hits": 50000,
+      "auto_cleared": 37982,
+      "human_reviewed": 12018,
+      "human_workload_reduction": 0.7596
+    }
+  },
+  "manifest": {
+    "framework": "adverse-media-screening",
+    "seed": 42,
+    "subjects": 8000,
+    "hits": 50000,
+    "true_hits": 2468,
+    "git_sha": "6d2ef9d",
+    "generated_utc": "2026-06-23 13:12 UTC"
+  }
+}

@@ -57,7 +57,7 @@ Shared across the pillar:
 | [`sanctions-name-screening/`](sanctions-name-screening/) | Disposition sanctions-screening alerts (the ~50k/month false-positive backlog) | **Built & validated** — recall 1.0 (0 FN), 92% FP-reduction, evidence committed |
 | [`transaction-monitoring/`](transaction-monitoring/) | Score & triage TM alerts (structuring, funnel, pass-through, velocity, geography) against the customer baseline | **Built & validated** — recall 1.0 (0 FN), 85% FP-reduction, evidence committed |
 | [`customer-risk-rating/`](customer-risk-rating/) | Weighted customer risk score + LOW/MEDIUM/HIGH tiering with mandatory floors | **Built & validated** — 0 hard-risk customers rated LOW, monotonic, discriminating, evidence committed |
-| _adverse-media-screening_ | Name-to-article relevance scoring | planned |
+| [`adverse-media-screening/`](adverse-media-screening/) | Disposition negative-news hits on two axes (right party? materially adverse?) | **Built & validated** — recall 1.0 (0 FN), 80% FP-reduction, evidence committed |
 | _onchain-kyt-address-risk_ | Blockchain address risk scoring | planned |
 
 ## Standing caveat
