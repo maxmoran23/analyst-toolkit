@@ -28,17 +28,18 @@ files stay the single source of truth.
 | [Controls, Testing & QA](controls-testing-qa.md) | Control design and independent testing | Mature — full controls suite |
 | [Model Risk & Governance](model-risk-governance.md) | Governing & validating models / AI tools | Strong — reviews + worked validation evidence |
 | [Regulatory Affairs & Exam](regulatory-affairs-exam.md) | Regulatory tracking, obligations, gaps, exam response | Mature — full regulatory suite |
+| [Fraud](fraud.md) | Scams, payment fraud, account misuse, mule detection | Covered — 5 prompts |
+| [Trade & Communications Surveillance](trade-comms-surveillance.md) | Market abuse in trading and misconduct in communications | Covered — 3 prompts |
+| [ABC, Third-Party & Correspondent Banking](abc-third-party.md) | Vendor/intermediary, bribery & corruption, correspondent/nested, TBML risk | Covered — 4 prompts |
 
 ## On the roadmap
 
-Three teams have content in active development — the prompts and engines for them are
-being built out next, and a hub will be added as each lands:
+The team coverage above is complete. Remaining build-out is additive depth within
+existing teams rather than new teams:
 
-- **Fraud** — APP/scam, wire/check, account-takeover and mule detection.
-- **Trade & Communications Surveillance** — market-abuse (spoofing/layering) and
-  comms-lexicon screening.
-- **ABC / Third-Party / Correspondent Banking** — anti-bribery & corruption, vendor due
-  diligence, nested-account / correspondent risk, and trade-based money laundering.
+- **More compliance prompts** — SAR decisioning (file vs no-file), UBO / beneficial-ownership unwinding, periodic-review triggers, case-QA orchestration, network/link analysis.
+- **More controls/governance prompts** — enterprise-wide risk assessment (EWRA), SR 11-7 model-validation workpaper, issue/remediation tracking.
+- **A self-updating watchlist knowledge base** — ingesting public OFAC/EU/UN/UK lists with dedup and change detection to feed the screening frameworks.
 
 ---
 
