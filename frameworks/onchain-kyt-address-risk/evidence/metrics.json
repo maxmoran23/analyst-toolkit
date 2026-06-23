@@ -1,0 +1,69 @@
+{
+  "operating_point": {
+    "confusion": {
+      "tp": 3055,
+      "fp": 5686,
+      "tn": 41259,
+      "fn": 0,
+      "precision": 0.3495,
+      "recall": 1.0,
+      "specificity": 0.8789,
+      "f1": 0.518,
+      "false_negative_rate": 0.0,
+      "false_positive_rate": 0.1211
+    },
+    "funnel": {
+      "AUTO_CLEAR": 41259,
+      "ANALYST_REVIEW": 6922,
+      "ESCALATE": 1819
+    },
+    "review_priorities": {
+      "HIGH": 5878,
+      "MEDIUM": 1044,
+      "LOW": 0
+    },
+    "per_category_clear_rate": {
+      "benign_category": {
+        "total": 13071,
+        "auto_cleared": 13071,
+        "clear_rate": 1.0
+      },
+      "diluted_distant": {
+        "total": 10443,
+        "auto_cleared": 10443,
+        "clear_rate": 1.0
+      },
+      "broken_intermediary": {
+        "total": 9361,
+        "auto_cleared": 9361,
+        "clear_rate": 1.0
+      },
+      "ambiguous_residual": {
+        "total": 5686,
+        "auto_cleared": 0,
+        "clear_rate": 0.0
+      },
+      "de_minimis": {
+        "total": 8384,
+        "auto_cleared": 8384,
+        "clear_rate": 1.0
+      }
+    },
+    "fn_count": 0,
+    "fn_leaked_examples": [],
+    "volume": {
+      "total_addresses": 50000,
+      "auto_cleared": 41259,
+      "human_reviewed": 8741,
+      "human_workload_reduction": 0.8252
+    }
+  },
+  "manifest": {
+    "framework": "onchain-kyt-address-risk",
+    "seed": 42,
+    "addresses": 50000,
+    "true_risk": 3055,
+    "git_sha": "423f27c",
+    "generated_utc": "2026-06-23 16:22 UTC"
+  }
+}

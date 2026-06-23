@@ -1,0 +1,8 @@
+{
+  "framework": "onchain-kyt-address-risk",
+  "seed": 42,
+  "addresses": 50000,
+  "true_risk": 3055,
+  "git_sha": "423f27c",
+  "generated_utc": "2026-06-23 16:22 UTC"
+}

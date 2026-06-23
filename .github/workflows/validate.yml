@@ -56,3 +56,8 @@ jobs:
         run: |
           cd frameworks/adverse-media-screening
           python3 run_validation.py --seed 42 --subjects 8000 --hits 50000 --no-write
+
+      - name: On-chain KYT address risk — false-negative safety gate + evidence
+        run: |
+          cd frameworks/onchain-kyt-address-risk
+          python3 run_validation.py --seed 42 --addresses 50000 --no-write

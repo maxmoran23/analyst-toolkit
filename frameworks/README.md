@@ -48,7 +48,7 @@ Shared across the pillar:
 | [`GOVERNANCE.md`](GOVERNANCE.md) | The SR 11-7 / model-risk framing every framework instantiates. |
 | [`DEPLOYMENT-PATTERN.md`](DEPLOYMENT-PATTERN.md) | The reusable Copilot Studio mapping. |
 | [`RIGOR-CONTRACT.md`](RIGOR-CONTRACT.md) | What `run_validation.py` must enforce and how it wires into CI. |
-| [`_lib/`](_lib/) | Shared pure-stdlib primitives — name normalization + token rarity, matching (Jaro-Winkler / Soundex / IDF-weighted token-set), evaluation metrics. |
+| [`_lib/`](_lib/) | Shared pure-stdlib primitives, reused across frameworks: name normalization + token rarity, matching (Jaro-Winkler / Soundex / IDF-weighted token-set), evaluation metrics, deviation/aggregation stats, a named-rule mechanism, weighted-composite scoring + monotonicity, content relevance, and transaction-graph taint propagation. |
 
 ## Frameworks
 
@@ -58,7 +58,7 @@ Shared across the pillar:
 | [`transaction-monitoring/`](transaction-monitoring/) | Score & triage TM alerts (structuring, funnel, pass-through, velocity, geography) against the customer baseline | **Built & validated** — recall 1.0 (0 FN), 85% FP-reduction, evidence committed |
 | [`customer-risk-rating/`](customer-risk-rating/) | Weighted customer risk score + LOW/MEDIUM/HIGH tiering with mandatory floors | **Built & validated** — 0 hard-risk customers rated LOW, monotonic, discriminating, evidence committed |
 | [`adverse-media-screening/`](adverse-media-screening/) | Disposition negative-news hits on two axes (right party? materially adverse?) | **Built & validated** — recall 1.0 (0 FN), 80% FP-reduction, evidence committed |
-| _onchain-kyt-address-risk_ | Blockchain address risk scoring | planned |
+| [`onchain-kyt-address-risk/`](onchain-kyt-address-risk/) | Score blockchain-address KYT flags by tainted-path exposure (hop distance, value share, commingling breaks) | **Built & validated** — recall 1.0 (0 FN), 88% FP-reduction, evidence committed |
 
 ## Standing caveat
 
