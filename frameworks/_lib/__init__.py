@@ -12,6 +12,11 @@ a locked-down work machine: no numpy, no pandas, no network. The modules:
                     ratio-to-expected, percentile rank, near-threshold count)
     rules           named-rule mechanism (fired/severity/typology) for behavioral
                     frameworks — the audit-trail-friendly alternative to ad-hoc ifs
+    graph           transaction-graph taint propagation (hop-decay, breaker nodes) for
+                    on-chain exposure scoring
+    relevance       adverse-media content relevance (category severity x role x recency)
+    knowledge_base/ self-maintaining watchlist sub-package (sources/ingest/dedup/delta/
+                    feedback) — assembles a live deduplicated watchlist from public lists
 
 These are reference implementations chosen for transparency and reproducibility,
 not raw speed. A production deployment swaps the internals for a vendor engine;

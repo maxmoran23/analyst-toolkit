@@ -60,6 +60,7 @@ Shared across the pillar:
 | [`adverse-media-screening/`](adverse-media-screening/) | Disposition negative-news hits on two axes (right party? materially adverse?) | **Built & validated** — recall 1.0 (0 FN), 80% FP-reduction, evidence committed |
 | [`onchain-kyt-address-risk/`](onchain-kyt-address-risk/) | Score blockchain-address KYT flags by tainted-path exposure (hop distance, value share, commingling breaks) | **Built & validated** — recall 1.0 (0 FN), 88% FP-reduction, evidence committed |
 | [`tm-threshold-tuning/`](tm-threshold-tuning/) | Above/below-the-line testing — validate & tune monitoring-rule thresholds (the model-validation framework) | **Built & validated** — every recommendation holds detection ≥95% floor, all leaks remediated, 67% volume cut, evidence committed |
+| [`watchlist-knowledge-base/`](watchlist-knowledge-base/) | Self-maintaining watchlist — ingest public lists (OFAC/EU/UN/UK), dedupe across them, track changes, learn from false positives | **Built & validated** — 0 false merges (structural), auto-merge recall 1.0, change-delta exact, feedback gated; evidence committed |
 
 ## Standing caveat
 

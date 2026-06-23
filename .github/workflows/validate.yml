@@ -66,3 +66,8 @@ jobs:
         run: |
           cd frameworks/tm-threshold-tuning
           python3 run_validation.py --seed 42 --rules 12 --population 40000 --no-write
+
+      - name: Watchlist knowledge base — zero-false-merge / delta / feedback gate
+        run: |
+          cd frameworks/watchlist-knowledge-base
+          python3 run_validation.py --seed 42 --entities 3000 --no-write

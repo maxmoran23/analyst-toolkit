@@ -1,0 +1,7 @@
+{
+  "framework": "watchlist-knowledge-base",
+  "seed": 42,
+  "entities": 3000,
+  "git_sha": "c171ae4",
+  "generated_utc": "2026-06-23 20:58 UTC"
+}
