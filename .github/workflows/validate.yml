@@ -46,3 +46,8 @@ jobs:
         run: |
           cd frameworks/transaction-monitoring
           python3 run_validation.py --seed 42 --customers 5000 --alerts 50000 --no-write
+
+      - name: Customer risk rating — floor-safety / discrimination / monotonicity gate
+        run: |
+          cd frameworks/customer-risk-rating
+          python3 run_validation.py --seed 42 --customers 50000 --no-write

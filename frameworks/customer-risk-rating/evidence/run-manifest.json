@@ -1,0 +1,7 @@
+{
+  "framework": "customer-risk-rating",
+  "seed": 42,
+  "customers": 50000,
+  "git_sha": "0e91912",
+  "generated_utc": "2026-06-23 08:42 UTC"
+}
