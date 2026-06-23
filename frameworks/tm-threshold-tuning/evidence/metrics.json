@@ -1,0 +1,23 @@
+{
+  "analysis": {
+    "n_rules": 12,
+    "action_accuracy": 1.0,
+    "min_recommended_detection": 0.9506,
+    "safety_ok": true,
+    "leaking_rules": 6,
+    "leaks_remediated": true,
+    "leaks_fixed": 6,
+    "raise_volume_before": 121969,
+    "raise_volume_after": 40700,
+    "raise_volume_reduction": 0.6663
+  },
+  "manifest": {
+    "framework": "tm-threshold-tuning",
+    "seed": 42,
+    "rules": 12,
+    "observations": 480000,
+    "recall_floor": 0.95,
+    "git_sha": "b13053f",
+    "generated_utc": "2026-06-23 17:36 UTC"
+  }
+}

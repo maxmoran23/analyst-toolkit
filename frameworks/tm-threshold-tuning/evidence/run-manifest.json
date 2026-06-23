@@ -1,0 +1,9 @@
+{
+  "framework": "tm-threshold-tuning",
+  "seed": 42,
+  "rules": 12,
+  "observations": 480000,
+  "recall_floor": 0.95,
+  "git_sha": "b13053f",
+  "generated_utc": "2026-06-23 17:36 UTC"
+}

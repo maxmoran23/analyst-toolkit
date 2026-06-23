@@ -61,3 +61,8 @@ jobs:
         run: |
           cd frameworks/onchain-kyt-address-risk
           python3 run_validation.py --seed 42 --addresses 50000 --no-write
+
+      - name: TM threshold tuning — below-the-line safety gate + evidence
+        run: |
+          cd frameworks/tm-threshold-tuning
+          python3 run_validation.py --seed 42 --rules 12 --population 40000 --no-write
