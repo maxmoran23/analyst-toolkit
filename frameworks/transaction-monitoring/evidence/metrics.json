@@ -1,0 +1,66 @@
+{
+  "operating_point": {
+    "confusion": {
+      "tp": 2052,
+      "fp": 7123,
+      "tn": 40825,
+      "fn": 0,
+      "precision": 0.2237,
+      "recall": 1.0,
+      "specificity": 0.8514,
+      "f1": 0.3655,
+      "false_negative_rate": 0.0,
+      "false_positive_rate": 0.1486
+    },
+    "funnel": {
+      "AUTO_CLOSE": 40825,
+      "ANALYST_REVIEW": 7960,
+      "ESCALATE": 1215
+    },
+    "review_priorities": {
+      "HIGH": 7960,
+      "MEDIUM": 0,
+      "LOW": 0
+    },
+    "per_category_close_rate": {
+      "within_profile": {
+        "total": 19089,
+        "auto_closed": 19089,
+        "close_rate": 1.0
+      },
+      "documented_context": {
+        "total": 9538,
+        "auto_closed": 9538,
+        "close_rate": 1.0
+      },
+      "below_typology": {
+        "total": 12198,
+        "auto_closed": 12198,
+        "close_rate": 1.0
+      },
+      "ambiguous_residual": {
+        "total": 7123,
+        "auto_closed": 0,
+        "close_rate": 0.0
+      }
+    },
+    "fn_count": 0,
+    "fn_leaked_examples": [],
+    "volume": {
+      "total_alerts": 50000,
+      "auto_closed": 40825,
+      "human_reviewed": 9175,
+      "human_workload_reduction": 0.8165
+    }
+  },
+  "manifest": {
+    "framework": "transaction-monitoring",
+    "seed": 42,
+    "customers": 5000,
+    "alerts": 50000,
+    "suspicious": 2052,
+    "git_sha": "4db88bc",
+    "generated_utc": "2026-06-23 07:54 UTC",
+    "fn_recall_floor": 1.0
+  }
+}

@@ -41,3 +41,8 @@ jobs:
         run: |
           cd frameworks/sanctions-name-screening
           python3 run_validation.py --seed 42 --watchlist 4000 --alerts 50000 --no-write
+
+      - name: Transaction monitoring — false-negative safety gate + evidence
+        run: |
+          cd frameworks/transaction-monitoring
+          python3 run_validation.py --seed 42 --customers 5000 --alerts 50000 --no-write

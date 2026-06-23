@@ -1,0 +1,10 @@
+{
+  "framework": "transaction-monitoring",
+  "seed": 42,
+  "customers": 5000,
+  "alerts": 50000,
+  "suspicious": 2052,
+  "git_sha": "4db88bc",
+  "generated_utc": "2026-06-23 07:54 UTC",
+  "fn_recall_floor": 1.0
+}
