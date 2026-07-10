@@ -25,15 +25,18 @@ import json
 import os
 import statistics
 import subprocess
+import time
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.dirname(HERE))
 
-from _lib import metrics  # noqa: E402
+from _lib import attest, metrics  # noqa: E402
 from _lib.scoring import check_monotonic  # noqa: E402
 import scorer as S  # noqa: E402
 import generate_synthetic_data as G  # noqa: E402
+
+_T0 = time.time()   # wall-clock provenance for the evidence manifest
 
 STRATA = ["designed_low", "designed_medium", "designed_high", "hard_high"]
 TIERS = ["LOW", "MEDIUM", "HIGH"]
@@ -262,6 +265,8 @@ def main():
     manifest = {"framework": "customer-risk-rating", "seed": args.seed,
                 "customers": args.customers, "git_sha": _git_sha(),
                 "generated_utc": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d %H:%M UTC")}
+
+    manifest = attest.enrich_manifest(manifest, _T0)
     if not args.no_write and args.trials == 0:
         write_evidence(args.out, a, mono_ok, manifest, render_report(a, mono_ok, manifest))
         print(f"\nevidence written -> {args.out}/  (all gates PASSED)")

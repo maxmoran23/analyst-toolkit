@@ -25,14 +25,17 @@ import json
 import os
 import statistics
 import subprocess
+import time
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.dirname(HERE))
 
-from _lib import metrics  # noqa: E402
+from _lib import attest, metrics  # noqa: E402
 import scorer as S  # noqa: E402
 import generate_synthetic_data as G  # noqa: E402
+
+_T0 = time.time()   # wall-clock provenance for the evidence manifest
 
 DEFICIENCY_RECALL_FLOOR = 1.0   # every planted critical deficiency detected
 CRITICAL_PASS_CEILING = 0       # critical-deficient cases receiving QA_PASS
@@ -252,6 +255,8 @@ def render_report(op, sweep, manifest):
     A(sweep_tbl)
     A("")
     A("## 6. Critical-deficiency safety argument")
+    A(attest.bound_sentence(c["tp"], c["fn"], unit="critical deficiencies"))
+    A("")
     A(f"1. Of {op['planted_critical']:,} planted critical deficiencies, "
       f"**{op['detected_critical']:,} were detected** by their named check "
       f"(recall {op['deficiency_recall']:.4f}) and **{op['critical_passed']} "
@@ -363,6 +368,8 @@ def main():
                 "generated_utc": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d %H:%M UTC"),
                 "deficiency_recall_floor": DEFICIENCY_RECALL_FLOOR,
                 "critical_pass_ceiling": CRITICAL_PASS_CEILING}
+
+    manifest = attest.enrich_manifest(manifest, _T0)
     if not args.no_write and args.trials == 0:
         write_evidence(args.out, op, sweep, manifest, render_report(op, sweep, manifest))
         print(f"\nevidence written -> {args.out}/  (critical-deficiency safety gate PASSED)")

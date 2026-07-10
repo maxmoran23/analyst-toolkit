@@ -23,15 +23,18 @@ import datetime
 import json
 import os
 import subprocess
+import time
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.dirname(HERE))  # frameworks/ on path for _lib
 
-from _lib import metrics  # noqa: E402
+from _lib import attest, metrics  # noqa: E402
 from _lib.text_normalize import TokenStats  # noqa: E402
 import scorer as S  # noqa: E402
 import generate_synthetic_data as G  # noqa: E402
+
+_T0 = time.time()   # wall-clock provenance for the evidence manifest
 
 FN_RECALL_FLOOR = 1.0  # auto-clear must never lose an in-scope match — METHODOLOGY.md
 SWEEP_THRESHOLDS = [0.0, 0.02, 0.05, 0.10, 0.15, 0.20, 0.30, 0.40, 0.50, 0.60, 0.70, 0.80]
@@ -229,6 +232,8 @@ def render_report(op, sweep, manifest, stability=None):
     A(sweep_tbl)
     A("")
     A("## 6. False-negative safety argument")
+    A(attest.bound_sentence(c["tp"], c["fn"], unit="true PEP matches"))
+    A("")
     A(f"1. Of {manifest['true_matches']:,} genuine in-scope PEP matches, "
       f"**{op['fn_count']} were auto-cleared** — recall {c['recall']:.4f}.")
     A("2. Safety is structural: a genuine in-scope match cannot exhibit any clearing "
@@ -370,6 +375,8 @@ def main():
                          .strftime("%Y-%m-%d %H:%M UTC"),
         "fn_recall_floor": FN_RECALL_FLOOR,
     }
+
+    manifest = attest.enrich_manifest(manifest, _T0)
     if not args.no_write and args.trials == 0:
         report = render_report(op, sweep, manifest, stability)
         write_evidence(args.out, op, sweep, manifest, report)

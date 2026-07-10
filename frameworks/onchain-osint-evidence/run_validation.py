@@ -37,14 +37,18 @@ import os
 import random
 import shutil
 import subprocess
+import time
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.dirname(HERE))  # frameworks/ on path
 
 from _lib import provenance as P  # noqa: E402
+from _lib import attest  # noqa: E402
 import engine as E  # noqa: E402
 import generate_synthetic_data as G  # noqa: E402
+
+_T0 = time.time()   # wall-clock provenance for the evidence manifest
 
 PROVENANCE_FLOOR = 1.0            # every fact fully provenance-stamped
 RECONCILIATION_TOLERANCE = 0      # exact — no dropped, no duplicated
@@ -496,6 +500,8 @@ def main():
                 "git_sha": _git_sha(),
                 "generated_utc": datetime.datetime.now(datetime.timezone.utc)
                                  .strftime("%Y-%m-%d %H:%M UTC")}
+
+    manifest = attest.enrich_manifest(manifest, _T0)
     if not args.no_write and args.trials == 0:
         write_evidence(args.out, res, sample, degrade, manifest,
                        render_report(res, sample, degrade, manifest))

@@ -29,14 +29,17 @@ import datetime
 import json
 import os
 import subprocess
+import time
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.dirname(HERE))  # frameworks/ on path
 
-from _lib import metrics  # noqa: E402
+from _lib import attest, metrics  # noqa: E402
 from _lib.knowledge_base import dedup, delta, feedback, ingest, sources  # noqa: E402
 import generate_synthetic_data as G  # noqa: E402
+
+_T0 = time.time()   # wall-clock provenance for the evidence manifest
 
 _ID_FIELDS = ("dob", "nationality", "country", "place_of_birth", "passport",
               "national_id", "registration", "imo", "tail_number", "wallet")
@@ -505,6 +508,8 @@ def main():
     manifest = {"framework": "watchlist-knowledge-base", "seed": args.seed,
                 "entities": args.entities, "git_sha": _git_sha(),
                 "generated_utc": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d %H:%M UTC")}
+
+    manifest = attest.enrich_manifest(manifest, _T0)
     if not args.no_write and args.trials == 0:
         write_evidence(args.out, dd, dl, fb, ing, pk, entities, manifest,
                        render_report(dd, dl, fb, ing, pk, manifest))

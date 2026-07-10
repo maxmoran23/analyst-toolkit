@@ -24,14 +24,17 @@ import datetime
 import json
 import os
 import subprocess
+import time
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.dirname(HERE))
 
-from _lib import metrics  # noqa: E402
+from _lib import attest, metrics  # noqa: E402
 import engine as E  # noqa: E402
 import generate_synthetic_data as G  # noqa: E402
+
+_T0 = time.time()   # wall-clock provenance for the evidence manifest
 
 EXPECTED_ACTION = {"too_low": "RAISE", "too_high": "LOWER", "optimal": "KEEP"}
 
@@ -255,6 +258,8 @@ def main():
     manifest = {"framework": "tm-threshold-tuning", "seed": args.seed, "rules": args.rules,
                 "observations": obs, "recall_floor": config.recall_floor, "git_sha": _git_sha(),
                 "generated_utc": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d %H:%M UTC")}
+
+    manifest = attest.enrich_manifest(manifest, _T0)
     if not args.no_write and args.trials == 0:
         write_evidence(args.out, results, a, manifest, render_report(results, a, manifest, config))
         print(f"\nevidence written -> {args.out}/  (safety gate PASSED)")

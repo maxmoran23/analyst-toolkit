@@ -22,14 +22,17 @@ import datetime
 import json
 import os
 import subprocess
+import time
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.dirname(HERE))
 
-from _lib import metrics  # noqa: E402
+from _lib import attest, metrics  # noqa: E402
 import scorer as S  # noqa: E402
 import generate_synthetic_data as G  # noqa: E402
+
+_T0 = time.time()   # wall-clock provenance for the evidence manifest
 
 FN_RECALL_FLOOR = 1.0
 SWEEP_THRESHOLDS = [0.0, 0.02, 0.04, 0.06, 0.10, 0.15, 0.20, 0.30, 0.40, 0.60]
@@ -180,6 +183,8 @@ def render_report(op, sweep, manifest):
     A(sweep_tbl)
     A("")
     A("## 6. False-negative safety argument")
+    A(attest.bound_sentence(c["tp"], c["fn"], unit="truly tainted addresses"))
+    A("")
     A(f"1. Of {manifest['true_risk']:,} genuinely high-risk addresses, "
       f"**{op['fn_count']} were auto-cleared** — recall {c['recall']:.4f}.")
     A("2. Safety is structural: material, proximate, unbroken exposure to a serious "
@@ -269,6 +274,8 @@ def main():
     manifest = {"framework": "onchain-kyt-address-risk", "seed": args.seed,
                 "addresses": args.addresses, "true_risk": n_true, "git_sha": _git_sha(),
                 "generated_utc": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d %H:%M UTC")}
+
+    manifest = attest.enrich_manifest(manifest, _T0)
     if not args.no_write and args.trials == 0:
         write_evidence(args.out, op, sweep, manifest, render_report(op, sweep, manifest))
         print(f"\nevidence written -> {args.out}/  (FN-safety gate PASSED)")

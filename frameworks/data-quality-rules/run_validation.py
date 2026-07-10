@@ -30,15 +30,18 @@ import json
 import os
 import random
 import subprocess
+import time
 import sys
 from collections import Counter
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.dirname(HERE))
 
-from _lib import metrics           # noqa: E402
+from _lib import attest, metrics           # noqa: E402
 import scorer as S                 # noqa: E402
 import generate_synthetic_data as G  # noqa: E402
+
+_T0 = time.time()   # wall-clock provenance for the evidence manifest
 
 CRIT_RECALL_FLOOR = 1.0
 SWEEP_THRESHOLDS = [0.70, 0.75, 0.80, 0.85, 0.88, 0.90, 0.92, 0.95, 0.98]
@@ -352,6 +355,8 @@ def render_report(op, sweep, manifest):
                                      "false_pair_records"]))
     A("")
     A("## 6. False-negative safety argument")
+    A(attest.bound_sentence(c["tp"], c["fn"], unit="planted critical defects"))
+    A("")
     A(f"1. Of {op['critical_planted']:,} planted critical defects, "
       f"**{op['critical_missed']} were missed** — recall {c['recall']:.4f}. Every "
       "class is caught by a deterministic parser or rule, not a statistical "
@@ -485,6 +490,8 @@ def main():
                 "generated_utc": datetime.datetime.now(datetime.timezone.utc)
                 .strftime("%Y-%m-%d %H:%M UTC"),
                 "critical_recall_floor": CRIT_RECALL_FLOOR}
+
+    manifest = attest.enrich_manifest(manifest, _T0)
     if not args.no_write and args.trials == 0:
         write_evidence(args.out, op, sweep, manifest,
                        render_report(op, sweep, manifest))

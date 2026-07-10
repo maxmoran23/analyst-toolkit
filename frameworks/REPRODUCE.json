@@ -1,0 +1,51 @@
+{
+  "_comment": "Single source of truth for reproducing every committed evidence pack. Each command is run from frameworks/<name>/ and writes an evidence pack. CI (_tooling/verify_evidence.py) runs these and diffs the result against the committed pack; docs/EVIDENCE.md is generated from the same registry.",
+  "frameworks": {
+    "adverse-media-screening": {
+      "command": "python3 run_validation.py --seed 42 --subjects 8000 --hits 50000",
+      "positive_class": "materially adverse true hits"
+    },
+    "customer-risk-rating": {
+      "command": "python3 run_validation.py --seed 42 --customers 50000"
+    },
+    "data-quality-rules": {
+      "command": "python3 run_validation.py --seed 42 --records 50000",
+      "positive_class": "planted critical defects"
+    },
+    "investigations-case-qa": {
+      "command": "python3 run_validation.py --seed 42 --cases 50000",
+      "positive_class": "critical deficiencies"
+    },
+    "npa-product-risk": {
+      "command": "python3 run_validation.py --seed 42 --products 50000"
+    },
+    "onchain-kyt-address-risk": {
+      "command": "python3 run_validation.py --seed 42 --addresses 50000",
+      "positive_class": "truly tainted addresses"
+    },
+    "onchain-osint-evidence": {
+      "command": "python3 run_validation.py --seed 42 --addresses 400 --transactions 50000"
+    },
+    "pep-screening": {
+      "command": "python3 run_validation.py --seed 42 --peps 8000 --alerts 50000",
+      "positive_class": "true PEP matches"
+    },
+    "qa-sampling": {
+      "command": "python3 run_validation.py --seed 42 --controls 12 --population 40000"
+    },
+    "sanctions-name-screening": {
+      "command": "python3 run_validation.py --seed 42 --watchlist 4000 --alerts 50000",
+      "positive_class": "true matches"
+    },
+    "tm-threshold-tuning": {
+      "command": "python3 run_validation.py --seed 42 --rules 12 --population 40000"
+    },
+    "transaction-monitoring": {
+      "command": "python3 run_validation.py --seed 42 --customers 5000 --alerts 50000",
+      "positive_class": "truly suspicious alerts"
+    },
+    "watchlist-knowledge-base": {
+      "command": "python3 run_validation.py --seed 42 --entities 3000"
+    }
+  }
+}
