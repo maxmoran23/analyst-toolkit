@@ -2,14 +2,14 @@
   "framework": "jurisdiction-risk",
   "seed": 42,
   "jurisdictions": 40000,
-  "git_sha": "3312293",
-  "generated_utc": "2026-07-10 21:08 UTC",
-  "git_dirty": true,
+  "git_sha": "1afa8a7",
+  "generated_utc": "2026-07-10 21:18 UTC",
+  "git_dirty": false,
   "environment": {
     "python": "3.14.5",
     "implementation": "CPython",
     "platform": "macOS-27.0-arm64-arm-64bit-Mach-O",
     "machine": "arm64"
   },
-  "wall_clock_seconds": 0.6
+  "wall_clock_seconds": 0.59
 }

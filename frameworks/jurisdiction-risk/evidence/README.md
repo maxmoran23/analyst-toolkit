@@ -38,9 +38,9 @@ and the pillar-wide index [`../../EVIDENCE.md`](../../EVIDENCE.md).
 | | |
 |---|---|
 | Seed | `42` |
-| Generated at commit | `3312293` (uncommitted changes present) |
-| Generated (UTC) | 2026-07-10 21:08 UTC |
-| Wall-clock runtime | 0.6s |
+| Generated at commit | `1afa8a7` |
+| Generated (UTC) | 2026-07-10 21:18 UTC |
+| Wall-clock runtime | 0.59s |
 | Interpreter | CPython 3.14.5 |
 | Results digest | `b309d40e9ecc163b` |
 

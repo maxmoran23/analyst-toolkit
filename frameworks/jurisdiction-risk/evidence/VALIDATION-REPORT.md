@@ -2,7 +2,7 @@
 
 > ILLUSTRATIVE / SYNTHETIC. Figures are produced by running the reference engine over a seeded, fully synthetic population of FICTIONAL jurisdictions. No real country is represented or rated. Numbers are emitted by `run_validation.py`, not authored.
 
-**Run:** seed `42` · 40,000 jurisdictions · git `3312293` · 2026-07-10 21:08 UTC
+**Run:** seed `42` · 40,000 jurisdictions · git `1afa8a7` · 2026-07-10 21:18 UTC
 
 **Headline:** discrimination PASS (mean score rises across designed strata), floor safety **0 below CRITICAL and 0 below HIGH** among hard-designated jurisdictions, monotonicity PASS.
 

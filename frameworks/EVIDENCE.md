@@ -59,7 +59,7 @@ The digest is a SHA-256 over the substantive metrics with volatile fields (times
 | [`customer-risk-rating/`](customer-risk-rating/) | 50,000 | 42 | 0.55s | `d2f4ef1` · 2026-07-10 05:09 UTC | `2289abbaef5813f2` |
 | [`data-quality-rules/`](data-quality-rules/) | 50,000 | 42 | 2.86s | `d2f4ef1` · 2026-07-10 05:09 UTC | `6f6c9df784f391d9` |
 | [`investigations-case-qa/`](investigations-case-qa/) | 50,000 | 42 | 1.13s | `d2f4ef1` · 2026-07-10 05:09 UTC | `0adfa7eb40d35f11` |
-| [`jurisdiction-risk/`](jurisdiction-risk/) | 40,000 | 42 | 0.6s | `3312293` (dirty tree) · 2026-07-10 21:08 UTC | `b309d40e9ecc163b` |
+| [`jurisdiction-risk/`](jurisdiction-risk/) | 40,000 | 42 | 0.59s | `1afa8a7` · 2026-07-10 21:18 UTC | `b309d40e9ecc163b` |
 | [`npa-product-risk/`](npa-product-risk/) | 50,000 | 42 | 0.69s | `d2f4ef1` · 2026-07-10 05:09 UTC | `0a05434c0ea578b2` |
 | [`onchain-kyt-address-risk/`](onchain-kyt-address-risk/) | 50,000 | 42 | 0.53s | `d2f4ef1` · 2026-07-10 05:09 UTC | `36430cd5379711c3` |
 | [`onchain-osint-evidence/`](onchain-osint-evidence/) | 400 | 42 | 3.46s | `d2f4ef1` · 2026-07-10 05:09 UTC | `23f2f8c77e1c3737` |
