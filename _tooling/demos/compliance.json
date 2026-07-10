@@ -374,5 +374,71 @@
         "None - this is the first ownership analysis of this entity; treat as a baseline, with no earlier tree to extend or re-verify."
       ]
     ]
+  },
+  "jurisdiction-risk-osint.md": {
+    "scenario": "A Harborview analyst scores the jurisdiction 'Calderia' before onboarding a Calderia-domiciled respondent bank as a correspondent, compositing six public index values into a tier.",
+    "fills": [
+      [
+        "country or territory being scored",
+        "Calderia (a mid-size cross-border jurisdiction) — scored as the domicile of a proposed correspondent-banking relationship"
+      ],
+      [
+        "why this is being scored",
+        "Scoping EDD before onboarding Banco Fluvial de Santamar, a Calderia-domiciled respondent bank, as a correspondent. The geographic-risk tier will set the EDD depth and the approval level required."
+      ],
+      [
+        "DATE",
+        "2026-06-24"
+      ],
+      [
+        "public-index values you have pulled",
+        "- FATF status: on the grey list (jurisdictions under increased monitoring), per the February 2026 FATF statement.\n- Transparency International CPI 2025: score 34/100, rank 118/180.\n- Basel AML Index 2025: 6.4/10 (higher = worse).\n- World Bank WGI 2024, Rule of Law: 22nd percentile.\n- World Bank WGI 2024, Control of Corruption: 28th percentile.\n- Tax Justice Financial Secrecy Index 2024: secrecy score approximately 68/100 (elevated).\n- US State Dept INCSR 2026, Vol. II: listed as a 'jurisdiction of concern' for money laundering (not 'primary concern').\n- Global Organized Crime Index: not retrieved this session (dimension unavailable)."
+      ],
+      [
+        "anything specific already known",
+        "Calderia hosts a large free-trade zone with significant metals re-export flows; a regional regulator issued a public enforcement action against a Calderia-based payments firm for AML failings in late 2025. No comprehensive sanctions program applies to Calderia."
+      ],
+      [
+        "any prior country-risk memo",
+        "None provided — no internal geographic-risk rating scale supplied; use the prompt's default four-tier scale and flag the defaults as assumptions."
+      ],
+      [
+        "paste the last assessment of this jurisdiction",
+        "None — first assessment of Calderia; baseline, with no prior score or tier to diff against."
+      ]
+    ]
+  },
+  "corporate-registry-ubo-osint.md": {
+    "scenario": "A Harborview analyst traces the ownership of 'Northgate Holdings Ltd' before onboarding it as a corporate customer, from four public registry extracts, resolving one 34% UBO while an offshore parent link stays an unconfirmed lead.",
+    "fills": [
+      [
+        "entity whose ownership you are tracing",
+        "Northgate Holdings Ltd — UK private company, registration number 09847721 (LEI held per the GLEIF record, extract S3 below)"
+      ],
+      [
+        "country/state of incorporation",
+        "England & Wales (Northgate Holdings Ltd). An intermediate parent sits further up the chain in Veranda, a secrecy jurisdiction whose company register is not publicly searchable."
+      ],
+      [
+        "why ownership is being traced",
+        "Onboarding Northgate Holdings Ltd as a corporate customer; sourcing the beneficial-ownership layer of the EDD file to establish the ultimate natural-person owners before account opening."
+      ],
+      [
+        "beneficial-ownership threshold to apply",
+        "25% (the common default)"
+      ],
+      [
+        "paste the public registry output",
+        "S1 - UK Companies House, company record for Northgate Holdings Ltd. URL: find-and-update.company-information.service.gov.uk/company/09847721. Retrieved 2026-06-22. Covers: company status (active, incorporated 2019-03-11), registered office, and two appointed directors (Harun Vale; Delia Crane).\nS2 - UK Companies House PSC (people-with-significant-control) filing for Northgate Holdings Ltd. Same record, PSC page. Retrieved 2026-06-22. Covers PSCs: (a) Meridian Nominees Ltd holds 60% of shares and 60% of voting rights; (b) Harun Vale (individual) holds 10% of shares directly and is a registered director.\nS3 - GLEIF LEI record for Northgate Holdings Ltd. URL: search.gleif.org. Retrieved 2026-06-22. Covers: legal-entity data and a declared ultimate parent, 'Veranda Trust Company Ltd' (Veranda). A separate GLEIF/register extract (S2b) shows Harun Vale holds 40% of Meridian Nominees Ltd.\nS4 - ICIJ Offshore Leaks database. URL: offshoreleaks.icij.org. Retrieved 2026-06-22. Covers: an entry for 'Veranda Trust Company Ltd' naming 'Harun Vale' as a connected beneficial owner. Leak-database source only; no matching register of record was obtainable for Veranda."
+      ],
+      [
+        "self-declared ownership chart",
+        "The customer self-declared a single owner on the application: 'Northgate is wholly owned by its founder, Harun Vale.' Trace to validate this declaration against the registers."
+      ],
+      [
+        "prior ownership map or EDD file",
+        "None — first ownership trace of this entity; baseline, nothing to extend."
+      ]
+    ]
   }
 }

@@ -1,6 +1,6 @@
 # Prompts
 
-68 paste-ready analytical prompt templates across 13 categories. Each one turns an AI assistant into a specific kind of analyst — an entity risk reviewer, a sanctions or PEP screener, a transaction-monitoring analyst, a fraud investigator, a surveillance reviewer, a control tester, a data-governance analyst, a new-product risk assessor, a blockchain investigator, a regulatory monitor, a deep researcher — with a defined method, a scoring rubric, and a structured output format.
+70 paste-ready analytical prompt templates across 13 categories. Each one turns an AI assistant into a specific kind of analyst — an entity risk reviewer, a sanctions or PEP screener, a transaction-monitoring analyst, a fraud investigator, a surveillance reviewer, a control tester, a data-governance analyst, a new-product risk assessor, a blockchain investigator, a regulatory monitor, a deep researcher — with a defined method, a scoring rubric, and a structured output format.
 
 **The two-file rule.** Every prompt block here is fully self-contained as pasted — no other file is required at run time. The only companion that ever adds anything is [`../BASE.md`](../BASE.md) (the audit-defensible voice, the quality floor, and the Word / Excel / PDF / HTML renderer in one document). One prompt + `BASE.md` is the entire quality system; there is never a third file, and CI enforces it. Links inside these files are browse-time navigation only — each file states this in its **Run-time needs** row and its run-time contract footer.
 
@@ -40,6 +40,8 @@ The financial-crime files cover a full analytical lifecycle: **detect** → **mo
 - **[network-link-analysis](compliance/network-link-analysis.md)** — map entity-relationship data into shared-attribute clusters, hubs, and flow-through patterns; ring hypotheses stated as observed vs inferred
 - **[periodic-review-triggers](compliance/periodic-review-triggers.md)** — triage a periodic-review backlog: event-driven vs calendar-driven triggers, weighted prioritization, risk-based scheduling
 - **[customer-file-review](compliance/customer-file-review.md)** — review a customer risk file for completeness and risk-rating defensibility; deficiencies by severity, remediation actions
+- **[jurisdiction-risk-osint](compliance/jurisdiction-risk-osint.md)** — composite a country/territory's inherent risk from public indices (FATF, Basel, CPI, WGI, secrecy, INCSR); 0-100 score, hard-risk overrides, 4-tier rating
+- **[corporate-registry-ubo-osint](compliance/corporate-registry-ubo-osint.md)** — trace beneficial ownership from public registry extracts (registers of record, LEI, PSC, EDGAR, offshore leaks); sourced ownership map, effective-ownership math, opacity flags
 
 ### [`fraud/`](fraud/) — fraud detection & response
 - **[app-fraud-triage](fraud/app-fraud-triage.md)** — classify an authorized-push-payment scam, weigh social-engineering and mule indicators, disposition with liability framing

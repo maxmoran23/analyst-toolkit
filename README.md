@@ -15,7 +15,7 @@ affairs. It assumes you know your domain. It does not assume you write code.
 
 **What it gives you.** Two things, and they are different in kind:
 
-- **68 prompts.** A page of written instructions you copy and paste into an AI assistant
+- **70 prompts.** A page of written instructions you copy and paste into an AI assistant
   you already have — Microsoft 365 Copilot, GitHub Copilot, Claude, ChatGPT. Nothing to
   install. Each one turns the assistant into a specific analyst with a defined method, a
   scoring rubric, and a fixed output shape, so two people running it get comparable work.
@@ -107,7 +107,7 @@ There is never a third file. [`BASE.md`](BASE.md) is the entire 4-file methodolo
 | **[`BASE.md`](BASE.md)** | **The one companion file** — the entire methodology framework (voice + method + quality bar + renderer) consolidated into a single attachable document. Any prompt + `BASE.md` = full toolkit quality. Generated from `methodology/`; CI keeps it in sync. |
 | **[`methodology/`](methodology/)** | **The 4-file framework base** — analytical patterns, audit-defensible writing voice, quality standards per output type, and the multi-format report-templates renderer. Load all four as Copilot agent / Claude Project / ChatGPT custom GPT instructions once; every task becomes a thin prompt after that. Prefer one file? Use [`BASE.md`](BASE.md). |
 | **[`standalone/`](standalone/)** | **Single-file copy/paste prompts** — each one a complete instruction set, no cross-references, no other files needed; embeds the same renderer as `methodology/report-templates.md`. Best for one-off use or sharing one file with a teammate |
-| **[`prompts/`](prompts/)** | 68 paste-ready analytical prompt templates across 13 categories — the broader library; each file pairs a prompt block with how-to and tuning sections |
+| **[`prompts/`](prompts/)** | 70 paste-ready analytical prompt templates across 13 categories — the broader library; each file pairs a prompt block with how-to and tuning sections |
 | **[`output-templates/`](output-templates/)** | Document scaffolds — interactive dashboards, PDF reports, compliance documents, communications |
 | **[`samples/`](samples/)** | Rendered example outputs with previews — what the prompts and templates actually produce |
 | **[`reference/`](reference/)** | Domain cheat-sheets — AML typologies, blockchain entity typologies, compliance, audit, regulatory, financial analysis |
@@ -163,7 +163,7 @@ Full workflow, including the Copilot copy/paste loop and getting output into cle
 
 ## Prompt catalog
 
-68 prompts across 13 categories. The financial-crime categories cover a full analytical lifecycle — **detect** (typology mapping) → **monitor** (alert triage, sanctions and PEP screening, on-chain screening) → **investigate** (fund-flow tracing, UBO unwinding, link analysis) → **decide** (SAR file/no-file) → **quality-check** (case QA) → **report** (investigation narrative). The controls, data, and regulatory categories cover the assurance lifecycle around it — **document** (EWRA, control matrix, risk register) → **test** (testing workpaper, QA scorecard) → **govern** (model governance and validation, data quality, lineage) → **track** (issue remediation) → **report and respond** (committee pack, policy gap analysis, exam response). The `npa/` category runs the same discipline forward in time, before a product generates its first alert.
+70 prompts across 13 categories. The financial-crime categories cover a full analytical lifecycle — **detect** (typology mapping) → **monitor** (alert triage, sanctions and PEP screening, on-chain screening) → **investigate** (fund-flow tracing, UBO unwinding, link analysis) → **decide** (SAR file/no-file) → **quality-check** (case QA) → **report** (investigation narrative). The controls, data, and regulatory categories cover the assurance lifecycle around it — **document** (EWRA, control matrix, risk register) → **test** (testing workpaper, QA scorecard) → **govern** (model governance and validation, data quality, lineage) → **track** (issue remediation) → **report and respond** (committee pack, policy gap analysis, exam response). The `npa/` category runs the same discipline forward in time, before a product generates its first alert.
 
 ### Financial crime & compliance — [`prompts/compliance/`](prompts/compliance/)
 | Prompt | What it does |
