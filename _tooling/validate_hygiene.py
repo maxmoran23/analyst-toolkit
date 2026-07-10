@@ -31,6 +31,8 @@ B. NO EMOJI on the portable text surface (markdown + Python across the library).
    screenshotted from them — stripping the glyphs would desync the images without
    re-rendering. The exemption is reported on every run, never silent.
 """
+from __future__ import annotations
+
 import re
 import sys
 from pathlib import Path

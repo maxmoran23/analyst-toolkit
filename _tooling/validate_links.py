@@ -19,6 +19,8 @@ Skipped:   absolute URLs (http/https/mailto), bare in-page anchors (#section),
 Anchors are stripped before resolution — this validates that the *file* exists,
 not that a heading inside it does.
 """
+from __future__ import annotations
+
 import re
 import sys
 from pathlib import Path

@@ -30,6 +30,8 @@ C. DECLARED COUNTS — every registered numeric claim in the docs matches the
    pattern-hunted, so a claim can never silently stop being checked: if someone
    rewords the sentence, the pattern stops matching and rule C fails loudly.
 """
+from __future__ import annotations
+
 import re
 import sys
 from pathlib import Path
