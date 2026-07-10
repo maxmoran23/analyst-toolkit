@@ -1,0 +1,197 @@
+{
+  "calibration-debate.md": {
+    "scenario": "A compliance desk at Harborview Financial Group pressure-tests a late-2025 recommendation to onboard a major USD stablecoin for client settlement, judging whether the reasoning was sound independent of how it played out.",
+    "fills": [
+      [
+        "thesis, prediction, recommendation",
+        "Recommendation made 2025-11-15 by Harborview Financial Group's digital-asset advisory desk: begin accepting a major fully-reserved USD-pegged stablecoin (the 'reference stablecoin') as an eligible client-settlement asset within two quarters (by end of Q2 2026), on the thesis that the GENIUS Act's federal stablecoin framework would materially de-risk large, fully-reserved USD stablecoins for regulated settlement use by mid-2026."
+      ],
+      [
+        "the stated case for it",
+        "Four points were recorded. (1) The GENIUS Act established a federal licensing and reserve regime for payment stablecoins, requiring 1:1 high-quality liquid reserves, monthly attestations, and priority redemption in insolvency — narrowing the reserve-quality uncertainty that had been the primary onboarding blocker. (2) Two peer mid-size banks had publicly disclosed settlement pilots with the same reference stablecoin in Q3 2025 with no reported loss events. (3) Client demand: 3 managed-account clients had asked in writing for stablecoin settlement in the prior 90 days. (4) The reference stablecoin held the largest circulating supply in its category and had maintained a peg within 30 basis points across the prior 12 months per public exchange data. Conclusion drawn: reserve and legal risk would be 'substantially resolved' by the framework's effective date, making a two-quarter onboarding timeline low-risk."
+      ],
+      [
+        "when the call was made",
+        "The call was made 2025-11-15. Known at the time: the GENIUS Act was enacted but implementing rules (reserve-composition detail, examination expectations, the licensing queue) were not yet finalized; the effective date and phase-in schedule were published but subject to agency rulemaking. No enforcement precedent existed under the new regime. Peg history was benign but covered only a calm-market period. The desk had not yet completed its own reserve-attestation review of the issuer."
+      ],
+      [
+        "source documents behind the call",
+        "Treat as the primary evidence base; all figures illustrative and internal to this scenario.\n[1] GENIUS Act summary note (desk-prepared, 2025-10): federal payment-stablecoin regime; permitted reserve assets limited to cash and short-dated government instruments; monthly third-party attestation; redemption priority in issuer insolvency; state/federal licensing paths; implementing rulemaking delegated to the primary regulator with an 18-month phase-in.\n[2] Peer-pilot tracker (public disclosures, 2025-Q3): two mid-size banks announced limited stablecoin settlement pilots; disclosures did not state reserve-review depth or volumes.\n[3] Peg-history extract (public exchange mid-prices, trailing 12 months): reference stablecoin deviation from 1.00 stayed within +/- 0.003 except one 0.006 intraday dip during a broad market sell-off in 2025-08, recovered same day.\n[4] Client-demand log (internal, redacted to counts): 3 written requests for stablecoin settlement, all from managed-account clients, 2025-08 to 2025-10.\n[5] Open-item note (desk, 2025-11): issuer reserve-attestation review not yet performed; examination expectations for bank use of third-party stablecoins not yet published; no insolvency-scenario test run."
+      ],
+      [
+        "what actually happened",
+        "OUTCOME (footnote only, not an input to the score): by 2026-06 the implementing rules had slipped — reserve-composition detail and examination guidance were still in a comment period, and the licensing queue was backlogged. The reference stablecoin held its peg throughout, but a smaller competing stablecoin de-pegged to 0.91 for 48 hours in 2026-04 after a reserve-transparency dispute, raising supervisory scrutiny across the category. Harborview deferred onboarding to Q4 2026 pending final examination guidance. The peg thesis held; the timeline thesis did not."
+      ]
+    ]
+  },
+  "cross-source-synthesis.md": {
+    "scenario": "An analyst at Harborview Financial Group synthesizes four independent sources on cross-chain bridge security to build the integrated risk picture before the bank approves any client exposure to bridge protocols.",
+    "fills": [
+      [
+        "what the synthesis is about",
+        "What is the current (2026) security risk profile of cross-chain bridges, and what do independent sources agree, disagree, and stay silent on regarding the leading loss vectors?"
+      ],
+      [
+        "Label each one so it can be cited",
+        "Four independent inputs are provided; figures are illustrative and internal to this scenario.\n\n[A] Security-firm quarterly report (vendor, H1 2026): total value lost to cross-chain bridge exploits in H1 2026 was 210 million dollars across 6 incidents. Root-cause breakdown: validator-key or signer-set compromise in 4 of 6 incidents; the remaining 2 were contract logic bugs. Recommends multi-party-computation signing, timelocked upgrades, and independent monitoring. Vendor sells an MPC custody product.\n\n[B] Academic preprint (university group, 2026-03): analyzes 40 historical bridge exploits from 2021 to 2025. Finds 62 percent stemmed from smart-contract logic flaws (re-entrancy, signature-verification errors, proxy-upgrade bugs) and only about 20 percent from key or signer compromise. Argues formal verification of bridge contracts is the highest-leverage mitigation. Explicitly notes its window predates 2026.\n\n[C] Community incident tracker (open, maintained by volunteers, H1 2026): lists 7 bridge incidents in H1 2026 totaling approximately 185 million dollars. Flags that 3 of the 7 involved a centralized or small validator set. Notes that small incidents under 1 million dollars are routinely under-reported and likely missing from the list.\n\n[D] Supervisory note (public regulator communication, 2026-05): warns regulated institutions about counterparty and operational exposure to cross-chain bridge protocols; emphasizes concentration of control in admin keys and small validator committees as a governance red flag; gives no quantitative loss figures and defers technical detail to industry standards."
+      ],
+      [
+        "previous synthesis",
+        "None — first run; baseline. No prior synthesis to diff against; the multi-cycle pattern section is not applicable this cycle."
+      ],
+      [
+        "TOPIC",
+        "Cross-Chain Bridge Security Risk (2026)"
+      ]
+    ]
+  },
+  "deep-research-storm.md": {
+    "scenario": "A compliance function at Harborview Financial Group commissions a reference-grade write-up on the AML implications of stablecoin adoption, to anchor policy and training rather than answer a one-off question.",
+    "fills": [
+      [
+        "the topic — be specific",
+        "The anti-money-laundering (AML) implications of large-scale stablecoin adoption for regulated banks: how fiat-referenced stablecoins change customer due diligence, transaction monitoring, sanctions screening, and the Travel Rule, across the major regulatory frameworks (FATF standards, US BSA/FinCEN expectations, the GENIUS Act payment-stablecoin regime, and the EU MiCA regime)."
+      ],
+      [
+        "why you need this",
+        "A reference document for a bank's financial-crime compliance team and its digital-asset advisory desk — to set policy, brief examiners, and train analysts as the institution weighs stablecoin settlement and custody. It must be durable enough to cite internally for the next year."
+      ],
+      [
+        "as long as the evidence supports",
+        "As long as the evidence supports; target roughly 3,000 words, longer only if the reconciliation and open-questions sections earn it."
+      ],
+      [
+        "research papers, official filings",
+        "Analyst-gathered reference notes (paraphrased and illustrative; verify against primary sources before any external citation). Treat as leads to develop and stress-test, not as settled fact.\n[1] FATF standards: the risk-based approach and the Travel Rule (Recommendation 16) apply to virtual-asset service providers, including originator/beneficiary information for transfers above the applicable threshold; unhosted-wallet transfers are a recognized data-gap challenge.\n[2] US framework: BSA obligations (CDD, monitoring, SAR filing, OFAC sanctions screening) apply to covered institutions; FinCEN advisories have flagged stablecoin use in scams, pig-butchering fraud, and sanctions-evasion typologies. The GENIUS Act adds a federal payment-stablecoin regime with reserve, attestation, and redemption requirements for issuers.\n[3] EU MiCA: e-money tokens and asset-referenced tokens carry issuer authorization, reserve, and reporting duties; caps and supervision scale with usage as a means of payment.\n[4] On-chain characteristics relevant to monitoring: stablecoin transfers are pseudonymous but transparent and traceable on public ledgers; freeze/blacklist functions exist on some major issuers' contracts; cross-chain bridges and mixers complicate tracing.\n[5] Adoption signal (illustrative): stablecoin settlement volume has grown materially on low-fee layer-2 networks, concentrating in a small number of USD-referenced issuers.\n[6] Typology notes: layering through rapid stablecoin swaps, use of decentralized exchanges to break the transaction chain, and conversion at points of fiat off-ramp remain the primary AML concern points."
+      ],
+      [
+        "paste an earlier version",
+        "None — first run; baseline. No prior article to diff against."
+      ],
+      [
+        "Topic Title",
+        "The AML Implications of Stablecoin Adoption for Regulated Banks"
+      ]
+    ]
+  },
+  "frontier-scan.md": {
+    "scenario": "A digital-asset compliance function scans the frontier of privacy-preserving on-chain compliance technology, grading each claim on the evidence tiers and forcing a skeptic rebuttal on anything rated highly.",
+    "fills": [
+      [
+        "emerging or speculative domain",
+        "Privacy-preserving on-chain compliance technology: zero-knowledge-proof-based KYC/AML attestation and confidential transaction monitoring — cryptographic methods that let a party prove a compliance fact (identity verified, address not sanctioned, funds below a threshold) without revealing the underlying data."
+      ],
+      [
+        "the material provided",
+        "The material provided (roughly the last 60 days)."
+      ],
+      [
+        "why you are tracking this",
+        "Strategic awareness for a bank digital-asset compliance function: to know whether privacy-preserving compliance primitives are approaching production readiness, and to separate a genuine cryptographic result from a vendor claim before any of it reaches a procurement conversation."
+      ],
+      [
+        "papers, preprints, news articles",
+        "Candidate items gathered this window (all fictional and illustrative; sources, dates, and figures are synthetic).\n[1] Preprint, university cryptography group, 2026-05-18: reports a zk-SNARK construction that produces a reusable, revocable KYC attestation on-chain with proof generation under 200 milliseconds on commodity hardware, an order-of-magnitude faster than a prior scheme it benchmarks against. Peer review pending; one independent group reproduced the proving benchmark, not the full protocol.\n[2] Preprint, industry research lab, 2026-06-02: proposes confidential transaction monitoring using fully homomorphic encryption, so a monitor can run a rules engine over encrypted transaction data. Single source; theoretical throughput only; authors concede current FHE overhead makes real-time use impractical today.\n[3] Startup press release, 2026-06-20: a firm claims a 'regulator-approved, zero-knowledge AML solution' now in production with a named exchange. No technical paper, no named regulator, no third-party audit; marketing language exceeds any disclosed substance.\n[4] Anonymous forum post, 2026-06-25: unverified claim that a major exchange has quietly deployed ZK-based sanctions screening. No named source, no documentation, no corroboration.\n[5] Standards-body working draft, 2026-05-30: an open draft specifying privacy-preserving compliance primitives (selective disclosure, proof-of-non-membership against a sanctions set). Credible institutional authorship; early-stage, no reference implementation yet."
+      ],
+      [
+        "paste the last scan",
+        "None — first run; baseline. No prior scan to diff against; the themes tracker starts fresh this cycle."
+      ],
+      [
+        "FRONTIER AREA",
+        "Privacy-Preserving On-Chain Compliance (ZK-Based KYC/AML)"
+      ]
+    ]
+  },
+  "futures-projection.md": {
+    "scenario": "A strategy desk builds a 2026-to-2036 year-by-year projection of the stablecoin market to inform whether a bank should invest in stablecoin settlement infrastructure now or wait.",
+    "fills": [
+      [
+        "what is being projected",
+        "The global fiat-referenced stablecoin market — its size, usage mix, issuer concentration, and regulatory penetration — over a ten-year horizon."
+      ],
+      [
+        "start year",
+        "2026 -> 2036"
+      ],
+      [
+        "the quantitative metrics to forecast",
+        "you propose — select 8 to 15 measurable, decision-relevant metrics and justify each. At minimum include: total stablecoin circulating supply (USD billions), share of supply that is fully-reserved and regulated (percent), monthly on-chain settlement volume (USD billions), share of volume on low-fee layer-2 networks (percent), number of bank-issued or bank-partnered stablecoins, share of cross-border B2B payment flow settled in stablecoins (percent), and the share of circulating supply under a formal regulatory regime such as the GENIUS Act or MiCA (percent)."
+      ],
+      [
+        "the decision or thesis this informs",
+        "Whether a mid-size bank should invest in stablecoin settlement infrastructure and issuer partnerships in 2026-2027, or defer until the regulated share of the market and cross-border adoption cross a threshold that de-risks the build."
+      ],
+      [
+        "historical time series, baseline figures",
+        "Baseline figures and short history (all illustrative and internal to this scenario; treat as the starting point and state estimation method where a figure is soft).\nHorizon-start (2026) baselines:\n- Total stablecoin circulating supply: approximately 260 billion USD, up from ~150 billion in 2024 and ~130 billion in 2023.\n- Regulated/fully-reserved share of supply: approximately 55 percent (rising as major USD issuers move under federal and MiCA regimes).\n- Monthly on-chain settlement volume: approximately 1.4 trillion USD, of which an estimated 45 percent now clears on low-fee layer-2 networks (up from under 15 percent in 2024).\n- Issuer concentration: the top 2 USD issuers account for roughly 80 percent of supply.\n- Bank-issued or bank-partnered stablecoins in market: a small single-digit count, mostly pilots.\n- Cross-border B2B flow settled in stablecoins: low single-digit percent, concentrated in corridors with weak banking rails.\nDirectional context: the GENIUS Act (US) and MiCA (EU) are pulling supply toward regulated issuers; layer-2 fee compression is the main driver of settlement-volume growth."
+      ],
+      [
+        "paste an earlier projection",
+        "None — first run; baseline. No prior projection to diff against."
+      ],
+      [
+        "DOMAIN",
+        "Global Stablecoin Market"
+      ],
+      [
+        "horizon",
+        "2026-2036"
+      ]
+    ]
+  },
+  "idea-generation.md": {
+    "scenario": "A small digital-asset compliance team feeds five deliberately unrelated developments into the generator to surface scored, buildable RegTech ideas at their intersections.",
+    "fills": [
+      [
+        "where ideas should land",
+        "RegTech and financial-crime compliance tooling that a small in-house team could build and use — analytics, automation, or a lightweight internal product."
+      ],
+      [
+        "paste the raw material",
+        "Five deliberately unrelated developments (all illustrative and dated in 2026):\n[1] AI research: a new small-model technique (2026-06) for reliable structured extraction from messy documents — turning unstructured filings, KYC packets, and PDFs into clean typed fields at low cost on modest hardware.\n[2] Regulation: a jurisdiction finalized (2026-05) a low Travel-Rule threshold for crypto transfers, sharply increasing the number of transfers that require originator/beneficiary data exchange.\n[3] Open-source tool: a fast graph-analytics library (2026-06) released for entity resolution and community detection at scale, usable from Python.\n[4] Market shift: rising demand (2026) from small and mid-size banks for outsourced or lightweight sanctions and transaction-monitoring capability they cannot build in-house.\n[5] On-chain trend: rapid growth (2026) in stablecoin payment volume on low-fee layer-2 networks, producing large, cheap, traceable transaction datasets."
+      ],
+      [
+        "your skills, resources, constraints",
+        "SOLVER PROFILE: a 3-person digital-asset compliance team inside a mid-size bank. Strong in compliance domain knowledge, Python data analysis, and building internal HTML dashboards. No engineering headcount beyond the team, a small tooling budget, and a hard requirement that anything touching customer data run internally rather than on an external service. Bias toward tools the team can ship in weeks, not a product launch."
+      ],
+      [
+        "research findings, product or tool announcements",
+        "Additional field notes (illustrative): the team already runs a manual monthly typology review and a spreadsheet-based alert triage; analysts spend an estimated third of their time re-keying data from documents; the bank's vendor screening tool produces high false-positive volumes that the team hand-clears; layer-2 stablecoin data is public and free to pull."
+      ],
+      [
+        "paste earlier ideas",
+        "None — first run; baseline. No prior ideas to exclude."
+      ],
+      [
+        "DOMAIN",
+        "RegTech / Financial-Crime Compliance Tooling"
+      ]
+    ]
+  },
+  "research-translation-scan.md": {
+    "scenario": "A compliance analyst who builds internal AI tools scans a batch of recent AI/ML papers, rejects the increments, and translates the few that matter into what to actually do.",
+    "fills": [
+      [
+        "what to scan",
+        "Recent AI/ML papers on applying language models and graph methods to compliance, fraud detection, and transaction monitoring — the set pasted below."
+      ],
+      [
+        "who this is for",
+        "A financial-crime compliance analyst who builds internal AI-assisted analytics tools for a small bank team: decides which techniques to prototype, which to monitor, and which to ignore. Needs plain-language 'so what' and a concrete next action, not a literature review."
+      ],
+      [
+        "the set provided",
+        "The set provided."
+      ],
+      [
+        "papers, abstracts, preprint listings",
+        "Candidate items to filter and translate (all fictional and illustrative; titles, venues, and figures are synthetic).\n[1] 'LLM agents for transaction-monitoring alert triage' (conference paper, 2026-06): reports an agentic pipeline that pre-triages monitoring alerts, cutting analyst review time by a reported 40 percent while holding recall on a labeled internal dataset. Ablations included.\n[2] 'An open benchmark and dataset for financial-fraud narrative classification' (preprint, 2026-05): releases a labeled dataset and baseline models for classifying fraud narratives, filling a gap where no shared benchmark existed.\n[3] 'Prompt-template tuning yields marginal gains on document classification' (preprint, 2026-06): a 1.2-point accuracy improvement from prompt reformatting on an existing task; no new capability.\n[4] 'A survey of machine learning methods in AML' (survey, 2026-04): consolidates known supervised and graph methods; no new results.\n[5] 'Graph neural networks for detecting money-laundering rings' (preprint, 2026-06): reports improved detection of layered transaction rings on a synthetic dataset versus a rules baseline; not yet validated on real institution data.\n[6] 'Vendor whitepaper: near-perfect fraud detection with our proprietary model' (industry whitepaper, 2026-06): claims 99-plus percent detection with no methodology, no independent evaluation, and heavy marketing language."
+      ],
+      [
+        "paste the last scan",
+        "None — first run; baseline. No prior scan to diff against; the themes tracker starts fresh this cycle."
+      ]
+    ]
+  }
+}

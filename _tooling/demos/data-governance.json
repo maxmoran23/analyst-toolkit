@@ -1,0 +1,118 @@
+{
+  "cde-inventory.md": {
+    "scenario": "A data-governance analyst at Harborview Financial Group builds a critical-data-element inventory for the sanctions-screening and transaction-monitoring stack from a customer-master and payment-feed schema, with one field's source of truth in dispute.",
+    "fills": [
+      [
+        "consuming processes and systems in scope",
+        "Two in-scope consuming processes at Harborview Financial Group. (1) Sanctions/watchlist screening (system: SentryScreen) — real-time name, date-of-birth, country, and identifier matching of customers and payment parties against OFAC/UN/EU and internal lists at onboarding and per payment. (2) Transaction monitoring (system: MonitorCore) — rules that threshold on amount, aggregate by counterparty and account linkage, and segment by customer risk band and geography over a rolling window."
+      ],
+      [
+        "field list, data dictionary extract",
+        "Customer master (CUST_MASTER) schema extract, 24 fields: CUST_ID (pk), LEGAL_NAME, ALT_NAMES, DOB, INCORP_DATE, ENTITY_TYPE, NATIONALITY, COUNTRY_OF_RESIDENCE, COUNTRY_OF_INCORP, GOV_ID_TYPE, GOV_ID_NUMBER, RESID_ADDRESS, MAIL_ADDRESS, RISK_RATING, PEP_FLAG, ONBOARD_DATE, STATUS, SEGMENT_CODE, RM_CODE, SIC_CODE, EXPECTED_VOLUME, SOURCE_OF_WEALTH, LAST_REVIEW_DATE, RECORD_UPDATED_TS. Payment/transaction feed (PAY_TXN) extract, 14 fields: TXN_ID (pk), CUST_ID (fk), TXN_TS, AMOUNT, CURRENCY, DR_CR, COUNTERPARTY_NAME, COUNTERPARTY_ACCT, COUNTERPARTY_COUNTRY, CHANNEL, PURPOSE_CODE, ORIG_BENE_INFO, VALUE_DATE, BATCH_ID."
+      ],
+      [
+        "current CDE inventory",
+        "None — first CDE inventory for this scope; no register exists. Baseline build."
+      ],
+      [
+        "systems of record, refresh frequencies",
+        "Systems of record: CUST_MASTER is the golden source for customer identity, owned by the Customer Data Management team; PAY_TXN originates in the Payments Platform (owned by Payments Engineering) and lands in the Financial-Crime Data Store nightly. SentryScreen refreshes watchlists daily; MonitorCore runs an overnight batch plus intraday payment screening. COUNTRY_OF_RESIDENCE is populated by CUST_MASTER but is also independently set in a legacy onboarding system (OnboardLite), and the two disagree in roughly 3% of records."
+      ],
+      [
+        "report field specifications",
+        "SentryScreen match configuration (match keys: LEGAL_NAME, ALT_NAMES, DOB, NATIONALITY, GOV_ID_NUMBER; fuzzy-name threshold 0.85). MonitorCore rule catalog (12 rules keying on AMOUNT, CURRENCY, and COUNTERPARTY_COUNTRY, aggregating by CUST_ID and COUNTERPARTY_ACCT, and segmenting by RISK_RATING). The regulatory-report field spec is out of scope for this run. Data-quality incident log showing two 2026 incidents: a DOB null spike and a stale COUNTRY_OF_RESIDENCE code mapping."
+      ],
+      [
+        "earlier inventory run",
+        "None — first inventory run; baseline"
+      ]
+    ]
+  },
+  "data-incident-triage.md": {
+    "scenario": "A data-incident triage analyst at Harborview Financial Group works a silent ETL filter change that dropped high-value wire records from the transaction-monitoring feed for sixteen nightly cycles, caught only on a month-end reconciliation.",
+    "fills": [
+      [
+        "what broke and how it was discovered",
+        "During a routine month-end reconciliation on 2026-06-18, the Financial-Crime Data team found MonitorCore's ingested transaction count materially below the Payments Platform's sent count. Investigation traced it to an ETL change deployed 2026-06-02 that added a message-type filter to the nightly PAY_TXN load; the filter inadvertently excluded a class of single-customer credit transfers, so those records never reached transaction monitoring. The loader reported success each night. Detected by the Financial-Crime Data reconciliation analyst, 2026-06-18 14:10."
+      ],
+      [
+        "element(s), feed(s), or system(s) affected",
+        "The PAY_TXN nightly feed into the Financial-Crime Data Store, consumed by MonitorCore. The dropped records are customer outbound credit transfers, each normally carrying TXN_ID, CUST_ID, AMOUNT, CURRENCY, COUNTERPARTY_NAME, COUNTERPARTY_COUNTRY, and PURPOSE_CODE — exactly the fields the transaction-monitoring rules threshold and aggregate on."
+      ],
+      [
+        "last point the data was verified good",
+        "Onset: the ETL change deployed 2026-06-02 (change ticket timestamped). Last point the data was verified good: the 2026-06-01 nightly load reconciled clean. The break ran until the filter was reverted; fix-forward deployed 2026-06-18 22:00. Working window: 2026-06-02 to 2026-06-18, sixteen nightly cycles."
+      ],
+      [
+        "which financial-crime processes depend",
+        "Transaction monitoring (MonitorCore) is the primary dependent — the excluded transfers were never evaluated by any threshold, aggregation, or segmentation rule, so no alerts could fire on them (under-detection). Real-time payment sanctions screening in SentryScreen is NOT affected: it screens at payment initiation on the Payments Platform, upstream of this feed. Regulatory reporting that draws its filing population from monitoring output is a secondary dependent."
+      ],
+      [
+        "daily throughput",
+        "The Payments Platform processes roughly 14,000 customer outbound transfers per day; the excluded message structure is roughly 6-9% of daily volume. The reconciliation break totals about 19,400 transfers over the sixteen-day window, with an aggregate value near USD 470,000,000. Approximately 1,100 distinct customers are represented; an unknown subset touch higher-risk COUNTERPARTY_COUNTRY corridors."
+      ],
+      [
+        "reconciliation breaks",
+        "Change ticket CHG-2026-2287 (ETL filter deployment, 2026-06-02); the month-end reconciliation break report (Payments Platform vs MonitorCore, 2026-06-18) showing the count and value gap; the loader success logs for the window, each reporting success; a MonitorCore ingest-count time series showing the step-down beginning 2026-06-03; no prior incident on this feed on record."
+      ],
+      [
+        "earlier triage of this incident",
+        "None — first triage; baseline"
+      ]
+    ]
+  },
+  "data-lineage-mapping.md": {
+    "scenario": "A data-lineage analyst at Harborview Financial Group maps customer date of birth from the onboarding platform to overnight sanctions screening and the monthly regulatory report, with a vendor-managed transformation hop unknown on the screening branch.",
+    "fills": [
+      [
+        "name and business definition of the element",
+        "Customer date of birth (DOB) — the verified birth date of a natural-person customer, used as a secondary match key to confirm or discount screening hits. Believed to originate in the onboarding platform (OnboardLite) at account opening and to become the field CUST_MASTER.DOB in the customer master."
+      ],
+      [
+        "what each needs the element to be",
+        "Two consuming processes: (1) Overnight sanctions/watchlist screening (SentryScreen) needs DOB present, correctly formatted, and un-coerced at match time, because it uses DOB to confirm or discount name matches — a wrong or defaulted DOB either suppresses a true hit or waves a match through. (2) The monthly regulatory report (RegFile) needs DOB complete and accurate for the reportable-customer population."
+      ],
+      [
+        "path from origin to each consuming",
+        "As best known: DOB is captured in OnboardLite at onboarding, keyed by an operator from identity documents. Overnight it flows by batch file into CUST_MASTER (the customer master / golden source). From CUST_MASTER it fans out: a nightly extract feeds SentryScreen for the overnight screening run, and a separate month-end extract feeds RegFile. A vendor-managed data-integration layer sits between CUST_MASTER and SentryScreen and reformats records; its transformation logic is not documented to us — treat it as unknown after the nightly CUST_MASTER extract on the screening branch. The RegFile branch transformation is likewise unknown after the month-end extract."
+      ],
+      [
+        "interface mechanisms",
+        "Systems and owners: OnboardLite (Client Onboarding Operations; manual rekey from documents); CUST_MASTER (Customer Data Management team; batch-file load, nightly). SentryScreen branch: a vendor-managed integration layer (interface mechanism: batch file, then vendor ETL) owned jointly by the Financial-Crime Technology team and the screening vendor, running overnight. RegFile branch: a month-end batch extract owned by Regulatory Reporting. Environments: production, with a parallel test region for CUST_MASTER only."
+      ],
+      [
+        "field mappings",
+        "CUST_MASTER data dictionary (DOB typed DATE, nullable = N); the OnboardLite-to-CUST_MASTER interface spec (field mapping and batch schedule); a reconciliation report showing CUST_MASTER-to-SentryScreen record counts match but with no value-level checks; a 2026 incident note describing a DOB null spike after an OnboardLite release; and no interface specification for the vendor integration layer feeding SentryScreen."
+      ],
+      [
+        "earlier lineage map",
+        "None — first lineage map for this element; baseline"
+      ]
+    ]
+  },
+  "dq-rule-authoring.md": {
+    "scenario": "A data-quality rule author at Harborview Financial Group translates the screening quality requirements for two customer-master fields into testable rules, calibrated against a profiling run showing null and retired-code clusters.",
+    "fills": [
+      [
+        "what quality means for it",
+        "Two elements from Harborview Financial Group's CUST_MASTER, both feeding SentryScreen sanctions screening. (1) COUNTRY_OF_RESIDENCE — business definition: the two-letter country code of the customer's primary residence; consuming process: screening; quality means present, a member of the current approved country-code list, not a retired code, and consistent with the residential-address country. (2) DOB — business definition: the natural-person customer's date of birth; consuming process: screening; quality means present, a real calendar date, not a placeholder default, and plausible for a living customer (age between 18 and 120 at onboarding). Both are secondary match keys: a blank or wrong value suppresses or waves through a screening hit."
+      ],
+      [
+        "identifier schemes and whether they carry a check digit",
+        "COUNTRY_OF_RESIDENCE: two-letter code, validated against an internal approved country-code reference list (249 active entries; 6 codes retired in the last three years and no longer valid); no check digit. DOB: stored as DATE, format YYYY-MM-DD; a known legacy default of 1900-01-01 is used by an upstream system for unparseable dates. Identifier schemes: GOV_ID_NUMBER elsewhere carries a check digit, but neither element here does. Feed refresh: CUST_MASTER loads nightly and SentryScreen consumes the overnight extract."
+      ],
+      [
+        "format-violation rates",
+        "From a 2026-Q2 profiling run over roughly 940,000 customer records: COUNTRY_OF_RESIDENCE null rate 1.2%; approximately 0.4% of populated values are retired codes; approximately 0.1% are lowercase or three-character format violations. DOB null rate 0.3%; approximately 0.9% of records carry the 1900-01-01 default; format-violation rate below 0.05%; and a small cluster of legitimate 01-01 birth dates exists that must not be mistaken for placeholders."
+      ],
+      [
+        "current rules for these elements",
+        "None — no data-quality rules currently exist for these two elements; this authors the first rulebook. Baseline."
+      ],
+      [
+        "decisions from a governance forum",
+        "The CUST_MASTER data dictionary; the approved country-code reference list with retired-code flags; a governance-forum threshold decision from 2026-05 setting screening match-key completeness at a zero-tolerance hard gate; the 2026 data-quality incident log (the DOB null spike and the stale COUNTRY_OF_RESIDENCE mapping); and a 2,000-record sample extract for validation testing."
+      ]
+    ]
+  }
+}

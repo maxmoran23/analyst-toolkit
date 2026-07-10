@@ -174,6 +174,153 @@ A 0-100 composite heat score with a 5-tier label, a sentiment dashboard table, a
 
 *"Track sentiment across crypto majors over the last 8 hours; here is the prior read."* — the assistant returns a scored heat dashboard, an updated narrative tracker, and a named list of what would change the story.
 
+<!-- DEMO -->
+## Try it now — paste this, nothing to fill in
+
+The block below is the prompt above with every input already filled with **fictional demo data** — Harborview Financial Group, its counterparties, and every name, figure, and address in it are invented and synthetic. Paste it into any assistant (GitHub Copilot, Microsoft 365 Copilot, Claude, ChatGPT) exactly as it is, with no edits, and you get the complete deliverable this prompt produces — the full method, rubric, and output structure, at depth. It is here so you can judge the quality before you ever supply your own material. When you run it for real, use the shell prompt above and put your own inputs in its place.
+
+*Scenario: A 24-hour sentiment read across the crypto majors from supplied price, social, and news material, tracked against the prior read.*
+
+```text
+You are a market sentiment analyst. Produce a structured read of the prevailing
+market narrative for the market below — what the crowd believes, how stretched
+positioning looks, and what would change the story. This is market analysis and
+a structured read of sentiment, not investment advice and not a buy/sell call.
+
+MARKET / UNIVERSE: Crypto majors — Bitcoin (BTC), Ethereum (ETH), Solana (SOL), and a mid-cap token Halcyon (HLCN)
+LOOKBACK WINDOW: Last 24 hours
+PROVIDED MATERIAL (optional): Compiled market material for the window (illustrative figures):
+Price action — BTC 71,450 US dollars, +4.2% 24h, +9.1% 7d; ETH 3,880, +5.1% 24h, +12.4% 7d; SOL 182, +6.0% 24h, +15.2% 7d; HLCN 2.14, +11.8% 24h, +28.0% 7d. Breadth: all four majors up on the day (100%). Aggregate 24h move about +6.8%.
+Volume — total spot volume 1.7x the 20-day average; ETH volume 2.3x its 20-day average; HLCN volume 3.4x its recent average.
+Social and crowd — a social-sentiment gauge reads euphoric on ETH and HLCN; the most-discussed names are ETH and HLCN; retail forums show FOMO language and leverage-chasing on HLCN.
+News flow — spot-ETF net inflows reported strong for a third straight session; a large asset manager filed for an ETH staking product; one exchange announced an HLCN listing, a plausible driver of the HLCN move. No adverse macro prints landed in the window.
+Baselines used (illustrative): typical daily spot volume 0.8-1.4x average; HLCN normal 24h move band about plus-or-minus 6%.
+PRIOR READ (optional): PRIOR READ — Market Sentiment, Crypto majors, 2026-03-04 (last 24h, paste-back):
+Heat Score 61/100 (NEUTRAL), flat vs the prior read. Sentiment state GREED, stable. Regime MARKUP. Narratives: 'spot-ETF inflows' (gaining), 'rate-cut hopes' (stable), 'stablecoin-regulation overhang' (stable). BTC +1.1% 24h; breadth 60% up; volume 1.2x average. No [UNUSUAL] flags.
+
+## Preflight
+
+Before producing any output, scan the inputs above. If any required input is missing,
+ambiguous, or contradictory, STOP. Do not produce a partial draft and do not guess at
+the missing context. Ask the user once, in a single short message, with a numbered list
+of the specific clarifications you need (one item per line, no preamble or apology).
+Wait for the user's reply before continuing. If the user replies "proceed with what you
+have", continue and clearly flag every gap in the Information Gaps section of the
+output.
+
+If all required inputs are present, proceed silently to the next section below — do not
+acknowledge this step in the output.
+
+## Gather
+
+Pull from three source categories. Prefer primary data; fall back to web search
+and clearly label any fallback.
+
+1. Price action — index/asset level, 24h and 7d change, trading volume vs. its
+   recent average, breadth (share of the universe up vs. down).
+2. Social / crowd signal — a social-sentiment source or, failing that, a search
+   of retail discussion forums: prevailing mood, most-discussed names, euphoria
+   or fear triggers.
+3. News flow — a news search over the lookback window: breaking developments,
+   macro events, anything moving the tape.
+
+If a source is unavailable, say so and work with what you have. Never present a
+search-derived estimate as a measured figure.
+
+## Analyze — the 5-dimension framework
+
+1. Sentiment State — map the evidence to one of: EXTREME_FEAR / FEAR / NEUTRAL /
+   GREED / EXTREME_GREED. Note direction (improving / deteriorating) vs. the prior read.
+2. Narrative Tracking — name the 2-3 dominant narratives driving the market (e.g.
+   "rate-cut hopes", "AI capex", "ETF flows"). Mark each gaining / stable / fading.
+3. Regime — classify as ACCUMULATION / MARKUP / DISTRIBUTION / MARKDOWN, using the
+   convergence or divergence of price, volume, and sentiment as the signal.
+4. Macro Context — the macro factors (policy, rates, the dollar, cross-asset
+   correlation, geopolitics) currently influencing this market.
+5. Crowd / Retail Sentiment — euphoria level, FOMO vs. capitulation signals,
+   what the crowd is most afraid of.
+
+## Composite Heat Score (0-100)
+
+Blend seven inputs into one number summarizing how hot the market is running:
+
+  Sentiment-index position .......... 20%   (extreme fear = cold, extreme greed = hot)
+  Lead-asset 24h move magnitude ..... 15%   (|change|: 0% = 0, >=10% = 100, linear)
+  Broad 24h move magnitude .......... 15%   (universe average, same mapping)
+  Volume vs. recent average ......... 15%   (0.5x = 0, 1x = 50, >=2x = 100)
+  Social sentiment intensity ........ 10%   (bearish = 0, neutral = 50, euphoric = 100)
+  Narrative momentum ................ 10%   (count of narratives gaining: 0 = 0, 1-2 = 33, 3-4 = 66, 5+ = 100)
+  Regime ............................ 15%   (MARKDOWN = 10, ACCUMULATION = 35, DISTRIBUTION = 50, MARKUP = 75)
+
+Heat = sum(input x weight). Map to a tier:
+
+  0-19  FROZEN      20-39 COOL        40-59 NEUTRAL
+  60-79 HOT         80-100 OVERHEATED
+
+Flag any tier transition vs. the prior read as a finding.
+
+## Baseline check
+
+Compare live readings to typical ranges for this market. Where a reading is well
+outside its normal band, flag it `[UNUSUAL]` with both the current value and the
+baseline (e.g. "[UNUSUAL] volume at 3.1x average — normal 0.8-1.4x"). State the
+baselines you used and whether they are measured or estimated.
+
+## Output format
+
+# Market Sentiment — Crypto majors — Bitcoin (BTC), Ethereum (ETH), Solana (SOL), and a mid-cap token Halcyon (HLCN) — [DATE]
+Heat Score: [n]/100 ([TIER]) [up/down vs. prior read]
+Window: [lookback] | Basis: public sources
+
+## Headline Read
+[2-3 sentences: the prevailing narrative, how stretched it is, the honest one-line take.]
+
+## Sentiment Dashboard
+| Dimension | Reading | vs. prior |
+|-----------|---------|-----------|
+[Sentiment state / Regime / Heat score / each as a row]
+
+## Dominant Narratives
+[2-3 narratives, each with a momentum mark and one line of why it is moving.]
+
+## Dimension Detail
+[Short paragraph per framework dimension. Cite the evidence behind each call.]
+
+## Baseline Flags
+[Any [UNUSUAL] readings, or "All readings within normal ranges."]
+
+## What Would Change This
+[The specific, observable events that would flip the regime or sentiment state —
+the catalysts to watch. Be concrete: name the level, the print, the event.]
+
+## Sources & Confidence
+[Source list. Overall confidence: HIGH / MODERATE / LOW, with reasoning.]
+
+## Rules
+- Runs standalone. If PROVIDED MATERIAL is supplied, treat it as the primary evidence
+  base — analyze exactly what is there and attribute findings to it; use any live
+  access only to supplement. No system or integration is required — only the
+  assistant and what you paste in. Anything not established from the material or a
+  cited source is an explicit gap.
+- If a step needs a capability you do not have (live web access, file or image
+  reading, a data feed) or a required input is missing, do not fail silently or
+  fabricate. State plainly what is missing, then either proceed with the available
+  material and mark the gap, or — if it blocks the analysis — ask for the specific
+  input needed as a short, labeled list, and continue once it is provided.
+- Cite a source for every material claim. Uncited claims are removed.
+- Separate observed (a printed number) from claimed (social/sentiment) from
+  projected (your read of where it goes) — never blur the three.
+- This is analysis, not advice. Do not issue buy/sell/hold recommendations or
+  price targets stated as forecasts.
+- "Quiet tape, narrative unchanged" is a valid, useful read — do not manufacture
+  drama to fill the report.
+- If a data source failed, say so and lower the confidence rating. Do not fill
+  the gap with inference.
+```
+<!-- /DEMO -->
+
+---
+
 <!-- RUNTIME_CONTRACT -->
 
 ---

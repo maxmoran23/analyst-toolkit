@@ -11,6 +11,7 @@ Two kinds of script live here: **builders** that maintain generated files (`stan
 | `append_renderer.py` | Idempotent script that re-builds every `standalone/*.md` by appending the renderer block (extracted from `methodology/report-templates.md` between `<!-- BEGIN_RENDERER_APPENDIX -->` and `<!-- END_RENDERER_APPENDIX -->` sentinels) plus a per-file customization block. Per-file customizations are inline in the script's `PER_FILE` dict. Safe to re-run — replaces the prior appendix in each file rather than duplicating it. |
 | `build_base.py` | Assembles the repo-root `BASE.md` (the single universal companion file) from the four `methodology/` sources — the three discipline files concatenated as Parts 1-3 with sibling links rewritten to in-file references, plus the sentinel-delimited renderer block as Part 4. `--check` mode rebuilds in memory and exits non-zero if `BASE.md` has drifted (CI gate). Never hand-edit `BASE.md`. |
 | `apply_runtime_contract.py` | Idempotently stamps every `prompts/<category>/*.md` with the two-file-rule contract: a `**Run-time needs**` row in the metadata table and a `<!-- RUNTIME_CONTRACT -->` footer. Re-run after adding or editing any prompt file. |
+| `build_demos.py` | Renders the paste-ready `## Try it now` demo onto every `prompts/<category>/*.md` — the prompt block with each `{{PLACEHOLDER}}` substituted for fictional demo values from `_tooling/demos/<category>.json`, so a reader can paste it with zero edits. The demo is *derived* from the prompt block, so it cannot drift from the method. `--check` re-derives and exits non-zero on drift or any prompt missing a demo entry (CI gate). Helper `demos/_placeholders.py <category>` lists a category's placeholders in order for authoring. |
 
 ### Validators (all are CI gates; all exit non-zero on violation)
 
@@ -34,6 +35,7 @@ python3 _tooling/validate_links.py
 python3 _tooling/validate_index.py
 python3 _tooling/validate_hygiene.py
 python3 _tooling/build_base.py --check
+python3 _tooling/build_demos.py --check
 ```
 
 The renderer content itself **lives in `methodology/report-templates.md`** (the 4th methodology file), not here. That file is the single source of truth — the script extracts its body between the sentinels and embeds that body into every standalone file.

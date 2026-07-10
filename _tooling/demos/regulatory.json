@@ -1,0 +1,127 @@
+{
+  "exam-response-pack.md": {
+    "scenario": "A prudential regulator's BSA/AML first-day letter lands at Harborview Financial Group, and the team needs it converted into a trackable response pack before any drafting begins.",
+    "fills": [
+      [
+        "examination request letter",
+        "FIRST-DAY LETTER — Safety-and-Soundness and BSA/AML Examination\nFrom: Office of the Prudential Examiner, State Banking Department (the 'Examination Team')\nTo: Harborview Financial Group — BSA Officer and Executive Response Coordinator\nReference: PE-2026-0417\nExamination scope: BSA/AML and OFAC sanctions compliance, including the firm's digital-asset activities\nExamination as-of date: 2026-02-28\n\nCover instructions: Provide every response electronically as a searchable PDF, indexed to the item numbers below. Where an item requests a period, the review period is 2025-01-01 through 2026-02-28 unless the item states otherwise. Label each file with its corresponding item number. Deliver all files to the Examiner-in-Charge through the secure portal by the dates set in the accompanying cover email. Requests for extension must be made in writing at least three business days before an item's due date.\n\nRequested items:\n1. The current BSA/AML program policy and the board minutes evidencing its most recent approval.\n2. The enterprise-wide BSA/AML risk-assessment methodology and the most recent completed risk assessment, including coverage of the digital-asset business line.\n3. A description of the transaction-monitoring system, the complete list of active detection scenarios with their thresholds, and evidence of the most recent scenario-tuning validation.\n4. A population of all SARs filed during the review period and, for a sample the Examination Team will select, the supporting investigation files.\n5. The sanctions-screening procedures, the list-management process, and evidence that the screening lists were current as of each month-end in the review period.\n6. The customer due-diligence and enhanced due-diligence procedures, and the beneficial-ownership collection process for legal-entity customers.\n7. For the digital-asset business: the customer-onboarding procedures, the wallet-screening and on-chain analytics approach, and the Travel Rule compliance process.\n8. Independent-testing (audit) reports covering BSA/AML for the two most recent cycles, with management's responses.\n9. The BSA training curriculum, the completion records for the review period, and the training provided to the board.\n10. An organization chart for the compliance function and the BSA Officer's designation letter and reporting line.\n11. A list of all new products or services launched in the review period and the compliance risk assessment performed for each.\n12. Any internal or regulatory findings, corrective-action plans, and their current status."
+      ],
+      [
+        "prudential regulator",
+        "Prudential banking regulator — a state banking department's safety-and-soundness and BSA/AML examination team. Formal supervisory tone; the responses are on the record and may be relied on in the examination report."
+      ],
+      [
+        "due date",
+        "Global response deadline: 2026-04-10. Rolling per-item deadlines set in the cover email: items 1, 2, 8, and 10 (governance and program documents) are due 2026-03-20; items 3, 5, 6, and 7 are due 2026-03-27; items 4, 9, 11, and 12 are due 2026-04-10. The SAR-sample supporting files under item 4 are due five business days after the Examination Team communicates its sample selection."
+      ],
+      [
+        "on hand",
+        "Available on hand (rough inventory assembled by the response team):\n- BSA/AML Program Policy, version 6.2, board-approved 2025-04-18; board minutes on file.\n- Enterprise BSA/AML Risk Assessment completed 2025-09-30; methodology document version 3.0. The digital-asset business line was added mid-year and is covered in an appendix, not integrated into the main assessment.\n- Transaction-monitoring system: vendor platform in production; a current scenario inventory exists; the last documented scenario-tuning validation was dated 2024-11 (a 2025 validation was scoped but not completed).\n- SAR case-management system holds the full filed-SAR population and investigation files for the review period.\n- Sanctions screening: procedures document version 4.1; screening runs are logged, but month-end list-currency evidence has not been assembled into a single exhibit.\n- CDD/EDD procedures version 5.0; beneficial-ownership collection is documented.\n- Digital-asset onboarding procedures version 2.0; wallet screening uses a third-party analytics vendor; a Travel Rule procedure exists in draft and is not yet approved.\n- Independent testing: 2024 and 2025 audit reports with management responses on file.\n- Training: curriculum and completion records in the learning-management system; board training was delivered in 2025 but the attendance record is informal.\n- Compliance org chart current; BSA Officer designation letter on file.\n- New-product log exists; the compliance risk assessment was completed for two of the three products launched in the period."
+      ],
+      [
+        "prior exam findings",
+        "Prior examination (2024 cycle) issued two Matters Requiring Attention: (1) transaction-monitoring scenario coverage and tuning documentation were insufficient; and (2) the digital-asset business line was not integrated into the enterprise risk assessment. In its 2024 response, management committed to complete a monitoring-scenario validation by Q4 2025 and to integrate the digital-asset line into the 2025 enterprise risk assessment. The current inventory shows the validation was not completed and the digital-asset coverage remains an appendix — both prior commitments are only partially met. The response must address this history directly rather than restate the original commitment, because the Examination Team will test consistency against the 2024 response."
+      ]
+    ]
+  },
+  "geopolitical-risk-monitor.md": {
+    "scenario": "Harborview's quarterly jurisdictional risk read across the comprehensively-sanctioned cluster plus two emerging markets its correspondent-banking desk is reviewing for appetite.",
+    "fills": [
+      [
+        "list of countries",
+        "Iran, North Korea, Russia, Venezuela, Myanmar (the comprehensively- or heavily-sanctioned cluster Harborview screens every quarter), plus Nigeria and Vietnam — two emerging markets the correspondent-banking desk is reviewing for risk appetite."
+      ],
+      [
+        "why this is being run",
+        "Sanctions-exposure mapping and country-risk appetite. The correspondent-banking desk is deciding whether to open or maintain relationships that touch the two emerging markets, and compliance maintains the quarterly read on the sanctioned cluster for exposure monitoring."
+      ],
+      [
+        "DATE",
+        "2026-03-05"
+      ],
+      [
+        "task- or entity-specific data",
+        "Analyst-compiled source notes (public frameworks named as methodology; the specific index figures below are illustrative for this exercise and should be verified against primary sources before use):\n- Iran: subject to comprehensive US sanctions; FATF call-for-action (high-risk) jurisdiction; illustrative Basel AML Index 8.1/10. Documented oil-revenue and front-company evasion typologies. Two new OFAC designations in the trailing 90 days targeting shipping intermediaries.\n- North Korea: comprehensive UN and US sanctions; FATF call-for-action; illustrative Basel AML Index 8.4/10. Active state-linked virtual-asset theft and laundering typologies; multiple advisories in the period on IT-worker revenue schemes.\n- Russia: broad sectoral and targeted sanctions across US, EU, and UK regimes; FATF membership suspended; illustrative Basel AML Index 6.8/10. Sanctions-evasion via third-country intermediaries and trade mis-invoicing; sustained enforcement pressure, with five or more actions touching the jurisdiction in the period.\n- Venezuela: targeted and sectoral sanctions (oil sector); not on the FATF call-for-action list; illustrative Basel AML Index 7.2/10. Gold- and oil-linked evasion typologies. One notable designation in the period.\n- Myanmar: FATF call-for-action (returned to the high-risk list); targeted sanctions on military-linked entities; illustrative Basel AML Index 7.9/10. Active internal armed conflict since 2021; trade-based laundering and jade-sector typologies.\n- Nigeria: FATF grey-list (increased-monitoring) jurisdiction working an action plan; no comprehensive sanctions; illustrative Basel AML Index 6.9/10. Fraud and virtual-asset-linked laundering typologies; AML regime reforms in progress.\n- Vietnam: FATF grey-list (increased-monitoring); no comprehensive sanctions; illustrative Basel AML Index 6.2/10. Trade-based laundering and casino-linked flows; supervision strengthening but still maturing.\nConflict context for the period: active internal armed conflict in Myanmar; Russia engaged in an ongoing external war; the remaining jurisdictions without active internal armed conflict as compiled here."
+      ],
+      [
+        "last run's table",
+        "Prior run — Geopolitical Risk Monitor, 2026-02-05 (paste-back of the last table):\n| Jurisdiction | JRI | Tier |\n| Iran | 91 | PROHIBITED |\n| North Korea | 95 | PROHIBITED |\n| Russia | 82 | HIGH |\n| Venezuela | 74 | HIGH |\n| Myanmar | 78 | HIGH |\n| Nigeria | 58 | ELEVATED |\n| Vietnam | 49 | STANDARD+ |\nNote: Myanmar read 71 in the run before last; the 2026-02-05 value of 78 reflected its return to the FATF call-for-action list. Weighting used in the prior run was the default sanctions-led profile."
+      ]
+    ]
+  },
+  "obligation-extraction.md": {
+    "scenario": "Extracting the obligation register from an illustrative synthetic digital-asset transmittal-recordkeeping final rule, read from the perspective of a registered digital-asset exchange.",
+    "fills": [
+      [
+        "regulation / rule / supervisory guidance",
+        "ILLUSTRATIVE EXCERPT — synthetic demonstration text. This is a fabricated rule written to exercise the extraction method. Its short title, section numbers, thresholds, and obligations are invented and must not be treated as, or attributed to, any real legal instrument.\n\nDIGITAL-ASSET TRANSMITTAL RECORDKEEPING AND TRANSMITTAL RULE (illustrative), cited herein as Part 1099, sections 1099.100 through 1099.700. Issued as a final rule by the financial-intelligence supervisor (illustrative).\n\nSection 1099.100 — Definitions. 'Covered institution' means a money services business that accepts or transmits convertible virtual currency. 'Covered transmittal' means a transfer of convertible virtual currency with a value equal to or greater than 1,000 US-dollar-equivalent. 'Originator information' means the name, physical address, and account or wallet identifier of the person initiating a covered transmittal.\n\nSection 1099.200 — Recordkeeping. (a) A covered institution shall create and retain a record of each covered transmittal it accepts, transmits, or receives. (b) Each record shall include the originator information, the beneficiary information where obtained, the transmittal amount, the date, and the virtual-currency type. (c) Records required under this section shall be retained for five years from the date of the transmittal and shall be made available to the supervisor, upon request, within five business days.\n\nSection 1099.300 — Transmittal of information (the 'travel' requirement). (a) A covered institution that transmits a covered transmittal to another financial institution shall include the originator information and any available beneficiary information in, or accompanying, the transmittal. (b) A covered institution that receives a covered transmittal shall obtain and retain the information transmitted under paragraph (a). (c) This section applies only where both institutions are covered institutions; transfers to or from an unhosted wallet are addressed in section 1099.400.\n\nSection 1099.400 — Unhosted-wallet transfers. For a covered transmittal to or from a wallet not administered by a financial institution and with a value equal to or greater than 3,000 US-dollar-equivalent, a covered institution shall collect and retain the name and physical address of its own customer and shall take reasonable measures to determine whether the counterparty wallet is associated with illicit activity. What constitutes 'reasonable measures' is not further defined in this Part.\n\nSection 1099.500 — Reporting. A covered institution shall file a report of any covered transmittal it knows, suspects, or has reason to suspect involves funds derived from illegal activity, in the form and within the timeframe required by the supervisor's general suspicious-activity reporting requirements.\n\nSection 1099.600 — Program expectations. A covered institution is expected to maintain policies and procedures reasonably designed to achieve compliance with this Part, and should test those procedures periodically. Independent testing of the program is a supervisory expectation.\n\nSection 1099.700 — Effective and compliance dates; consequences. (a) This Part is effective 90 days after publication. (b) The compliance date for sections 1099.300 and 1099.400 is 180 days after publication. (c) A violation of this Part may result in civil money penalties and other supervisory or enforcement action as provided by the supervisor's enabling statute."
+      ],
+      [
+        "final rule",
+        "Final rule — issued and in force (illustrative). Binding, not a proposal."
+      ],
+      [
+        "regulated party reading this",
+        "A digital-asset exchange registered as a money services business (a 'covered institution' under the illustrative rule), custodying and transmitting convertible virtual currency for retail and institutional customers."
+      ],
+      [
+        "publication date",
+        "Illustrative publication date 2026-01-15; effective date 2026-04-15 (90 days after publication); compliance date for the transmittal and unhosted-wallet sections 2026-07-14 (180 days after publication). Assessed as of 2026-03-05."
+      ]
+    ]
+  },
+  "policy-gap-analysis.md": {
+    "scenario": "A clause-level gap check of Harborview's digital-asset sanctions-screening policy against an illustrative synthetic sanctions-screening and blocking rule now in force.",
+    "fills": [
+      [
+        "regulation, rule, or guidance text",
+        "ILLUSTRATIVE EXCERPT — synthetic demonstration text, fabricated to exercise the gap-analysis method. The short title, section numbers, and obligations are invented and must not be attributed to any real instrument.\n\nSANCTIONS-SCREENING AND BLOCKING RULE (illustrative), cited as Part 501, sections 501.10 through 501.90. Applies to any covered financial institution, including one conducting digital-asset activity.\n\n501.10 — A covered institution shall screen every customer at onboarding, and every counterparty to a transaction it processes, against the current consolidated list of sanctioned persons and, for digital-asset activity, against the current list of designated blockchain addresses.\n\n501.20 — A covered institution shall re-screen its entire existing customer base against the consolidated list within 24 hours of any update to that list, and in all cases no less frequently than daily.\n\n501.30 — A covered institution shall block, and shall not process, any transaction in which a party or, for digital-asset activity, a wallet address matches a designated person or designated address, and shall report the blocked transaction to the sanctions authority within 10 business days.\n\n501.40 — A covered institution shall maintain a documented process for resolving potential matches (alert adjudication), including the standard for clearing a false positive and the evidence retained for each decision.\n\n501.50 — A covered institution shall screen against, at minimum, the sanctions authority's designated-persons list, the designated-address list, and any applicable foreign consolidated lists to which the institution is subject.\n\n501.60 — A covered institution shall retain records of each screening run, each match, and each adjudication decision for five years, and shall be able to demonstrate, for any date in that period, which list version was in effect.\n\n501.70 — A covered institution should apply risk-based enhanced screening to higher-risk customers and jurisdictions and is expected to review its screening configuration at least annually.\n\n501.80 — A covered institution shall designate an officer accountable for the screening program and shall provide role-appropriate training to staff who adjudicate alerts.\n\n501.90 — Effective and compliance dates: this Part is in force; the compliance date was 2026-01-01. Violations may result in civil penalties and enforcement action."
+      ],
+      [
+        "final rule in force",
+        "Final rule in force — the compliance date of 2026-01-01 has passed (illustrative)."
+      ],
+      [
+        "internal policy or procedure text",
+        "HARBORVIEW FINANCIAL GROUP — Digital-Asset Sanctions Screening Policy, version 3.1 (excerpt).\n\nSection A — Purpose and scope. This policy governs sanctions screening for Harborview's digital-asset custody and transfer business. It applies to customers of the digital-asset subsidiary.\n\nSection B — Customer screening. All new customers of the digital-asset subsidiary are screened against the sanctions authority's designated-persons list at onboarding. Screening results are recorded in the onboarding file.\n\nSection C — Ongoing screening. The existing customer base is re-screened against the designated-persons list on a monthly basis.\n\nSection D — Wallet screening. At onboarding, a customer's primary deposit wallet is screened using a third-party blockchain-analytics vendor. Transaction counterparties are screened where the analytics vendor returns a risk flag.\n\nSection E — Alert handling. Potential matches are reviewed by the sanctions team. A match that is cleared is documented with a short note in the case system.\n\nSection F — Blocking and reporting. Confirmed matches are blocked and escalated to the BSA Officer, who arranges reporting to the authority.\n\nSection G — Governance. The BSA Officer owns the sanctions program. Training is provided to compliance staff during annual BSA training.\n\nSection H — Records. Screening records are retained in the case system in accordance with the firm's records-retention schedule."
+      ],
+      [
+        "regulated party's type",
+        "Harborview Financial Group — a bank operating a digital-asset custody and transfer subsidiary (a DASP). In scope: retail and institutional digital-asset custody, deposits, withdrawals, and transfers. The traditional banking lines are out of scope for this analysis."
+      ],
+      [
+        "DATE",
+        "2026-03-05"
+      ]
+    ]
+  },
+  "regulatory-intelligence-scan.md": {
+    "scenario": "A weekly digital-asset and crypto-AML regulatory scan across US federal and EU, run against last week's briefing to deprioritize already-covered items.",
+    "fills": [
+      [
+        "digital assets",
+        "Digital-asset regulation and crypto AML/CFT"
+      ],
+      [
+        "US federal",
+        "US federal and EU"
+      ],
+      [
+        "last 7 days",
+        "Last 7 days (2026-02-28 through 2026-03-06)"
+      ],
+      [
+        "task- or entity-specific data",
+        "Analyst-compiled material for the window (illustrative synthetic items assembled for this exercise; figures and dates are for demonstration and should be verified against primary sources):\n1. Enforcement — A federal financial regulator announced a settlement with a digital-asset exchange over alleged BSA/AML program failures, including inadequate transaction monitoring; illustrative civil penalty of 42 million US dollars, with an undertaking to remediate the monitoring program within 12 months. Press release dated 2026-03-03.\n2. Rulemaking — A notice of proposed rulemaking on stablecoin reserve-disclosure standards was published for a 60-day comment period; comments due 2026-05-04. The proposal would require monthly attestation of reserve composition. Federal Register-style notice dated 2026-03-02.\n3. Guidance — A federal agency issued an interpretive statement clarifying that certain staking-as-a-service arrangements fall within existing custody expectations; no new binding obligation, effective immediately as an interpretation. Dated 2026-02-28.\n4. Legislation — In the EU, a technical standard implementing a MiCA-related provision on crypto-asset service provider governance advanced to its next procedural stage; expected application later in 2026. Standard-tracker entry dated 2026-03-04.\n5. Policy statement — A senior regulator's speech signaled increased supervisory focus on Travel Rule compliance for virtual-asset transfers over the coming examination cycle. Dated 2026-03-05. No new rule; a posture signal only.\n6. Deadline — A previously proposed recordkeeping rule's comment period closes 2026-03-18, within the next 30 days."
+      ],
+      [
+        "last briefing",
+        "Prior briefing — Regulatory Intelligence, Digital-asset regulation and crypto AML/CFT, US federal and EU, dated 2026-02-27 (paste-back):\n- Top Signal: rising enforcement tempo on exchange BSA/AML programs.\n- HIGH: proposed stablecoin reserve-disclosure rule expected imminently (now published — see item 2 this week).\n- MEDIUM: EU MiCA technical standard on crypto-asset service provider governance progressing (see item 4).\n- MEDIUM: agency staff remarks foreshadowing Travel Rule examination focus (see item 5).\nTracked matters: (a) exchange BSA/AML enforcement wave — ongoing; (b) stablecoin reserve-disclosure rulemaking — awaiting the proposed rule; (c) MiCA governance standard — in procedure."
+      ],
+      [
+        "TOPIC AREA",
+        "Digital-asset regulation and crypto AML/CFT"
+      ]
+    ]
+  }
+}

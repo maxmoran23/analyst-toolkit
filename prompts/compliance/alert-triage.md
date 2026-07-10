@@ -177,6 +177,149 @@ A single disposition, an alert summary, a profile-comparison section, a typology
 
 *"Triage a structuring alert on a retail customer — six cash deposits just under the reporting threshold in eight days; customer is a salaried teacher with two years of routine low-volume activity."* — the assistant compares the activity to the profile, finds no benign explanation that fits, and returns a REFER recommendation with a disposition memo.
 
+<!-- DEMO -->
+## Try it now — paste this, nothing to fill in
+
+The block below is the prompt above with every input already filled with **fictional demo data** — Harborview Financial Group, its counterparties, and every name, figure, and address in it are invented and synthetic. Paste it into any assistant (GitHub Copilot, Microsoft 365 Copilot, Claude, ChatGPT) exactly as it is, with no edits, and you get the complete deliverable this prompt produces — the full method, rubric, and output structure, at depth. It is here so you can judge the quality before you ever supply your own material. When you run it for real, use the shell prompt above and put your own inputs in its place.
+
+*Scenario: A Harborview analyst triages a structuring alert on a cash-intensive small-business account whose cash deposits jumped tenfold and swept straight out.*
+
+```text
+You are a transaction-monitoring analyst. Work the alert below to a defensible
+disposition. Compare the flagged activity against what is expected for this customer,
+test it against known financial-crime typologies, and recommend a disposition with a
+documented rationale. You decide whether the activity warrants escalation — you do not
+conclude that a crime occurred.
+
+ALERT DETAILS: Alert TM-2026-04471, fired 2026-05-04 by rule STR-03 (cash-structuring: multiple sub-CTR-threshold cash deposits by one customer within a rolling 10-day window). System-assigned severity HIGH (score 82/100). The rule looks back 10 business days and flags 3 or more cash deposits between $8,000 and $9,999 that aggregate above $25,000.
+CUSTOMER PROFILE & CONTEXT: Customer: Tidewater Auto Detailing LLC, a single-member LLC (member/manager Raymond Colter). Business: mobile car-detailing, opened at Harborview Financial Group 2024-02-11 (26-month relationship). Products: one business checking account (8840-21193) and a linked debit card; no lending. Expected activity at onboarding: monthly deposits $12,000-$20,000, a mix of card-settlement ACH from a payment processor plus modest cash, stated at roughly 30% cash. KYC risk rating: MEDIUM (cash-intensive small business). Prior alerts: one, TM-2025-31007 (2025-09, a cash-deposit spike) closed NO FURTHER ACTION as seasonal detailing demand. No SARs filed.
+FLAGGED TRANSACTIONS: Six cash deposits over 8 days, all in-branch, each below the $10,000 CTR threshold: 2026-04-24 $9,400 cash, Bayside Br 12; 2026-04-25 $9,150 cash, Bayside Br 12; 2026-04-28 $8,900 cash, Riverton Br 04; 2026-04-29 $9,600 cash, Bayside Br 12; 2026-05-01 $9,250 cash, Delmar Br 07; 2026-05-02 $8,750 cash, Riverton Br 04. Aggregate cash deposited: $55,050 over 8 calendar days across 3 branches; no single deposit generated a CTR. Same-window outbound: two ACH transfers to an external personal account at Meridian State Bank (ending 6620) of $27,000 on 2026-04-29 and $26,500 on 2026-05-02, totaling $53,500 moved out.
+EXPECTED-ACTIVITY BASELINE (optional): Trailing-12-month baseline: total monthly deposits averaged $16,300; the cash portion averaged $4,900/month (about 30%), typically 2-4 cash deposits per month in the $1,000-$3,500 range, all at the Bayside branch. Card-processor ACH inflow averaged $11,400/month. The customer has never previously deposited cash above $5,000 in a single transaction, never used the Riverton or Delmar branches, and outbound ACH to the Meridian State Bank personal account historically ran $2,000-$4,000 monthly as an owner's draw.
+PROVIDED MATERIAL (optional): KYC record on file (last refreshed 2025-02): NAICS 811192 (car washes); estimated annual revenue $190,000; 2 employees; single location at Bayside; onboarding source-of-cash narrative 'walk-in retail detailing, cash and card'. Teller branch note (2026-04-29): customer stated the cash was 'from a side landscaping job' when asked; no supporting invoices offered. Processor statement excerpt: card-settlement ACH for April 2026 was $10,980, in line with baseline, so card sales did not rise to explain a $55,050 cash surge. No CTRs on file for this customer in the trailing 24 months.
+
+If a needed input is missing, state the gap and how it limits the disposition — do not
+invent the missing facts.
+
+## Preflight
+
+Before producing any output, scan the inputs above. If any required input is missing,
+ambiguous, or contradictory, STOP. Do not produce a partial draft and do not guess at
+the missing context. Ask the user once, in a single short message, with a numbered list
+of the specific clarifications you need (one item per line, no preamble or apology).
+Wait for the user's reply before continuing. If the user replies "proceed with what you
+have", continue and clearly flag every gap in the Information Gaps section of the
+output.
+
+If all required inputs are present, proceed silently to the next section below — do not
+acknowledge this step in the output.
+
+## Method
+
+Work through five steps in order. Reaching a disposition before the activity is compared
+to the profile is not defensible.
+
+1. Restate the alert. In one or two sentences, state what fired and the specific
+   behavior that triggered it. Strip the noise; name the actual concern.
+
+2. Compare to expected activity. Hold the flagged transactions against the customer's
+   profile and baseline. Is the activity consistent with the customer's stated occupation
+   or business, account history, and expected volume and pattern — or does it deviate?
+   Quantify the deviation where possible (size, frequency, counterparty, geography,
+   timing). Distinguish "unusual for this customer" from "unusual in general".
+
+3. Test for a benign explanation. Identify the plausible legitimate explanations for the
+   activity and assess each. A documented benign explanation that fits the facts is a
+   valid basis to close — but it must fit; do not reach for it.
+
+4. Test against typologies. Check the pattern against known financial-crime typologies
+   (structuring, layering, funnel-account or pass-through behavior, trade-based
+   laundering, mule activity, rapid movement of funds, etc.). State which typologies the
+   pattern is and is not consistent with, and why.
+
+5. Reach a disposition. Weigh the factors that support a concern against those that
+   contradict it, and recommend a disposition. State the residual uncertainty.
+
+## Disposition & escalation rubric
+
+Recommend exactly one disposition:
+- CLOSE — NO FURTHER ACTION — activity is explained or consistent with the profile; the
+  benign explanation fits the facts. Document the explanation.
+- MONITOR — activity is not clearly suspicious but warrants a watch; specify the trigger
+  or review date that would re-open it.
+- ESCALATE FOR REVIEW — activity is unusual and not adequately explained; requires a
+  senior or investigative second look. Specify what the reviewer should examine.
+- REFER FOR SUSPICIOUS-ACTIVITY REPORTING — activity meets the threshold for a suspicious-
+  activity report referral; the pattern, the lack of a benign explanation, and the
+  typology fit together support it. The referral routes to the function that prepares
+  and decides on the regulatory filing — recommending a referral is not filing.
+
+Escalation drivers (any one pushes toward ESCALATE or REFER): a clear typology match with
+no benign explanation; activity with no apparent economic or lawful purpose; structuring
+around a reporting threshold; counterparties or geographies with known illicit exposure;
+the customer obstructing or giving inconsistent information; a repeating pattern across
+prior alerts.
+
+## Output format
+
+# Alert Triage — [alert ID or rule name] — [DATE]
+
+Disposition: [CLOSE / MONITOR / ESCALATE FOR REVIEW / REFER FOR SUSPICIOUS-ACTIVITY REPORTING]
+Customer: [identifier] | Alert reason: [one line]
+
+## Alert Summary
+[What fired and the behavior that triggered it. 1-2 sentences.]
+
+## Activity vs. Expected Profile
+[How the flagged transactions compare to the customer's profile and baseline. Quantify
+the deviation. State whether the activity is consistent or anomalous.]
+
+## Typology Assessment
+[Which typologies the pattern is or is not consistent with, and the reasoning.]
+
+## Factors Supporting a Concern
+- [Specific, evidence-based factor.]
+
+## Factors Contradicting a Concern
+- [Specific, evidence-based factor — including any benign explanation that fits.]
+
+## Disposition Rationale
+[Why the factors net to the recommended disposition. Name the residual uncertainty.]
+
+## Recommended Next Steps
+- [Concrete action — close and document / set a monitor trigger / the questions a
+  reviewer should pursue / what an investigation should obtain.]
+
+## Disposition Memo (audit-ready)
+[A self-contained 4-8 sentence narrative: what fired, what the activity was, how it
+compared to the profile, the typology read, and why the disposition was reached. Written
+so a reviewer or examiner can follow the decision without the rest of this document.]
+
+## Information Gaps
+[What was not available and how it limits confidence. "None material" is valid if true.]
+
+## Rules
+- Runs standalone. If PROVIDED MATERIAL is supplied, treat it as the primary evidence
+  base — analyze exactly what is there and attribute findings to it; use any live
+  access only to supplement. No system or integration is required — only the
+  assistant and what you paste in. Anything not established from the material or a
+  cited source is an explicit gap.
+- If a step needs a capability you do not have (live web access, file or image
+  reading, a data feed) or a required input is missing, do not fail silently or
+  fabricate. State plainly what is missing, then either proceed with the available
+  material and mark the gap, or — if it blocks the analysis — ask for the specific
+  input needed as a short, labeled list, and continue once it is provided.
+- Always present both supporting and contradicting factors. A one-sided triage is not credible.
+- A disposition to close requires a benign explanation that actually fits the facts —
+  not the absence of proof of wrongdoing.
+- Separate observed transaction facts from inference about intent. Never assert intent as fact.
+- Quantify deviations. "Large" and "frequent" are not defensible without numbers.
+- Recommending a referral is a routing decision, not a filing and not a finding of crime.
+- If a key input is missing, lower confidence and say so — do not fill the gap with assumption.
+```
+<!-- /DEMO -->
+
+---
+
 <!-- RUNTIME_CONTRACT -->
 
 ---

@@ -1,0 +1,135 @@
+{
+  "block-explorer-osint.md": {
+    "scenario": "An investigations analyst at Harborview Financial Group works a fraud complaint that names a customer deposit address; three public Etherscan captures are pasted in, with URLs and retrieval dates.",
+    "fills": [
+      [
+        "address or small set",
+        "0x7a3d9f4e2b8c1d6a5f0e9c2b4a7d8e1f3c6b0a9d"
+      ],
+      [
+        "name the chain explicitly",
+        "ETH and ERC-20 tokens on Ethereum (mainnet)"
+      ],
+      [
+        "why this address is being worked",
+        "Fraud complaint received 2026-02-03: a Harborview retail customer reports being induced to send funds to this address in an investment scam. Working it to size counterparty exposure and support a source-of-funds question before any SAR decision."
+      ],
+      [
+        "raw public block-explorer output",
+        "CAPTURE C1 — address summary\n  Explorer: Etherscan\n  URL: https://etherscan.io/address/0x7a3d9f4e2b8c1d6a5f0e9c2b4a7d8e1f3c6b0a9d\n  Retrieved: 2026-02-05 14:20 UTC\n  Covers: address overview page\n  ETH balance: 0.412 ETH\n  Transactions: 214\n  First txn: 2026-01-06\n  Last txn: 2026-01-31\n\nCAPTURE C2 — transaction list, page 1 of 2 (newest first)\n  Explorer: Etherscan\n  URL: https://etherscan.io/txs?a=0x7a3d9f4e2b8c1d6a5f0e9c2b4a7d8e1f3c6b0a9d&p=1\n  Retrieved: 2026-02-05 14:22 UTC\n  Covers: 2026-01-14 to 2026-01-31 (100 rows shown)\n  Representative rows (hash / time / from -> to / value ETH):\n    0xd41a...9c02  2026-01-31 09:12  0x7a3d...0a9d -> 0x51ee...77b3  38.50\n    0x8b73...1f45  2026-01-30 22:41  0x9c10...aa21 -> 0x7a3d...0a9d   4.90\n    0x2e6c...77de  2026-01-30 20:03  0x3f88...bb14 -> 0x7a3d...0a9d   5.10\n    0x77aa...0b19  2026-01-30 18:55  0xa204...cc55 -> 0x7a3d...0a9d   4.75\n    0x14fd...6a83  2026-01-29 11:20  0x7a3d...0a9d -> 0x51ee...77b3  14.20\n    0x9c02...3d71  2026-01-28 08:07  0xb631...dd70 -> 0x7a3d...0a9d   5.00\n    ... (94 further rows, same shape: many small inbound transfers from distinct senders, periodic large outbound to 0x51ee...77b3)\n\nCAPTURE C3 — transaction list, page 2 of 2 (newest first)\n  Explorer: Etherscan\n  URL: https://etherscan.io/txs?a=0x7a3d9f4e2b8c1d6a5f0e9c2b4a7d8e1f3c6b0a9d&p=2\n  Retrieved: 2026-02-05 14:24 UTC\n  Covers: 2026-01-06 to 2026-01-14 (114 rows shown)\n  Representative rows:\n    0x51bd...2c60  2026-01-13 16:40  0xc9a1...ee38 -> 0x7a3d...0a9d   4.60\n    0x6f33...9a12  2026-01-12 13:15  0x7a3d...0a9d -> 0x51ee...77b3  22.10\n    0x0d8e...44b7  2026-01-06 10:02  0xf7c2...1198 -> 0x7a3d...0a9d   5.25\n    ... (111 further rows, same fan-in / sweep-out shape)\n  NOTE: the ERC-20 token-transfer list for this address was NOT captured this session.\n  Etherscan's overview shows ~30 inbound token transfers of an unfamiliar token 'USDX-PROMO' that have not been pulled."
+      ],
+      [
+        "address labels",
+        "Sweep destination 0x51ee...77b3 carries a public Etherscan name-tag 'Meridian Digital Exchange: Hot Wallet 3' — single public label, not independently confirmed. No label held for any of the inbound senders. No watchlist extract available in-session."
+      ],
+      [
+        "beyond raw explorer output",
+        "Complaint intake note (2026-02-03): customer states they were directed to the address via a messaging-app 'account manager' promising 3%/week returns; sent 5.0 ETH on 2026-01-28. No prior on-chain annex or trace exists for this address."
+      ]
+    ]
+  },
+  "defi-protocol-risk.md": {
+    "scenario": "A digital-asset counterparty team at Harborview screens a mid-cap lending protocol before allowing a client to route treasury yield through it.",
+    "fills": [
+      [
+        "protocol name",
+        "Aureus Lend (token ticker: AUR) — a cross-margin lending market on Ethereum and Arbitrum"
+      ],
+      [
+        "why this is being run",
+        "Counterparty/exposure review: a Harborview managed-account client has proposed deploying up to $6M of idle stablecoin into this protocol for yield; we need a documented risk read before approving the venue."
+      ],
+      [
+        "DATE",
+        "2026-02-05"
+      ],
+      [
+        "protocol-specific data",
+        "Self-reported TVL (protocol dashboard, 2026-02-04): $842M across ETH + Arbitrum.\nAdvertised APY on USDC supply: 9.4%.\nAudits: two listed — 'Trailhead Security 2025-06' (2 medium, 0 critical, all marked resolved) and 'a community review 2025-09' (no report link).\nAdmin keys: docs disclose a 3-of-5 multisig controlling the upgrade proxy and the interest-rate parameters; signer identities not published; no timelock mentioned.\nGovernance: AUR token votes; docs note top 4 wallets hold ~61% of circulating AUR.\nIncident history: one 2025-10 oracle-lag event that briefly mispriced an illiquid collateral asset; protocol says no funds lost, covered from a reserve.\nOracle: single external price feed for most markets; a fallback is 'planned'.\nInsurance/backstop: a reserve fund reported at ~1.1% of TVL."
+      ],
+      [
+        "last assessment",
+        "None — this is the first assessment of Aureus Lend. No prior TVL figure or score to diff against; treat as a baseline."
+      ]
+    ]
+  },
+  "fund-flow-tracing.md": {
+    "scenario": "Following the block-explorer annex, a Harborview investigator traces the swept funds forward from the scam deposit address toward a cash-out point.",
+    "fills": [
+      [
+        "blockchain address, or a transaction hash",
+        "0x7a3d9f4e2b8c1d6a5f0e9c2b4a7d8e1f3c6b0a9d (the scam deposit address from the fraud complaint)"
+      ],
+      [
+        "name the chain explicitly",
+        "ETH on Ethereum (mainnet)"
+      ],
+      [
+        "trace stolen funds forward",
+        "Trace the funds forward from the deposit address to their apparent cash-out or off-ramp point, to support a recall/notification decision and size how much reached a regulated venue."
+      ],
+      [
+        "forward (where funds went)",
+        "Forward (where the funds went), up to 5 hops, stopping at the first exchange-attributed or clearly custodial address."
+      ],
+      [
+        "anything already known",
+        "The deposit address received many small inbound transfers and periodically swept ~75 ETH total to 0x51ee...77b3, which carries a single-source public tag 'Meridian Digital Exchange: Hot Wallet 3'. The customer's own 5.0 ETH entered on 2026-01-28."
+      ],
+      [
+        "trace-specific data",
+        "Hop-1 export (Etherscan, retrieved 2026-02-05):\n  0x7a3d...0a9d -> 0x51ee...77b3  38.50 ETH  2026-01-31 09:12  (tx 0xd41a...9c02)\n  0x7a3d...0a9d -> 0x51ee...77b3  14.20 ETH  2026-01-29 11:20  (tx 0x14fd...6a83)\n  0x7a3d...0a9d -> 0x51ee...77b3  22.10 ETH  2026-01-12 13:15  (tx 0x6f33...9a12)\nHop-2 export for 0x51ee...77b3 (partial, 2026-02-05): high-volume address, hundreds of daily txns, many small outbound to distinct addresses — consistent with a shared hot wallet. No single onward transfer isolates the traced funds.\nLabel source for 0x51ee...77b3: one public Etherscan name-tag only; not independently confirmed."
+      ]
+    ]
+  },
+  "onchain-sanctions-monitor.md": {
+    "scenario": "Harborview's crypto compliance desk runs its weekly watchlist screen over a set of customer-linked addresses, one of which recently interacted with a mixer-adjacent address.",
+    "fills": [
+      [
+        "addresses or tx hashes, with chain",
+        "ETH / Ethereum mainnet:\n  A1: 0x1c9b0af7d2e63845a10fb92c4d7e58a3b6c0f19d (customer withdrawal address)\n  A2: 0x88de41a05b7c2f9e6a13d0c47b9e2f5a8c1d6e30 (customer deposit address)\n  A3: 0x4f7a2e9c1b8d05a63f4e7c209d1a8b3e6c5f0724 (counterparty flagged by an alert)"
+      ],
+      [
+        "why this is being screened",
+        "Scheduled weekly watchlist monitoring of customer-linked addresses, plus an alert-triage add-on for A3, which an internal rule flagged for one-hop proximity to a high-risk service."
+      ],
+      [
+        "DATE",
+        "2026-02-05"
+      ],
+      [
+        "address-specific data",
+        "Etherscan exports (retrieved 2026-02-05):\n  A1: 41 txns, funded from a major exchange, small regular outbound; nothing notable.\n  A2: 12 txns, receives from A1 and two unknown addresses; low volume.\n  A3: 260 txns; among them one 2026-01-27 transfer of 9.8 ETH TO 0xe0b2...aa41, an address a public list-tracker labels 'Tornado-adjacent relayer' (single source). A3 also sent 3 transfers to 0x51ee...77b3 ('Meridian Digital Exchange: Hot Wallet 3', single public tag).\n  No address here appears on any OFAC-designated address list available in-session; state that the designated-address list was NOT provided and must be checked against the authoritative source."
+      ],
+      [
+        "last screen",
+        "Last week's screen (2026-01-29) rated A1 and A2 LOW and did not include A3. No prior volume baseline exists for A3."
+      ]
+    ]
+  },
+  "token-compliance-screen.md": {
+    "scenario": "A listings/treasury review at Harborview screens an emerging token a client wants exposure to, before any custody or settlement decision.",
+    "fills": [
+      [
+        "token name / ticker",
+        "Nimbus (ticker: NMB) — ERC-20 on Ethereum, contract 0x2b7f4a9c0e13d685a2f9c4b70d1e6a3c8f05b921 (per the project site)"
+      ],
+      [
+        "why this is being run",
+        "Emerging-token assessment: a Harborview client has requested the ability to hold and settle NMB; the desk needs a documented compliance and integrity read before onboarding the asset."
+      ],
+      [
+        "DATE",
+        "2026-02-05"
+      ],
+      [
+        "token-specific data",
+        "Project site claims (2026-02-04): 'audited, fair-launch, 1B supply'.\nOn-chain holder distribution (Etherscan token page, retrieved 2026-02-05): top 10 holders hold ~74% of supply; the top holder (~28%) is an unlabeled wallet that received its balance from the deployer at genesis and has not moved it.\nLiquidity: a single DEX pool (~$1.2M) paired against a stablecoin; no lock reported on the LP position.\nTeam/funding: pseudonymous team; a 'seed round' mentioned with no named investors.\nAudit: a PDF is linked but shows no auditor letterhead and lists no findings; provenance unclear.\nContract: verified source on Etherscan; includes an owner-only function 'setFeeExempt' and a mintable path guarded by an owner address (the deployer)."
+      ],
+      [
+        "last screen",
+        "None — first screen of NMB. No prior score to diff against; baseline."
+      ]
+    ]
+  }
+}

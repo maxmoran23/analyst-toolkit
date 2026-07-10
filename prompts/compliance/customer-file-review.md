@@ -220,6 +220,185 @@ A two-line verdict header (file defensibility + rating challenge), a status-code
 
 *"Review this periodic-review file for a digital-asset business rated High; here is the profile, document inventory, screening output, and a 12-month activity summary."* — the assistant returns a checklist with two MISSING items, an unexplained geography variance, a SUPPORTED rating verdict, a four-row deficiency register (one HIGH, three MEDIUM), and five remediation actions.
 
+<!-- DEMO -->
+## Try it now — paste this, nothing to fill in
+
+The block below is the prompt above with every input already filled with **fictional demo data** — Harborview Financial Group, its counterparties, and every name, figure, and address in it are invented and synthetic. Paste it into any assistant (GitHub Copilot, Microsoft 365 Copilot, Claude, ChatGPT) exactly as it is, with no edits, and you get the complete deliverable this prompt produces — the full method, rubric, and output structure, at depth. It is here so you can judge the quality before you ever supply your own material. When you run it for real, use the shell prompt above and put your own inputs in its place.
+
+*Scenario: A Harborview file reviewer runs the annual periodic review of a High-rated digital-asset MSB whose volume ran double the expected band and whose key documents have gone stale.*
+
+```text
+You are a customer-file reviewer at a financial institution. Review the customer file
+described below for completeness and risk-rating defensibility. You are testing the
+file, not the customer: the question is whether the documentation on hand supports the
+profile, the activity, and the assigned risk rating — and what must be fixed if it
+does not.
+
+CUSTOMER / COUNTERPARTY: Northlight Digital Markets LLC (customer ID HFG-CUS-55219)
+CUSTOMER TYPE: Digital-asset business - a US-registered money-services business operating a retail crypto brokerage and hosted-wallet service.
+ASSIGNED RISK RATING: High, on a Low / Medium / High scale.
+REVIEW TRIGGER: Periodic review (annual cycle for High-rated customers).
+FILE CONTENTS: Customer profile: Northlight Digital Markets LLC, a Delaware LLC formed 2022-06 with in-state principal place of business; two beneficial owners on file (Priya Nandakumar 55%, Owen Castellanos 30%) with 15% in an employee option pool (no other natural person above 25%). Stated purpose: retail crypto brokerage plus hosted wallets for US retail customers. Expected activity at onboarding: monthly fiat on-ramp $4M-$7M via ACH and wire, crypto withdrawals to customer self-hosted wallets, no third-party payments. Documentation inventory: certificate of formation (2022-06) PRESENT; FinCEN MSB registration PRESENT (registered 2022-08, last renewed 2024-01); state money-transmitter licenses PRESENT for 3 states, with applications 'pending' for 2 additional states where it now operates; beneficial-ownership certification PRESENT dated 2022-06 (not refreshed since); identity verification for both beneficial owners PRESENT; AML program document PRESENT (2022) with the most recent independent AML test report dated 2023-03 (none since); source-of-funds / expected-flow documentation PRESENT at onboarding. Screening results: sanctions and PEP screen on the entity and both owners run 2024-02, all clear; adverse-media screen 2024-02 clear; no screening of the entity's own customers referenced. Actual activity (trailing 12 months, from the monitoring summary): monthly fiat on-ramp averaged $11.8M (range $9M-$15M), materially above the $4M-$7M expected band; about 18% of outbound value went to two overseas exchange counterparties not in the onboarding profile; three monitoring alerts in the period, all closed no-action; observed flows include EU and one high-risk-jurisdiction exchange despite a US-only onboarding profile. Prior review conclusion (2024-02): rating affirmed High, documentation deemed 'adequate', noted 'volume trending up, revisit at next cycle'.
+INSTITUTION STANDARDS (optional): None provided - apply the generic baseline in this prompt and flag the use of generic standards as an assumption. Assume High-rated customers are reviewed annually and any document older than 12 months is treated as PRESENT-BUT-STALE.
+
+## Preflight
+
+Before producing any output, scan the inputs above. If any required input is missing,
+ambiguous, or contradictory, STOP. Do not produce a partial draft and do not guess at
+the missing context. Ask the user once, in a single short message, with a numbered list
+of the specific clarifications you need (one item per line, no preamble or apology).
+Wait for the user's reply before continuing. If the user replies "proceed with what you
+have", continue and clearly flag every gap in the Information Gaps section of the
+output.
+
+If all required inputs are present, proceed silently to the next section below — do not
+acknowledge this step in the output.
+
+## Method
+
+Work through five tests in order. Review only what is in the file — a document the
+file does not contain is a deficiency to record, not a fact to assume.
+
+1. Documentation completeness. Build the expected-documentation checklist for the
+   stated CUSTOMER TYPE, then mark each item PRESENT / PRESENT-BUT-STALE /
+   MISSING against the file. If INSTITUTION STANDARDS were supplied, use them as
+   the checklist; otherwise apply this generic baseline:
+   - All types: identity verification, address/registration verification, stated
+     purpose of relationship, expected activity profile (products, volumes,
+     geographies, counterparty types), screening evidence, risk-rating rationale.
+   - Legal entities, add: formation documents, ownership structure to the natural
+     persons who ultimately own or control the entity, identification of those
+     persons, authorized signers, nature-of-business evidence.
+   - Higher-risk types (money-services businesses, digital-asset businesses,
+     trusts/foundations, non-profits), add: licensing/registration status, source
+     of funds and source of wealth support, expected funding flows, and — where the
+     customer is itself an intermediary — evidence of its own compliance program.
+   A document is PRESENT-BUT-STALE if it predates the institution's refresh cycle
+   (or, absent a stated cycle, is older than the customer's last periodic review).
+
+2. Expected-vs-actual activity. Compare the expected activity profile on file
+   against the actual activity supplied. Test four dimensions: volume, value,
+   geography, and counterparty/product type. For each, state EXPECTED, OBSERVED,
+   and a verdict: CONSISTENT / EXPLAINED VARIANCE (file documents the reason) /
+   UNEXPLAINED VARIANCE. If no actual activity data was supplied, record that the
+   test could not be performed — do not infer activity.
+
+3. Screening adequacy. Assess the screening evidence on four points: coverage
+   (customer, and for entities the owners/controllers and signers), lists screened
+   (sanctions, watchlists, PEP status, adverse media), recency (when last run,
+   against the refresh cycle), and disposition (are hits dispositioned in writing
+   with reasoning, or merely marked cleared?). An undispositioned hit is always a
+   deficiency, regardless of how likely a false positive it appears.
+
+4. Risk-rating challenge. Test the ASSIGNED RISK RATING against the evidence in the
+   file, not against intuition. Identify the rating drivers the file documents
+   (customer type, geography, products, ownership transparency, activity pattern,
+   screening results) and decide:
+   - SUPPORTED — the documented drivers justify the rating.
+   - NOT SUPPORTED — UNDERSTATED — documented drivers point to a higher rating;
+     name the specific drivers.
+   - NOT SUPPORTED — OVERSTATED — the file shows a lower-risk profile than the
+     rating implies; name what is absent.
+   - INDETERMINATE — the file is too incomplete to test the rating; the
+     completeness deficiencies must be cured first.
+   A rating can be directionally right and still NOT SUPPORTED if the rationale on
+   file does not document why — the test is defensibility, not correctness.
+
+5. Deficiency consolidation. Convert every failed test into a deficiency with a
+   severity from the rubric below, then derive remediation actions. One deficiency
+   may generate multiple actions; every action traces to a deficiency.
+
+## Severity rubric
+
+Assign every deficiency exactly one severity:
+- CRITICAL — the file cannot support the relationship as it stands: no identity
+  verification, ownership unknown for an entity customer, an undispositioned
+  sanctions hit, or activity wholly inconsistent with the stated profile with no
+  explanation on file.
+- HIGH — the risk rating is untestable or unsupported: missing rating rationale,
+  stale or incomplete screening of owners/controllers, unexplained variance on two
+  or more activity dimensions, or missing source-of-funds support where the
+  baseline requires it.
+- MEDIUM — the file is weakened but the rating still holds: stale documents inside
+  a single refresh cycle, one unexplained variance dimension, or screening
+  dispositions that exist but lack written reasoning.
+- LOW — hygiene items: formatting, internal cross-reference errors, minor
+  inventory gaps that do not touch the rating or the risk picture.
+
+## Output format
+
+# Customer Risk File Review — [CUSTOMER / IDENTIFIER] — [DATE]
+
+File verdict: [DEFENSIBLE / DEFENSIBLE WITH REMEDIATION / NOT DEFENSIBLE]
+Rating challenge: [SUPPORTED / NOT SUPPORTED — UNDERSTATED / NOT SUPPORTED —
+OVERSTATED / INDETERMINATE]
+Customer type: [type] | Assigned rating: [rating] | Review trigger: [trigger]
+
+## Executive Summary
+[3-5 sentences: the state of the file, the rating verdict and why, and the headline
+remediation need.]
+
+## Documentation Checklist
+| # | Expected item | Status | Evidence in file / gap |
+|---|---------------|--------|------------------------|
+[One row per checklist item: PRESENT / PRESENT-BUT-STALE / MISSING.]
+
+## Expected vs. Actual Activity
+| Dimension | Expected | Observed | Verdict |
+|-----------|----------|----------|---------|
+[Volume, value, geography, counterparty/product rows. State if the test could not run.]
+
+## Screening Adequacy
+[Coverage, lists, recency, disposition — each assessed in 1-2 sentences with the
+evidence cited.]
+
+## Risk-Rating Challenge
+[The documented rating drivers, the verdict from Method step 4, and the specific
+evidence behind it.]
+
+## Deficiency Register
+| # | Severity | Deficiency | Test failed | Evidence |
+|---|----------|------------|-------------|----------|
+[Ordered CRITICAL first. "No deficiencies noted" is a valid register.]
+
+## Remediation Actions
+| # | Action | Cures deficiency # | Suggested priority |
+|---|--------|--------------------|--------------------|
+[Concrete, assignable actions. Priority follows the severity of the deficiency cured.]
+
+## Information Gaps
+[What the review could not test because the input did not include it, and how that
+limits the verdict.]
+
+## Confidence
+[HIGH / MODERATE / LOW — one line of reasoning tied to input completeness.]
+
+## Rules
+- Runs standalone. The FILE CONTENTS supplied are the entire evidence base — review
+  exactly what is there and attribute every finding to it. No system or integration
+  is required — only the assistant and what you paste in.
+- If a step needs a capability you do not have (live web access, file or image
+  reading, a data feed) or a required input is missing, do not fail silently or
+  fabricate. State plainly what is missing, then either proceed with the available
+  material and mark the gap, or — if it blocks the analysis — ask for the specific
+  input needed as a short, labeled list, and continue once it is provided.
+- Every material claim carries a source — a cited element of the file contents — or
+  is labeled as an assumption.
+- Review the file, do not re-investigate the customer. External research is out of
+  scope; if the file's screening looks inadequate, the finding is "re-screen", not
+  a fresh screen performed here.
+- A missing document is a deficiency, never an inferred fact. Do not assume a
+  document exists because it usually would.
+- Do not manufacture findings. No empty sections — "no deficiencies noted" is a
+  valid result for the register, and a clean test is stated as clean.
+- The rating challenge tests defensibility, not intuition: an undocumented rationale
+  fails even if the rating is plausibly right.
+- Close with the confidence rating: HIGH / MODERATE / LOW with a one-line reason.
+```
+<!-- /DEMO -->
+
+---
+
 <!-- RUNTIME_CONTRACT -->
 
 ---

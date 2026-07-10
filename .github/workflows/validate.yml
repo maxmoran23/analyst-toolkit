@@ -59,6 +59,13 @@ jobs:
       - name: Standalone briefs current with the registries
         run: python3 _tooling/build_briefs.py --check
 
+      # Every prompt ships a paste-ready "Try it now" demo — the prompt block with
+      # fictional inputs already filled — so it can be evaluated with zero manual input.
+      # The demo is generated from the prompt block, so it cannot drift from the method;
+      # this proves the committed demo is what the current registry + prompt produce.
+      - name: Try-it-now demos current with the prompt blocks
+        run: python3 _tooling/build_demos.py --check
+
   evidence:
     # Attestation. The `frameworks` job below proves the safety gates still hold;
     # this job proves the COMMITTED evidence is what the current code produces.

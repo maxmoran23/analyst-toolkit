@@ -1,0 +1,179 @@
+{
+  "app-fraud-triage.md": {
+    "scenario": "A retired Harborview customer is deceived by a bank-impersonation safe-account scam into an $18,650 instant payment whose beneficiary shows fan-in mule indicators.",
+    "fills": [
+      [
+        "CASE_SUMMARY",
+        "Customer states: 'A man called saying he was from Harborview's fraud department. He gave a badge number and knew my name and the last four of my checking account. He said someone overseas was trying to drain my account and I had to move my money immediately into a protection account in my own name while they caught the person. He told me exactly what to type and said do not tell the branch because branch staff might be involved. He stayed on the line until the payment went through. About ninety minutes later I called the real number on my card and they told me nobody from the bank had called me.'"
+      ],
+      [
+        "PAYMENT_DETAILS",
+        "Rail: RTP instant push payment (irreversible on settlement). Amount: $18,650.00 USD. Executed 2026-03-04 14:12 ET via the mobile app. Beneficiary name entered: 'Ridgeway Consulting LLC'. Beneficiary account 40027715 at Meridian Retail Bank (external). Payee status: NEW payee, added 2026-03-04 13:58 ET — about 14 minutes before the payment. Reference field: 'PROTECTION HOLD'. Customer first moved $19,000 from savings into checking at 13:56 ET to fund the transfer."
+      ],
+      [
+        "CUSTOMER_PROFILE",
+        "Margaret Halloran, age 68, retired schoolteacher, lives alone. Retail checking + savings, customer since 2004 (22-year tenure). Typical activity: monthly outflow around $2,800, card and bill payments; largest prior single payment on record $4,100. No prior fraud reports, no prior disputes. Vulnerability factors: age; sole account holder; reported she was frightened and acted under sustained phone pressure."
+      ],
+      [
+        "BENEFICIARY_INFO",
+        "Ridgeway Consulting LLC account 40027715 at Meridian Retail Bank opened 2026-01-28 (about 5 weeks before the payment). Per Meridian's preliminary recall response, the account received multiple inbound instant credits from unrelated remitters over the prior 6 days and dispersed them same-day, leaving little residual balance. Two other institutions have already lodged recall requests against the same account. Confirmation-of-Payee at add-time returned CLOSE MATCH / NOT EXACT."
+      ],
+      [
+        "WARNINGS_SERVED",
+        "In-app new-payee scam interstitial displayed at 14:03 ET: 'Have you been told to move money to a safe or protection account? Banks never ask this. This is a scam.' Session log shows the customer tapped 'I understand, continue'. Confirmation-of-Payee returned CLOSE MATCH / NOT EXACT for 'Ridgeway Consulting LLC' vs the registered account name. Login was by biometric on the customer's known device; no additional step-up or human callback was triggered. The customer says the caller told her to ignore any on-screen warning."
+      ],
+      [
+        "RECOVERABILITY",
+        "Payment executed 2026-03-04 14:12 ET; reported by the customer 2026-03-04 15:40 ET (about 90 minutes later). Recall request lodged with Meridian Retail Bank 2026-03-04 16:05 ET. Meridian's preliminary response 2026-03-05 09:00 ET indicates approximately $3,200 remains and is frozen pending the formal recall; the remainder was swept same-day. Recall window technically open but the majority of funds appear already dispersed."
+      ],
+      [
+        "PROVIDED_MATERIAL",
+        "Three items.\n(1) Mobile-app session log (extract): 13:55 login OK (biometric), device 'MHalloran-iPhone', home IP; 13:56 internal transfer $19,000 savings to checking; 13:58 new payee 'Ridgeway Consulting LLC' acct 40027715 Meridian Retail Bank added, CoP returned CLOSE MATCH / NOT EXACT; 14:03 scam-warning interstitial shown, user tapped 'I understand, continue'; 14:12 RTP payment authorized $18,650.00 ref 'PROTECTION HOLD'; 15:40 inbound call from customer to card-servicing line, fraud reported.\n(2) Customer written statement (taken by phone agent 2026-03-04): 'He said do not tell the branch. I was frightened. I moved everything from savings first, then sent it. He stayed on the line until it went through.'\n(3) Meridian Retail Bank preliminary recall response (2026-03-05 09:00 ET): 'Beneficiary account opened 2026-01-28. Multiple inbound instant credits in the prior 6 days from unrelated remitters; funds largely dispersed same-day. Approximately $3,200 remains and is frozen pending your formal recall. Two other institutions have submitted recall requests against this account.'"
+      ],
+      [
+        "PRIOR_OUTPUT",
+        "None — first review; baseline. No earlier triage or related disposition exists for this case."
+      ],
+      [
+        "scam type",
+        "Safe-account bank-impersonation APP scam, $18,650.00 USD, disposition Confirmed scam"
+      ]
+    ]
+  },
+  "check-fraud-analysis.md": {
+    "scenario": "A counterfeit business check with a MICR-serial mismatch is mobile-deposited into a 19-day-old account and partly withdrawn against uncollected funds before the return arrives.",
+    "fills": [
+      [
+        "flagged item",
+        "Business check for $12,480.00 deposited via mobile remote deposit capture (RDC) into a 19-day-old personal checking account. Flagged by the deposit-review queue for a serial/MICR-line mismatch and for a same-morning cash withdrawal plus an external transfer taken against uncollected funds."
+      ],
+      [
+        "relationship age",
+        "Personal checking, opened 2026-02-16 (19 days old at deposit), single signer 'Dwayne Carter', declared occupation rideshare driver. Funded on open with a $50 cash deposit. Activity to date: three debit-card purchases between $18 and $240. No prior deposits of this size; no prior returns; no prior fraud flags (account too new to have meaningful history)."
+      ],
+      [
+        "MICR line",
+        "Face amount $12,480.00, dated 2026-03-05. Maker 'Brightline Logistics Inc.', drawn on Cordova National Bank, routing 114000093. Printed serial (top-right) reads 10472; MICR-line serial reads 09915 — the two do not match. Payee line 'Dwayne Carter'; memo 'contract advance'. Endorsement: typed mobile e-signature 'Dwayne Carter' (not handwritten). Channel: mobile RDC, 2026-03-05 21:47 ET. Reviewer notes inconsistent font weight in the amount field; amount-in-words 'Twelve thousand four hundred eighty' matches the numerals."
+      ],
+      [
+        "collected vs. uncollected",
+        "Standard availability applied: $275 next business day, remainder second business day. As of review, $9,000 made available on 2026-03-06, with $3,480 still on hold. Collected funds: $0 — the item has not cleared the drawee. Already withdrawn against uncollected funds: $6,500, comprising a $500 ATM cash withdrawal at 2026-03-06 08:10 ET and a $6,000 external instant transfer at 2026-03-06 08:22 ET to a new payee. Available but not yet withdrawn: $2,500."
+      ],
+      [
+        "deposit record",
+        "(1) Deposit record: mobile RDC 2026-03-05 21:47 ET, item $12,480.00, front/back images captured; auto-read MICR serial 09915, OCR of printed serial 10472 — mismatch flagged by the system.\n(2) Reviewer note (2026-03-06 08:05 ET): amount-field font weight inconsistent with surrounding print; payee line slightly off baseline; endorsement is a typed e-signature.\n(3) Account transaction list: 2026-02-16 open (+$50 cash); three debit-card purchases $18 to $240; 2026-03-05 21:47 RDC (+$12,480 memo posted); 2026-03-06 08:10 ATM (-$500); 2026-03-06 08:19 new payee 'QuickCash Peer' added; 2026-03-06 08:22 external instant transfer (-$6,000) to that payee.\n(4) Drawee advice received 2026-03-07 via the return channel: Cordova National Bank reports no check issued by 'Brightline Logistics Inc.' at serial 09915; item being returned 'refer to maker / suspected counterfeit'."
+      ],
+      [
+        "earlier analysis",
+        "None — first analysis of this item; baseline. No earlier disposition exists."
+      ],
+      [
+        "CASE / ITEM",
+        "RDC deposit — $12,480.00 check into a 19-day-old account"
+      ]
+    ]
+  },
+  "fraud-typology-mapping.md": {
+    "scenario": "A Harborview fraud engineer maps the money-mule-network typology on retail instant payments into implementable detection-rule logic.",
+    "fills": [
+      [
+        "NAMED_TYPOLOGY",
+        "Money mule network — receive-and-forward accounts funneling proceeds of authorized-push-payment scams to downstream collection accounts and crypto off-ramps"
+      ],
+      [
+        "demand-deposit accounts",
+        "Retail demand-deposit accounts with real-time P2P and instant push payments (RTP) at Harborview Financial Group, including mobile-app self-service onboarding and instant external transfers"
+      ],
+      [
+        "fields/tables",
+        "Available fields: transactions (txn_id, txn_amount, direction, channel, timestamp, counterparty_account, counterparty_bank), account (account_id, account_age_days, open_channel, declared_income, occupation_code), device/login (device_id, login_geo, ip_asn, session_id, biometric_flag), payee (payee_id, payee_age_days, payee_add_timestamp, cop_match_result), derived risk (inbound_sender_count_72h, outflow_ratio_sameday, residual_balance_min, velocity_out_24h). Not currently available: verified employer data, counterparty KYC at other banks, cross-institution scam-victim feed (external)."
+      ],
+      [
+        "rules engine vs ML",
+        "Hybrid. A real-time rules engine sits on the payment-authorization path with a sub-300ms latency budget; a nightly batch behavioral layer scores accounts on aggregated 24h/72h features. Alerts route to a case-management queue with a fraud SAR/STR referral workflow. No production ML scoring yet — deterministic rules only."
+      ],
+      [
+        "analyst capacity",
+        "Approximately 1.4M active retail DDAs; instant-payment volume around 340,000 transactions/day. Fraud-analyst capacity roughly 120 alerts/day. Loss-tolerance target under 6 bps of instant-payment value. False-positive fatigue is the binding constraint — single-signal velocity rules previously ran near 85% false positive."
+      ],
+      [
+        "internal typology notes",
+        "Internal fraud-typology note 'Mule Networks — Instant Payments' (excerpt). Mule accounts laundering scam proceeds typically show: (a) account age under 90 days at first mule activity; (b) inbound from 5+ unrelated personal remitters within 72h; (c) same-day out-movement exceeding 90% of inbound, residual near zero (flow-through); (d) outbound concentrated to 1-3 collection accounts and/or a crypto off-ramp; (e) a shared device_id or ip_asn across multiple otherwise unrelated customer accounts (herder control); (f) inbound remitter names later surfacing in APP-scam victim reports. Loss vector: remitting victims bear the loss under authorized-push-payment scams; the mule DDA is the pass-through. Regulatory hook: fraud SAR/STR consideration on the mule account. Tuning history: single-signal (velocity alone) about 85% FP; multi-signal (velocity plus shared-device OR victim-report match) cut FP materially."
+      ],
+      [
+        "earlier version of this mapping",
+        "None — first mapping for this typology; baseline. No earlier rule set to refine or re-tune."
+      ]
+    ]
+  },
+  "mule-account-review.md": {
+    "scenario": "A six-week-old retail account funnels funds from seven unrelated remitters to a collection account and a crypto off-ramp, flagged by a velocity rule and a victim-report match.",
+    "fills": [
+      [
+        "account identifier",
+        "Retail checking account 40 118 6642, personal, single signer; opened 2026-01-22 (about six weeks before the activity under review)."
+      ],
+      [
+        "declared income",
+        "Account holder 'Tobias Renner', age 24. Declared occupation 'student / part-time warehouse'; declared income about $2,100/month; source of funds 'wages'. Expected activity at onboarding: low-value card spend and occasional payroll credits."
+      ],
+      [
+        "transaction list",
+        "Review period 2026-03-02 to 2026-03-08. Opening balance 2026-03-02: $46.10.\nInbound instant credits (distinct, unrelated personal remitters):\n  2026-03-03 09:12  +$1,900.00  from 'Margaret H.'  (matches an APP victim report dated 2026-03-04)\n  2026-03-03 11:48  +$2,300.00  from 'D. Osei'\n  2026-03-03 14:22  +$1,450.00  from 'P. Nunes'\n  2026-03-04 08:31  +$2,450.00  from 'R. Whitcombe'\n  2026-03-04 10:05  +$980.00    from 'S. Iyer'\n  2026-03-05 09:40  +$2,100.00  from 'K. Barnes'\n  2026-03-06 08:55  +$1,750.00  from 'L. Faraday'\nOutbound same-day sweeps:\n  2026-03-03 12:20  -$3,900.00  to 'Ridgeway Consulting LLC' acct 40027715, Meridian Retail Bank (instant)\n  2026-03-04 09:10  -$3,200.00  to 'Ridgeway Consulting LLC' acct 40027715, Meridian Retail Bank (instant)\n  2026-03-04 11:02  -$1,180.00  to Vaultbridge Exchange (crypto on/off-ramp)\n  2026-03-05 10:15  -$2,050.00  to 'Ridgeway Consulting LLC' acct 40027715 (instant)\n  2026-03-06 09:20  -$1,700.00  to Vaultbridge Exchange (crypto)\nResidual balance 2026-03-08: $92.40. Total in about $12,930, total out about $12,030 within same/next day; peak retained balance under $300 at any point."
+      ],
+      [
+        "what triggered this review",
+        "Velocity/pass-through alert (rule TM-INSTANT-07: inbound from 5+ distinct senders within 72h with more than 90% same-day out-movement). Secondary trigger: one inbound remitter, 'Margaret H.', matches the name in an APP safe-account scam victim report the fraud team received 2026-03-04."
+      ],
+      [
+        "tied to known scams",
+        "Outbound beneficiary account 40027715 ('Ridgeway Consulting LLC', Meridian Retail Bank) appears on an internal watch note as a suspected downstream collection account tied to two prior scam recalls. Inbound remitter 'Margaret H.' matches a 2026-03-04 APP safe-account scam victim report. Vaultbridge Exchange deposit reference is customer-linked; no counterparty attribution available beyond the exchange name."
+      ],
+      [
+        "alert narratives",
+        "(1) Statement extract: as in the activity list above; balances reconcile.\n(2) KYC/onboarding note (2026-01-22): opened online; declared student / part-time warehouse; income about $2,100/month; source of funds 'wages'; ID verification passed; no adverse media at onboarding.\n(3) Device/login note: the account is accessed from device 'TR-Android-01'; the same device fingerprint and ip_asn also authenticated two other Harborview accounts (not this customer's) during the review window — a possible shared-device/herder fingerprint.\n(4) Customer contact attempt 2026-03-07: the customer stated by phone that he was 'processing payments for an online logistics job' and forwarding funds as instructed by an employer he had never met; he appeared confused about the source of the inbound funds (possible unwitting mule / victim)."
+      ],
+      [
+        "fund-flow trace",
+        "None — first review of this account; baseline. A separate APP victim triage exists for remitter 'Margaret H.' but has not been merged into this file."
+      ]
+    ]
+  },
+  "wire-fraud-disposition.md": {
+    "scenario": "A pending $247,900 commercial wire is flagged when a vendor's bank details change via an email from a lookalike domain.",
+    "fills": [
+      [
+        "value date",
+        "$247,900.00 USD outbound wire (Fedwire), value date 2026-03-09. Originator: Cascadia Millwork LLC (Harborview commercial DDA 20 554 9013). Beneficiary: 'Timberline Supply Co.', account 8841200734 at Pacific Crest Bank, Portland OR (US domestic). Reference: invoice INV-2026-3391."
+      ],
+      [
+        "why it was flagged",
+        "Fraud rule WIRE-BEN-CHG-02: the beneficiary bank and account differ from all three most recent payments to this vendor, which routed to Willamette Trust, account ending 5567. Analyst note: the change-of-bank instruction arrived by email only and was marked urgent."
+      ],
+      [
+        "prior beneficiaries",
+        "Commercial account, tenure 8 years. Regular monthly vendor wires between $80,000 and $260,000. Established payee 'Timberline Supply Co.' with 11 prior wires over three years, all to Willamette Trust account ending 5567 (last on 2026-01-15). No prior fraud flags. Accounts payable is handled by a two-person finance team."
+      ],
+      [
+        "how the payment was instructed",
+        "The payment itself was instructed through the online banking portal by an authorized Cascadia AP user; the session was normal — known device and IP, MFA satisfied. The underlying bank-change instruction came as an emailed PDF titled 'updated remittance details' from ap-remit@timberline-supply.co. The vendor's prior legitimate correspondence used the domain timberlinesupply.com; this new mail uses timberline-supply.co (added hyphen, different top-level domain)."
+      ],
+      [
+        "out-of-band (callback) verification",
+        "No out-of-band callback has been performed. The only phone number offered for confirmation is printed on the new emailed PDF itself (+1-503-555-0148). The vendor's known accounts-payable contact number on file, from the 2024 onboarding record, has not been called."
+      ],
+      [
+        "recall/return window",
+        "Status: pending — held in the wire-release queue, not yet transmitted. Same-day Fedwire cutoff is 17:00 ET; current time is 14:30 ET on 2026-03-09. Recall is not yet relevant because the item is unsent; the decision is hold vs. release."
+      ],
+      [
+        "email headers/thread",
+        "(1) Emailed 'updated remittance' (2026-03-08 16:41), From: 'Timberline Supply AP' <ap-remit@timberline-supply.co>, To: ap@cascadia-millwork.com, Subject: 'URGENT: updated banking for INV-2026-3391 — please action today'. Body: 'Our previous bank account is under audit. Effective immediately, remit all balances to our new account. Confirm on the number below once sent.' Attachment: 'Timberline_Remittance_Update.pdf' showing beneficiary Pacific Crest Bank, account 8841200734, and phone +1-503-555-0148. Note: prior legitimate vendor mail used timberlinesupply.com; this uses timberline-supply.co.\n(2) Invoice INV-2026-3391 (attached): $247,900.00, line items consistent with Timberline's usual millwork supply, but the layout differs slightly from prior invoices (logo position and font) and the remit-to bank block has been replaced.\n(3) Prior-beneficiary record: 11 wires 2023 to 2026 to Timberline Supply Co. at Willamette Trust, account ending 5567; last on 2026-01-15."
+      ],
+      [
+        "re-decision",
+        "None — first disposition of this payment; baseline."
+      ]
+    ]
+  }
+}

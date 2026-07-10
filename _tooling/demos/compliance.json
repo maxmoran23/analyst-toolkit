@@ -1,0 +1,378 @@
+{
+  "alert-triage.md": {
+    "scenario": "A Harborview analyst triages a structuring alert on a cash-intensive small-business account whose cash deposits jumped tenfold and swept straight out.",
+    "fills": [
+      [
+        "rule that fired",
+        "Alert TM-2026-04471, fired 2026-05-04 by rule STR-03 (cash-structuring: multiple sub-CTR-threshold cash deposits by one customer within a rolling 10-day window). System-assigned severity HIGH (score 82/100). The rule looks back 10 business days and flags 3 or more cash deposits between $8,000 and $9,999 that aggregate above $25,000."
+      ],
+      [
+        "occupation or business",
+        "Customer: Tidewater Auto Detailing LLC, a single-member LLC (member/manager Raymond Colter). Business: mobile car-detailing, opened at Harborview Financial Group 2024-02-11 (26-month relationship). Products: one business checking account (8840-21193) and a linked debit card; no lending. Expected activity at onboarding: monthly deposits $12,000-$20,000, a mix of card-settlement ACH from a payment processor plus modest cash, stated at roughly 30% cash. KYC risk rating: MEDIUM (cash-intensive small business). Prior alerts: one, TM-2025-31007 (2025-09, a cash-deposit spike) closed NO FURTHER ACTION as seasonal detailing demand. No SARs filed."
+      ],
+      [
+        "transactions in scope",
+        "Six cash deposits over 8 days, all in-branch, each below the $10,000 CTR threshold: 2026-04-24 $9,400 cash, Bayside Br 12; 2026-04-25 $9,150 cash, Bayside Br 12; 2026-04-28 $8,900 cash, Riverton Br 04; 2026-04-29 $9,600 cash, Bayside Br 12; 2026-05-01 $9,250 cash, Delmar Br 07; 2026-05-02 $8,750 cash, Riverton Br 04. Aggregate cash deposited: $55,050 over 8 calendar days across 3 branches; no single deposit generated a CTR. Same-window outbound: two ACH transfers to an external personal account at Meridian State Bank (ending 6620) of $27,000 on 2026-04-29 and $26,500 on 2026-05-02, totaling $53,500 moved out."
+      ],
+      [
+        "expected volume",
+        "Trailing-12-month baseline: total monthly deposits averaged $16,300; the cash portion averaged $4,900/month (about 30%), typically 2-4 cash deposits per month in the $1,000-$3,500 range, all at the Bayside branch. Card-processor ACH inflow averaged $11,400/month. The customer has never previously deposited cash above $5,000 in a single transaction, never used the Riverton or Delmar branches, and outbound ACH to the Meridian State Bank personal account historically ran $2,000-$4,000 monthly as an owner's draw."
+      ],
+      [
+        "case-specific data",
+        "KYC record on file (last refreshed 2025-02): NAICS 811192 (car washes); estimated annual revenue $190,000; 2 employees; single location at Bayside; onboarding source-of-cash narrative 'walk-in retail detailing, cash and card'. Teller branch note (2026-04-29): customer stated the cash was 'from a side landscaping job' when asked; no supporting invoices offered. Processor statement excerpt: card-settlement ACH for April 2026 was $10,980, in line with baseline, so card sales did not rise to explain a $55,050 cash surge. No CTRs on file for this customer in the trailing 24 months."
+      ]
+    ]
+  },
+  "case-qa-review.md": {
+    "scenario": "A Harborview second-line QA reviewer checks a closed funnel-account case whose exhibit log contains a known-scam beneficiary match the disposition never addressed.",
+    "fills": [
+      [
+        "completed investigation case file",
+        "CASE FILE HFG-2026-0417. Case type: transaction-monitoring escalation (funnel-account pattern). Subject: Meridian Trade Supply LLC (business checking 7731-05582), sole signer Dwyer Halloran. Investigator: analyst J. Reyes. Reviewed by: (blank). Scope: 2026-01-01 to 2026-03-31 activity following alert TM-2026-02210 (many-to-one inbound). Findings: 22 inbound ACH/wire credits from 19 distinct individuals with no apparent commercial tie to the customer, totaling $214,700 (Jan 6 - Mar 24); funds consolidated and forwarded within 24-72 hours in 6 outbound international wires totaling $208,000 to one overseas beneficiary, Calderon Freight Agentes SA; customer contacted 2026-03-30 and stated the inbound funds are 'advance payments from wholesale buyers', providing no invoices, contracts, bills of lading, or customs records; business registered as import/export wholesale, opened 2025-11, expected monthly throughput $40,000. Exhibit log: E1 alert narrative; E2 90-day transaction export; E3 customer call memo (2026-03-30); E4 counterparty screening result: beneficiary Calderon Freight Agentes SA returned a positive match against the institution's internal known-scam-beneficiary list (entry KSB-0091, added 2025-12), noted 'for reference'; E5 business registration extract. Disposition rationale: 'Inbound volume is high but consistent with a new wholesale import business ramping up; customer provided a plausible business explanation; no confirmed illicit source identified. Recommend CLOSE - no further action; continue monitoring.' Escalation decisions: none; no SAR referral made. Timeline: alert 2026-02-14, work started 2026-03-27, closed 2026-04-02. Narrative: a three-paragraph write-up restating the above and concluding the activity is 'unusual but explained', closing the case."
+      ],
+      [
+        "transaction-monitoring escalation",
+        "Transaction-monitoring escalation - a funnel-account / many-to-one inbound pattern with rapid international outbound consolidation."
+      ],
+      [
+        "standard the file is held to",
+        "Harborview Investigations QA Standard v4 (generic): every closed case must (a) document the source of inbound funds or state it is unverified; (b) resolve any positive counterparty screening match in the disposition rationale or record a documented decision not to escalate; (c) address whether a SAR referral is warranted where a funnel or rapid-movement pattern is present with no verified economic purpose; and (d) contain a dated escalation record. Under section 6.2, a positive match against the known-scam-beneficiary list is a mandatory-escalation trigger."
+      ],
+      [
+        "applicable SLA or deadline",
+        "Case opened (alert date) 2026-02-14; internal SLA for transaction-monitoring escalations is 45 calendar days from alert to closure; closed 2026-04-02 (48 days elapsed). No documented extension approval on file."
+      ],
+      [
+        "underlying exhibits the file",
+        "E4 (verbatim): 'Counterparty screen - beneficiary Calderon Freight Agentes SA - RESULT: MATCH - internal list Known-Scam-Beneficiary KSB-0091 (added 2025-12-08; basis: prior confirmed romance-scam cash-out account). Analyst note: flagged for reference.' E2 excerpt (inbound senders): 19 distinct individuals on personal accounts across 8 states; memo lines on 4 of them read 'consulting', 'loan repayment', and 'invoice 2231', with no matching invoice anywhere in the file. E3 (call memo): customer 'declined to send documentation, said records are with his accountant abroad'."
+      ],
+      [
+        "earlier QA review of this file",
+        "None - this is the first QA review of case HFG-2026-0417. There is no earlier QA output to run a remediation verification against; treat as a baseline review."
+      ]
+    ]
+  },
+  "customer-file-review.md": {
+    "scenario": "A Harborview file reviewer runs the annual periodic review of a High-rated digital-asset MSB whose volume ran double the expected band and whose key documents have gone stale.",
+    "fills": [
+      [
+        "name or anonymized identifier",
+        "Northlight Digital Markets LLC (customer ID HFG-CUS-55219)"
+      ],
+      [
+        "money-services business",
+        "Digital-asset business - a US-registered money-services business operating a retail crypto brokerage and hosted-wallet service."
+      ],
+      [
+        "rating scale in use",
+        "High, on a Low / Medium / High scale."
+      ],
+      [
+        "periodic review",
+        "Periodic review (annual cycle for High-rated customers)."
+      ],
+      [
+        "stated purpose and expected activity",
+        "Customer profile: Northlight Digital Markets LLC, a Delaware LLC formed 2022-06 with in-state principal place of business; two beneficial owners on file (Priya Nandakumar 55%, Owen Castellanos 30%) with 15% in an employee option pool (no other natural person above 25%). Stated purpose: retail crypto brokerage plus hosted wallets for US retail customers. Expected activity at onboarding: monthly fiat on-ramp $4M-$7M via ACH and wire, crypto withdrawals to customer self-hosted wallets, no third-party payments. Documentation inventory: certificate of formation (2022-06) PRESENT; FinCEN MSB registration PRESENT (registered 2022-08, last renewed 2024-01); state money-transmitter licenses PRESENT for 3 states, with applications 'pending' for 2 additional states where it now operates; beneficial-ownership certification PRESENT dated 2022-06 (not refreshed since); identity verification for both beneficial owners PRESENT; AML program document PRESENT (2022) with the most recent independent AML test report dated 2023-03 (none since); source-of-funds / expected-flow documentation PRESENT at onboarding. Screening results: sanctions and PEP screen on the entity and both owners run 2024-02, all clear; adverse-media screen 2024-02 clear; no screening of the entity's own customers referenced. Actual activity (trailing 12 months, from the monitoring summary): monthly fiat on-ramp averaged $11.8M (range $9M-$15M), materially above the $4M-$7M expected band; about 18% of outbound value went to two overseas exchange counterparties not in the onboarding profile; three monitoring alerts in the period, all closed no-action; observed flows include EU and one high-risk-jurisdiction exchange despite a US-only onboarding profile. Prior review conclusion (2024-02): rating affirmed High, documentation deemed 'adequate', noted 'volume trending up, revisit at next cycle'."
+      ],
+      [
+        "requirements per customer type",
+        "None provided - apply the generic baseline in this prompt and flag the use of generic standards as an assumption. Assume High-rated customers are reviewed annually and any document older than 12 months is treated as PRESENT-BUT-STALE."
+      ]
+    ]
+  },
+  "entity-risk-assessment.md": {
+    "scenario": "Harborview's digital-asset desk runs an OSINT counterparty risk assessment on Meridian Digital Exchange before approving it as a settlement and liquidity partner.",
+    "fills": [
+      [
+        "ENTITY NAME OR TICKER",
+        "Meridian Digital Exchange (operating company: Meridian Digital Holdings Ltd)"
+      ],
+      [
+        "why this is being run",
+        "Counterparty onboarding - Harborview Financial Group's digital-asset desk is evaluating Meridian Digital Exchange as a settlement and liquidity counterparty and needs a documented risk read before approval."
+      ],
+      [
+        "DATE",
+        "2026-06-15"
+      ],
+      [
+        "entity-specific data you already have",
+        "OSINT dossier compiled 2026-06-14 (all sources synthetic for this exercise). Corporate: Meridian Digital Holdings Ltd, incorporated in the Republic of Seychelles in 2019, with operating subsidiaries in Lithuania (EU VASP registration active since 2021) and Singapore (in-principle approval, pending); ultimate parent owned 62% by founder Nadia Foxwell, 21% by Aster Ventures (a VC firm), 17% employee pool; group HQ marketed as 'Zurich' though the registry shows a Seychelles domicile, and ownership above Aster Ventures is not disclosed. Financial health: self-reported on the company blog (2026-Q1) as $4.1B quarterly spot volume and 'profitable since 2023', with no audited financials published and no third-party proof-of-reserves attestation since 2024. Regulatory / enforcement: Lithuania VASP registration active; in 2025-09 the fictional Baltic Financial Supervisory Authority issued a public warning that Meridian's local entity 'may be offering leveraged products to retail without authorization' (a warning, no fine); not registered with FinCEN as an MSB; geoblocks US IPs per its terms of service, though a 2026-02 investigative article in the fictional outlet ChainLedger News reported US users onboarding via VPN. Litigation: one pending civil suit, the fictional Delacroix v. Meridian (filed 2025-11 in Singapore), alleging withheld withdrawals during a 2025-08 outage; no judgment. Sanctions / watchlist: no OFAC, EU, or UN hit on the entity or on Nadia Foxwell in the provided extracts; an on-chain analytics report from the fictional vendor Tracegraph estimated about 3.2% of 2025 inflows traced to high-risk services (mixers, sanctioned-adjacent nested exchanges), above the roughly 1% peer median it cites. Adverse media: sustained negative coverage around the 2025-08 withdrawal outage, plus unproven allegations of commingling customer and operational funds raised by a pseudonymous researcher, none confirmed by a regulator. Governance: a founder-controlled board (3 of 4 seats founder-aligned), a CFO seat vacant since 2025-10, an auditor engagement 'in progress' with none named, and a COO who previously held a senior role at the fictional exchange Corsair Exchange that wound down in 2022 after a liquidity failure (no charges). Geographic / sector: Seychelles domicile (offshore, limited transparency) with EU and Singapore operations; the sector is a centralized crypto exchange, inherently high in money-laundering exposure; no FATF-blacklisted jurisdiction appears in the operating footprint."
+      ],
+      [
+        "ENTITY",
+        "Meridian Digital Exchange"
+      ]
+    ]
+  },
+  "investigation-narrative.md": {
+    "scenario": "A Harborview investigator writes the filing narrative for a closed pass-through case: nine third-party wires into a salaried individual's account, each swept out within days to two unverified beneficiaries.",
+    "fills": [
+      [
+        "person(s) and/or entity(ies) investigated",
+        "Individual customer Gordon Meacham (personal checking at Harborview Financial Group, opened 2021-03). No business entity is involved."
+      ],
+      [
+        "accounts, wallets, cards, or instruments",
+        "Harborview personal checking account 4471-88203 (Gordon Meacham, sole owner); a linked debit card; inbound domestic wires and ACH; outbound domestic wires."
+      ],
+      [
+        "dates, amounts, directions, counterparties",
+        "Nine inbound wires from unrelated third parties, 2026-02-02 to 2026-03-16, each followed by a near-full outbound wire within 1-3 days: 2026-02-02 +$28,500 from Landry Holdings LLC then 2026-02-04 -$28,000 to Sternwood Capital Group; 2026-02-09 +$24,000 from D. Ashford then 2026-02-10 -$23,700 to Sternwood Capital Group; 2026-02-13 +$31,200 from Beltran Trading Co then 2026-02-16 -$30,800 to Sternwood Capital Group; 2026-02-20 +$19,800 from M. Osei then 2026-02-23 -$19,500 to Halcyon Ventures Ltd; 2026-02-27 +$27,400 from Pinehurst Auto LLC then 2026-02-28 -$27,000 to Halcyon Ventures Ltd; 2026-03-05 +$22,600 from R. Villanueva then 2026-03-06 -$22,300 to Sternwood Capital Group; 2026-03-09 +$26,900 from Coasttown Realty LLC then 2026-03-11 -$26,500 to Halcyon Ventures Ltd; 2026-03-12 +$18,750 from T. Broussard then 2026-03-13 -$18,500 to Sternwood Capital Group; 2026-03-16 +$29,300 from Verity Freight LLC then 2026-03-17 -$29,000 to Halcyon Ventures Ltd. Inbound total $228,450; outbound total $225,300; net retained about $3,150 (roughly 1.4%); hold time per cycle 1-3 days."
+      ],
+      [
+        "what the investigation established",
+        "KYC: the customer is a salaried IT contractor with stated annual income around $95,000 and a historically low-volume account (monthly turnover under $6,000 before February 2026); no business is registered to the customer. Customer contacted 2026-03-20: he said he was 'helping a friend's investment club move money' and earning 'a small commission', but could not name the beneficiaries or provide any agreement. The two outbound beneficiaries, Sternwood Capital Group and Halcyon Ventures Ltd, are not verified businesses; no invoices, contracts, or investment documents were provided. The nine inbound senders share no verifiable connection to the customer or to each other. One prior alert (2026-02-24) had been closed pending investigation; this review consolidates the full pattern. No prior SAR exists on this subject."
+      ],
+      [
+        "suspicion or concern that drove",
+        "The account received a rapid series of large inbound wires from unrelated third parties with no economic relationship to the customer, each swept out almost in full within days to two unverified beneficiaries and retaining only a token residual - a pass-through / funnel pattern with no apparent lawful business purpose, inconsistent with a salaried individual's historical profile."
+      ],
+      [
+        "internal investigation memo",
+        "Regulatory suspicious-activity filing narrative."
+      ],
+      [
+        "case-specific data you already have",
+        "Account statement excerpt (Feb-Mar 2026) confirming the nine inbound/outbound pairs above with value dates and counterparty names as recorded by the wire system. Call memo 2026-03-20 (verbatim): the customer 'said he doesn't know the senders, a friend named Marco sets it up, and he keeps about 1-2%'. Pre-February baseline: 12-month average monthly credit turnover $5,400, with a largest single prior credit of $4,200 (payroll)."
+      ]
+    ]
+  },
+  "network-link-analysis.md": {
+    "scenario": "A Harborview network analyst maps a ten-account mule referral, resolving a device-linked funnel to a known-bad beneficiary, an innocent family-household cluster, and an off-ramp to Meridian Digital Exchange.",
+    "fills": [
+      [
+        "records to analyze",
+        "ACCOUNT ATTRIBUTE TABLE (Harborview retail accounts from mule review MR-2026-118) - AcctID | Holder | Address | Phone | Email | Device | Beneficiary-on-file: A-01 | Ruben Castile | 14 Marsh Ln Unit 3 Bayside | 555-0142 | rcastile91@fastmail.example | d-4471 | Calloway Trade Supply LLC; A-02 | Priya Anand | 14 Marsh Ln Unit 3 Bayside | 555-0142 | p.anand@fastmail.example | d-4471 | Calloway Trade Supply LLC; A-03 | Devon Marsh | 88 Cedar St Riverton | 555-0198 | dmarsh@mailbox.example | d-4471 | Calloway Trade Supply LLC; A-04 | Lena Ortiz | 210 Quay Rd Apt 6 Delmar | 555-0623 | lena.ortiz@mailbox.example | d-9920 | Calloway Trade Supply LLC; A-05 | Sam Whitfield | 210 Quay Rd Apt 6 Delmar | 555-0623 | swhit@mailbox.example | d-9920 | Calloway Trade Supply LLC; A-06 | Grace Nolan | 47 Birch Ave Bayside | 555-0311 | gnolan@webmail.example | d-3050 | (none); A-07 | Peter Nolan | 47 Birch Ave Bayside | 555-0311 | pnolan@webmail.example | d-3051 | (none); A-08 | Marta Nolan | 47 Birch Ave Bayside | 555-0312 | mnolan@webmail.example | d-3052 | (none); A-09 | R. Marsh | 88 Cedar St Riverton | 555-8890 | (none) | d-4471 | Halcyon Ventures Ltd; A-10 | Owen Pratt | 5 Dockside Plz Bayside | 555-0710 | opratt@fastmail.example | d-6688 | Halcyon Ventures Ltd. TRANSFER RECORDS (2026-03-01 to 2026-05-30): each of A-01 to A-05 received many small inbound credits from distinct external individuals (37 senders total, $200-$1,500 each) and then wired to Calloway Trade Supply LLC - A-01 -> Calloway $46,200 / 14 txns / Mar 3 - May 19; A-02 -> Calloway $38,900 / 11 txns / Mar 5 - May 20; A-03 -> Calloway $41,500 / 12 txns / Mar 4 - May 18; A-04 -> Calloway $22,300 / 7 txns / Mar 10 - May 12; A-05 -> Calloway $19,800 / 6 txns / Mar 9 - May 11; A-09 -> Calloway $12,000 / 3 txns / Apr 2 - May 1 (A-09 also received $8,000 from A-03 on Apr 5); A-10 -> Halcyon Ventures Ltd $15,400 / 4 txns / Apr 8 - May 22. A-06, A-07, and A-08 show only low-value mutual transfers among themselves ($150-$400, memos 'groceries' and 'rent') with no external funnel activity. Calloway Trade Supply LLC received about $180,700 in total and then sent a single $175,000 outbound wire to an overseas account labeled 'Meridian Digital Exchange - deposit' on 2026-05-25."
+      ],
+      [
+        "why this network is being examined",
+        "Mule referral - the fraud team referred 10 accounts flagged in mule review MR-2026-118 after multiple velocity alerts; the linkage needs to be mapped and the next subjects prioritized before the investigation expands."
+      ],
+      [
+        "known subject(s) the review started from",
+        "A-01 (Ruben Castile) and A-03 (Devon Marsh) - the two accounts named in the original fraud complaint that opened the referral."
+      ],
+      [
+        "already tied to confirmed fraud",
+        "Beneficiary Calloway Trade Supply LLC matches a confirmed cash-out account from a prior scam case (internal reference SC-2025-0442, confirmed 2025-12), and device d-4471 was tied to that same prior case."
+      ],
+      [
+        "date range that bounds transactional links",
+        "2026-03-01 to 2026-05-30 (bounds the transfer records provided)."
+      ],
+      [
+        "onboarding records, device/login logs",
+        "Onboarding note: A-01 and A-02 were opened the same day (2026-02-18) at the Bayside branch under consecutive application IDs, both listing the same employer, Tidewater Logistics. Device/login log excerpt: d-4471 logged into A-01, A-02, A-03, and A-09 within overlapping sessions from the same IP 203.0.113.44 on 2026-04-05. No device data was captured for A-06, A-07, or A-08."
+      ],
+      [
+        "earlier link analysis, account review",
+        "None - this is the first link-analysis pass on this referral; treat as a baseline, with no earlier trace or account review to extend."
+      ]
+    ]
+  },
+  "pep-screening-disposition.md": {
+    "scenario": "A Harborview screening analyst dispositions three quarterly PEP re-screen alerts: a common-name residual, a two-identifier wrong-party clearance, and a confirmed sitting central-bank governor.",
+    "fills": [
+      [
+        "what the filter matched on",
+        "Three alerts from the 2026-Q2 quarterly PEP re-screen (all parties fictional). PEP-2026-Q2-014: customer 'Daniel Kim' matched to list entry 'KIM, Daniel'; filter matched on the full name string; vendor match score 91. PEP-2026-Q2-027: customer 'Mariana Vasquez-Toledo' matched to list entry 'VASQUEZ TOLEDO, Mariana Isabel'; filter matched on the full name including the compound surname; vendor score 96. PEP-2026-Q2-039: customer 'Teodor Ilves-Maran' matched to list entry 'ILVES-MARAN, Teodor'; filter matched on the full name; vendor score 98."
+      ],
+      [
+        "full name as onboarded",
+        "PEP-2026-Q2-014 - Daniel Kim: date of birth not on file (absent); nationality not on file (absent); country of residence United States; occupation software engineer; national ID absent; address on file (Bayside). This is a sparse record - both date of birth and nationality are absent. PEP-2026-Q2-027 - Mariana Vasquez-Toledo: date of birth 1990-07-14; nationality Costa Marina (fictional); country of residence United States; occupation dentist; Costa Marina passport K7712233 on file. PEP-2026-Q2-039 - Teodor Ilves-Maran: date of birth 1968-02-03; nationality Kestria (fictional); country of residence United States; occupation private investor; Kestria national ID KE-4408912 on file."
+      ],
+      [
+        "listed name and all aliases",
+        "Entry for PEP-2026-Q2-014, 'KIM, Daniel': position former Deputy Director of Customs, Republic of Hanseong (fictional); no aliases listed; status FORMER, left office 2024 (about 2 years ago); date of birth on the entry 1972 (year only); no adverse notes. Note: 'Kim' and 'Daniel' are both common tokens in the relevant naming culture and the entry carries no distinctive token beyond the common name. Entry for PEP-2026-Q2-027, 'VASQUEZ TOLEDO, Mariana Isabel': position former Deputy Minister of Infrastructure, Republic of Velaria (fictional); status FORMER, left office 2018 (about 8 years ago); date of birth on the entry 1965-11-02; nationality on the entry Velaria; no adverse notes. Entry for PEP-2026-Q2-039, 'ILVES-MARAN, Teodor': position Governor of the Central Bank of Kestria (fictional); status CURRENT (in office); date of birth on the entry 1968-02-03; nationality Kestria; no adverse notes."
+      ],
+      [
+        "why this is being worked",
+        "Periodic re-screen - the 2026-Q2 quarterly PEP list refresh generated these three name-match alerts on existing customers."
+      ],
+      [
+        "step-down/declassification policy",
+        "None provided - use the defaults in this prompt (prominence tiers, step-down horizons, jurisdiction buckets) and flag every default applied as an assumption in the output."
+      ],
+      [
+        "list-entry source text, KYC file",
+        "KYC extract for PEP-2026-Q2-027 (verbatim): 'Vasquez-Toledo, Mariana - DOB 1990-07-14, Costa Marina passport K7712233, resident US since 2016, dentist' - so the customer date of birth (1990) differs from the entry (1965) and the nationality (Costa Marina) differs from the entry (Velaria). KYC extract for PEP-2026-Q2-039 (verbatim): 'Ilves-Maran, Teodor - DOB 1968-02-03, Kestria national ID KE-4408912' - which matches the entry date of birth exactly. The list-entry source text for all three entries is confirmed from the provided list extract."
+      ],
+      [
+        "earlier disposition of the same customer",
+        "None - this is the first disposition of these three alerts; treat as a baseline, with no earlier run to extend or flag changes against."
+      ]
+    ]
+  },
+  "periodic-review-triggers.md": {
+    "scenario": "A Harborview periodic-review analyst triages an eight-entity business-banking backlog against an event feed, ranking an ownership-change-plus-alert-accumulation customer to the top.",
+    "fills": [
+      [
+        "list of entities, one per line",
+        "Business-banking periodic-review backlog as of 2026-06-30 - ID | Name | Risk rating | Last review | Next scheduled | Type | Relationship size: E1 | Meridian Crest Trading Ltd | High | 2024-09-15 | 2025-09-15 | import/export wholesale | large ($4.2M avg balance); E2 | Tidewater Auto Detailing LLC | Medium | 2024-06-01 | 2026-06-01 | small business | small ($40k); E3 | Northlight Digital Markets LLC | High | 2025-02-10 | 2026-02-10 | digital-asset MSB | large; E4 | Bayside Family Dental PC | Low | 2023-08-20 | 2026-08-20 | professional practice | small; E5 | Corsair Freight Services LLC | Medium | 2024-11-05 | 2026-11-05 | logistics | medium; E6 | Halcyon Property Group LLC | High | never reviewed | - | real-estate holding | medium; E7 | Delmar Grocers Co-op | Low | 2024-02-14 | 2027-02-14 | retail grocery | small; E8 | Sternwood Capital Partners LLC | Medium-High | 2025-01-30 | 2026-07-30 | investment advisory | large."
+      ],
+      [
+        "review cycle per risk",
+        "High = 12 months, Medium-High = 18 months, Medium = 24 months, Low = 36 months; grace period 30 days. A never-reviewed relationship is treated as overdue by more than a full cycle."
+      ],
+      [
+        "known events per entity",
+        "E1 Meridian Crest Trading Ltd: T2 ownership change - registry filing FR-2026-2231 (2026-04-12) shows a new 40% owner, Sternwood Capital Partners LLC; T5 accumulation - 5 velocity alerts in the trailing 11 months, all closed no-action. E3 Northlight Digital Markets LLC: T1 material activity change - monthly volume ran roughly 2x the expected band for 4 months per the monitoring summary (2026-05); T4 - began flows to two overseas exchanges not in the onboarding profile. E5 Corsair Freight Services LLC: T3 adverse media - a fictional trade-press article (2026-05-18) reports a civil fraud suit filed against its principal; single source, medium credibility. E6 Halcyon Property Group LLC: never reviewed, onboarded 2024-03, no events on the feed. E8 Sternwood Capital Partners LLC: a compliance analyst noted 'possible new correspondent-style flows' (2026-06) but no alert or record is attached - unevidenced. E2, E4, and E7: no events on the feed."
+      ],
+      [
+        "how many reviews the team completes",
+        "The team completes 3 reviews per week."
+      ],
+      [
+        "alert histories, KYC or onboarding",
+        "Alert-history extract for E1 (5 closed velocity alerts, Jul 2025 - May 2026) and registry filing FR-2026-2231 for E1 (new 40% owner). Monitoring summary for E3 (about 2x volume over 4 months). Trade-press article citation for E5. No documentation is attached for the E8 candidate signal."
+      ],
+      [
+        "earlier triage run to extend",
+        "None - this is the first triage of this backlog; treat as a baseline, with no earlier run to re-score against."
+      ]
+    ]
+  },
+  "sanctions-watchlist-screen.md": {
+    "scenario": "A Harborview onboarding analyst screens a new retail applicant against synthetic OFAC/EU/UN extracts, clearing two hits on named identifiers and escalating one identifier-silent probable match.",
+    "fills": [
+      [
+        "full name / legal entity name",
+        "Aleksander P. Novak"
+      ],
+      [
+        "individual / entity / vessel",
+        "Individual"
+      ],
+      [
+        "date of birth, nationality, country",
+        "Date of birth 1985-09-22; nationality Poland; country of residence United States; address on file (Bayside); passport PL 55219043; known aliases 'Alek Novak' and 'Aleksander Nowak'."
+      ],
+      [
+        "why this is being run",
+        "Onboarding - a new retail account application; screening is required before account opening."
+      ],
+      [
+        "DATE",
+        "2026-06-20"
+      ],
+      [
+        "list-specific data you already",
+        "Retrieved list entries for this exercise (synthetic, not real designations). Entry SDN-FIC-3391 (OFAC-style SDN, program FIC-CYBER): 'NOVAK, Aleksandr Pavlovich'; date of birth 1971-03-04; nationality Russia; Russia passport 71-series; aliases 'Aleksandr Novak' and 'A. Novak'. Entry EU-FIC-2210 (EU consolidated-style): 'NOWAK, Aleksander'; date of birth unknown; nationality Belarus; no passport listed; alias 'Alek Nowak'. Entry UN-FIC-0087 (UN-style): 'NOVAKOVIC, Aleksandar'; individual; date of birth 1980; nationality Serbia. No other entries surfaced across the provided OFAC SDN, OFAC consolidated, EU, UN, and UK extracts (data vintage stamped 2026-06-18 in the provided extract)."
+      ],
+      [
+        "paste the last screen",
+        "None - this is the first screen of this subject; treat as a baseline, with no prior screen to compare added or removed designations against."
+      ]
+    ]
+  },
+  "sar-decisioning.md": {
+    "scenario": "A Harborview analyst works a completed funnel investigation to a SAR file/no-file recommendation, computes the 30-day deadline from the escalation date, and drafts the decision memo for the BSA Officer.",
+    "fills": [
+      [
+        "case or investigation number",
+        "Case HFG-2026-0610; subject Meridian Crest Trading LLC (business checking 7731-05582); sole signer Dwyer Halloran."
+      ],
+      [
+        "completed investigation's findings",
+        "Completed investigation into Meridian Crest Trading LLC. Activity reviewed 2026-05-20 to 2026-06-09: $18,400 in inbound transfers from nine unrelated individuals (personal accounts across six states) over three weeks, each forwarded within 24-48 hours in three outbound international wires totaling $18,050 to a single overseas beneficiary, Calderon Freight Agentes SA. Customer explanation obtained 2026-06-08: 'consulting receipts from wholesale clients'; the customer provided no invoices, contracts, or client identities when asked, and the explanation was not verified. Business profile: import/export wholesale, opened 2025-11, expected monthly throughput $40,000; no prior commercial relationship to any of the nine senders was established. Investigator's closing observation: 'inbound funnel with rapid international pass-through; no economic purpose evidenced; explanation sought and unsupported'."
+      ],
+      [
+        "first became aware of facts",
+        "The case was escalated to investigation on 2026-06-12 (escalation date). The originating alert TM-2026-05990 fired on 2026-06-03. Candidate detection events are the alert date (2026-06-03) and the escalation/determination date (2026-06-12); treat the 2026-06-12 escalation date as detection per procedure, but both candidates are provided."
+      ],
+      [
+        "identified / partially identified",
+        "Identified - Meridian Crest Trading LLC and its sole signer Dwyer Halloran are the identified parties who conducted the activity."
+      ],
+      [
+        "total dollar (or currency) amount",
+        "$18,400 inbound (the aggregate activity at issue), spanning 2026-05-20 to 2026-06-09 (three weeks)."
+      ],
+      [
+        "previous SAR filed on this",
+        "None on file - no prior SAR on this subject or this activity pattern."
+      ],
+      [
+        "jurisdiction and regulator convention",
+        "None specified - apply the common US convention (the 30/60/120-day framework; $5,000 with an identified suspect, $25,000 regardless of suspect, insider abuse at any amount) and flag it as an assumption."
+      ],
+      [
+        "your institution's filing-decision",
+        "None provided - use the regime defaults; no stricter internal threshold or memo template is supplied."
+      ],
+      [
+        "today's date, for days-remaining",
+        "2026-07-03"
+      ],
+      [
+        "role or title of the designated filing",
+        "BSA Officer"
+      ],
+      [
+        "supporting case material",
+        "Alert TM-2026-05990 narrative (2026-06-03): 'many-to-one inbound with rapid outbound consolidation'. Transaction export: nine inbound credits ($1,700-$2,400 each, total $18,400) and three outbound international wires ($6,000 + $6,050 + $6,000 = $18,050) to Calderon Freight Agentes SA. Call memo 2026-06-08: the customer 'declined to provide invoices, said the clients are confidential'. No aggregation has yet been run across any related Meridian-named accounts."
+      ],
+      [
+        "earlier triage disposition, account",
+        "None - this is the first decisioning pass on this case; treat as a baseline, with no earlier triage or draft to extend."
+      ]
+    ]
+  },
+  "typology-detection-mapping.md": {
+    "scenario": "An analyst maps the funnel-account typology into monitoring rules for a multi-state money-services business that can see transactions and KYC but no device data.",
+    "fills": [
+      [
+        "funnel accounts",
+        "Funnel accounts (domestic funnel-account laundering - many geographically dispersed cash or small deposits into one account, rapidly consolidated and then withdrawn or wired out elsewhere)."
+      ],
+      [
+        "the institution type and products",
+        "A licensed money-services business offering money remittance and check cashing across about 40 retail agent locations in multiple states; customers are retail and small-business; the products are cash-in remittance send/receive and prepaid load."
+      ],
+      [
+        "what fields the monitoring system can actually see",
+        "The monitoring system sees transaction records (amount, date/time, direction, channel, agent-location ID, and sending/receiving city-state), KYC and customer profile (name, date of birth, address, ID type, expected use), and the counterparty name where captured on the send. It does not see device fingerprints, IP or login data, or on-chain data."
+      ],
+      [
+        "task-specific data you already have",
+        "Current rule inventory (excerpt): R-101 single-transaction CTR-threshold flag ($10,000); R-115 aggregate cash above $10,000/day per customer; R-140 velocity - 5 or more sends in 24 hours. No existing rule evaluates cross-location deposit dispersion or many-to-one consolidation. The FinCEN funnel-account advisory is referenced as the typology basis."
+      ],
+      [
+        "TYPOLOGY",
+        "Funnel Accounts"
+      ]
+    ]
+  },
+  "ubo-beneficial-ownership.md": {
+    "scenario": "A Harborview onboarding analyst unwinds a three-layer, two-jurisdiction ownership chain for Meridian Trade Holdings Ltd, computing a 32.4% beneficial owner and flagging a 24% unnamed-nominee gap.",
+    "fills": [
+      [
+        "jurisdiction of incorporation, entity type",
+        "Meridian Trade Holdings Ltd; jurisdiction of incorporation the British Virgin Islands (per the provided registry extract); entity type a private company limited by shares; registration number MTH-BVI-118842."
+      ],
+      [
+        "onboarding / periodic review / enhanced review",
+        "Onboarding - a multi-layer corporate customer applying for a business account; the natural persons who ultimately own or control the entity must be identified before approval."
+      ],
+      [
+        "beneficial-ownership threshold to apply",
+        "25 percent."
+      ],
+      [
+        "registry extracts, shareholder",
+        "S1 - BVI registry extract for Meridian Trade Holdings Ltd (as-of 2026-05-10): shareholders of record are Larkspur Nominees Ltd 24% ordinary, Coastal Trade Partners LP 45% ordinary, Verdant Holdings SA 27% ordinary, and Priya Anand (individual) 4% ordinary. S2 - Larkspur Nominees Ltd registered-agent statement (as-of 2026-04-01): Larkspur holds its 24% as nominee 'on behalf of an unnamed client'; the beneficial client is NOT named and no nominee declaration or trust deed is attached. S3 - Coastal Trade Partners LP Cayman limited-partnership register (as-of 2026-05-02): general partner Coastal GP Ltd (1% interest, holding management and control); limited partners Elena Varga 60% and Bruno Achterberg 39%. S4 - Coastal GP Ltd company register (as-of 2026-03-15): 100% owned by Elena Varga. S5 - Verdant Holdings SA Panama company register (as-of 2026-01-20): shareholders Elena Varga 20% and Marisol Quintero 80%; a prior bearer-share provision is noted as cancelled 2025-12. S6 - customer-produced org chart (undated): depicts the same three-way split but labels Larkspur's 24% as 'founder holding, E. Varga', which conflicts with S1 and S2 that show it as an unnamed nominee."
+      ],
+      [
+        "self-declared, to validate against the",
+        "The customer self-declared a single beneficial owner: Elena Varga at 56%, described as 'founder, controls the group'. No other beneficial owner was declared."
+      ],
+      [
+        "earlier ownership analysis or tree",
+        "None - this is the first ownership analysis of this entity; treat as a baseline, with no earlier tree to extend or re-verify."
+      ]
+    ]
+  }
+}

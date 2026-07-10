@@ -204,6 +204,181 @@ A 0-100 composite, a 5-tier rating, a seven-dimension breakdown, separate thesis
 
 *"Screen a trending small-cap token for a listing review — assess the thesis and the AML red flags; here is last week's screen."* — the assistant returns a scored two-axis screen, applies a score cap if a critical typology matches, and gives a clear disposition.
 
+<!-- DEMO -->
+## Try it now — paste this, nothing to fill in
+
+The block below is the prompt above with every input already filled with **fictional demo data** — Harborview Financial Group, its counterparties, and every name, figure, and address in it are invented and synthetic. Paste it into any assistant (GitHub Copilot, Microsoft 365 Copilot, Claude, ChatGPT) exactly as it is, with no edits, and you get the complete deliverable this prompt produces — the full method, rubric, and output structure, at depth. It is here so you can judge the quality before you ever supply your own material. When you run it for real, use the shell prompt above and put your own inputs in its place.
+
+*Scenario: A listings/treasury review at Harborview screens an emerging token a client wants exposure to, before any custody or settlement decision.*
+
+```text
+You are a digital-asset screening analyst with an AML/CFT compliance background.
+Screen the token below on two axes at once: the quality of its project thesis AND
+its AML and regulatory red flags. Produce an audit-defensible screen from public
+information only.
+
+TOKEN: Nimbus (ticker: NMB) — ERC-20 on Ethereum, contract 0x2b7f4a9c0e13d685a2f9c4b70d1e6a3c8f05b921 (per the project site)
+CONTEXT: Emerging-token assessment: a Harborview client has requested the ability to hold and settle NMB; the desk needs a documented compliance and integrity read before onboarding the asset.
+SCREENING DATE: 2026-02-05
+PROVIDED MATERIAL (optional): Project site claims (2026-02-04): 'audited, fair-launch, 1B supply'.
+On-chain holder distribution (Etherscan token page, retrieved 2026-02-05): top 10 holders hold ~74% of supply; the top holder (~28%) is an unlabeled wallet that received its balance from the deployer at genesis and has not moved it.
+Liquidity: a single DEX pool (~$1.2M) paired against a stablecoin; no lock reported on the LP position.
+Team/funding: pseudonymous team; a 'seed round' mentioned with no named investors.
+Audit: a PDF is linked but shows no auditor letterhead and lists no findings; provenance unclear.
+Contract: verified source on Etherscan; includes an owner-only function 'setFeeExempt' and a mintable path guarded by an owner address (the deployer).
+PRIOR OUTPUT (optional): None — first screen of NMB. No prior score to diff against; baseline.
+
+If the ticker is ambiguous, resolve to the most prominent match and state the assumption.
+
+## Preflight
+
+Before producing any output, scan the inputs above. If any required input is missing,
+ambiguous, or contradictory, STOP. Do not produce a partial draft and do not guess at
+the missing context. Ask the user once, in a single short message, with a numbered list
+of the specific clarifications you need (one item per line, no preamble or apology).
+Wait for the user's reply before continuing. If the user replies "proceed with what you
+have", continue and clearly flag every gap in the Information Gaps section of the
+output.
+
+If all required inputs are present, proceed silently to the next section below — do not
+acknowledge this step in the output.
+
+## Gather
+
+Collect public evidence: the project's stated purpose and whitepaper, team
+identities and verifiability, funding and backers, audit status, market cap and
+24h volume, exchange listings and spread, on-chain holder distribution, treasury
+and major-wallet behavior, and any regulatory actions or warnings. Use a news
+search for team background, enforcement history, and mixer associations. Cite a
+source for every material claim.
+
+## Analyze — Two-Axis Assessment
+
+### Axis 1 — Project thesis
+- What problem does the token solve? Is the thesis novel or derivative?
+- Team credibility, funding, partnerships, roadmap execution, shipped product.
+- Liquidity profile: market cap, 24h volume, exchange distribution, wash-trading
+  indicators.
+- Catalyst pipeline: mainnet launches, unlocks, listings, upgrades.
+
+### Axis 2 — AML / regulatory red flags (compliance lens)
+Test the token against these indicators explicitly:
+- Anonymous or pseudonymous team — a red flag.
+- Mixer/tumbler use in the treasury or major wallets — a red flag.
+- Sanctioned-jurisdiction nexus (team, funding, infrastructure) — a red flag.
+- Privacy-coin / anonymity-enhancing features — elevated risk.
+- Unregistered-security indicators — investment-contract marketing, profit
+  expectation from a common enterprise, centralized promoter effort.
+- Holder concentration — a single wallet or insider cluster holding a large
+  share (e.g. >30%); unlocked liquidity.
+- Known enforcement actions, regulatory warnings, or sanctions-list associations.
+
+AML typology library — match and cite evidence for any that apply:
+  Sanctions evasion ...... SDN-address or sanctioned-mixer interaction; team in
+                           a sanctioned jurisdiction                   — CRITICAL
+  Mixer / tumbler use .... funds from known mixing services            — HIGH
+  Layering ............... rapid multi-hop transfers, peel chains       — HIGH
+  Pump-and-dump .......... coordinated buy walls, wash trading, paid
+                           shills, no-news volume spikes                — HIGH
+  Rug-pull indicators .... unlocked liquidity, >30% single-wallet
+                           concentration, no audit, copied whitepaper   — CRITICAL
+  Insider trading ........ large buys before announcements              — HIGH
+  Structuring ............ many just-under-threshold related transfers  — MEDIUM
+  Darknet / ransomware ... funds traceable to DNM or ransomware wallets — CRITICAL
+
+## Score — Composite Token Score (0-100)
+
+Score each dimension 0-100, then combine:
+
+  Fundamental quality .... 20%  (team, funding, partnerships, execution)
+  Market momentum ........ 15%  (price action, volume trend)
+  Social sentiment ....... 15%  (engagement, social volume, sentiment)
+  Liquidity profile ...... 15%  (market cap, volume, exchange quality, spread)
+  Compliance risk ........ 15%  (OFAC exposure, mixer use, regulatory flags, team KYC)
+  Catalyst pipeline ...... 10%  (upcoming launches, listings, upgrades)
+  Narrative alignment .... 10%  (fit with a current market narrative)
+
+  TOKEN SCORE = sum(dimension x weight)
+
+Compliance overrides (apply before mapping the tier):
+- Any CRITICAL typology indicator -> cap the total score at 34 (AVOID),
+  regardless of every other dimension.
+- Any HIGH typology indicator -> set the Compliance-risk dimension to 0.
+- Any MEDIUM typology indicator -> cap the Compliance-risk dimension at 30.
+State any override explicitly.
+
+Map the score to a tier:
+
+  80-100 CONVICTION — strong thesis, minimal compliance concern.
+  65-79  INTEREST   — solid, worth monitoring.
+  50-64  WATCH      — mixed; note and revisit.
+  35-49  CAUTION    — fundamental or compliance concerns present.
+  0-34   AVOID      — red flags present.
+
+## Output format
+
+# Token Compliance Screen — [TOKEN]
+Composite Score: [n]/100 — [TIER]
+Screening date: [date] | Basis: Public sources only
+
+## Summary
+[3-5 sentences: what the token is, the thesis read, the compliance read, the disposition.]
+
+## Score Breakdown
+| Dimension | Score | Weight | Weighted |
+|-----------|-------|--------|----------|
+[one row per dimension, then a composite row. Note any override applied.]
+
+## Project Thesis
+[Axis 1: the problem, the team, liquidity, catalysts. Every claim sourced.]
+
+## Compliance Assessment
+[Axis 2: each red-flag indicator addressed explicitly — present, absent, or
+unverifiable. Matched typologies listed with specific evidence. "No AML flags
+detected" is a valid, stated result.]
+
+## Red Flags
+[The specific findings driving the rating and any score cap.]
+
+## Information Gaps
+[What could not be verified — anonymous team, opaque treasury, closed-source
+contract — and how that limits confidence.]
+
+## Disposition
+[A conclusion — e.g. clears screening / clears with monitoring / escalate for
+review / fails screening — with reasoning. This is a compliance screen, not
+investment advice.]
+
+## Sources & Confidence
+[Source list. Overall confidence: HIGH / MODERATE / LOW with reasoning.]
+
+## Rules
+- Runs standalone. If PROVIDED MATERIAL is supplied, treat it as the primary evidence
+  base — screen exactly what is there and attribute findings to it; use any live
+  access only to supplement. No system or integration is required — only the
+  assistant and what you paste in. Anything not established from the material or a
+  cited source is an explicit gap.
+- If a step needs a capability you do not have (live web access, file or image
+  reading, a data feed) or a required input is missing, do not fail silently or
+  fabricate. State plainly what is missing, then either proceed with the available
+  material and mark the gap, or — if it blocks the analysis — ask for the specific
+  input needed as a short, labeled list, and continue once it is provided.
+- Public sources only. Never assert non-public information as fact.
+- Every material claim carries a source. Uncited claims are removed.
+- Apply the compliance overrides — a CRITICAL typology indicator caps the score at
+  AVOID no matter how strong the thesis is.
+- Separate observed fact from allegation from projection. An anonymous team is an
+  observation; "it is a scam" is a projection — label it.
+- The unregistered-security read is an indicator assessment, not a legal
+  conclusion — flag the indicators; do not adjudicate securities law.
+- "Clean token, no AML flags" is a legitimate result — do not manufacture risk.
+- If the team is anonymous or the treasury opaque, say so and lower the
+  confidence rating — do not fill the gap with inference.
+```
+<!-- /DEMO -->
+
+---
+
 <!-- RUNTIME_CONTRACT -->
 
 ---

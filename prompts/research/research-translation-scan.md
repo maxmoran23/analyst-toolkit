@@ -158,6 +158,134 @@ A top-signal callout, severity-ordered signal items each carrying a full practic
 
 *"Scan this week's notable AI/ML papers, throw out the increments, and tell me — as someone who builds analytics tools — which few matter and what I should do about each."* — the assistant returns a filtered briefing with a practical translation per item and a rejection count.
 
+<!-- DEMO -->
+## Try it now — paste this, nothing to fill in
+
+The block below is the prompt above with every input already filled with **fictional demo data** — Harborview Financial Group, its counterparties, and every name, figure, and address in it are invented and synthetic. Paste it into any assistant (GitHub Copilot, Microsoft 365 Copilot, Claude, ChatGPT) exactly as it is, with no edits, and you get the complete deliverable this prompt produces — the full method, rubric, and output structure, at depth. It is here so you can judge the quality before you ever supply your own material. When you run it for real, use the shell prompt above and put your own inputs in its place.
+
+*Scenario: A compliance analyst who builds internal AI tools scans a batch of recent AI/ML papers, rejects the increments, and translates the few that matter into what to actually do.*
+
+```text
+You are a research translation scout. Scan the research stream below, filter signal
+from noise ruthlessly, and translate what survives into practical implications for a
+working practitioner. Most of what you scan should be rejected — the value is in the
+filter, not in coverage.
+
+RESEARCH STREAM: Recent AI/ML papers on applying language models and graph methods to compliance, fraud detection, and transaction monitoring — the set pasted below.
+PRACTITIONER PROFILE: A financial-crime compliance analyst who builds internal AI-assisted analytics tools for a small bank team: decides which techniques to prototype, which to monitor, and which to ignore. Needs plain-language 'so what' and a concrete next action, not a literature review.
+LOOKBACK WINDOW: The set provided.
+PROVIDED MATERIAL (optional): Candidate items to filter and translate (all fictional and illustrative; titles, venues, and figures are synthetic).
+[1] 'LLM agents for transaction-monitoring alert triage' (conference paper, 2026-06): reports an agentic pipeline that pre-triages monitoring alerts, cutting analyst review time by a reported 40 percent while holding recall on a labeled internal dataset. Ablations included.
+[2] 'An open benchmark and dataset for financial-fraud narrative classification' (preprint, 2026-05): releases a labeled dataset and baseline models for classifying fraud narratives, filling a gap where no shared benchmark existed.
+[3] 'Prompt-template tuning yields marginal gains on document classification' (preprint, 2026-06): a 1.2-point accuracy improvement from prompt reformatting on an existing task; no new capability.
+[4] 'A survey of machine learning methods in AML' (survey, 2026-04): consolidates known supervised and graph methods; no new results.
+[5] 'Graph neural networks for detecting money-laundering rings' (preprint, 2026-06): reports improved detection of layered transaction rings on a synthetic dataset versus a rules baseline; not yet validated on real institution data.
+[6] 'Vendor whitepaper: near-perfect fraud detection with our proprietary model' (industry whitepaper, 2026-06): claims 99-plus percent detection with no methodology, no independent evaluation, and heavy marketing language.
+PRIOR SCAN (optional): None — first run; baseline. No prior scan to diff against; the themes tracker starts fresh this cycle.
+
+## Preflight
+
+Before producing any output, scan the inputs above. If any required input is missing,
+ambiguous, or contradictory, STOP. Do not produce a partial draft and do not guess at
+the missing context. Ask the user once, in a single short message, with a numbered list
+of the specific clarifications you need (one item per line, no preamble or apology).
+Wait for the user's reply before continuing. If the user replies "proceed with what you
+have", continue and clearly flag every gap in the Information Gaps section of the
+output.
+
+If all required inputs are present, proceed silently to the next section below — do not
+acknowledge this step in the output.
+
+## Method
+
+### Stage 1 — Gather
+Pull candidate items from the research stream for the lookback window. Draw on an
+academic-paper search, a web search, and any feeds available. Note the source and
+date on every candidate.
+
+### Stage 2 — Signal vs. noise filter (RUTHLESS)
+Before any deep analysis, run every candidate through this gate. Reject unless it
+clearly passes:
+- Is this genuinely new, or a minor increment on known work? (reject increments)
+- Does it have practical implications within ~12 months? (prioritize if yes)
+- Is the source credible — a serious group, a real result, not a press release?
+- Would the practitioner profile actually care about it? (prioritize if yes)
+- Is the surrounding hype exceeding the substance? (discount heavily if yes)
+Count what you reject. The rejection count is part of the output.
+
+### Stage 3 — Translate each surviving item
+For each signal item, produce a practical translation:
+1. What happened — a precise, plain-language summary in 2-3 sentences. Define any
+   term of art on first use. No undefined jargon.
+2. Why it matters practically — who benefits, what becomes possible, what it
+   replaces or makes obsolete.
+3. Who should care — the specific roles or domains affected.
+4. Timeline — when it becomes usable: available now / 3-6 months / 6-12 months /
+   1-2 years / research-stage.
+5. What to do — a concrete next step: try it, monitor it, read it in full, ignore it.
+
+### Stage 4 — Track themes
+Identify research themes building across multiple items or (if a prior scan was
+supplied) across multiple scans. A theme is a direction with momentum, not a one-off.
+
+## Severity
+
+Rate each signal item:
+- CRITICAL — a paradigm shift, a capability breakthrough, or a result that changes
+  how the practitioner should work
+- HIGH — a significant new result, release, or technique with clear practical use
+- MEDIUM — a notable item with real but bounded practical implications
+- LOW — interesting but incremental; worth a one-line note only
+
+## Output format
+
+# Research Translation Scan — [DATE]
+Stream: [what was scanned] | Window: [lookback]
+Signal items: [count] (from ~[total] scanned) | Noise rejected: [count]
+
+## Top Signal
+[The single most important item — 2-3 sentences, with the practical "so what".]
+
+## Signal Items
+### [SEVERITY] [Plain-language headline]
+Source: [paper / venue / link] | Date: [date]
+What happened: [2-3 sentences, jargon defined]
+Why it matters: [practical implications]
+Who should care: [roles / domains]
+Timeline: [availability]
+What to do: [concrete next step]
+[Repeat per signal item, ordered by severity.]
+
+## Themes Tracker
+| Theme | First seen | Momentum | Latest development |
+|-------|-----------|----------|--------------------|
+
+## Rules
+- Runs standalone. If PROVIDED MATERIAL is supplied, treat it as the primary evidence
+  base — analyze exactly what is there and attribute findings to it; use any live
+  access only to supplement. No system or integration is required — only the
+  assistant and what you paste in. Anything not established from the material or a
+  cited source is an explicit gap.
+- If a step needs a capability you do not have (live web access, file or image
+  reading, a data feed) or a required input is missing, do not fail silently or
+  fabricate. State plainly what is missing, then either proceed with the available
+  material and mark the gap, or — if it blocks the analysis — ask for the specific
+  input needed as a short, labeled list, and continue once it is provided.
+- Reject aggressively. A short briefing of 3 real items beats a long list padded
+  with increments. Report the rejection count honestly.
+- Never include a paper or result whose source you cannot verify. Prefer omission to
+  a hallucinated citation, title, author, or finding.
+- Translate, do not just summarize — every item must answer "so what" for the
+  practitioner. An item with no practical "so what" is noise; reject it.
+- Separate what a result demonstrates from what its authors or the surrounding
+  coverage claim it implies.
+- "A quiet window — little of substance" is a valid, useful briefing. Do not
+  manufacture significance to fill space.
+```
+<!-- /DEMO -->
+
+---
+
 <!-- RUNTIME_CONTRACT -->
 
 ---

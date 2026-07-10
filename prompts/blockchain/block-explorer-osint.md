@@ -280,6 +280,289 @@ A capture register (every source with URL and retrieval date), a reconciled addr
 
 *An investigations analyst at Harborview Financial Group (fictional) receives a fraud complaint naming a deposit address and pastes three captures — the explorer's address summary and two pages of the transaction list, each with URL and retrieval date. The annex registers the captures, extracts 214 facts (11 pagination duplicates removed), ties exactly to the explorer's own transaction count, flags PARTIAL coverage because the token-transfer list was not captured, and rolls 47 counterparties into one table. Two observations are named: HIGH fan-in (23 otherwise-unrelated senders over 9 days, swept same-day to a single counterparty) and LOW dust noise (31 unsolicited token drops, excluded from flow conclusions). The sweep destination's "exchange hot wallet" tag — present on only one public source — stays SINGLE-SOURCE in the attribution register: a lead for corroboration, not a finding. Confidence: MODERATE, flows reconcile exactly but coverage is partial.*
 
+<!-- DEMO -->
+## Try it now — paste this, nothing to fill in
+
+The block below is the prompt above with every input already filled with **fictional demo data** — Harborview Financial Group, its counterparties, and every name, figure, and address in it are invented and synthetic. Paste it into any assistant (GitHub Copilot, Microsoft 365 Copilot, Claude, ChatGPT) exactly as it is, with no edits, and you get the complete deliverable this prompt produces — the full method, rubric, and output structure, at depth. It is here so you can judge the quality before you ever supply your own material. When you run it for real, use the shell prompt above and put your own inputs in its place.
+
+*Scenario: An investigations analyst at Harborview Financial Group works a fraud complaint that names a customer deposit address; three public Etherscan captures are pasted in, with URLs and retrieval dates.*
+
+```text
+You are a blockchain intelligence analyst performing open-source evidence
+collection from public block-explorer data. Convert the raw explorer output
+pasted below into a disciplined, reviewable evidence annex: register every
+capture, extract and deduplicate the facts, reconcile the totals, roll up the
+counterparties, summarize the flows, name any structural observations, and
+keep a hard firewall between what the chain data shows and any claim about
+who controls an address. You collect and structure evidence — you do not
+decide guilt, identity, or disposition.
+
+INPUTS
+- SUBJECT ADDRESS(ES): 0x7a3d9f4e2b8c1d6a5f0e9c2b4a7d8e1f3c6b0a9d
+- ASSET & CHAIN: ETH and ERC-20 tokens on Ethereum (mainnet)
+- INVESTIGATION OBJECTIVE: Fraud complaint received 2026-02-03: a Harborview retail customer reports being induced to send funds to this address in an investment scam. Working it to size counterparty exposure and support a source-of-funds question before any SAR decision.
+- EXPLORER CAPTURES: CAPTURE C1 — address summary
+  Explorer: Etherscan
+  URL: https://etherscan.io/address/0x7a3d9f4e2b8c1d6a5f0e9c2b4a7d8e1f3c6b0a9d
+  Retrieved: 2026-02-05 14:20 UTC
+  Covers: address overview page
+  ETH balance: 0.412 ETH
+  Transactions: 214
+  First txn: 2026-01-06
+  Last txn: 2026-01-31
+
+CAPTURE C2 — transaction list, page 1 of 2 (newest first)
+  Explorer: Etherscan
+  URL: https://etherscan.io/txs?a=0x7a3d9f4e2b8c1d6a5f0e9c2b4a7d8e1f3c6b0a9d&p=1
+  Retrieved: 2026-02-05 14:22 UTC
+  Covers: 2026-01-14 to 2026-01-31 (100 rows shown)
+  Representative rows (hash / time / from -> to / value ETH):
+    0xd41a...9c02  2026-01-31 09:12  0x7a3d...0a9d -> 0x51ee...77b3  38.50
+    0x8b73...1f45  2026-01-30 22:41  0x9c10...aa21 -> 0x7a3d...0a9d   4.90
+    0x2e6c...77de  2026-01-30 20:03  0x3f88...bb14 -> 0x7a3d...0a9d   5.10
+    0x77aa...0b19  2026-01-30 18:55  0xa204...cc55 -> 0x7a3d...0a9d   4.75
+    0x14fd...6a83  2026-01-29 11:20  0x7a3d...0a9d -> 0x51ee...77b3  14.20
+    0x9c02...3d71  2026-01-28 08:07  0xb631...dd70 -> 0x7a3d...0a9d   5.00
+    ... (94 further rows, same shape: many small inbound transfers from distinct senders, periodic large outbound to 0x51ee...77b3)
+
+CAPTURE C3 — transaction list, page 2 of 2 (newest first)
+  Explorer: Etherscan
+  URL: https://etherscan.io/txs?a=0x7a3d9f4e2b8c1d6a5f0e9c2b4a7d8e1f3c6b0a9d&p=2
+  Retrieved: 2026-02-05 14:24 UTC
+  Covers: 2026-01-06 to 2026-01-14 (114 rows shown)
+  Representative rows:
+    0x51bd...2c60  2026-01-13 16:40  0xc9a1...ee38 -> 0x7a3d...0a9d   4.60
+    0x6f33...9a12  2026-01-12 13:15  0x7a3d...0a9d -> 0x51ee...77b3  22.10
+    0x0d8e...44b7  2026-01-06 10:02  0xf7c2...1198 -> 0x7a3d...0a9d   5.25
+    ... (111 further rows, same fan-in / sweep-out shape)
+  NOTE: the ERC-20 token-transfer list for this address was NOT captured this session.
+  Etherscan's overview shows ~30 inbound token transfers of an unfamiliar token 'USDX-PROMO' that have not been pulled.
+- KNOWN LABELS / CONTEXT (optional): Sweep destination 0x51ee...77b3 carries a public Etherscan name-tag 'Meridian Digital Exchange: Hot Wallet 3' — single public label, not independently confirmed. No label held for any of the inbound senders. No watchlist extract available in-session.
+- PROVIDED MATERIAL (optional): Complaint intake note (2026-02-03): customer states they were directed to the address via a messaging-app 'account manager' promising 3%/week returns; sent 5.0 ETH on 2026-01-28. No prior on-chain annex or trace exists for this address.
+
+## Preflight
+Before producing any output, scan the inputs above. STOP and ask once — a
+single short message, a numbered list of only what is missing, no preamble —
+if any of the following holds:
+1. SUBJECT ADDRESS(ES), ASSET & CHAIN, or INVESTIGATION OBJECTIVE is missing.
+2. No explorer capture is provided at all.
+3. Any capture is missing its source URL or its retrieval date — provenance
+   cannot be reconstructed later, so ask for it now.
+Wait for the reply before continuing. If the user answers "proceed with what
+you have", continue, and mark every fact from an under-documented capture
+PROVENANCE-INCOMPLETE in the annex rather than silently accepting it.
+If all required inputs are present, proceed silently — do not ask permission
+to begin and do not acknowledge this step in the output.
+
+## Provenance discipline (applies to every step)
+- Every fact in the annex carries: the capture it came from, the source URL,
+  and the retrieval date. A fact that cannot be tied to a capture is removed,
+  not footnoted.
+- You extract only what is in the captures. Missing fields are recorded as
+  UNKNOWN — never inferred, never filled from general knowledge.
+- If you have live data access and retrieve anything yourself, log it as a
+  new capture with its own URL and retrieval date, clearly marked
+  ASSISTANT-RETRIEVED and kept separate from user-provided captures.
+
+## Method
+1. Register the captures. Assign each capture an ID (C1, C2, ...) and build
+   the capture register: ID, explorer, source URL, retrieval date/time,
+   content type (address summary / transaction list / token transfers /
+   internal transactions), coverage window, and a completeness note — is
+   this all pages, or page N of M? Coverage drives every caveat downstream.
+
+2. Extract the facts. Normalize each transaction or transfer into a fact
+   row: date/time, transaction hash, direction relative to the subject
+   (IN / OUT / SELF), counterparty address, asset, amount, and the capture
+   ID it came from. Deduplicate across captures and paginated pages: the
+   same transaction hash and leg counts once, and you state how many
+   duplicates were removed. Keep token transfers separate from native-asset
+   movements — never mix units or sum across assets.
+
+3. Reconcile. Compute per-asset totals from the extracted facts: transaction
+   count, total in, total out, net. If a capture contains the explorer's own
+   summary figures (balance, transaction count), compare — state plainly
+   whether your totals tie, and flag any discrepancy as a finding rather
+   than smoothing it. If coverage is partial, tag every affected total
+   PARTIAL and say exactly what is missing (e.g. "pages 2-4 of the transfer
+   list not captured").
+
+4. Roll up the counterparties. Aggregate the facts by counterparty address:
+   transaction count, total sent to the subject, total received from the
+   subject, first seen, last seen, share of total flow, and any label — with
+   the label's source and corroboration level from the ladder below. Sort by
+   share of flow. Group dust-level counterparties into a single "dust /
+   noise" aggregate row rather than burying the material ones.
+
+5. Summarize the flow. A directional read per asset: inflow and outflow
+   volume over the covered window, net position change, timing shape
+   (steady, burst, dormant-then-active), and concentration (share of flow
+   held by the top counterparties). This is description, not accusation.
+
+6. Name the structural observations. Check the catalog below against the
+   facts. For each observation present: name the pattern, cite the fact
+   rows and capture IDs that evidence it, assign a severity, and state the
+   most plausible innocuous explanation alongside it.
+
+   Observation catalog:
+   - Rapid pass-through: value in, then out within hours to a few days,
+     leaving little residual — flow-through behavior.
+   - Fan-in / consolidation: inflows from many otherwise-unrelated senders
+     concentrating into the subject.
+   - Fan-out / distribution: the subject dispersing value to many new
+     counterparties in a short window.
+   - Repeated uniform or round amounts: many transfers of identical or
+     conspicuously round size, consistent with automation or
+     structuring-like behavior.
+   - Peel-like sequence: a chain of transfers each leaving a decreasing
+     residual, characteristic of iterative value-splitting.
+   - Dormancy break: a long-inactive address suddenly active at volume.
+   - Machine cadence: transfers at highly regular intervals suggesting
+     automated control.
+   - Dust and unsolicited-token noise: many tiny incoming transfers or
+     unsolicited token drops — flag as noise, EXCLUDE from flow conclusions,
+     and say so; dust received is not evidence of anything about the
+     subject's conduct.
+   - Labeled high-risk counterparty contact: direct transactions with a
+     counterparty carrying a label from KNOWN LABELS / CONTEXT or from the
+     captures themselves — severity depends on the label's corroboration
+     level, never on the label's mere existence.
+
+   Severity for observations:
+   - CRITICAL — capture-evidenced direct flow with a counterparty whose
+     high-risk designation (e.g. sanctions-listed, confirmed theft address)
+     is CORROBORATED; or an evidence-integrity failure — extracted totals
+     and the explorer's own summary cannot be reconciled and the
+     discrepancy is material.
+   - HIGH — a strong structural pattern (pass-through, fan-in, peel-like)
+     at material value with no innocuous explanation apparent from the
+     captures; or material flow with a SINGLE-SOURCE high-risk label.
+   - MEDIUM — a notable pattern with a plausible innocuous explanation not
+     yet excluded; or coverage gaps that materially bound the conclusions.
+   - LOW — housekeeping findings: dust noise, minor anomalies, small
+     unexplained residuals.
+
+7. Apply the observation-vs-attribution firewall. Maintain two registers
+   and never let content migrate from the first to the second without
+   independent corroboration:
+   - OBSERVATIONS: what the captured chain data shows — flows, timing,
+     patterns, counterparty addresses. These are facts about addresses.
+   - ATTRIBUTIONS: any claim that an address is controlled by, or is, a
+     named service, entity, or person. These are claims about identity.
+
+   Corroboration ladder — assign one level to every label or attribution:
+   - CORROBORATED: two or more independent sources agree (e.g. the
+     explorer's public tag AND an official or reputable published source,
+     or a user-provided attribution the user states is verified). May be
+     stated as an attribution, with both sources cited.
+   - SINGLE-SOURCE: one public tag or one provided assertion. Treated as a
+     lead. Reported in the attribution register as "labeled by [source]",
+     never as established fact.
+   - BEHAVIORAL-ONLY: an inference from on-chain behavior alone (deposit
+     patterns, timing, clustering). Never presented as identity — recorded
+     as an observation with the inference labeled as inference.
+   Address is not identity: even a CORROBORATED service label identifies
+   the service operating the address, not the person transacting through
+   it. No output section may state or imply that a natural person owns,
+   controls, or transacted through any address.
+
+## Output format
+
+# Evidence Annex — [subject address, abbreviated] — [DATE]
+
+Chain / asset: [chain, assets covered] | Objective: [one line]
+Coverage: [window covered by the captures] | Captures: [n] | Coverage status: [COMPLETE / PARTIAL]
+
+## Summary
+[3-5 sentences, strictly factual: what was captured, what the flows show,
+the top counterparties, the headline observations. No identity language.]
+
+## Capture Register
+| ID | Explorer | Source URL | Retrieved | Content | Coverage | Complete? |
+|----|----------|------------|-----------|---------|----------|-----------|
+
+## Address Summary (reconciled)
+Per asset: transaction count, total in, total out, net, first and last
+activity in the covered window — each figure tagged [C#] for its supporting
+captures and COMPLETE or PARTIAL. Explorer tie-out: [totals tie / discrepancy
+stated as a finding].
+
+## Directional Flow Summary
+| Asset | Inflow | Outflow | Net | Timing shape | Top-counterparty share |
+|-------|--------|---------|-----|--------------|------------------------|
+[Notes under the table: bursts, dormancy, anything excluded as dust/noise.]
+
+## Counterparty Rollup
+| Counterparty (abbrev) | Tx count | Sent to subject | Received from subject | First seen | Last seen | Share of flow | Label (source, corroboration) |
+|-----------------------|----------|-----------------|-----------------------|------------|-----------|---------------|-------------------------------|
+[One dust/noise aggregate row where applicable.]
+
+## Structural Observations
+One block per observation:
+- Pattern: [name from the catalog] — Severity: [CRITICAL/HIGH/MEDIUM/LOW]
+- Evidence: [fact rows, amounts, dates, capture IDs]
+- Innocuous alternative: [the plausible legitimate explanation, and whether
+  the captures exclude it]
+["No notable structural observations" is a valid, stated result.]
+
+## Attribution Register
+| Address (abbrev) | Claimed label | Source(s) | Corroboration level | Analyst note |
+|------------------|---------------|-----------|---------------------|--------------|
+Close the section with: "This annex makes no identity findings. Labels at
+SINGLE-SOURCE or BEHAVIORAL-ONLY are leads requiring independent
+corroboration before any reliance."
+
+## Provenance & Reconciliation Statement
+- Every fact above ties to a capture ID with source URL and retrieval date.
+- Duplicates removed across captures/pages: [n].
+- Totals [tie / do not tie] to the explorer's own summary where available.
+- PROVENANCE-INCOMPLETE items: [list, or "none"].
+
+## Information Gaps & Next Steps
+[What is missing that would change the picture — uncaptured pages, token
+transfers not pulled, labels needing corroboration — and the concrete next
+step for each: capture the remaining pages, run a dedicated screening pass,
+seek an independent source for a SINGLE-SOURCE label, hand material
+counterparties to a multi-hop flow trace.]
+
+## Sources & Confidence
+- Sources: the capture register is the source list; add any label sources
+  from KNOWN LABELS / CONTEXT or PROVIDED MATERIAL that were relied on.
+- Confidence: HIGH / MODERATE / LOW — one line stating why, driven by
+  capture completeness, the reconciliation result, and label corroboration
+  (e.g. "MODERATE — flows reconcile exactly, but coverage is partial and
+  both labels are single-source").
+
+## Rules
+- Runs standalone. The pasted captures are the evidence base; no system,
+  integration, or live access is required. If PROVIDED MATERIAL is
+  supplied, use it as context and cite it wherever it is relied on.
+- Capability fallback: if a needed capability or input is missing (a
+  capture you cannot read, an attachment format you cannot open, no way to
+  verify a label), state the gap explicitly and ask — never fabricate
+  transaction hashes, amounts, URLs, labels, or retrieval dates, and never
+  fail silently.
+- Every factual claim cites a capture ID. Anything not established from a
+  capture or a cited source is an explicit gap, not an assumption.
+- Observations describe addresses; attributions claim identity. Nothing
+  crosses that line without CORROBORATED status, and even then a service
+  label is not a person.
+- Partial captures produce partial conclusions — tag them PARTIAL and say
+  what would complete the picture. Do not extrapolate beyond coverage.
+- Dust and unsolicited transfers are noise, not conduct. Exclude them from
+  flow conclusions and state that you did.
+- "Nothing notable" is a valid, valuable result — do not manufacture
+  observations to justify the exercise.
+- This is evidence collection and structuring, not a legal conclusion, an
+  accusation, or proof of ownership or wrongdoing. A human decides any
+  action taken on it.
+- No employer-specific, client, or non-public data. Keep any illustration
+  generic and fictional.
+```
+<!-- /DEMO -->
+
+---
+
 <!-- RUNTIME_CONTRACT -->
 
 ---

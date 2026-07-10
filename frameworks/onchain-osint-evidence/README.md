@@ -110,6 +110,7 @@ pack = build_pack(fset) if fset else None
 | File | What |
 |---|---|
 | [`METHODOLOGY.md`](METHODOLOGY.md) | The regulator-facing spec — provenance model, normalization rules, observation rules, reconciliation discipline, governance. |
+| [`SOURCE-LIBRARY.md`](SOURCE-LIBRARY.md) | Where the captures come from: a tiered public-explorer whitelist, the capture method, the facts-vs-labels tiering, and action-item scoping per finding. |
 | [`engine.py`](engine.py) | The deterministic collector/normalizer/renderer (fixture mode default; optional live mode). |
 | [`../_lib/provenance.py`](../_lib/provenance.py) | The provenance layer: `EvidenceFact`, sha256 stamping, completeness checker, evidence-manifest builder. |
 | [`generate_synthetic_data.py`](generate_synthetic_data.py) | Seeded explorer-shaped fixtures with ground truth + adversarial plants; `--write-sample` refreshes `fixtures/sample/`. |

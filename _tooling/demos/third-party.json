@@ -1,0 +1,190 @@
+{
+  "abc-risk-assessment.md": {
+    "scenario": "An anti-bribery reviewer at Harborview Financial Group assesses a customs-clearance intermediary engaged on a success fee in a high-corruption jurisdiction, with a government touchpoint and offshore payment routing.",
+    "fills": [
+      [
+        "name of the third party",
+        "Solaris Trade Facilitation DMCC — a customs-clearance and import-licensing intermediary engaged to secure permits and expedite goods release on Harborview Financial Group's behalf"
+      ],
+      [
+        "consultant | distributor",
+        "agent (customs-clearance / licensing intermediary)"
+      ],
+      [
+        "scope of services",
+        "Retained by Harborview Financial Group's trade-finance unit to obtain import licenses, clear shipments through customs, and liaise with the port authority for three trade-finance clients operating in the Zellund Free Trade Zone; paid a 9% success fee on the declared value of each consignment cleared plus a fixed monthly retainer of USD 12,000."
+      ],
+      [
+        "country(ies) of incorporation",
+        "Incorporated in the Zellund Free Trade Zone (a low-transparency free-trade-zone jurisdiction); services operated and delivered in the Republic of Calderia (Transparency International CPI approximately 28/100); billing routed through an affiliate in Ostavia, a third-country secrecy jurisdiction."
+      ],
+      [
+        "government officials",
+        "Direct and routine: obtains import permits from the Calderian Customs Directorate, files clearances with the Ministry of Trade licensing office, and coordinates berth allocation with Astrand Port Authority, a state-owned enterprise. The intermediary was introduced by a Calderian client's local sponsor and is described by the counterparty as 'preferred' by the customs office."
+      ],
+      [
+        "beneficial owners, directors",
+        "Registered owner of record is Idris Kavan (60%); the remaining 40% is held by Larkspur Holdings Ltd, a Zellund nominee entity whose beneficial owners are undisclosed. A screening note indicates Idris Kavan is the brother-in-law of a deputy director at the Calderian Ministry of Trade — a single-source, unverified adverse-media assertion."
+      ],
+      [
+        "success fees",
+        "9% success fee on declared consignment value (well above the roughly 2-3% market norm for customs brokerage), payable only on successful clearance; USD 12,000 monthly retainer; payment requested to a Larkspur Holdings account in Ostavia rather than to the operating entity in Calderia, denominated in USD."
+      ],
+      [
+        "questionnaires, contracts",
+        "Third-party questionnaire (returned 2026-03-04, partial): the beneficial-ownership and anti-corruption-certification sections were left blank and the audit-rights clause was struck through by the counterparty. Services contract (draft v2, 2026-02-18): scope described only as 'facilitation and government liaison services'; 9% success fee; no invoice-to-service matching required; payment clause names Larkspur Holdings (Ostavia). Corporate registry extract (Zellund FTZ, retrieved 2026-03-02): confirms incorporation 2025-11-09, sole director Idris Kavan, nominee shareholder Larkspur Holdings Ltd. Adverse-media hit (single regional outlet, 2025-09, unverified): alleges Solaris principals paid 'expediting fees' to customs officials on a prior shipment. Sanctions/PEP screening (2026-03-05): no OFAC/UN/EU list match on Idris Kavan or Solaris; PEP-proximity flag on the alleged Ministry of Trade family link, not independently confirmed."
+      ],
+      [
+        "earlier assessment of this subject",
+        "None — first review; baseline"
+      ],
+      [
+        "SUBJECT",
+        "Solaris Trade Facilitation DMCC"
+      ]
+    ]
+  },
+  "correspondent-nested-risk.md": {
+    "scenario": "A correspondent-banking analyst at Harborview Financial Group reviews a respondent bank in a FATF grey-listed jurisdiction requesting USD clearing and a payable-through-account, with suspected undisclosed downstream nesting.",
+    "fills": [
+      [
+        "respondent bank legal name",
+        "Banco Fluvial de Santamar S.A. — chartered in the Republic of Santamar; full commercial banking license issued by the Santamar Superintendency of Banks (license SB-0447, 2009)."
+      ],
+      [
+        "payable-through-account (PTA)",
+        "USD correspondent clearing plus a requested payable-through-account (PTA) facility."
+      ],
+      [
+        "cash letters, FX, trade finance",
+        "USD wire/payment clearing, FX settlement, and a payable-through-account allowing the respondent's commercial customers to draw directly; trade-finance advising requested for a later phase."
+      ],
+      [
+        "ultimate beneficial owners",
+        "Parent group is Fluvial Financiera Holdings (Santamar), holding 72%; a 21% stake is held by Cresta Capital Partners, a private-investment vehicle in a secrecy jurisdiction whose beneficial owners are disclosed only to the first layer; the remaining approximately 7% is free float. The chairman is a former Santamar deputy finance minister (PEP). CEO: Marisol Everett."
+      ],
+      [
+        "AML/CFT regime, supervisor",
+        "Republic of Santamar — FATF grey-listed (increased monitoring) as of 2025; AML/CFT supervised by the Superintendency of Banks; the regional FATF-style body notes strategic deficiencies in beneficial-ownership transparency and DNFBP supervision; statutory bank-secrecy provisions remain in force."
+      ],
+      [
+        "presence of MSBs / PSPs / VASPs",
+        "Mixed retail and commercial, with a notable higher-risk concentration: three licensed money-services businesses, two payment service providers, and one virtual-asset service provider (Meridian Digital Exchange's Santamar affiliate) sit among the top-20 customers; the bank serves cross-border remittance corridors into neighboring high-cash economies."
+      ],
+      [
+        "downstream correspondent or PTA access",
+        "Suspected but not disclosed. The respondent's DDQ answered 'no' to downstream FI access, but public filings show it provides USD-denominated settlement to two smaller Santamar institutions (Banco del Istmo and Caja Rural Norte) that hold no USD correspondent of their own — a nested arrangement that would route their customers' flows through Harborview. Not confirmed or explained by the respondent."
+      ],
+      [
+        "high-risk-jurisdiction corridors, PEP linkages",
+        "No direct sanctions designation on the respondent or its disclosed UBOs. Corridor exposure to a neighboring jurisdiction under partial sectoral sanctions; PEP linkage via the chairman; one 2024 regional adverse-media item alleges a prior USD provider exited the relationship over transparency concerns (single source, unverified)."
+      ],
+      [
+        "CDD, screening, monitoring, audit, MLRO",
+        "Wolfsberg CBDDQ submitted 2026-01, roughly 70% complete: it names an MLRO and a sanctions-screening tool but leaves the transaction-monitoring scenario coverage and the independent-audit date blank; there is no evidence of downstream-FI due diligence; a training attestation is provided without completion rates."
+      ],
+      [
+        "DDQ responses, public filings",
+        "Wolfsberg CBDDQ (2026-01, partial); Santamar Superintendency public license-register extract (2026-02-20); FATF grey-list statement (2025) naming Santamar; two regional news items (2024 and 2026) on de-risking and remittance corridors; the parent-consolidated audited financials FY2024. No standalone downstream-FI customer list was provided despite request."
+      ],
+      [
+        "earlier version of this memo",
+        "None — first review; baseline"
+      ],
+      [
+        "respondent name",
+        "Banco Fluvial de Santamar S.A."
+      ]
+    ]
+  },
+  "tbml-redflag-analysis.md": {
+    "scenario": "A trade-finance AML analyst at Harborview Financial Group screens a letter-of-credit transaction where refined copper is declared far above the public benchmark, funded by an unrelated payer, and routed with no commercial rationale.",
+    "fills": [
+      [
+        "SUBJECT",
+        "A single letter-of-credit transaction presented to Harborview Financial Group's trade-finance desk for advising and negotiation — LC ref HFG-LC-2026-04471, applicant Cobalt Peak Industrial Ltd, drawing amount USD 10,320,000."
+      ],
+      [
+        "INSTRUMENT_STRUCTURE",
+        "Irrevocable documentary letter of credit, payable at sight, issued 2026-03-12 by Banco Fluvial de Santamar. Two amendments since issuance: Amendment 1 (2026-03-19) raised the amount from USD 7,900,000 to USD 10,320,000; Amendment 2 (2026-03-27) changed the beneficiary bank and extended the latest shipment date by 21 days."
+      ],
+      [
+        "PARTIES",
+        "Applicant/importer: Cobalt Peak Industrial Ltd (Republic of Calderia). Beneficiary/exporter: Northgate Commodities FZE (Zellund Free Trade Zone) — registered 2025-12, stated activity 'general trading', with no prior metals-trade history. Issuing bank: Banco Fluvial de Santamar. Payer of the initial deposit: Larkspur Holdings Ltd (Ostavia), an entity with no stated role in the trade. Freight forwarder: Astrand Logistics."
+      ],
+      [
+        "GOODS",
+        "480 metric tons of refined copper cathode, Grade A (declared HS 7403.11); declared unit price USD 21,500 per metric ton; declared total USD 10,320,000. The packing list cites 19,200 cathode sheets averaging 25 kg each."
+      ],
+      [
+        "ROUTING",
+        "Stated origin Port of Astrand (Republic of Calderia); transshipment through the Zellund Free Trade Zone; final destination a bonded warehouse in Ostavia — a routing with no clear commercial rationale for a Calderia-origin, Calderia-applicant trade, with the goods leaving the applicant's own jurisdiction."
+      ],
+      [
+        "REFERENCE_PRICE_BASIS",
+        "The public refined-copper cathode benchmark over the LC issuance week averaged approximately USD 9,400 per metric ton (cash-settlement basis, cited from a public commodity price index for the week of 2026-03-09). Grade A cathode typically trades within a few percent of this benchmark plus a modest regional premium."
+      ],
+      [
+        "KNOWN_CONTEXT",
+        "Cobalt Peak has one prior trade with Harborview (2025, agricultural machinery, USD 640,000) and no metals history. KYC records expected annual trade activity of roughly USD 2,000,000. Two prior monitoring notes flag rapid post-clearance outbound transfers. The stated trade purpose on the application is 'resale of industrial metals to regional buyers'."
+      ],
+      [
+        "PROVIDED_MATERIAL",
+        "Full LC text with both amendments; commercial invoice (Northgate Commodities FZE, USD 10,320,000); packing list (19,200 sheets); draft bill of lading (Astrand Logistics, not yet showing goods on board); Cobalt Peak KYC summary; and a deposit receipt showing USD 2,100,000 funded by Larkspur Holdings Ltd. No independent assay certificate or third-party inspection report was provided."
+      ],
+      [
+        "PRIOR_OUTPUT",
+        "None — first review; baseline"
+      ]
+    ]
+  },
+  "vendor-due-diligence.md": {
+    "scenario": "A third-party risk analyst at Harborview Financial Group runs onboarding due diligence on a critical single-source sanctions-screening data vendor that holds customer PII and delivers from a high-risk jurisdiction.",
+    "fills": [
+      [
+        "LEGAL_NAME_AND_ANY_TRADE_NAMES",
+        "Aldertree Screening Solutions Ltd (also trading as 'Aldertree Compliance Data')"
+      ],
+      [
+        "COUNTRIES_HQ_AND_DELIVERY",
+        "Headquarters and contracting entity in Cyprus; data processing and engineering delivered from a development center in the Republic of Calderia (a high-corruption-index jurisdiction); customer data hosted in an EU region."
+      ],
+      [
+        "WHAT_THEY_DO_FOR_YOU",
+        "Supplies Harborview Financial Group's hosted sanctions, PEP, and adverse-media screening data feeds and the match engine that screens the onboarding and outbound-payment populations — a single-source dependency for real-time sanctions screening."
+      ],
+      [
+        "what breaks if they fail",
+        "Critical, single-source. If Aldertree fails, is breached, or is offboarded abruptly, real-time sanctions and PEP screening of new customers and outbound payments halts — a regulated control with no immediate substitute."
+      ],
+      [
+        "customer PII, payment data",
+        "Holds customer PII (full name, date of birth, nationality, government-ID numbers) for screened parties plus outbound-payment beneficiary data, and holds API-level network access into Harborview's onboarding workflow."
+      ],
+      [
+        "ANNUAL_OR_TOTAL",
+        "USD 1,450,000 annual license and data-feed subscription; three-year term."
+      ],
+      [
+        "ONBOARDING or PERIODIC",
+        "ONBOARDING"
+      ],
+      [
+        "DATE_OR_NA",
+        "N/A — onboarding review; no prior review"
+      ],
+      [
+        "NAMES_IF_KNOWN",
+        "Majority owner of record: Halcyon Ventures Ltd (Cyprus), approximately 68%; founder-CEO Petra Andersson holds approximately 19%; the remaining approximately 13% is attributed to an employee pool. Halcyon Ventures' own beneficial owners are disclosed only to the first layer."
+      ],
+      [
+        "PASTE_RFP_RESPONSES_SOC2",
+        "RFP response (2026-02); vendor security questionnaire (SIG-lite, returned 2026-02-24); a SOC 2 Type II report that is expired, covering the period ending 2024-09, with no current-year report provided; unaudited management financials FY2024 (revenue USD 9,200,000, net loss USD 1,100,000, no going-concern language but a noted cash runway of roughly 11 months); sanctions and adverse-media screening on Aldertree, Halcyon Ventures, and Petra Andersson (2026-02-25) returning no list matches; a 2025 breach-disclosure note describing a contained phishing incident with no confirmed data exfiltration; and a current ISO 27001 certificate issued 2025-06."
+      ],
+      [
+        "PASTE_PRIOR_DD_MEMO",
+        "None — first review; baseline"
+      ]
+    ]
+  }
+}

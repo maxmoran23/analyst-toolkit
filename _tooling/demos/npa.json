@@ -1,0 +1,117 @@
+{
+  "npa-risk-assessment.md": {
+    "scenario": "A financial-crime analyst at Harborview Financial Group assesses a proposed institutional stablecoin cross-border settlement product, custodied in-house and offered via API into two elevated-risk corridors, before the new-product committee.",
+    "fills": [
+      [
+        "one-paragraph description",
+        "Meridian Settle — an institutional cross-border settlement service that lets corporate and financial-institution clients settle USD-value payments in a fiat-backed (USD) stablecoin, with Harborview Financial Group holding and custodying the stablecoin on clients' behalf and converting to and from fiat at each leg. Business rationale: capture same-day settlement fees on corridors where correspondent clearing is slow and costly. Sponsoring business line: Global Transaction Banking. Target launch date: 2026-09-01."
+      ],
+      [
+        "NEW segment for the firm",
+        "Institutional only at launch — corporates and other financial institutions; no retail. Financial-institution clients that settle on behalf of their own downstream customers are a NEW segment for the firm: Harborview has not previously banked FI clients that pass third-party flows across this rail."
+      ],
+      [
+        "NEW geography",
+        "Two corridors at launch: domestic-to-Republic of Calderia and domestic-to-Ostavia. Calderia is an elevated-risk, high-corruption-index jurisdiction and is a NEW geography for this business line; Ostavia is a financial-secrecy jurisdiction."
+      ],
+      [
+        "intermediated (agents",
+        "API / programmatic access for institutional clients, with an intermediated white-label option under evaluation for one FI client."
+      ],
+      [
+        "whether the firm will hold or custody the asset",
+        "Digital asset — a fiat-backed USD stablecoin. The firm WILL hold and custody the stablecoin on clients' behalf (a new custody function), converting to and from fiat at each settlement leg."
+      ],
+      [
+        "entirely new capability",
+        "Entirely new capability — Harborview has never operated digital-asset custody, on-chain settlement, or stablecoin conversion in production; the controls, procedures, and trained staff for this rail do not yet exist."
+      ],
+      [
+        "sub-custodians",
+        "Depends on Meridian Digital Exchange as the stablecoin liquidity and conversion venue (a virtual-asset service provider whose regulated status varies by corridor and is not confirmed for Calderia); Aldertree Screening Solutions for sanctions and wallet screening (a vendor, not a regulated FI); and Northpoint Key Services as sub-custodian for cold-wallet key management (an unregulated technology provider)."
+      ],
+      [
+        "collects, stores, or shares",
+        "Collects and stores institutional-client and beneficiary identifying data, wallet addresses, and full transaction detail; shares wallet-screening data with Aldertree and settlement instructions with Meridian Digital Exchange, including cross-border transfer of beneficiary data into the corridor jurisdictions."
+      ],
+      [
+        "autonomous decisioning",
+        "Assistive only at launch — an analytics model scores wallet risk and settlement anomalies, but a human dispositions every alert; no autonomous decisioning on onboarding, pricing, or blocking."
+      ],
+      [
+        "prohibited product/attribute list",
+        "None provided — apply the generic three-attribute prohibited gate (comprehensive-sanctions target market, anonymity-enhanced instrument design, bearer-negotiable feature) and flag the absence of an institutional register as an assumption."
+      ],
+      [
+        "proposal document, business case",
+        "Product proposal deck v3 (Global Transaction Banking, 2026-05-14); a business case with a 12-month volume projection; a draft control narrative describing wallet screening, transaction monitoring, and key management at a design level; a legal memo on the stablecoin-custody characterization; and the Meridian Digital Exchange and Aldertree vendor profiles. No completed transaction-monitoring rule test results are available yet."
+      ],
+      [
+        "earlier draft assessment",
+        "None — first assessment; baseline"
+      ]
+    ]
+  },
+  "post-implementation-review.md": {
+    "scenario": "At the committed 90-day review, a financial-crime analyst at Harborview Financial Group compares the launched Meridian Settle stablecoin-settlement product against its approval-time projections, finding an unapproved corridor, a silent monitoring rule, and a nested-flow risk.",
+    "fills": [
+      [
+        "committed review date and interval",
+        "Meridian Settle (institutional stablecoin cross-border settlement). Approved by the New-Product Committee on 2026-08-19 at risk tier HIGH (floored by the digital-asset custody novelty rule). Launched 2026-09-01. Committed post-implementation review date: 2026-11-30 (90-day interval, per the HIGH-tier cadence). Reviewer: second-line financial-crime analyst."
+      ],
+      [
+        "expected volumes",
+        "The proposal projected roughly USD 180,000,000 of settled value over the first 90 days across approximately 600 settlements; client mix 70% corporates / 30% financial institutions; corridor mix domestic-to-Calderia 60% and domestic-to-Ostavia 40%; an expected monitoring-alert rate of roughly 3-5% of settlements; and no incidents. Two corridors only were assessed."
+      ],
+      [
+        "actuals for the review window",
+        "Actuals for 2026-09-01 to 2026-11-30: USD 111,400,000 settled across 372 settlements (62% of projected value). Client mix 48% corporates / 52% financial institutions. Corridor mix: Calderia 51%, Ostavia 31%, and a THIRD corridor — domestic-to-Republic of Santamar — that was never named in the proposal, carrying 18% of settled value. Monitoring alerts: the counterparty-anomaly rule fired 41 times (mostly benign; 3 referred for SAR consideration); the settlement-flow coverage rule generated ZERO alerts across all 372 settlements. One near-miss: a beneficiary wallet later matched a provisional watchlist entry, caught on manual review. No confirmed losses."
+      ],
+      [
+        "pre-launch conditions",
+        "Condition 1 (sanctions and wallet-screening coverage confirmed) — claimed COMPLIED, screening logs provided. Condition 2 (transaction-monitoring rules deployed and tested against settlement flows) — claimed complied, but the settlement-flow rule has produced zero alerts on live flows and the only test evidence is a pre-launch deployment note. Condition 3 (digital-asset control review: key management, on-chain monitoring) — claimed complied, control-review memo dated 2026-08-28 provided. Condition 4 (third-party due diligence on Meridian Digital Exchange and Northpoint Key Services) — Meridian complete; Northpoint DD marked 'in progress' with its deadline blown. Condition 5 (procedures updated and training delivered to onboarding and monitoring teams) — complied, 91% training completion. Post-launch review condition (90-day) — satisfied by this review."
+      ],
+      [
+        "changed since approval",
+        "Since approval: the Republic of Santamar moved onto the FATF grey list (2026-10) — directly relevant, because settlements now flow into a Santamar corridor the approval never assessed. A public typology paper on stablecoin nested-settlement abuse was published 2026-11. No internal control changes."
+      ],
+      [
+        "MIS extracts",
+        "The original NPA risk assessment (2026-08) and its condition list; the pre-launch readiness memo (2026-08-30); MIS extracts of settled volume and corridor mix by month; the alert report by rule with disposition mix; the key-management control-review memo; the Meridian Digital Exchange due-diligence file; the training-completion extract; and the near-miss case note."
+      ],
+      [
+        "earlier post-implementation review",
+        "None — first post-implementation review; baseline"
+      ]
+    ]
+  },
+  "product-launch-readiness.md": {
+    "scenario": "Days before go-live, a financial-crime readiness reviewer at Harborview Financial Group verifies the eight approval conditions on the Meridian Settle stablecoin-settlement product against actual evidence, finding the monitoring-test condition unmet.",
+    "fills": [
+      [
+        "planned launch date",
+        "Meridian Settle (institutional stablecoin cross-border settlement). Approved by the New-Product Committee 2026-08-19 at risk tier HIGH. Planned launch date: 2026-09-01. This is the formal pre-launch readiness check, run 2026-08-28."
+      ],
+      [
+        "paste it verbatim",
+        "C1 [CRITICAL] Sanctions and wallet-screening coverage confirmed: lists in scope, product population screened, and match-handling path documented — to be met before launch.\nC2 [CRITICAL] Transaction-monitoring rules identified, deployed, AND tested against representative settlement-flow transactions — to be met before launch.\nC3 [HIGH] Digital-asset control review completed: cold-wallet key management, on-chain monitoring coverage, and wallet-provisioning controls — to be met before launch.\nC4 [HIGH] Third-party due diligence completed on each unregulated dependency (Meridian Digital Exchange, Aldertree Screening Solutions, Northpoint Key Services) — to be met before launch.\nC5 [MEDIUM] Procedures updated and published to the onboarding, monitoring, and investigations teams — to be met before launch.\nC6 [MEDIUM] Training delivered to the teams that will onboard, monitor, and investigate the product — to be met before launch.\nC7 [HIGH] Model-risk documentation for the assistive wallet-risk analytics reviewed and signed off — to be met before launch.\nC8 [LOW] Post-launch review date set from the launch date (90-day, HIGH tier) — documented at approval."
+      ],
+      [
+        "proof of completion",
+        "C1: Screening configuration export dated 2026-08-25 — OFAC/UN/EU and internal lists in scope, onboarding and settlement populations screened, match-handling routed to the L2 queue. C2: A deployment-confirmation email (2026-08-26) stating 'settlement-flow monitoring rules are live'; no test report and no evidence the rules fired against representative transactions. C3: Digital-asset control-review memo dated 2026-08-28, key-management and on-chain-monitoring sections complete. C4: Meridian Digital Exchange and Aldertree DD reports complete; Northpoint Key Services DD marked 'in progress'. C5: Updated procedures v2.0 published 2026-08-27 with an approval block. C6: Training-completion extract — 84% complete overall, with the full day-one launch team (all 11 named staff) recorded complete. C7: Model-risk validation memo signed 2026-08-24. C8: Approval minutes recording the 90-day review date."
+      ],
+      [
+        "phased launch plan",
+        "Single-phase general-availability launch to institutional clients on 2026-09-01 (no pilot). Day-1 expected volume roughly USD 2,000,000 across up to 8 settlements. The launch date has already slipped once, from 2026-08-15, creating schedule pressure to hold 2026-09-01."
+      ],
+      [
+        "screening configuration confirmations",
+        "The screening configuration export; the monitoring deployment-confirmation email; the digital-asset control-review memo; the Meridian Digital Exchange and Aldertree DD reports; the Northpoint DD status note; procedures v2.0 with its version and approval block; the training-completion extract; the model-risk validation memo; and the approval minutes carrying the condition list and tier."
+      ],
+      [
+        "earlier readiness check",
+        "None — first readiness check; baseline"
+      ]
+    ]
+  }
+}

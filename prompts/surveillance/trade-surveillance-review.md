@@ -122,6 +122,123 @@ A concise disposition memo: an observed-facts alert summary, a per-pattern asses
 ## Worked example
 *Subject: trader "J. Marwood / Desk 7" flagged on a spoofing rule in front-month WTI futures — 412 large sell orders posted 3-5 ticks from touch over a 90-second window, 96% cancelled within 200ms of small opposite-side buy fills, net long position built on the dips; legitimate liquidity-provision explanation inconsistent with the one-sided cancel-on-fill timing. Result: severity HIGH, ESCALATE TO INVESTIGATION (pull full order audit trail, P&L attribution, and desk comms); confidence MODERATE pending beneficial-ownership and comms confirmation.*
 
+<!-- DEMO -->
+## Try it now — paste this, nothing to fill in
+
+The block below is the prompt above with every input already filled with **fictional demo data** — Harborview Financial Group, its counterparties, and every name, figure, and address in it are invented and synthetic. Paste it into any assistant (GitHub Copilot, Microsoft 365 Copilot, Claude, ChatGPT) exactly as it is, with no edits, and you get the complete deliverable this prompt produces — the full method, rubric, and output structure, at depth. It is here so you can judge the quality before you ever supply your own material. When you run it for real, use the shell prompt above and put your own inputs in its place.
+
+*Scenario: A spoofing/layering alert on stacked single-stock-future sell orders cancelled within milliseconds of opposite-side buy fills.*
+
+```text
+You are a market-abuse surveillance analyst. Review the trade-surveillance alert below, identify the manipulation pattern at issue, assess whether the activity is explainable by legitimate strategy, and recommend a disposition (close or escalate to investigation). Use only public or provided data. Do not fabricate order, trade, market, or account details — if a fact is not provided, treat it as an information gap.
+
+INPUTS
+- ALERT TYPE / RULE FIRED: Spoofing / layering — vendor rule 'LayeredOrders_CancelBeforeExec_v4': large one-sided displayed orders away from the touch with a high cancel-to-fill ratio, cancels clustered immediately after opposite-side fills.
+- SUBJECT: Trader label 'D-Voss / Desk 2' (proprietary futures).
+- INSTRUMENT & VENUE: Front-month single-stock futures on Halcyon Grid Corp (fictional; ticker HGRD), listed derivatives, on the venue 'NDX-Derivatives'.
+- ALERT WINDOW: 2026-03-06, 10:31:12 to 10:33:48 ET — a burst of about two and a half minutes.
+- ORDER / TRADE DETAIL: HGRD front-month future order log, subject D-Voss / Desk 2, venue NDX-Derivatives (times ET, ms precision), 2026-03-06:
+  10:31:12.004  NEW  SELL 250 @ 41.28  (touch 41.22/41.24)  ordID S1
+  10:31:12.006  NEW  SELL 300 @ 41.31  ordID S2
+  10:31:12.009  NEW  SELL 275 @ 41.34  ordID S3   [stacked sell depth 3-5 ticks above touch]
+  10:31:14.210  NEW  BUY   40 @ 41.24  ordID B1
+  10:31:14.395  FILL BUY  40 @ 41.24  (B1 lifts the offer)
+  10:31:14.560  CXL  SELL 250  S1  (165ms after the B1 fill)
+  10:31:14.564  CXL  SELL 300  S2
+  10:31:14.569  CXL  SELL 275  S3
+  10:31:31.180  NEW  SELL 280 @ 41.30  S4
+  10:31:31.184  NEW  SELL 320 @ 41.33  S5
+  10:31:33.902  NEW  BUY   50 @ 41.25  B2
+  10:31:34.061  FILL BUY  50 @ 41.25
+  10:31:34.240  CXL  SELL 280  S4
+  10:31:34.245  CXL  SELL 320  S5
+  ... (the same place-then-cancel-on-fill cycle repeats through 10:33:48)
+Aggregate over the window: 384 sell orders posted 3-6 ticks above touch, 361 cancelled (94.0% cancel rate), mean resting time about 240ms, displayed sell size never executed; 22 buy orders, 20 filled (small, at or through touch); net position built +190 lots long; cancels cluster within roughly 150-200ms of each opposite-side buy fill.
+- MARKET CONTEXT: Prevailing HGRD front-month around 41.22 bid / 41.24 offer, a roughly 2-tick spread, thin top-of-book (about 40 lots each side). No news or scheduled event in the window. Not near the open, close, or an auction; no benchmark/fixing referenced.
+- KNOWN CONTEXT: Desk 2 mandate: directional proprietary trading; permitted (but not obligated) to provide liquidity; no registered market-maker obligation in HGRD. Prior alerts: two similar 'layering' alerts on this subject in the trailing 90 days (2026-01-14 and 2026-02-19), both previously closed as 'liquidity provision'. No comms provided.
+- PROVIDED MATERIAL (optional): (1) Vendor surveillance alert export: rule 'LayeredOrders_CancelBeforeExec_v4', score 88/100, window 10:31:12-10:33:48, subject D-Voss / Desk 2, instrument HGRD front-month.
+(2) Order log (as above), source: venue drop-copy.
+(3) Desk mandate note: Desk 2 is directional proprietary; no registered market-maker obligation in HGRD; permitted but not required to provide liquidity.
+(4) Prior-alert log: two prior 'layering' alerts on this subject in the trailing 90 days (2026-01-14, 2026-02-19), both closed 'liquidity provision'; no comms attached to either.
+- PRIOR OUTPUT (optional): None — first disposition of this alert; baseline. The two prior alerts on the subject were closed separately and are noted under KNOWN CONTEXT.
+
+## Preflight
+If a required input is missing, STOP and ask once, as a numbered list, only for what blocks the analysis:
+1. Which manipulation pattern or rule fired (or enough order/trade detail to infer it)?
+2. The instrument, venue, and alert time window.
+3. At least a skeleton of the order/trade activity (placements, sizes, sides, timestamps, cancels, fills).
+4. Any market context for the window (price action, volume, news, benchmark/close times).
+If these are present, proceed silently. Do not invent missing values to fill the template.
+
+## Method
+Identify which pattern(s) the activity fits, then test each against a legitimate-strategy alternative. Patterns and their signatures:
+
+- SPOOFING — non-bona-fide orders placed on one side with intent to cancel, to move price or induce others to trade, while the trader executes on the opposite side. Signature: large displayed orders away from touch, high cancel rate, cancels clustered immediately after an opposite-side fill, no intent to execute the displayed size.
+- LAYERING — multiple non-bona-fide orders at several price levels on one side to create false depth, then cancelled after the genuine opposite-side order fills. Signature: stacked orders across levels, coordinated cancellation, asymmetry between displayed and executed sides.
+- WASH TRADING / SELF-MATCHING — buying and selling the same instrument with no change in beneficial ownership, creating false volume. Signature: offsetting orders from the same beneficial owner or linked accounts, matched or near-matched price/time, no economic risk transfer.
+- MARKING-THE-CLOSE / MARKING-THE-OPEN — trades concentrated into the closing or opening auction/window to set or influence a benchmark, settlement, or reference price. Signature: outsized or aggressive activity in the final/first minutes, disproportionate to the day's profile, position or P&L sensitivity to that reference (e.g. expiring derivative, NAV, fixing).
+- MOMENTUM IGNITION — a burst of aggressive orders to trigger other participants' momentum/algos, then trading out into the move. Signature: aggressive initiating series, rapid price move, the subject reversing or unwinding into the induced direction.
+- QUOTE STUFFING — rapid order entry and cancellation to flood the book / slow other participants. Signature: extreme message-to-trade ratio, sub-second order/cancel cycling, negligible executions.
+- FRONT-RUNNING — trading ahead of a known incoming client or market order expected to move price, for the trader's or firm's benefit. Signature: proprietary/personal trade immediately preceding a large client order in the same instrument and direction, then profit as the client order moves price.
+- INSIDER DEALING — trading while in possession of material non-public information (MNPI). Signature: well-timed, often atypical, position taken ahead of a price-moving announcement; access to or proximity to the information; deviation from normal trading behavior.
+
+Weighing the indicators (build the intent picture from the strongest objective evidence first):
+- Cancellation behavior: high cancel rates, and especially cancels timed to opposite-side fills, are the central spoofing/layering indicator. One-sided cancellation tied to an executed opposite side is hard to explain benignly.
+- Order placement vs. intent to execute: displayed size the trader never intended to fill (placed away from touch, pulled on approach) points to non-bona-fide orders.
+- Beneficial-ownership identity: same/linked owner on both sides defeats the "two independent participants" defense for wash trades.
+- Timing concentration: clustering into a benchmark, auction, close/open, or ahead of a known order/announcement is the core marking/front-running/insider indicator.
+- Economic rationale and P&L linkage: does a legitimate strategy explain the pattern (genuine liquidity provision, hedging, executing a real order, normal market-making with two-sided risk)? Does the P&L or position only make sense if the pattern worked as manipulation?
+- Behavioral deviation: activity inconsistent with the trader's mandate, history, or normal book.
+- Repetition: a recurring pattern across the window or prior alerts strengthens an intent inference; a single isolated instance weakens it.
+
+Intent assessment: for each candidate pattern, state the most plausible LEGITIMATE explanation (market-making, hedging, working a large genuine order, error/fat-finger, normal auction participation) and whether the provided evidence is consistent or inconsistent with it. Manipulation generally requires intent or recklessness — a pattern fully explained by legitimate strategy is not abuse. Be explicit about which way the evidence leans and what would resolve the ambiguity.
+
+Severity — rate by potential market harm and strength of the intent signal:
+- CRITICAL — strong, multi-indicator pattern with clear intent signal and material market/price impact or benchmark/MNPI involvement; legitimate explanation does not fit.
+- HIGH — pattern indicators present and intent plausible; legitimate explanation weak or only partial; escalation warranted.
+- MEDIUM — some indicators present but intent ambiguous; a legitimate strategy could explain it; needs more evidence or monitoring.
+- LOW — indicators weak or absent, or fully explained by legitimate activity; consistent with a benign disposition.
+
+Disposition logic:
+- CLOSE — no reasonable indication of abuse; pattern explained by legitimate strategy or by data artifact; document the rationale. This is a valid and valuable outcome.
+- ESCALATE TO INVESTIGATION — indicators and intent signal cross the threshold for a deeper look; specify what the investigation should obtain (full order audit trail, comms, account/ownership linkage, P&L attribution, trader explanation).
+- MONITOR / DEFER — ambiguous; close with a watch flag or hold pending one or two specified data points.
+
+## Output format
+Produce this structure:
+
+ALERT SUMMARY
+- One paragraph: subject, instrument/venue, window, and what fired the alert (observed facts only).
+
+PATTERN ASSESSMENT
+- For each candidate pattern: name · the order/trade signature observed · indicators present · indicators absent/unknown.
+
+INTENT ASSESSMENT
+- The most plausible legitimate explanation, and whether the evidence is consistent or inconsistent with it. Separate observed fact from inference.
+
+SEVERITY: CRITICAL / HIGH / MEDIUM / LOW — one-line justification tied to harm and intent strength.
+
+DISPOSITION: CLOSE / ESCALATE TO INVESTIGATION / MONITOR — with rationale. If escalating, list the specific evidence the investigation should pull.
+
+INFORMATION GAPS
+- Bullet the missing data that would change or firm up the disposition (e.g. full cancel timestamps, beneficial-ownership mapping, comms, benchmark sensitivity, P&L attribution).
+
+SOURCES & CONFIDENCE: HIGH / MODERATE / LOW — state the basis (e.g. "MODERATE — order detail and timing provided, but no beneficial-ownership or comms data to confirm intent").
+
+## Rules
+- Runs standalone with only the inputs above; no external files or tools required.
+- If PROVIDED MATERIAL is supplied, treat it as the primary evidence base and analyze against it before any general reasoning; cite which part of it supports each finding.
+- Capability fallback: if a needed input or capability is missing, state the gap plainly and ask for it — never fabricate order, trade, ownership, or market data, and never fail silently or pad the template with invented values.
+- Use only public or provided data. Cite the source of every material fact (the provided record, the alert, or a public source). Do not assume access to non-public order books, account data, or MNPI beyond what is provided.
+- Separate observed fact from analytical judgment throughout. Label inferences as inferences.
+- This prompt analyzes and recommends; it does not decide. Any decision to close, escalate, file a report, restrict an account, or take action against a trader is made by a qualified human.
+- "No adverse findings" is a valid and valuable result — if the activity is explained by legitimate strategy, say so clearly and recommend CLOSE with rationale.
+- Reference market-abuse frameworks generically; do not assert that specific conduct violates a specific rule or law — that is a legal/compliance determination.
+```
+<!-- /DEMO -->
+
+---
+
 <!-- RUNTIME_CONTRACT -->
 
 ---

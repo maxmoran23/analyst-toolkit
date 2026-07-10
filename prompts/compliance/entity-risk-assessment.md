@@ -181,6 +181,153 @@ A 0-100 composite, a 5-tier rating, an eight-row scorecard, per-domain narrative
 
 *"Assess a mid-size digital-asset exchange ahead of a counterparty onboarding decision."* — see [`samples/reports/`](../../samples/reports/) for a full rendered assessment.
 
+<!-- DEMO -->
+## Try it now — paste this, nothing to fill in
+
+The block below is the prompt above with every input already filled with **fictional demo data** — Harborview Financial Group, its counterparties, and every name, figure, and address in it are invented and synthetic. Paste it into any assistant (GitHub Copilot, Microsoft 365 Copilot, Claude, ChatGPT) exactly as it is, with no edits, and you get the complete deliverable this prompt produces — the full method, rubric, and output structure, at depth. It is here so you can judge the quality before you ever supply your own material. When you run it for real, use the shell prompt above and put your own inputs in its place.
+
+*Scenario: Harborview's digital-asset desk runs an OSINT counterparty risk assessment on Meridian Digital Exchange before approving it as a settlement and liquidity partner.*
+
+```text
+You are an entity risk analyst. Produce an audit-defensible risk
+assessment of the entity below using only publicly available information (OSINT).
+
+ENTITY: Meridian Digital Exchange (operating company: Meridian Digital Holdings Ltd)
+CONTEXT: Counterparty onboarding - Harborview Financial Group's digital-asset desk is evaluating Meridian Digital Exchange as a settlement and liquidity counterparty and needs a documented risk read before approval.
+ASSESSMENT DATE: 2026-06-15
+PROVIDED MATERIAL (optional): OSINT dossier compiled 2026-06-14 (all sources synthetic for this exercise). Corporate: Meridian Digital Holdings Ltd, incorporated in the Republic of Seychelles in 2019, with operating subsidiaries in Lithuania (EU VASP registration active since 2021) and Singapore (in-principle approval, pending); ultimate parent owned 62% by founder Nadia Foxwell, 21% by Aster Ventures (a VC firm), 17% employee pool; group HQ marketed as 'Zurich' though the registry shows a Seychelles domicile, and ownership above Aster Ventures is not disclosed. Financial health: self-reported on the company blog (2026-Q1) as $4.1B quarterly spot volume and 'profitable since 2023', with no audited financials published and no third-party proof-of-reserves attestation since 2024. Regulatory / enforcement: Lithuania VASP registration active; in 2025-09 the fictional Baltic Financial Supervisory Authority issued a public warning that Meridian's local entity 'may be offering leveraged products to retail without authorization' (a warning, no fine); not registered with FinCEN as an MSB; geoblocks US IPs per its terms of service, though a 2026-02 investigative article in the fictional outlet ChainLedger News reported US users onboarding via VPN. Litigation: one pending civil suit, the fictional Delacroix v. Meridian (filed 2025-11 in Singapore), alleging withheld withdrawals during a 2025-08 outage; no judgment. Sanctions / watchlist: no OFAC, EU, or UN hit on the entity or on Nadia Foxwell in the provided extracts; an on-chain analytics report from the fictional vendor Tracegraph estimated about 3.2% of 2025 inflows traced to high-risk services (mixers, sanctioned-adjacent nested exchanges), above the roughly 1% peer median it cites. Adverse media: sustained negative coverage around the 2025-08 withdrawal outage, plus unproven allegations of commingling customer and operational funds raised by a pseudonymous researcher, none confirmed by a regulator. Governance: a founder-controlled board (3 of 4 seats founder-aligned), a CFO seat vacant since 2025-10, an auditor engagement 'in progress' with none named, and a COO who previously held a senior role at the fictional exchange Corsair Exchange that wound down in 2022 after a liquidity failure (no charges). Geographic / sector: Seychelles domicile (offshore, limited transparency) with EU and Singapore operations; the sector is a centralized crypto exchange, inherently high in money-laundering exposure; no FATF-blacklisted jurisdiction appears in the operating footprint.
+
+If the entity name is ambiguous, resolve to the most prominent match and state the assumption.
+
+## Preflight
+
+Before producing any output, scan the inputs above. If any required input is missing,
+ambiguous, or contradictory, STOP. Do not produce a partial draft and do not guess at
+the missing context. Ask the user once, in a single short message, with a numbered list
+of the specific clarifications you need (one item per line, no preamble or apology).
+Wait for the user's reply before continuing. If the user replies "proceed with what you
+have", continue and clearly flag every gap in the Information Gaps section of the
+output.
+
+If all required inputs are present, proceed silently to the next section below — do not
+acknowledge this step in the output.
+
+## Method
+
+First, classify the entity. Before scoring, identify the entity's type. If it does
+not touch blockchain, classify it as a public or private company. If it does,
+identify the specific typology — centralized exchange, stablecoin issuer, custodian,
+DeFi protocol, DAO, blockchain network, miner, staking provider, crypto fund, or a
+traditional entity merely exposed to crypto (a treasury holder, an ETF issuer, a
+bank with a crypto desk). The typology determines which regulatory regimes attach
+and which risk domains dominate — and which tests do NOT apply: an entity that only
+holds crypto on its balance sheet is not a money transmitter and must not be
+assessed as one. State the entity typology in the output.
+
+Then assess the entity across eight risk domains. For each domain: gather public evidence,
+summarize what you found, then assign a 0-100 risk score (0 = no observable risk,
+100 = severe / disqualifying risk). Cite a source for every material claim. Distinguish
+observed fact from allegation from unverified claim — never present an allegation as a finding.
+
+1. Corporate Profile & Ownership — legal entity, incorporation jurisdiction, corporate
+   structure, ultimate beneficial owners, parent/subsidiary chain, age, ownership opacity.
+2. Financial Health — public entities: financial statements, key ratios, going-concern
+   signals; private: funding history, revenue signals, solvency indicators. Flag what
+   cannot be verified.
+3. Regulatory & Enforcement History — enforcement actions, consent orders, penalties,
+   license revocations or denials, regulator warnings, registration status.
+4. Litigation & Legal Proceedings — class actions, fraud suits, indictments, regulatory
+   litigation, material contingent liabilities, settlement history.
+5. Sanctions & Watchlist Exposure — screen the entity, its known principals, and its
+   beneficial owners against OFAC SDN and consolidated EU / UN / UK lists; assess
+   politically exposed person (PEP) connections and proximity to sanctioned parties.
+6. Adverse Media — fraud allegations, investigations, whistleblower reports, scandals,
+   investigative journalism, sustained patterns of negative coverage.
+7. Governance & Integrity — management and board integrity, auditor quality and turnover,
+   related-party dealings, prior roles of principals in failed or sanctioned entities.
+8. Geographic & Sector Risk — incorporation and operating jurisdictions against recognized
+   country-risk indices (FATF lists, Basel AML Index, Transparency International CPI);
+   inherent money-laundering risk of the entity's sector.
+
+## Scoring
+
+Apply this default weighting (tune to your risk appetite and state any change):
+
+  Sanctions & Watchlist Exposure ...... 20%
+  Regulatory & Enforcement History .... 18%
+  Adverse Media ....................... 15%
+  Litigation & Legal Proceedings ...... 12%
+  Governance & Integrity .............. 12%
+  Geographic & Sector Risk ............ 10%
+  Financial Health .................... 8%
+  Corporate Profile & Ownership ....... 5%
+
+Composite = sum(domain score x weight). Map the composite to a 5-tier rating:
+
+  0-20  LOW        21-40 MODERATE     41-60 ELEVATED
+  61-80 HIGH       81-100 SEVERE
+
+Override: a confirmed sanctions hit or an active criminal indictment forces a SEVERE
+rating regardless of the composite — state the override explicitly.
+
+## Output format
+
+# Entity Risk Assessment — Meridian Digital Exchange
+
+Composite Risk Score: [n]/100 — [RATING]
+Entity typology: [type / family] | Assessment date: [date] | Basis: Public sources only (OSINT)
+
+## Executive Summary
+[3-5 sentences: what the entity is, the headline risk picture, the disposition recommendation.]
+
+## Risk Scorecard
+| Domain | Score | Weight | Weighted | Key driver |
+|--------|-------|--------|----------|------------|
+[one row per domain, then a Composite row]
+
+## Domain Findings
+### [n]. [Domain] — [score]/100
+[What the evidence shows. Every claim sourced. Observed vs. alleged kept separate.]
+[Repeat for all eight domains.]
+
+## Red Flags
+[The specific findings that drive the rating. "None identified" is a valid, stated result.]
+
+## Information Gaps
+[What could not be verified from public sources, and how that limits confidence.]
+
+## Recommended Disposition
+[One of: proceed / proceed with conditions / escalate for senior review / decline —
+with reasoning. List the conditions or the escalation triggers.]
+
+## Sources & Confidence
+[Source list. Overall confidence: HIGH / MODERATE / LOW, with reasoning.]
+
+## Rules
+- Runs standalone. If PROVIDED MATERIAL is supplied, treat it as the primary evidence
+  base — assess exactly what is there and attribute findings to it; use any live
+  access only to supplement. No system or integration is required — only the
+  assistant and what you paste in. Anything not established from the material or a
+  cited source is an explicit information gap.
+- If a step needs a capability you do not have (live web access, file or image
+  reading, a data feed) or a required input is missing, do not fail silently or
+  fabricate. State plainly what is missing, then either proceed with the available
+  material and mark the gap, or — if it blocks the analysis — ask for the specific
+  input needed as a short, labeled list, and continue once it is provided.
+- Public sources only. Never assert non-public or speculative information as fact.
+- Every material claim carries a source. Uncited claims are removed.
+- "No adverse findings" is a legitimate, valuable result — do not manufacture risk.
+- Allegations are labeled as allegations; pending matters are labeled as pending.
+- If evidence is thin, say so and lower the confidence rating — do not fill gaps
+  with inference.
+- Never emit an empty or placeholder section. A core domain with no adverse
+  evidence gets an explicit clearance line ("No adverse findings identified"),
+  not a hollow heading. Optional detail with no content is omitted, not left blank.
+```
+<!-- /DEMO -->
+
+---
+
 <!-- RUNTIME_CONTRACT -->
 
 ---

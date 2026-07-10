@@ -1,0 +1,247 @@
+{
+  "control-matrix-builder.md": {
+    "scenario": "A mid-size regional bank formalizes its AML/CFT control inventory ahead of a BSA examination, mapping documented fiat controls and surfacing the greenfield gaps around its new digital-asset custody line.",
+    "fills": [
+      [
+        "describe the program",
+        "Harborview Financial Group — a mid-size US regional bank, roughly $9B in assets, supervised by a state banking department plus a federal functional regulator, with FinCEN BSA obligations. Products in scope: retail checking/savings and consumer lending; small-business deposit and treasury services; wealth-management brokerage accounts; and a digital-asset custody line launched four months ago offering custody and settlement of BTC and ETH to accredited-investor and institutional clients. Customer segments: retail consumers, small and mid-size businesses (including two money-services-business relationships and roughly 40 cash-intensive businesses), high-net-worth wealth clients (a small book of non-resident customers), and institutional custody clients. Geographies: predominantly domestic, with cross-border wire activity into Canada, the UK, and the EU. Channels: branch, online/mobile self-service onboarding, an intermediated advisor channel for wealth, and API-based onboarding for the custody line. Digital-asset exposure: on-chain deposits/withdrawals to customer-controlled wallets, blockchain-analytics wallet screening, hosted-wallet custody, and travel-rule obligations — all on greenfield controls."
+      ],
+      [
+        "why this is being built",
+        "Examination readiness plus a gap assessment against the existing program. The primary regulator has signaled a BSA/AML examination in the next 6-9 months; the digital-asset custody line went live largely undocumented, and leadership wants the control inventory formalized and the crypto-side gaps surfaced and severity-tagged before the exam."
+      ],
+      [
+        "DATE",
+        "2026-03-16"
+      ],
+      [
+        "existing control documentation",
+        "EXISTING FIAT PROGRAM (documented; crypto side is greenfield):\n- CIP-STD: Identity collection and verification at account opening via a third-party identity-verification vendor; performed by branch and onboarding operations; evidenced by the vendor result and a stored ID image. Owner: Onboarding Operations Manager.\n- CDD-RATE: Customer risk rating assigned at onboarding on a 3-tier model (low/medium/high) and refreshed at periodic review. Owner: BSA Analyst team.\n- EDD-HR: Enhanced due diligence file for higher-risk customers (MSBs, PEPs, cash-intensive businesses) with senior-compliance approval before activation. Owner: BSA Officer.\n- BO-COLLECT: Beneficial-ownership collection at the 25% threshold for legal-entity customers, captured on a certification form. Owner: Onboarding Operations.\n- TM-AUTO: Automated transaction-monitoring system (vendor rules engine), ~14 active scenarios covering structuring, rapid movement, and cash aggregation; alerts worked within a 30-day SLA. Owner: Investigations Manager.\n- SANC-RT: Real-time sanctions screening of parties at onboarding plus daily rescreening against OFAC SDN and consolidated lists via a vendor filter. Owner: Sanctions Analyst team.\n- SAR-FILE: SAR decisioning and filing within statutory deadlines, logged in a case-management system. Owner: BSA Officer.\n- GOV-POL: Board-approved BSA/AML policy, reviewed annually; last board approval 2025-11.\n- TRAIN-ANN: Annual BSA/AML training with completion tracking; 2025 completion 96%.\n- IA-TEST: Independent testing performed annually by internal audit; last cycle Q3 2025.\nPRIOR AUDIT FINDING (Q3 2025 internal audit): 'Below-threshold aggregation monitoring is not evidenced for the small-business segment; the rule set aggregates at the customer level but not across related parties.' Rated Medium; remediation in progress.\nNO documented controls exist yet for the digital-asset custody line: on-chain wallet screening, blockchain-analytics-based transaction monitoring, travel-rule handling, or crypto-specific sanctions screening."
+      ]
+    ]
+  },
+  "data-quality-review.md": {
+    "scenario": "A data-quality reviewer assesses the vendor sanctions-watchlist feed behind a bank's daily name-screening, profiling a nightly sample and mapping a lineage where the ETL transform hop is unreconciled.",
+    "fills": [
+      [
+        "name and describe it",
+        "The consolidated sanctions and watchlist feed powering Harborview Financial Group's daily name-screening. Sourced from a third-party list-management vendor (Meridian Watchlist Services) that aggregates OFAC SDN and consolidated lists, UN, EU, and UK HMT lists, plus the vendor's own PEP and adverse-media entries. Delivered as a nightly XML drop to a Harborview SFTP endpoint, approximately 41,000 active records per file, refreshed daily at 02:00 ET. Key fields: record_id, list_source, entity_type (individual/entity/vessel), primary_name, aka_names[], dob, nationality, id_documents[], program_codes[], last_updated, action (add/modify/delete)."
+      ],
+      [
+        "process that depends on it",
+        "Daily batch sanctions and PEP screening of the full customer base plus real-time screening of new customers and outbound wire counterparties. The process needs current names and complete alias/identifier coverage loaded into the screening engine within 24 hours of any list update; it needs date-of-birth and nationality populated to disambiguate common-name hits and hold the false-positive rate down; and it needs delete/modify actions applied so de-listed parties stop generating hits. A missed add or a dropped alias is a screening blind spot; a stale delete is a false positive that drains analyst time."
+      ],
+      [
+        "path from origin to use",
+        "SOURCE: Meridian Watchlist Services aggregates the underlying government lists and publishes a nightly XML file. HOP 1: the file lands on Harborview's SFTP endpoint at ~02:00 ET via a managed-file-transfer service (owner: IT Operations). HOP 2: an overnight ETL job parses the XML, flattens the aka_names and id_documents arrays, maps list_source and program_codes to the screening engine's internal code list, and loads records into the engine's watchlist table (owner: Screening Platform team). HOP 3: the screening engine rebuilds its match index from the loaded table before the 06:00 ET screening run. Known understanding gaps: no visible reconciliation between the vendor's stated record count and the loaded count; unknown after the ETL parse step whether rejected or malformed records are logged or silently dropped."
+      ],
+      [
+        "sample rows",
+        "Profiling of the 2026-02-18 nightly file (41,204 records) plus a 300-record manual sample:\n- primary_name: 100% populated.\n- entity_type: 100% populated; values within {individual, entity, vessel}.\n- dob: populated on 62.1% of individual records; null on the remainder (many list entries carry no DOB at source).\n- nationality: populated on 71.4% of records.\n- aka_names: present on 58% of records; in the 300-record sample, 4 records showed an aka_names array truncated to a single element where the vendor XML clearly held 3+ akas (suspected flattening defect).\n- program_codes: 100% populated, but 11 records carried a program_code value ('X-OFAC-NEW') absent from the screening engine's internal code list, mapping to a default 'UNMAPPED' bucket.\n- last_updated: 100% populated; 3 sampled records marked action=modify carried a last_updated timestamp 9 days older than the file date.\n- action distribution: add 1,910 / modify 3,140 / delete 220.\n- Record-count reconciliation: vendor manifest stated 41,260 records; the loaded table held 41,204 — a 56-record shortfall with no rejection log located."
+      ],
+      [
+        "defects, incidents, or complaints",
+        "Two items on record: (1) a 2026-01-09 incident where a same-day OFAC SDN addition did not appear in the screening engine until the next nightly cycle (~22-hour latency), raised as a near-miss; (2) recurring analyst complaints over the past quarter that a batch of ~30 de-listed parties keeps regenerating hits, suggesting delete actions are not consistently applied at the load step."
+      ]
+    ]
+  },
+  "ewra-builder.md": {
+    "scenario": "A financial-crime risk-assessment lead builds the annual enterprise-wide risk assessment across a regional bank's four business lines, where a mid-period digital-asset custody launch drives the enterprise residual up on business change rather than program deterioration.",
+    "fills": [
+      [
+        "institution type",
+        "Harborview Financial Group — a mid-size US regional bank holding company, roughly $9B in total assets, supervised by a state banking department and a federal functional regulator, with FinCEN BSA obligations. Predominantly domestic footprint with modest cross-border correspondent and wire activity. Unusual feature of the franchise: a digital-asset custody subsidiary launched mid-period, giving an otherwise traditional regional bank direct crypto exposure well ahead of its control maturity."
+      ],
+      [
+        "list each assessable unit",
+        "- RETAIL — Retail Banking: consumer deposit accounts, debit cards, and consumer lending through branch and digital channels.\n- COMM — Commercial Banking: small- and mid-size business deposits, lending, and treasury services, including two money-services-business relationships and roughly 40 cash-intensive businesses.\n- WEALTH — Wealth Management: brokerage and advisory accounts for high-net-worth clients (including a small book of non-resident customers), sold through an intermediated advisor channel.\n- CUSTODY — Digital-Asset Custody: custody and settlement of BTC and ETH for accredited-investor and institutional clients, onboarded via API, with on-chain deposit/withdrawal activity. Launched 2025-10."
+      ],
+      [
+        "12-month period covered",
+        "The 12 months from 2025-01-01 to 2025-12-31; as-of assessment date 2026-02-27."
+      ],
+      [
+        "weight business lines",
+        "Weight the enterprise roll-up by each line's share of total customer relationships: Retail 68%, Commercial 22%, Wealth 8%, Custody 2%. Note explicitly that Custody's 2% roll-up weight understates its risk contribution given its inherent profile, and carry that as an observation."
+      ],
+      [
+        "last cycle's ratings",
+        "Prior cycle (as-of 2025-02-28), three lines only — Custody did not yet exist:\n- Retail: inherent MEDIUM (2.6), controls SATISFACTORY, residual MEDIUM (1.8). No open findings.\n- Commercial: inherent HIGH (3.2), controls SATISFACTORY, residual MEDIUM (2.2). One open finding: related-party aggregation monitoring gap (Medium).\n- Wealth: inherent MEDIUM (2.8), controls SATISFACTORY, residual MEDIUM (2.0). No open findings.\nEnterprise prior residual: MEDIUM (1.9); prior direction STABLE."
+      ],
+      [
+        "control effectiveness",
+        "- Independent testing (internal audit, Q3 2025) covered Retail and Commercial CDD, transaction monitoring, and sanctions screening: CDD sampling passed at 94%; TM alert-handling timeliness at 91%; sanctions match-clearing timeliness at 97%. One Medium finding on Commercial related-party aggregation (repeat from prior cycle).\n- QA metrics (rolling 12 months): alert-disposition QA pass rate 88% across Retail/Commercial; Wealth periodic-review QA pass rate 82%.\n- Custody: no independent testing yet — only a first-line control self-assessment completed 2026-01 rating its own on-chain screening and travel-rule handling as 'operating.'\n- Sanctions screening covers all four lines through the shared vendor filter; Custody adds blockchain-analytics wallet screening via a separate vendor, not yet independently tested."
+      ],
+      [
+        "appetite levels or thresholds",
+        "Residual-risk appetite by tier: CRITICAL — zero tolerance, immediate board escalation; HIGH — tolerated only under an active, board-approved, dated remediation plan; MEDIUM — acceptable with quarterly monitoring; LOW — acceptable. Enterprise residual appetite ceiling is MEDIUM."
+      ],
+      [
+        "customer counts and high-risk-segment",
+        "- Retail: ~181,000 customers; high-risk-segment share ~2%; ~14M transactions/yr; moderate cash intensity; cross-border share <3%; ~3,900 TM alerts, ~140 SAR referrals.\n- Commercial: ~24,000 customers; high-risk-segment share ~11% (2 MSBs, ~40 cash-intensive businesses); ~6M transactions/yr, +9% YoY; high cash intensity; cross-border share ~12%; ~2,600 alerts, ~180 referrals.\n- Wealth: ~9,000 customers; high-risk-segment share ~7% (PEPs and non-resident clients); ~600K transactions/yr; cross-border share ~18%; ~300 alerts, ~22 referrals.\n- Custody: ~520 clients since launch; high-risk-segment share not yet baselined; on-chain volume ~$210M settled over the partial period, growing ~20% MoM; jurisdiction exposure inherent to on-chain counterparties; ~70 wallet-screening alerts, 6 referrals."
+      ],
+      [
+        "anything else relevant",
+        "New-product approval memo for the digital-asset custody line (approved 2025-09, conditioned on an independent control validation within 12 months of launch — that condition is still open). No open examination findings from the prior exam (2024). Organizational note: Custody reports through a newly created Head of Digital Assets who also chairs the crypto risk committee; second-line coverage of Custody is still being stood up."
+      ]
+    ]
+  },
+  "independent-testing-workpaper.md": {
+    "scenario": "An independent tester documents a Q1 test of the alert-disposition-timeliness control, designing a random sample plus a judgmental high-priority top-up and concluding partially effective on the QC sign-off attribute.",
+    "fills": [
+      [
+        "control ID and description",
+        "Control TM-02 — Alert investigation and disposition. Investigations analysts review and disposition each alert generated by the automated transaction-monitoring system, documenting a disposition rationale and, for alerts classified high-priority, obtaining independent QC sign-off before closure. Performed by the Investigations team on a per-alert (ongoing) basis; evidenced by the case record in the case-management system (disposition narrative, generation and closure timestamps, QC reviewer field)."
+      ],
+      [
+        "standard the control is tested against",
+        "Transaction Monitoring Procedure v6, Section 4.2 (effective 2025-07-01): 'Every alert is dispositioned within 30 calendar days of generation, with a documented disposition rationale. High-priority alerts require independent QC sign-off by a reviewer other than the assigned investigator prior to closure.' Criteria source: internal TM procedure; the 30-day SLA is the operating benchmark."
+      ],
+      [
+        "period the test covers",
+        "Q1 of the current year — 2026-01-01 to 2026-03-31."
+      ],
+      [
+        "describe the population",
+        "1,420 transaction-monitoring alerts closed during the period, extracted from the case-management system, of which 128 were classified high-priority. The population was reconciled to the monitoring system's closed-alert count for the quarter; no exclusions."
+      ],
+      [
+        "sample items",
+        "Executed results — a 60-item random sample (from the 1,420) plus a judgmental top-up of 15 high-priority alerts (from the 128). Attributes tested per item: A1 disposition rationale documented; A2 dispositioned within 30 days; A3 (high-priority only) independent QC sign-off present; A4 (high-priority only) QC reviewer different from the assigned investigator.\nRandom sample (60): A1 pass 60/60; A2 pass 57/60 (3 items closed at 33, 36, and 41 days — dates documented but past SLA); A3 applied to the 8 high-priority items caught in the random draw, pass 8/8; A4 pass on all 8.\nJudgmental high-priority top-up (15): A1 pass 15/15; A2 pass 15/15; A3 pass 11/15 (4 high-priority alerts closed with no QC sign-off recorded); A4 pass 10/11 (one item carried a QC sign-off by the same analyst who investigated it).\nExceptions surfaced: 3 timeliness breaches (A2, items closed at 33/36/41 days) and, in the high-priority top-up, 4 missing QC sign-offs (A3) plus 1 non-independent QC (A4). Representative sample item IDs run ALRT-2026-0043 through ALRT-2026-1974. Populate the results table from these counts and compute the exception rate on the combined 75 items tested."
+      ]
+    ]
+  },
+  "issue-remediation-tracker.md": {
+    "scenario": "A second-line issue-management analyst normalizes nine open second-line-testing issues at a review date, checks four action plans, rules on two closure requests, applies aging and escalation discipline, and rolls the portfolio into a governance view.",
+    "fills": [
+      [
+        "paste the issues",
+        "ISS-2025-014 | TM related-party aggregation gap — the monitoring rule set aggregates cash activity at the customer level but not across related parties in the commercial book | Source: internal audit | Severity: HIGH | Owner: Investigations Manager | Raised 2025-08-20 | Due 2026-02-15 | Status: open, plan in progress (a repeat of a 2024 observation).\nISS-2025-021 | Sanctions alias records truncated on load — some watchlist records lose secondary aliases during ETL, creating a screening blind spot | Source: second-line testing | Severity: HIGH | Owner: Screening Platform Lead | Raised 2025-09-30 | Due 2026-03-30 | Status: open.\nISS-2025-026 | Wealth periodic-review backlog — 140 high-risk periodic reviews past their scheduled refresh date | Source: quality assurance | Severity: MEDIUM | Owner: Wealth Compliance Officer | Raised 2025-10-11 | Due 2026-01-31 | Status: open, overdue, closure requested.\nISS-2025-030 | Custody line operating without independent control validation — new-product approval condition unmet | Source: self-identified | Severity: HIGH | Owner: Head of Digital Assets | Raised 2025-11-05 | Due 2026-04-30 | Status: open, on track.\nISS-2025-033 | CTR late-filing — 3 currency transaction reports filed 2-4 days past the 15-day deadline in Q3 | Source: regulatory examination | Severity: CRITICAL | Owner: BSA Officer | Raised 2025-11-20 | Committed date 2026-03-20 | Status: open, closure requested.\nISS-2025-037 | Training completion shortfall — 4% of staff missed the annual BSA training deadline | Source: self-identified | Severity: LOW | Owner: Training Coordinator | Raised 2025-12-02 | Due 2026-03-31 | Status: open.\nISS-2026-002 | Alert QC sign-off missing on high-priority alerts — testing found high-priority alerts closed without required independent QC | Source: second-line testing | Severity: HIGH | Owner: Investigations Manager | Raised 2026-01-15 | Due 2026-04-15 | Status: new, no plan yet.\nISS-2026-004 | Payment-screening exception handling — exceptions cleared without documented rationale | Source: second-line testing | Severity: HIGH | Owner: Sanctions Analyst Lead | Raised 2026-02-01 | Due 2026-05-01 | Status: new; note prior closed issue ISS-2024-058 shared this control area and an RC-EXEC root cause.\nISS-2026-006 | KYC document expiry not triggering refresh — expired IDs on file for a subset of retail customers | Source: self-identified | Severity: MEDIUM | Owner: Onboarding Operations Manager | Raised 2026-02-18 | Due 2026-06-18 | Status: new."
+      ],
+      [
+        "as-of date for all aging",
+        "2026-03-31"
+      ],
+      [
+        "remediation plan text",
+        "ISS-2025-014: Milestone 1 — update the TM rule specification to add related-party aggregation logic, target 2025-12-15, owner Investigations Manager (Dana Whitlock), deliverable: approved rule-spec change record. Milestone 2 — deploy and tune the new rule, target 2026-01-31, deliverable: deployment ticket and 30-day tuning memo. Milestone 3 — validate via sample test, target 2026-02-15, deliverable: test workpaper. Interim mitigation: manual monthly related-party review of the top 50 commercial customers by cash volume until the rule deploys.\nISS-2025-021: Plan text in full — 'strengthen the ETL to preserve all aliases and add monitoring.' Target 2026-03-30. Owner: Screening Platform team. No milestone-level dates; no evidence artifacts named; no interim mitigation stated.\nISS-2025-030: Milestone 1 — engage an independent validator, target 2026-02-28, owner Head of Digital Assets (Priya Nandakumar), deliverable: engagement letter. Milestone 2 — complete a Tier-2 validation of on-chain screening and travel-rule handling, target 2026-04-15, deliverable: validation workpaper. Milestone 3 — remediate any HIGH findings, target 2026-04-30. Interim mitigation: daily blockchain-analytics screening at a lowered threshold and dual review of all custody withdrawals over $50,000 while validation is pending.\nISS-2025-033: Milestone 1 — root-cause the late filings and retrain the CTR filing team, target 2026-02-10, owner BSA Officer (Marcus Vance), deliverable: training completion record. Milestone 2 — implement an automated 10-day filing tickler, target 2026-03-15, deliverable: system config change record and a dated screenshot of the live tickler. Interim mitigation: daily manual filing-queue review by a BSA analyst."
+      ],
+      [
+        "submitted for closure",
+        "ISS-2025-033 (closure requested): submitted — (1) training completion record dated 2026-02-09 for all 5 CTR filers; (2) change record plus a dated screenshot showing the automated 10-day tickler live in production as of 2026-03-01; (3) a one-paragraph root-cause linkage tying the fix to the RC-EXEC cause; (4) independent review sign-off by the Deputy BSA Officer dated 2026-03-18; (5) issue-owner acceptance by the BSA Officer dated 2026-03-19. Operating-effectiveness evidence: 6 CTRs filed since the tickler went live, all within deadline (partial window — tickler live only ~29 days).\nISS-2025-026 (closure requested): submitted — a manager email dated 2026-03-28 stating 'all 140 periodic reviews have now been completed.' No completed review files attached; no QC results; no independent validation."
+      ],
+      [
+        "issue severity scale",
+        "Harborview issue severity scale: CRITICAL — a regulatory finding with a committed date, an active legal/regulatory exposure, or a failed control on a legally required process (e.g. CTR/SAR filing). HIGH — a material control gap or a repeat issue with no adequate compensating control; exposure accrues until fixed. MEDIUM — a control weakness with a functioning compensating control; exposure contained but real. LOW — documentation, hygiene, or efficiency deficiency with no near-term loss or regulatory exposure. Remediation-timeline standard: CRITICAL 60 days, HIGH 120 days, MEDIUM 180 days, LOW 365 days."
+      ],
+      [
+        "audit reports, exam letters",
+        "Second-line testing report, Q1 2026 (source for ISS-2026-002 and ISS-2026-004): high-priority alert QC sign-off missing on 4 of 15 sampled high-priority alerts; payment-screening exceptions cleared without documented rationale on 6 of 40 sampled exceptions — a repeat of finding ISS-2024-058 closed 2024-11. Internal audit report, Q3 2025 (source for ISS-2025-014): related-party aggregation gap, Medium, repeat of a 2024 observation. Examination feedback letter (source for ISS-2025-033): three CTRs filed past the 15-day deadline in Q3, with a committed remediation date of 2026-03-20. Prior register extract confirms ISS-2024-058 (payment-screening exceptions, RC-EXEC) was closed 2024-11 on a sustainability test of 25 post-implementation exceptions."
+      ],
+      [
+        "earlier run of this tracker",
+        "None — first run of this tracker for the Q1 2026 cycle; baseline. Repeat detection here relies on the prior-register extract in PROVIDED MATERIAL rather than a prior tracker run."
+      ]
+    ]
+  },
+  "model-governance-review.md": {
+    "scenario": "A model-governance reviewer assesses an LLM-assisted tool that drafts alert-disposition narratives, finding partial documentation but no monitoring or validation, and landing on remediate-before-reliance.",
+    "fills": [
+      [
+        "name and describe it",
+        "'NarrateAssist' — an LLM-assisted drafting tool (built on a third-party foundation model via API, wrapped by an internal prompt template) that drafts the disposition-narrative section of transaction-monitoring alert files at Harborview Financial Group. It sits in the alert-investigation workflow: after the analyst gathers facts and reaches a disposition, the tool drafts the written rationale, which the analyst edits and approves before the alert is closed."
+      ],
+      [
+        "how its output is used",
+        "A recommendation/drafting aid a human approves — the analyst reviews and edits every draft narrative and makes the actual disposition decision; the tool writes prose, it does not decide clear-versus-escalate and it does not close alerts. In practice ~900 alert narratives per month are drafted with it."
+      ],
+      [
+        "what happens when it is wrong",
+        "A fluent but inaccurate narrative can misstate the facts of a case, embed an unsupported conclusion the analyst rubber-stamps, or omit a material red flag — degrading the file behind a disposition and, in the worst case, the documented basis for a SAR / no-SAR decision. It does not move funds or auto-close alerts. Volume ~900 narratives/month; roughly 12% of alerts escalate to a case."
+      ],
+      [
+        "paste what exists — model documentation",
+        "Available material: (1) a one-page internal 'tool overview' describing NarrateAssist's purpose and intended use, drafted by the build team and not formally approved by model governance; (2) the prompt template and a change log showing 5 prompt revisions over 8 months, none with a documented test or approval; (3) a vendor model card for the underlying foundation model (accuracy and safety claims, no financial-crime-specific validation); (4) no performance-monitoring output — analyst edit rates and draft-acceptance rates are not tracked; (5) no override or escalation log specific to the tool; (6) no independent validation has been performed; (7) an informal note that analysts 'usually edit lightly,' with no measured edit-distance or acceptance metric. The underlying foundation model is upgraded by the vendor on the vendor's own schedule; Harborview does not currently monitor upstream version changes."
+      ]
+    ]
+  },
+  "model-validation-workpaper.md": {
+    "scenario": "An independent validator produces a material-change validation workpaper for an in-house transaction-monitoring alert-scoring model after two new customer segments were added, running the five-test plan on partial evidence and concluding fit-with-conditions.",
+    "fills": [
+      [
+        "name, version, type",
+        "HFG-TMS v3.2 — Harborview Financial Group's in-house transaction-monitoring alert-scoring model. A rules-plus-scoring engine that runs ~18 detection scenarios over deposit, wire, and ACH activity and assigns each triggered alert a risk score used to prioritize investigator review. In-house built and maintained; not a vendor product."
+      ],
+      [
+        "what the output is used for and how",
+        "The score is a human-reviewed prioritization input: it orders the alert queue and flags high-priority alerts for QC sign-off, but every alert is worked by an investigator who makes the disposition — the model does not auto-close or auto-escalate. Consequence when wrong: mis-prioritization can bury a genuinely suspicious alert low in the queue (missed or delayed suspicious-activity detection) or flood investigators with low-value high-priority alerts (capacity drain). Volume ~6,500 alerts/month across the retail and commercial books; ~12% escalate to a case and ~2% result in a SAR."
+      ],
+      [
+        "periodic revalidation",
+        "Material-change validation, full-scope (all three pillars). Trigger: v3.2 added two new customer segments (a small-business sub-segment and the digital-asset custody client segment) to the scoring population and introduced two new scenarios; this is the first validation since that change and the first full validation of the model since its v2.9 initial validation two years ago."
+      ],
+      [
+        "what exists and what you can share",
+        "Available: model design document (v3.2, updated for the new segments); data dictionary covering core transaction and customer fields; a threshold-setting memo for the two new scenarios; monitoring reports for the last 4 quarters; the v2.9 prior validation report with 2 findings (1 closed, 1 open); a change log covering v3.0-v3.2; an override-log export for the last 12 months. Not available: above/below-the-line sensitivity-testing results for the new scenarios (E6) and data-quality reports for the counterparty-geography input field (E10) — both requested from the model owner, not yet received. Independence: validation performed by the second-line model-validation function; the validator did not participate in building or tuning HFG-TMS."
+      ],
+      [
+        "paste or summarize metrics",
+        "- Alert volume: ~6,500/month, up ~14% since v3.2 (the new segments enlarged the population).\n- Alert-to-case yield: 12.1% (was 13.8% pre-change).\n- Alert-to-SAR yield: 2.0% (was 2.3% pre-change).\n- False-positive proxy (alerts closed no-action): 87.9%.\n- Override rate: 11% of scored alerts carried an analyst priority override over the last 12 months; of those, 78% were downgrades (high to low priority).\n- Population stability: PSI 0.19 on the counterparty-geography input versus the v2.9 development baseline; PSI 0.07 on transaction-amount bands.\n- Below-the-line: a one-off analyst review of 50 alerts scoring just below the high-priority threshold found 6 that, on review, merited high-priority handling."
+      ],
+      [
+        "paste excerpts",
+        "- Design-doc excerpt: 'Scenario coverage maps to the institution's 2024 risk-assessment typologies; the two new v3.2 scenarios address on-chain funnel activity and small-business structuring.' No documented mapping of the new custody segment's typologies to specific scenarios.\n- Threshold-memo excerpt: the new-scenario thresholds were 'set to match the alerting rate of comparable existing scenarios' — no data-driven calibration analysis shown.\n- v2.9 prior validation: Finding V2.9-F1 (segmentation rationale undocumented) — closed; Finding V2.9-F2 (no periodic threshold review) — still open.\n- Override sample: 20 overrides reviewed; 3 carried no documented rationale; the rest cited 'known customer / expected activity.'\n- Monitoring excerpt: quarterly reports track alert volume and yield but not false-negative proxies or drift; no threshold review has occurred since v2.9."
+      ],
+      [
+        "earlier validation or governance",
+        "v2.9 initial validation (dated 2024-02; conclusion FIT WITH CONDITIONS): Pillar 1 ADEQUATE, Pillar 2 WEAK, Pillar 3 ADEQUATE. Two findings — V2.9-F1 (segmentation rationale undocumented, since closed) and V2.9-F2 (no periodic threshold-review cycle, still open). Conditions from v2.9: institute an annual threshold review (not yet done) and document segmentation (done). Extend this validation from that baseline rather than restarting."
+      ]
+    ]
+  },
+  "qa-review-scorecard.md": {
+    "scenario": "A QA reviewer scores four closed structuring-alert dispositions against the disposition procedure and 30-day SLA, surfacing an evidence-gap file, a missed-escalation auto-fail, and a timeliness breach.",
+    "fills": [
+      [
+        "alert dispositions",
+        "Alert dispositions — closed transaction-monitoring alert files for potential structuring, drawn from the Investigations team's Q1 2026 closed queue."
+      ],
+      [
+        "procedure, checklist, or QA standard",
+        "Harborview Alert Disposition Procedure v6, Section 4: each disposition file must (a) state the alert trigger and the reviewed period; (b) document the account-history and prior-alert check that was run; (c) resolve every triggering transaction with a stated rationale; (d) reach a clear/escalate conclusion supported by the documented facts; (e) obtain independent QC sign-off for high-priority alerts; and (f) be completed within the 30-day SLA. Escalation to a SAR case is mandatory where structuring indicators are corroborated by two or more independent factors."
+      ],
+      [
+        "paste the completed item",
+        "ITEM QA-01 (ALRT-2026-0221, high-priority): Alert triggered on 6 cash deposits of $9,200-$9,700 over 8 business days into a small-business account. Analyst reviewed 12 months of account history, noted the customer is a cash-intensive laundromat with historically similar patterns, checked for prior alerts (one prior, cleared 2025), documented each of the 6 deposits against the customer's stated revenue, and concluded no structuring — cleared. Independent QC sign-off by a second analyst present and dated. Completed in 18 days.\n\nITEM QA-02 (ALRT-2026-0288, standard): Alert triggered on a structured wire/cash pattern. Disposition rationale reads in full: 'Reviewed activity, appears consistent with customer profile, cleared.' No account-history check documented, no per-transaction detail, no prior-alert check referenced. Cleared. Not high-priority, so no QC required. Completed in 26 days.\n\nITEM QA-03 (ALRT-2026-0301, high-priority): Alert triggered on 9 near-threshold cash deposits across three related business accounts in one week. Analyst documented the pattern, identified common beneficial ownership across the three accounts, noted the customer gave an evasive explanation, and concluded the activity was suspicious — but the file was closed as 'cleared/monitor' with no SAR case opened and no escalation recorded. No QC sign-off present. Completed in 34 days.\n\nITEM QA-04 (ALRT-2026-0349, standard): Alert triggered on rapid movement of funds. Analyst ran and documented the account-history and prior-alert checks, resolved each transaction, cited the wire counterparties, and concluded no suspicious activity — cleared; the file is well-reasoned and self-contained. Completed in 41 days (past SLA; delay documented as an analyst-leave backlog)."
+      ],
+      [
+        "due dates or SLAs and actual completion",
+        "SLA: 30 calendar days from alert generation to closure, per Procedure v6. Actual completion: QA-01 18 days (within), QA-02 26 days (within), QA-03 34 days (breach), QA-04 41 days (breach, delay documented)."
+      ]
+    ]
+  },
+  "risk-register-builder.md": {
+    "scenario": "A compliance risk-assessment lead builds a financial-crime risk register for a bank's new digital-asset custody line for board reporting, scoring inherent and residual risk against a partial crypto control set with a zero-tolerance sanctions appetite.",
+    "fills": [
+      [
+        "describe what is being assessed",
+        "Harborview Financial Group's digital-asset custody line — custody and settlement of BTC and ETH for accredited-investor and institutional clients. Customer segments: accredited retail, family offices, and two crypto-native fund clients; onboarded via API with non-face-to-face identity verification. Products: hosted-wallet custody, on-chain deposits and withdrawals to customer-controlled external wallets, and internal settlement. Geographies: predominantly US clients but inherent global on-chain counterparty exposure. Channels: API onboarding, self-service withdrawal requests with dual approval over $50,000. Volumes since the 2025-10 launch: ~520 clients, ~$210M in on-chain settlement, ~20% MoM growth, ~70 wallet-screening alerts and 6 SAR referrals to date."
+      ],
+      [
+        "annual program assessment",
+        "New product approval follow-through and board reporting — the custody line launched 2025-10 under a new-product approval requiring a full risk register plus an independent control validation within 12 months; this register supports the board risk committee's Q1 review."
+      ],
+      [
+        "DATE",
+        "2026-03-09"
+      ],
+      [
+        "appetite levels",
+        "Residual-risk appetite by category: sanctions and terrorist-financing exposure — zero tolerance (any residual HIGH escalates to the board); customer and transaction risk — residual MEDIUM acceptable with monitoring, HIGH only under a dated mitigation plan; technology and third-party risk — residual MEDIUM acceptable. Line-level ceiling: no residual CRITICAL, and no more than two residual HIGH risks open at once."
+      ],
+      [
+        "control inventory or matrix",
+        "Known controls for the custody line (from the interim control inventory; effectiveness where tested):\n- CUST-SCR-01: On-chain wallet screening of every deposit/withdrawal address via a blockchain-analytics vendor before release. Effectiveness: NOT ASSESSED (no independent test yet).\n- CUST-SAN-01: Sanctions screening of custody clients at onboarding and daily against OFAC/UN/EU lists via the shared vendor filter. Effectiveness: ADEQUATE (covered by enterprise sanctions testing, Q3 2025, 97% match-clearing timeliness).\n- CUST-CDD-01: Enhanced onboarding for all custody clients — source-of-wealth capture, accredited-investor verification, beneficial-ownership for entity clients. Effectiveness: PARTIALLY EFFECTIVE (first-line self-assessment only; non-face-to-face verification relies on a single vendor).\n- CUST-TM-01: Blockchain-analytics-based transaction monitoring at a lowered alert threshold, with dual review of withdrawals over $50,000. Effectiveness: NOT ASSESSED.\n- CUST-TRV-01: Travel-rule handling for transfers to hosted VASP counterparties. Effectiveness: WEAK (manual process, gaps for self-hosted-wallet transfers).\n- Governance: Custody reports through a newly created Head of Digital Assets; second-line coverage is still being stood up and no independent validation is complete. Treat any unlisted control area as an assumed typical control environment and flag it."
+      ]
+    ]
+  }
+}

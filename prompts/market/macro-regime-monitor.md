@@ -187,6 +187,166 @@ A 4-quadrant regime label, nine classification fields including six 0-10 sub-sco
 
 *"Classify the current US macro regime as of today; here is last week's read."* — the assistant returns a quadrant classification, a scored composite, an indicator dashboard, and the thresholds that would flip the regime.
 
+<!-- DEMO -->
+## Try it now — paste this, nothing to fill in
+
+The block below is the prompt above with every input already filled with **fictional demo data** — Harborview Financial Group, its counterparties, and every name, figure, and address in it are invented and synthetic. Paste it into any assistant (GitHub Copilot, Microsoft 365 Copilot, Claude, ChatGPT) exactly as it is, with no edits, and you get the complete deliverable this prompt produces — the full method, rubric, and output structure, at depth. It is here so you can judge the quality before you ever supply your own material. When you run it for real, use the shell prompt above and put your own inputs in its place.
+
+*Scenario: Classifying the current US macro regime from a supplied indicator stack, scored against last week's read to score the prior call.*
+
+```text
+You are a macro strategist. Classify the current macro regime, identify what is
+driving it, and state what would flip it. Produce one clear shared macro read.
+This is macroeconomic analysis, not investment advice — you classify the
+backdrop, you do not recommend trades.
+
+REGION / FOCUS: United States
+AS-OF DATE: 2026-03-05
+PROVIDED MATERIAL (optional): Indicator readings compiled for this exercise (illustrative figures; treat these as provided data, not live):
+Monetary and rates — 10Y government yield 4.32% (2026-03-05); 3M bill 4.55% (2026-03-05); 10Y-3M slope -0.23% (inverted); 10Y breakeven inflation 2.35% (2026-03-04); policy rate 4.50% upper bound (last set 2026-01-29); broad money supply roughly flat year-on-year (January 2026 print).
+Growth and inflation — headline CPI 3.0% year-on-year (January 2026, last available); core CPI 3.2% (January 2026); unemployment 4.1% (February 2026); nonfarm payrolls +165k (February 2026); real GDP 2.1% annualized (Q4 2025); industrial production +0.3% month-on-month (January 2026).
+Credit and risk — high-yield spread 342bps (2026-03-05); investment-grade spread 96bps (2026-03-05); equity volatility index 16.4 (2026-03-05).
+Currency and commodities — broad trade-weighted dollar index roughly flat over 30 days; crude oil 74.20 US dollars per barrel (2026-03-05); gold 2,410 US dollars per ounce (2026-03-05).
+Context: one 25bp policy cut is priced by mid-2026; the labor market is cooling gradually; no acute credit stress appears in the readings.
+PRIOR READ (optional): PRIOR READ — Macro Regime, United States, 2026-02-26 (paste-back):
+Regime risk_on_tight. Composite 64/100 (MACRO_NEUTRAL). Key driver: 10Y yield 4.28%. Sub-scores: liquidity 5, growth 6, inflation 6 (above target), credit-stress 3; policy neutral-to-hawkish; currency stable. Change-catalyst noted: 'flips toward risk_off_tight if the high-yield spread crosses about 500bps, or the 10Y-3M slope deepens below -0.5% alongside rising unemployment.' Call: the regime was expected to hold near-term.
+
+## Preflight
+
+Before producing any output, scan the inputs above. If any required input is missing,
+ambiguous, or contradictory, STOP. Do not produce a partial draft and do not guess at
+the missing context. Ask the user once, in a single short message, with a numbered list
+of the specific clarifications you need (one item per line, no preamble or apology).
+Wait for the user's reply before continuing. If the user replies "proceed with what you
+have", continue and clearly flag every gap in the Information Gaps section of the
+output.
+
+If all required inputs are present, proceed silently to the next section below — do not
+acknowledge this step in the output.
+
+## Gather
+
+Pull the latest readings for the indicator stack below from a macroeconomic data
+source (e.g. a central-bank or statistics-agency data portal). Where a series is
+released infrequently, use the most recent print and note its date.
+
+Monetary & rates — 10Y government yield, 3M bill, 10Y-3M slope, breakeven
+  inflation, policy rate, broad money supply.
+Growth & inflation — headline CPI, core CPI, unemployment rate, payrolls,
+  real GDP, industrial production.
+Credit & risk — high-yield credit spread, investment-grade spread, an equity
+  volatility index.
+Currency & commodities — broad trade-weighted exchange rate, crude oil, gold.
+
+If a data source is unavailable, fall back to a web search of reputable economic
+coverage and label the figure as search-derived, not measured.
+
+## Analyze — regime classification
+
+Classify the regime on two axes: risk appetite (risk-on vs. risk-off) and
+liquidity (ample vs. tight). This yields four quadrants:
+
+  risk_on_liquid   — growth holding, financial conditions easy
+  risk_on_tight    — growth holding, financial conditions tightening
+  risk_off_liquid  — growth weakening, but policy/liquidity supportive
+  risk_off_tight   — growth weakening and conditions tight (the stress quadrant)
+
+Produce these fields:
+  regime ................. one of the four above
+  key_driver ............. the single most important indicator right now and its level
+  change_catalyst ........ "Flips to [other regime] when [indicator] crosses [threshold]"
+  liquidity_score ........ 0-10  (10 = liquidity expanding strongly)
+  growth_score ........... 0-10  (10 = real economy accelerating)
+  inflation_score ........ 0-10  (5 = on target; higher = hotter)
+  credit_stress_score .... 0-10  (10 = severe stress; blend of HY spread + volatility)
+  policy_stance .......... hawkish / neutral / dovish
+  currency_regime ........ strengthening / stable / weakening
+
+## Composite Macro Regime Score (0-100)
+
+Combine the sub-scores into one headline number. Rescale each 0-10 sub-score to
+0-100 (score / 10 x 100) before weighting:
+
+  Liquidity ............................ 30%
+  Growth ............................... 25%
+  Inflation health ..................... 20%   (inflation_health = (10 - inflation_score) / 10 x 100)
+  Credit-stress (inverted) ............. 15%   (credit_inv = (10 - credit_stress_score) / 10 x 100)
+  Currency stability ................... 10%   (strengthening = 60, stable = 80, weakening = 40)
+
+Composite = sum(component x weight). Map to a tier:
+
+  0-39   MACRO_BEAR       defensive backdrop
+  40-54  MACRO_CAUTION    risk-off tilt
+  55-69  MACRO_NEUTRAL    balanced, mixed signals
+  70-100 MACRO_BULL       risk-on backdrop
+
+Delta rule: if the composite moves +/-10 points vs. the prior read, call it a
+regime-shift signal and explain which sub-scores moved.
+
+## Benchmark check
+
+Compare live readings to recognized normal zones — e.g. yield curve inverted
+below -0.5%, high-yield spread elevated above ~500bps, core inflation a problem
+above ~4%, volatility index stressed above 30. Flag readings sitting in a
+recession zone or an expansion zone explicitly, and say whether your zone
+thresholds are standard or estimated.
+
+## Output format
+
+# Macro Regime — United States — [DATE]
+Regime: [regime] | Composite: [n]/100 ([TIER]) [delta vs. prior]
+
+## Headline Read
+[2-3 sentences: the regime, the one driver that matters most, the honest take.]
+
+## Regime Classification
+| Field | Value |
+|-------|-------|
+[regime / key_driver / change_catalyst / each sub-score / policy_stance / currency_regime]
+
+## Composite Breakdown
+| Component | Sub-score | Weight | Weighted |
+|-----------|-----------|--------|----------|
+[one row per component, then a Composite row]
+
+## Indicator Dashboard
+[The indicator stack with latest readings, each print's date, and a zone tag
+(recession / neutral / expansion). Cite the source.]
+
+## What Would Change This
+[The concrete thresholds that would flip the regime — name the indicator, the
+level, and the direction. This is the watchlist.]
+
+## Prior Call Check (if a prior read was supplied)
+[Did the prior regime hold? Did the composite move as expected? Score it honestly.]
+
+## Sources & Confidence
+[Source list with print dates. Overall confidence: HIGH / MODERATE / LOW.]
+
+## Rules
+- Runs standalone. If PROVIDED MATERIAL is supplied, treat it as the primary evidence
+  base — analyze exactly what is there and attribute findings to it; use any live
+  access only to supplement. No system or integration is required — only the
+  assistant and what you paste in. Anything not established from the material or a
+  cited source is an explicit gap.
+- If a step needs a capability you do not have (live web access, file or image
+  reading, a data feed) or a required input is missing, do not fail silently or
+  fabricate. State plainly what is missing, then either proceed with the available
+  material and mark the gap, or — if it blocks the analysis — ask for the specific
+  input needed as a short, labeled list, and continue once it is provided.
+- Cite a source and a print date for every indicator. Stale data is labeled stale.
+- Separate observed (a released figure) from projected (your regime read and
+  forward call). Never present a forecast as a fact.
+- This is macro analysis, not investment advice — classify the backdrop, do not
+  recommend positions or trades.
+- If a key series could not be retrieved, say so and lower the confidence rating.
+  Do not infer a missing print.
+- "Regime unchanged, no material shift" is a valid, useful read.
+```
+<!-- /DEMO -->
+
+---
+
 <!-- RUNTIME_CONTRACT -->
 
 ---

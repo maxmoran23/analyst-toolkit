@@ -185,6 +185,175 @@ A top-signal callout, a sortable jurisdiction risk table, per-country cards, a d
 
 *"Score the comprehensively-sanctioned jurisdictions plus three emerging-market countries we are reviewing for risk appetite; here is last month's table."* — the assistant returns an updated risk table, flags any tier crossings in the delta log, and refreshes the watch list.
 
+<!-- DEMO -->
+## Try it now — paste this, nothing to fill in
+
+The block below is the prompt above with every input already filled with **fictional demo data** — Harborview Financial Group, its counterparties, and every name, figure, and address in it are invented and synthetic. Paste it into any assistant (GitHub Copilot, Microsoft 365 Copilot, Claude, ChatGPT) exactly as it is, with no edits, and you get the complete deliverable this prompt produces — the full method, rubric, and output structure, at depth. It is here so you can judge the quality before you ever supply your own material. When you run it for real, use the shell prompt above and put your own inputs in its place.
+
+*Scenario: Harborview's quarterly jurisdictional risk read across the comprehensively-sanctioned cluster plus two emerging markets its correspondent-banking desk is reviewing for appetite.*
+
+```text
+You are a geopolitical risk analyst. Produce a jurisdictional risk read across the
+countries below — sanctions, conflict, and regulatory-integrity risk — that a
+compliance or risk team can act on. You classify and score; you do not give
+foreign-policy opinions.
+
+JURISDICTIONS: Iran, North Korea, Russia, Venezuela, Myanmar (the comprehensively- or heavily-sanctioned cluster Harborview screens every quarter), plus Nigeria and Vietnam — two emerging markets the correspondent-banking desk is reviewing for risk appetite.
+LENS: Sanctions-exposure mapping and country-risk appetite. The correspondent-banking desk is deciding whether to open or maintain relationships that touch the two emerging markets, and compliance maintains the quarterly read on the sanctioned cluster for exposure monitoring.
+ASSESSMENT DATE: 2026-03-05
+PROVIDED MATERIAL (optional): Analyst-compiled source notes (public frameworks named as methodology; the specific index figures below are illustrative for this exercise and should be verified against primary sources before use):
+- Iran: subject to comprehensive US sanctions; FATF call-for-action (high-risk) jurisdiction; illustrative Basel AML Index 8.1/10. Documented oil-revenue and front-company evasion typologies. Two new OFAC designations in the trailing 90 days targeting shipping intermediaries.
+- North Korea: comprehensive UN and US sanctions; FATF call-for-action; illustrative Basel AML Index 8.4/10. Active state-linked virtual-asset theft and laundering typologies; multiple advisories in the period on IT-worker revenue schemes.
+- Russia: broad sectoral and targeted sanctions across US, EU, and UK regimes; FATF membership suspended; illustrative Basel AML Index 6.8/10. Sanctions-evasion via third-country intermediaries and trade mis-invoicing; sustained enforcement pressure, with five or more actions touching the jurisdiction in the period.
+- Venezuela: targeted and sectoral sanctions (oil sector); not on the FATF call-for-action list; illustrative Basel AML Index 7.2/10. Gold- and oil-linked evasion typologies. One notable designation in the period.
+- Myanmar: FATF call-for-action (returned to the high-risk list); targeted sanctions on military-linked entities; illustrative Basel AML Index 7.9/10. Active internal armed conflict since 2021; trade-based laundering and jade-sector typologies.
+- Nigeria: FATF grey-list (increased-monitoring) jurisdiction working an action plan; no comprehensive sanctions; illustrative Basel AML Index 6.9/10. Fraud and virtual-asset-linked laundering typologies; AML regime reforms in progress.
+- Vietnam: FATF grey-list (increased-monitoring); no comprehensive sanctions; illustrative Basel AML Index 6.2/10. Trade-based laundering and casino-linked flows; supervision strengthening but still maturing.
+Conflict context for the period: active internal armed conflict in Myanmar; Russia engaged in an ongoing external war; the remaining jurisdictions without active internal armed conflict as compiled here.
+PRIOR OUTPUT (optional): Prior run — Geopolitical Risk Monitor, 2026-02-05 (paste-back of the last table):
+| Jurisdiction | JRI | Tier |
+| Iran | 91 | PROHIBITED |
+| North Korea | 95 | PROHIBITED |
+| Russia | 82 | HIGH |
+| Venezuela | 74 | HIGH |
+| Myanmar | 78 | HIGH |
+| Nigeria | 58 | ELEVATED |
+| Vietnam | 49 | STANDARD+ |
+Note: Myanmar read 71 in the run before last; the 2026-02-05 value of 78 reflected its return to the FATF call-for-action list. Weighting used in the prior run was the default sanctions-led profile.
+
+## Preflight
+
+Before producing any output, scan the inputs above. If any required input is missing,
+ambiguous, or contradictory, STOP. Do not produce a partial draft and do not guess at
+the missing context. Ask the user once, in a single short message, with a numbered list
+of the specific clarifications you need (one item per line, no preamble or apology).
+Wait for the user's reply before continuing. If the user replies "proceed with what you
+have", continue and clearly flag every gap in the Information Gaps section of the
+output.
+
+If all required inputs are present, proceed silently to the next section below — do not
+acknowledge this step in the output.
+
+## Gather
+
+For each jurisdiction, collect public evidence on five dimensions. Prefer primary
+sources: OFAC, FATF, UN Security Council sanctions committees, the EU and UK
+consolidated sanctions lists, conflict-event datasets, and government releases.
+Use a news search and reputable risk indices (Basel AML Index, Transparency
+International CPI) for context. If coverage of a jurisdiction is thin, say so —
+do not infer a score from nothing.
+
+1. Sanctions posture — what regimes apply (comprehensive embargo / sectoral /
+   targeted persons / none), recent designations, and the trend.
+2. Conflict and instability — active armed conflict, political instability, coup
+   risk, recent escalation, and intensity trend.
+3. Regulatory integrity — FATF status (compliant / grey-list monitored /
+   black-list call-for-action), AML/CFT regime quality, recent mutual-evaluation
+   findings.
+4. Enforcement velocity — frequency of sanctions and AML enforcement actions
+   touching this jurisdiction over the trailing ~90 days.
+5. Financial-crime typology activity — documented money-laundering and
+   sanctions-evasion typologies operating in or through the jurisdiction
+   (e.g. oil-revenue evasion, crypto mixers, OTC broker networks, theft rings).
+
+## Score — Jurisdictional Risk Index (JRI)
+
+Score each dimension 0-100 (0 = low risk, 100 = maximum), then combine:
+
+  Sanctions posture ........... 30%
+  Regulatory integrity ........ 20%
+  Conflict and instability .... 20%
+  Enforcement velocity ........ 15%
+  Typology activity ........... 15%
+
+  JRI = sum(dimension score x weight)
+
+Dimension anchors (0 / 50 / 100):
+- Sanctions posture: none-clean / targeted persons or sectors / comprehensive embargo
+- Regulatory integrity: FATF-compliant / grey-list monitored / black-list call-for-action
+- Conflict: stable / active conflict / active war with mass casualties
+- Enforcement velocity: under ~1 action per 90d / 3-5 / over ~10 (sustained pressure)
+- Typology activity: none documented / 1-2 active typologies / 3+ active typologies
+
+Map JRI to a 5-tier classification:
+
+  85-100 PROHIBITED  — no engagement; block. A confirmed comprehensive embargo
+                       forces this tier regardless of the composite.
+  70-84  HIGH        — enhanced review plus senior approval plus ongoing monitoring required.
+  55-69  ELEVATED    — enhanced CDD, enhanced monitoring, periodic review.
+  40-54  STANDARD+   — standard CDD with attention to the specific flagged factors.
+  0-39   STANDARD    — standard CDD; routine monitoring.
+
+## Delta tracking
+
+If a prior output was supplied, compute `delta = current JRI - prior JRI` per
+jurisdiction and classify the movement:
+- Tier crossing (e.g. ELEVATED -> HIGH) — flag as CRITICAL regardless of size.
+- Delta >= +20 — rapid deterioration; investigate and state the cause.
+- Delta >= +10 — escalating risk; note it.
+- Delta <= -10 — de-escalation; verify before easing any controls.
+Distinguish a real risk change from a scoring/methodology change — only call a
+tier crossing "real" when the underlying evidence actually moved.
+
+## Output format
+
+# Geopolitical Risk Monitor — [DATE]
+Jurisdictions: [n] | Lens: [lens]
+Aggregate stress: [mean JRI of the highest-risk jurisdictions] / 100
+
+## Top Signal
+[The single most important development or movement — 2-3 sentences, action-framed.]
+
+## Jurisdiction Risk Table
+| Jurisdiction | JRI | Tier | Δ vs. prior | Key driver |
+|--------------|-----|------|-------------|------------|
+[one row per jurisdiction, highest JRI first]
+
+## Jurisdiction Cards
+### [Country] — [JRI]/100 — [TIER]
+Sanctions: [posture] | FATF: [status] | Conflict: [intensity/trend]
+Active typologies: [list]
+Recent actions: [recent designations / enforcement, each sourced]
+Compliance implication: [what this means for engagement with the jurisdiction]
+[Repeat per jurisdiction.]
+
+## Delta Log — What Changed
+[Tier crossings and material score moves since the prior run, with the cause. If
+no prior output was supplied, state that this is a baseline run.]
+
+## Watch List (next ~60 days)
+| Event | Jurisdiction | Date | Why it matters |
+|-------|--------------|------|----------------|
+[upcoming FATF plenaries, sanctions reviews, elections, treaty deadlines]
+
+## Sources & Confidence
+[Source list. Per-jurisdiction or overall confidence: HIGH / MODERATE / LOW with reasoning.]
+
+## Rules
+- Runs standalone. If PROVIDED MATERIAL is supplied, treat it as the primary evidence
+  base — analyze exactly what is there and attribute findings to it; use any live
+  access only to supplement. No system or integration is required — only the
+  assistant and what you paste in. Anything not established from the material or a
+  cited source is an explicit gap.
+- If a step needs a capability you do not have (live web access, file or image
+  reading, a data feed) or a required input is missing, do not fail silently or
+  fabricate. State plainly what is missing, then either proceed with the available
+  material and mark the gap, or — if it blocks the analysis — ask for the specific
+  input needed as a short, labeled list, and continue once it is provided.
+- Public sources only. Primary sources (OFAC, FATF, UN, EU, UK) preferred; cite
+  one for every material claim.
+- Separate observed fact from allegation from projection. A pending FATF review
+  is a watch item, not a finding.
+- Do not give foreign-policy or geopolitical-forecast opinions — classify
+  jurisdictional risk and frame the compliance implication.
+- If evidence on a jurisdiction is thin, score conservatively, say so, and lower
+  the confidence rating — do not fabricate a number.
+- "No change, stable jurisdiction" is a valid, useful result.
+```
+<!-- /DEMO -->
+
+---
+
 <!-- RUNTIME_CONTRACT -->
 
 ---

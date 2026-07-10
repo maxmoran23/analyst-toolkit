@@ -139,6 +139,123 @@ A severity-tagged feed of 5-8 (or fewer) headline-style items, each a single lin
 
 *"Scan crypto markets and financial regulation for anything breaking in the last two hours; here is the previous scan."* — the assistant returns a severity-ranked feed of new items only, each a headline plus a one-line why-it-matters, and drops everything the prior scan already had.
 
+<!-- DEMO -->
+## Try it now — paste this, nothing to fill in
+
+The block below is the prompt above with every input already filled with **fictional demo data** — Harborview Financial Group, its counterparties, and every name, figure, and address in it are invented and synthetic. Paste it into any assistant (GitHub Copilot, Microsoft 365 Copilot, Claude, ChatGPT) exactly as it is, with no edits, and you get the complete deliverable this prompt produces — the full method, rubric, and output structure, at depth. It is here so you can judge the quality before you ever supply your own material. When you run it for real, use the shell prompt above and put your own inputs in its place.
+
+*Scenario: A digital-asset desk runs a mid-morning breaking-news scan across crypto markets, stablecoins, and digital-asset regulation from a pasted batch of overnight wire items.*
+
+```text
+You are a real-time news desk analyst. Scan for breaking developments in the
+domains below and return a terse headline feed. Each item is one headline-style
+line plus one line on why it matters. Filter hard — only genuine signal ships.
+This is a scan, not an essay. Be brief.
+
+DOMAINS: Crypto markets, stablecoins, and digital-asset regulation.
+RELEVANCE BAR: Moves a major-asset price by more than about 3 percent, changes a rule or its published timeline, or affects a tracked entity (a major exchange, a top-two USD stablecoin issuer, or a G20 regulator).
+AS OF: 2026-07-10, 9:15 AM ET
+PROVIDED MATERIAL (optional): Raw wire items and headlines pulled this morning (all fictional and illustrative; entities and figures are synthetic). Timestamps are ET on 2026-07-10 unless noted.
+1. 08:52 — Regulator publishes final examination guidance for bank use of payment stablecoins; effective in 90 days. (Primary: regulator newsroom.)
+2. 08:40 — Bitcoin down 4.2 percent overnight to a two-week low on broad risk-off; Ether down 5.1 percent. (Market data wire.)
+3. 08:15 — Meridian Digital Exchange confirms it paused withdrawals of one low-cap token after detecting anomalous contract activity; customer funds 'unaffected'. (Exchange statement.)
+4. 07:58 — A mid-cap USD stablecoin ('the fourth-largest') briefly traded to 0.984 in Asian hours before recovering; issuer cites a temporary redemption backlog. (Two wires, one issuer note.)
+5. 07:30 — EU authority opens a consultation on extending MiCA reporting thresholds; comment period 60 days. (Primary: authority notice.)
+6. Yesterday 18:00 — Opinion column argues stablecoins will 'replace correspondent banking'. (Op-ed, no new fact.)
+7. 06:40 — Layer-2 network Harbor Rollup reports record daily stablecoin settlement volume of 9.1 billion dollars. (Network dashboard + one wire.)
+8. 05:20 — Unconfirmed forum chatter that a top-two exchange faces a regulatory probe; no named source. (Social, unverified.)
+9. Two days ago — Recap of last week's rate decision. (Stale rehash.)
+10. 08:05 — A large asset manager files to launch a tokenized money-market fund on a public chain. (Primary: filing.)
+11. 07:10 — Cross-chain bridge Aurelia halts operations after a suspected signer-key compromise; estimated 22 million dollars at risk, under investigation. (Bridge status page + two wires.)
+12. 06:00 — Minor protocol announces a routine version upgrade with no user impact. (Project blog.)
+PRIOR SCAN (optional): None — first run; baseline. No prior scan to diff against; nothing to drop as already-reported.
+
+## Preflight
+
+Before producing any output, scan the inputs above. If any required input is missing,
+ambiguous, or contradictory, STOP. Do not produce a partial draft and do not guess at
+the missing context. Ask the user once, in a single short message, with a numbered list
+of the specific clarifications you need (one item per line, no preamble or apology).
+Wait for the user's reply before continuing. If the user replies "proceed with what you
+have", continue and clearly flag every gap in the Information Gaps section of the
+output.
+
+If all required inputs are present, proceed silently to the next section below — do not
+acknowledge this step in the output.
+
+## Method
+
+1. Gather. Scan for breaking and recent news across the domains. Pull a wide
+   set of raw candidates — aim for 10-15 before filtering.
+
+2. Filter. Drop anything that fails the relevance bar. Drop anything already
+   covered in the prior scan (unless there is a real update). Drop stale items,
+   rehashes, and opinion pieces with no new fact. Be ruthless — a short, clean
+   feed beats a padded one.
+
+3. Score each surviving item 0-100 on four factors, then rank:
+   - Recency — how fresh is it? (breaking < 2h scores highest; > 6h old scores low)
+   - Relevance — how central is it to the tracked domains?
+   - Surprise — was the outcome expected, or did a low-probability thing happen?
+   - Impact — how far does it reach? (one asset/entity vs. a cross-domain cascade)
+
+4. Classify severity from the score:
+   - CRITICAL (85-100) — major breaking development, act/attend now
+   - HIGH     (70-84)  — significant, prominent placement
+   - MEDIUM   (50-69)  — solid, standard entry
+   - LOW      (0-49)   — background; include only if the feed is otherwise thin
+
+5. Select the top 5-8 items by score. Order by severity, then recency.
+
+6. Write each as a headline. One punchy line, under ~280 characters. Then one
+   line: why it matters. No padding between.
+
+## Output format
+
+# Breaking News Scan — [DATE, TIME]
+Domains: [set]
+
+[CRITICAL] [Headline — one terse line]
+  Why it matters: [one line — the consequence or the action it forces]
+
+[HIGH] [Headline]
+  Why it matters: [one line]
+
+[MEDIUM] [Headline]
+  Why it matters: [one line]
+
+[... 5-8 items total, ordered by severity then recency]
+
+## Sources
+[Source per item — outlet or primary citation. Primary sources preferred.]
+
+## Rules
+- Runs standalone. If PROVIDED MATERIAL is supplied, treat it as the primary evidence
+  base — analyze exactly what is there and attribute findings to it; use any live
+  access only to supplement. No system or integration is required — only the
+  assistant and what you paste in. Anything not established from the material or a
+  cited source is an explicit gap.
+- If a step needs a capability you do not have (live web access, file or image
+  reading, a data feed) or a required input is missing, do not fail silently or
+  fabricate. State plainly what is missing, then either proceed with the available
+  material and mark the gap, or — if it blocks the analysis — ask for the specific
+  input needed as a short, labeled list, and continue once it is provided.
+- Filter hard. An item that fails the relevance bar does not appear, full stop.
+  A 3-item scan of real signal beats a 10-item scan padded with noise.
+- One headline line, one why-it-matters line. Resist elaborating — this is a
+  scan. Depth belongs in a full brief.
+- Cite a source for every item. Separate confirmed reporting from rumor or
+  unconfirmed claims — label anything unconfirmed.
+- Drop anything the prior scan already covered unless there is a material update.
+- "Nothing breaking — quiet scan" is a valid, complete output. Never invent
+  headlines to fill the feed.
+- Do not sensationalize. The severity tag carries the urgency; the headline
+  states the fact plainly.
+```
+<!-- /DEMO -->
+
+---
+
 <!-- RUNTIME_CONTRACT -->
 
 ---

@@ -1,0 +1,123 @@
+{
+  "intelligence-dashboard-aggregator.md": {
+    "scenario": "Consolidating a crypto sentiment tracker, a macro regime read, a crypto-AML regulatory scan, and an on-chain monitor into one digital-asset landscape dashboard, against yesterday's.",
+    "fills": [
+      [
+        "what this dashboard covers",
+        "Digital-asset market and compliance landscape"
+      ],
+      [
+        "name each feed and paste its latest content",
+        "STREAM 1 — Crypto Sentiment Tracker (2026-03-05, last 24h): Heat Score 68/100 (HOT), up from 61 (NEUTRAL) the prior day. Sentiment state GREED, improving. Dominant narratives: 'spot-ETF inflows' (gaining), 'rate-cut hopes' (stable), 'stablecoin-regulation overhang' (fading). BTC +4.2% 24h, ETH +5.1% 24h, breadth 82% of the majors up. Volume 1.7x the 20-day average; flagged [UNUSUAL] ETH volume at 2.3x average.\n\nSTREAM 2 — Macro Regime Monitor (United States, 2026-03-05): Regime risk_on_tight. Composite 61/100 (MACRO_NEUTRAL), down 3 vs the prior read. Key driver: 10Y yield at 4.32% with a slightly inverted curve. Policy stance neutral-to-hawkish; one 25bp cut priced by mid-year. Credit-stress low (high-yield spread about 340bps). Currency regime stable (broad dollar steady). Read: supportive-but-not-easy backdrop; liquidity not expanding.\n\nSTREAM 3 — Crypto-AML Regulatory Scan (US federal and EU, last 7 days): Top signal — enforcement tempo rising on exchange BSA/AML programs. CRITICAL: a federal settlement with a digital-asset exchange over transaction-monitoring failures (illustrative 42 million US dollars). HIGH: a stablecoin reserve-disclosure proposed rule published, comments due 2026-05-04. MEDIUM: an EU MiCA crypto-asset service provider governance technical standard advancing; a regulator speech signaling Travel Rule examination focus.\n\nSTREAM 4 — On-Chain Monitor (2026-03-05): Net stablecoin supply +1.2 billion over the trailing 7 days (expansionary). Exchange net BTC outflows continued (an accumulation signal). One large mixer-linked outflow flagged by the analytics vendor, 9,800 ETH, with no customer nexus. Gas fees elevated on Ethereum."
+      ],
+      [
+        "last dashboard",
+        "PRIOR DASHBOARD — Digital-asset market and compliance landscape, 2026-03-04 (paste-back):\nTop severity: HIGH. Top-line: a constructive tape on ETF inflows against a neutral macro backdrop; regulatory tempo building, but no CRITICAL item yet.\nItems on file: sentiment leaning warm (Heat 61, NEUTRAL); macro MACRO_NEUTRAL at 64; regulatory — stablecoin reserve-disclosure rule 'expected imminently' (HIGH); on-chain stablecoin supply expanding.\nNo CRITICAL items were present on 2026-03-04."
+      ],
+      [
+        "DASHBOARD TOPIC",
+        "Digital-asset market and compliance landscape"
+      ]
+    ]
+  },
+  "macro-regime-monitor.md": {
+    "scenario": "Classifying the current US macro regime from a supplied indicator stack, scored against last week's read to score the prior call.",
+    "fills": [
+      [
+        "global",
+        "United States"
+      ],
+      [
+        "DATE",
+        "2026-03-05"
+      ],
+      [
+        "task- or entity-specific data",
+        "Indicator readings compiled for this exercise (illustrative figures; treat these as provided data, not live):\nMonetary and rates — 10Y government yield 4.32% (2026-03-05); 3M bill 4.55% (2026-03-05); 10Y-3M slope -0.23% (inverted); 10Y breakeven inflation 2.35% (2026-03-04); policy rate 4.50% upper bound (last set 2026-01-29); broad money supply roughly flat year-on-year (January 2026 print).\nGrowth and inflation — headline CPI 3.0% year-on-year (January 2026, last available); core CPI 3.2% (January 2026); unemployment 4.1% (February 2026); nonfarm payrolls +165k (February 2026); real GDP 2.1% annualized (Q4 2025); industrial production +0.3% month-on-month (January 2026).\nCredit and risk — high-yield spread 342bps (2026-03-05); investment-grade spread 96bps (2026-03-05); equity volatility index 16.4 (2026-03-05).\nCurrency and commodities — broad trade-weighted dollar index roughly flat over 30 days; crude oil 74.20 US dollars per barrel (2026-03-05); gold 2,410 US dollars per ounce (2026-03-05).\nContext: one 25bp policy cut is priced by mid-2026; the labor market is cooling gradually; no acute credit stress appears in the readings."
+      ],
+      [
+        "last output",
+        "PRIOR READ — Macro Regime, United States, 2026-02-26 (paste-back):\nRegime risk_on_tight. Composite 64/100 (MACRO_NEUTRAL). Key driver: 10Y yield 4.28%. Sub-scores: liquidity 5, growth 6, inflation 6 (above target), credit-stress 3; policy neutral-to-hawkish; currency stable. Change-catalyst noted: 'flips toward risk_off_tight if the high-yield spread crosses about 500bps, or the 10Y-3M slope deepens below -0.5% alongside rising unemployment.' Call: the regime was expected to hold near-term."
+      ],
+      [
+        "REGION",
+        "United States"
+      ]
+    ]
+  },
+  "market-sentiment-tracker.md": {
+    "scenario": "A 24-hour sentiment read across the crypto majors from supplied price, social, and news material, tracked against the prior read.",
+    "fills": [
+      [
+        "crypto majors",
+        "Crypto majors — Bitcoin (BTC), Ethereum (ETH), Solana (SOL), and a mid-cap token Halcyon (HLCN)"
+      ],
+      [
+        "last 24 hours",
+        "Last 24 hours"
+      ],
+      [
+        "task- or entity-specific data",
+        "Compiled market material for the window (illustrative figures):\nPrice action — BTC 71,450 US dollars, +4.2% 24h, +9.1% 7d; ETH 3,880, +5.1% 24h, +12.4% 7d; SOL 182, +6.0% 24h, +15.2% 7d; HLCN 2.14, +11.8% 24h, +28.0% 7d. Breadth: all four majors up on the day (100%). Aggregate 24h move about +6.8%.\nVolume — total spot volume 1.7x the 20-day average; ETH volume 2.3x its 20-day average; HLCN volume 3.4x its recent average.\nSocial and crowd — a social-sentiment gauge reads euphoric on ETH and HLCN; the most-discussed names are ETH and HLCN; retail forums show FOMO language and leverage-chasing on HLCN.\nNews flow — spot-ETF net inflows reported strong for a third straight session; a large asset manager filed for an ETH staking product; one exchange announced an HLCN listing, a plausible driver of the HLCN move. No adverse macro prints landed in the window.\nBaselines used (illustrative): typical daily spot volume 0.8-1.4x average; HLCN normal 24h move band about plus-or-minus 6%."
+      ],
+      [
+        "last output",
+        "PRIOR READ — Market Sentiment, Crypto majors, 2026-03-04 (last 24h, paste-back):\nHeat Score 61/100 (NEUTRAL), flat vs the prior read. Sentiment state GREED, stable. Regime MARKUP. Narratives: 'spot-ETF inflows' (gaining), 'rate-cut hopes' (stable), 'stablecoin-regulation overhang' (stable). BTC +1.1% 24h; breadth 60% up; volume 1.2x average. No [UNUSUAL] flags."
+      ],
+      [
+        "MARKET",
+        "Crypto majors — Bitcoin (BTC), Ethereum (ETH), Solana (SOL), and a mid-cap token Halcyon (HLCN)"
+      ]
+    ]
+  },
+  "prediction-market-signal.md": {
+    "scenario": "Mining prediction-market odds on US rates and recession against consensus forecasts and a stated prior view, run against last week's scan.",
+    "fills": [
+      [
+        "macro & rates",
+        "US macro and rates — the Fed policy path, recession odds, and inflation"
+      ],
+      [
+        "what to compare against",
+        "Comparison evidence (illustrative):\n- Consensus forecasts: a consensus economist survey puts the probability of a 25bp rate cut by the mid-year meeting at about 55%, and 12-month recession odds at roughly 30%.\n- Headlines and polling: mainstream coverage this week emphasizes 'sticky inflation delaying cuts,' framing near-term easing as unlikely.\n- My prior view: I lean toward two cuts by year-end (slightly more dovish than consensus) and see recession odds nearer 25%.\n- Official inflation: last core CPI print 3.2% year-on-year (January 2026)."
+      ],
+      [
+        "task- or entity-specific data",
+        "Prediction-market data compiled for this exercise (illustrative; sourced as if from a major real-money prediction-market venue):\nMarket A — 'Fed cuts by the mid-year meeting?' YES 72% implied, +9pp over the past week, heavy 7-day volume (about 4.1 million US dollars notional), resolves 2026-06-17.\nMarket B — 'US recession called in 2026?' YES 22%, -3pp over two weeks, moderate volume (about 1.2 million), resolves 2026-12-31.\nMarket C — 'Core CPI above 3.5% for any month in the first half of 2026?' YES 18%, +2pp, thin volume (about 180 thousand), resolves 2026-07-15.\nMarket D — 'Policy rate at or below 4.00% by year-end?' YES 64%, +6pp, moderate volume (about 900 thousand), resolves 2026-12-31.\nMarket E — 'Emergency inter-meeting cut before mid-year?' YES 6%, flat, thin volume (about 90 thousand), resolves 2026-06-17.\nMarket F — 'A celebrity novelty question' YES 40% (novelty; off-topic, ignore)."
+      ],
+      [
+        "last output",
+        "PRIOR SCAN — Prediction Market Signal, US macro and rates, 2026-02-26 (paste-back):\nMarkets tracked: 6. Divergences surfaced: 1.\n- DIVERGENCE (index 71): 'Fed cuts by mid-year' at 63% vs consensus about 50% — the crowd more dovish than consensus; heavy volume, resolving within about 110 days.\n- WATCH: 'US recession in 2026' at 25% vs forecasts about 30% — a small gap, logged.\nMarkets resolved since the run before last: none.\nNote: 'Core CPI above 3.5%' was newly added to WATCH."
+      ],
+      [
+        "TOPIC FOCUS",
+        "US macro and rates — the Fed policy path, recession odds, and inflation"
+      ]
+    ]
+  },
+  "simulated-portfolio-manager.md": {
+    "scenario": "The second run of a paper-only crypto portfolio: marking the book, checking stops, and sizing any simulated trades within the hard risk rules from the carried-forward state.",
+    "fills": [
+      [
+        "the assets the simulation may hold",
+        "A basket of large-cap crypto the simulation may hold: Bitcoin (BTC), Ethereum (ETH), Solana (SOL), and a mid-cap token Halcyon (HLCN). No other assets, and no leverage."
+      ],
+      [
+        "used only on the first run",
+        "100,000 US dollars (set at inception 2026-01-05; used only on the first run, and carried forward via the state block since)."
+      ],
+      [
+        "prior run's portfolio",
+        "CURRENT STATE — carried from the prior run (2026-02-26):\nPortfolio value: 108,450 US dollars | Cash: 34,300 (31.6%)\nOpen positions:\n| Asset | Strategy | Entry price | Size (USD) | Size % | Stop |\n| BTC | MOMENTUM | 64,200 | 24,150 | 22.3% | 59,100 |\n| ETH | NARRATIVE | 3,240 | 18,900 | 17.4% | 2,980 |\n| SOL | BREAKOUT | 158 | 15,600 | 14.4% | 145 |\n| HLCN | MEAN_REVERSION | 1.62 | 15,500 | 14.3% | 1.49 |\nNote: the BTC position sits above the 20% single-asset cap because it appreciated after entry; no new BTC is to be added while over cap.\nValue history (portfolio total, daily close): 2026-01-05 100,000; 2026-01-12 101,300; 2026-01-19 99,100; 2026-01-26 103,400; 2026-02-02 102,000; 2026-02-09 105,700; 2026-02-16 104,200; 2026-02-23 107,100; 2026-02-26 108,450.\nClosed-trade history: ETH under MOMENTUM opened 2026-01-06 at 2,980, closed 2026-01-22 at 3,260, +9.4% (win); SOL under MOMENTUM opened 2026-01-19 at 132, stopped 2026-02-03 at 121, -8.3% (loss, stop hit); BTC under BREAKOUT opened 2026-02-05 at 62,800, closed 2026-02-18 at 66,900, +6.5% (win).\nPer-strategy record to date: MOMENTUM 2 trades, 1 win, profit factor about 1.3; BREAKOUT 1 trade, 1 win; NARRATIVE 0 closed; MEAN_REVERSION 0 closed. Risk-free rate assumed 4.5% annual."
+      ],
+      [
+        "DATE",
+        "2026-03-05"
+      ],
+      [
+        "current prices",
+        "Provided market data as of 2026-03-05 (illustrative):\nPrices: BTC 71,450 (+4.2% 24h, +9.1% 7d); ETH 3,880 (+5.1% 24h, +12.4% 7d); SOL 182 (+6.0% 24h, +15.2% 7d); HLCN 2.14 (+11.8% 24h, +28.0% 7d).\nVolume vs 20-day average: BTC 1.6x; ETH 2.3x; SOL 1.5x; HLCN 3.4x.\nTechnical readings: BTC in an uptrend, about 1.5 standard deviations above its 20-day mean, not yet overbought; ETH in a strong uptrend, RSI about 72 (approaching overbought), volume confirming; SOL breaking above a three-week range on elevated volume; HLCN extended about 28% above its 20-day mean, RSI about 81 (overbought), parabolic.\nNews: continued spot-ETF inflows; an ETH staking-product filing; a new exchange listing for HLCN driving its move.\nStops check: none of the open-position stops (BTC 59,100; ETH 2,980; SOL 145; HLCN 1.49) were breached since the prior run — every current price sits above its stop.\nRisk-free rate: 4.5% annual."
+      ]
+    ]
+  }
+}

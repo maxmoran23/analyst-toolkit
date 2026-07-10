@@ -11,10 +11,11 @@ an unfamiliar domain.
 
 ---
 
-## The six references
+## The seven references
 
 | Document | Covers |
 |----------|--------|
+| [`osint-source-library.md`](osint-source-library.md) | Where the facts come from: a tiered whitelist of authoritative **public** sources across nine financial-crime OSINT workflows — sanctions, PEPs, corporate registry / beneficial ownership, adverse media, court records, blockchain, jurisdiction risk, regulatory, and securities — with URL, coverage, access, reliability tier, and retrieval discipline per source. |
 | [`aml-typologies.md`](aml-typologies.md) | Crypto / digital-asset AML: the US and international regulatory frameworks, fifteen core laundering typologies with detection signals, an 8-dimension risk-scoring model, and key risk indicators. |
 | [`blockchain-entity-typologies.md`](blockchain-entity-typologies.md) | Classifying the entity you are assessing: 23 blockchain entity typologies across four families, the classification protocol, the crypto-service exposure framework, and typology-aware scoring. |
 | [`compliance-documents.md`](compliance-documents.md) | Document structures for compliance work: entity and AML/CFT risk assessments, control matrices, SAR narratives, policy documents, and transaction-monitoring rule documentation. |

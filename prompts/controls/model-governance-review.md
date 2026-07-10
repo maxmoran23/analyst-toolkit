@@ -228,6 +228,195 @@ A tool profile with tier rationale, an eight-dimension scorecard with an evidenc
 
 *"Review an LLM-assisted tool that drafts alert-disposition narratives which analysts edit and approve — 900 alerts/month, no formal documentation yet."* — the assistant tiers it at 2 (human-approved, material consequence), scores purpose documentation and validation near zero, flags approval-rate telemetry as the missing rubber-stamp test, and returns REMEDIATE BEFORE RELIANCE with a six-item condition list.
 
+<!-- DEMO -->
+## Try it now — paste this, nothing to fill in
+
+The block below is the prompt above with every input already filled with **fictional demo data** — Harborview Financial Group, its counterparties, and every name, figure, and address in it are invented and synthetic. Paste it into any assistant (GitHub Copilot, Microsoft 365 Copilot, Claude, ChatGPT) exactly as it is, with no edits, and you get the complete deliverable this prompt produces — the full method, rubric, and output structure, at depth. It is here so you can judge the quality before you ever supply your own material. When you run it for real, use the shell prompt above and put your own inputs in its place.
+
+*Scenario: A model-governance reviewer assesses an LLM-assisted tool that drafts alert-disposition narratives, finding partial documentation but no monitoring or validation, and landing on remediate-before-reliance.*
+
+```text
+You are a model-governance reviewer at a financial institution. Assess the
+model, rule set, or AI-assisted tool described below against supervisory
+model-risk-management expectations — the discipline that any quantitative or
+AI tool influencing a regulated decision must be documented, monitored,
+overseen by humans with real authority, and periodically validated. You
+assess governance, not mathematics: whether the institution can demonstrate
+control over the tool, not whether the algorithm is optimal.
+
+TOOL UNDER REVIEW: 'NarrateAssist' — an LLM-assisted drafting tool (built on a third-party foundation model via API, wrapped by an internal prompt template) that drafts the disposition-narrative section of transaction-monitoring alert files at Harborview Financial Group. It sits in the alert-investigation workflow: after the analyst gathers facts and reaches a disposition, the tool drafts the written rationale, which the analyst edits and approves before the alert is closed.
+DECISION ROLE: A recommendation/drafting aid a human approves — the analyst reviews and edits every draft narrative and makes the actual disposition decision; the tool writes prose, it does not decide clear-versus-escalate and it does not close alerts. In practice ~900 alert narratives per month are drafted with it.
+MATERIALITY: A fluent but inaccurate narrative can misstate the facts of a case, embed an unsupported conclusion the analyst rubber-stamps, or omit a material red flag — degrading the file behind a disposition and, in the worst case, the documented basis for a SAR / no-SAR decision. It does not move funds or auto-close alerts. Volume ~900 narratives/month; roughly 12% of alerts escalate to a case.
+GOVERNANCE MATERIAL (optional): Available material: (1) a one-page internal 'tool overview' describing NarrateAssist's purpose and intended use, drafted by the build team and not formally approved by model governance; (2) the prompt template and a change log showing 5 prompt revisions over 8 months, none with a documented test or approval; (3) a vendor model card for the underlying foundation model (accuracy and safety claims, no financial-crime-specific validation); (4) no performance-monitoring output — analyst edit rates and draft-acceptance rates are not tracked; (5) no override or escalation log specific to the tool; (6) no independent validation has been performed; (7) an informal note that analysts 'usually edit lightly,' with no measured edit-distance or acceptance metric. The underlying foundation model is upgraded by the vendor on the vendor's own schedule; Harborview does not currently monitor upstream version changes.
+
+## Preflight
+
+Before producing any output, scan the inputs above. If any required input is
+missing, ambiguous, or contradictory, STOP. Do not produce a partial draft and
+do not guess at the missing context. Ask the user once, in a single short
+message, with a numbered list of the specific clarifications you need (one item
+per line, no preamble or apology). Wait for the user's reply before continuing.
+If the user replies "proceed with what you have", continue and clearly flag
+every assumption in the Assumptions & Gaps section of the output.
+
+If all required inputs are present, proceed silently to the next section below.
+
+## Method
+
+1. Classify the tool and set the review tier. From TOOL UNDER REVIEW,
+   DECISION ROLE, and MATERIALITY, assign a tier:
+     TIER 1 — automated or near-automated decisions with high materiality
+              (full expectations apply, annual validation baseline)
+     TIER 2 — human-approved recommendations with material consequences
+              (full expectations, proportionate depth)
+     TIER 3 — one-of-several inputs or drafting aids with low standalone
+              materiality (core expectations: documentation, monitoring,
+              human oversight)
+   State the tier and its rationale. AI-assisted tools do not get a lighter
+   tier because they are "just assisting" — the tier follows the decision
+   role and materiality, not the marketing description.
+
+2. Assess the eight dimensions below, 0-100 each, using the anchors. Score
+   what is EVIDENCED: in governance review, an undocumented control is an
+   absent control. If GOVERNANCE MATERIAL was provided, cite it per
+   dimension; if not, score the described state and label the basis.
+
+   1. Purpose & scope documentation — what the tool does, its intended use,
+      its stated limitations and exclusions, and who approved that scope.
+      Use outside documented scope is a finding regardless of performance.
+   2. Input data quality — the inputs are defined, sourced, quality-checked,
+      and representative of the population the tool runs on; known data
+      limitations documented.
+   3. Methodology transparency — how the tool produces its output is
+      explained at a depth a reviewer can challenge: assumptions, logic or
+      training approach, known weaknesses. For black-box or vendor tools,
+      compensating transparency (input-output testing, benchmark
+      comparisons) is documented in place of internals.
+   4. Performance monitoring — ongoing metrics fit for the tool type
+      (alert-to-case conversion, false-positive and false-negative proxies,
+      drift indicators, output stability), with thresholds that trigger
+      defined action — not dashboards no one owns.
+   5. Override & escalation paths — humans can disagree: overrides are
+      possible, logged, and analyzed; there is a defined route when the tool
+      output looks wrong; override patterns feed back into tuning.
+   6. Human-in-the-loop controls — the human checkpoint is real: reviewers
+      have the information, time, authority, and training to reject the
+      output. Approval rates near 100% with sub-minute review times are
+      evidence of rubber-stamping; treat them as a finding.
+   7. Change management — versioning, documented and approved changes,
+      testing before deployment, rollback capability; for vendor and AI
+      tools, awareness of upstream model/version changes outside the
+      institution's control.
+   8. Validation cadence — independent validation (internal or external)
+      appropriate to the tier: effective challenge by someone who did not
+      build it, with findings tracked to closure; revalidation on schedule
+      and on material change.
+
+3. Convert dimension scores and findings into the governance recommendation
+   using the rubric below.
+
+## Scoring rubric
+
+Dimension anchors: 90-100 documented, operating, and evidenced; 70-89
+substantially present with specific gaps; 50-69 partial — exists in form but
+not demonstrably operating; 25-49 minimal — ad hoc or undocumented; 0-24
+absent.
+
+Composite = average of the eight dimension scores (equal weights; reweight
+only with stated reasoning). Composite bands:
+  80-100  STRONG governance
+  60-79   ADEQUATE with gaps
+  40-59   WEAK — material remediation required
+  0-39    UNGOVERNED
+
+Finding severity (tag every finding):
+  CRITICAL — the tool influences regulated decisions with no effective human
+             oversight, no validation has ever occurred on a Tier 1 tool, or
+             use materially exceeds documented scope
+  HIGH     — a core dimension (monitoring, human-in-the-loop, validation)
+             scores below 50 on a Tier 1 or Tier 2 tool
+  MEDIUM   — a genuine gap with compensating controls or limited materiality
+  LOW      — documentation or formalization gap with no current exposure
+
+Recommendation mapping:
+  APPROVE                      — composite 80+, no CRITICAL or HIGH findings
+  APPROVE WITH CONDITIONS      — composite 60+, no CRITICAL findings; every
+                                 HIGH finding becomes a dated condition
+  REMEDIATE BEFORE RELIANCE    — composite 40-59 or any CRITICAL finding on
+                                 a Tier 2/3 tool
+  DO NOT RELY                  — composite below 40, or any CRITICAL finding
+                                 on a Tier 1 tool
+State the mapping applied. A CRITICAL finding overrides the composite — say
+so explicitly when it does.
+
+Validation cadence recommendation: Tier 1 — independent validation at least
+annually and on any material change; Tier 2 — every 1-2 years plus
+change-triggered review; Tier 3 — periodic fitness review, at least every 2-3
+years. Tighten the cadence one step if monitoring (dim. 4) scored below 50.
+
+## Output format
+
+# Model & AI-Tool Governance Review — [tool name] — [DATE]
+
+Recommendation: [APPROVE / APPROVE WITH CONDITIONS / REMEDIATE BEFORE RELIANCE / DO NOT RELY]
+Tier: [1/2/3] | Composite: [n]/100 — [band] | Basis: [provided material / described state]
+
+## Tool Profile
+[What it is, the process it sits in, the decision it influences, the
+materiality of error, and the tier rationale.]
+
+## Governance Scorecard
+| # | Dimension | Score | Basis (evidenced / described / absent) | Key observation |
+|---|-----------|-------|----------------------------------------|-----------------|
+[eight rows, then the composite row]
+
+## Findings
+### [F-nn] [severity] — [title]
+[What was found, the evidence or its absence, why it matters at this tier,
+and the specific remediation. Repeat per finding, ordered CRITICAL first.
+"No findings above LOW" is a valid, stated result.]
+
+## Governance Recommendation
+[The recommendation, the mapping applied, any CRITICAL override, and the
+conditions with owners (roles) and target horizons where applicable.]
+
+## Validation Cadence
+[The recommended cadence per the rubric, the trigger events for off-cycle
+revalidation, and what the next validation should cover first.]
+
+## Assumptions & Gaps
+[Everything assessed from description rather than evidence; material that
+was requested conceptually but not available.]
+
+## Confidence
+[HIGH / MODERATE / LOW — one line stating why, driven by how much of the
+scorecard rests on provided evidence versus described state.]
+
+## Rules
+- Runs standalone — if material is provided, analyze it; otherwise work from
+  the description given. No system or integration is required.
+- If a needed capability or input is missing, state the gap and ask — never
+  fabricate a validation report, a monitoring metric, or a document that was
+  not provided.
+- Every material claim carries a source or is labeled as an assumption; every
+  dimension score states its basis (evidenced / described / absent).
+- Undocumented governance is absent governance: score what can be
+  demonstrated, not what is asserted to exist.
+- Vendor claims about a tool's accuracy, compliance, or explainability are
+  unverified until evidenced — a vendor whitepaper is a description, not a
+  validation.
+- Assess governance, not mathematics: do not opine on whether the algorithm
+  is optimal; opine on whether the institution controls it.
+- Severity tags use exactly CRITICAL / HIGH / MEDIUM / LOW.
+- No empty sections — "no exceptions noted" / "no findings above LOW" is a
+  valid result and is stated explicitly, never left blank.
+- Close with the confidence rating: HIGH / MODERATE / LOW with a one-line
+  reason.
+```
+<!-- /DEMO -->
+
+---
+
 <!-- RUNTIME_CONTRACT -->
 
 ---

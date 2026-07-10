@@ -1,0 +1,153 @@
+{
+  "comms-surveillance-review.md": {
+    "scenario": "A single-name dealer-chat flag on an illiquid bond where an internal trader tells an external broker to continue on a personal mobile.",
+    "fills": [
+      [
+        "tripped the alert",
+        "no need for us both to be showing at 68 on the Emberline 29s - leave it with me and I'll bell your mobile in five, don't put the rest of this in here"
+      ],
+      [
+        "what fired the alert",
+        "Lexicon + scenario model 'OffChannel_Evasion_v3' matched on 'bell your mobile', 'don't put ... in here', and 'leave it with me' (evasion / unmonitored-channel cluster). Secondary weak match from the coordination lexicon on 'both be showing'."
+      ],
+      [
+        "persistent chat",
+        "Persistent chat — a single-name bilateral dealer chat room (internal-to-external), text-based, system-timestamped."
+      ],
+      [
+        "who is speaking",
+        "Speaker: internal credit trader on Harborview Desk 4 (generic label 'Trader H7'). Counterparty: an external inter-dealer broker at Aldgate Brokers (generic label 'Broker K'). This is a bilateral broker relationship; Broker K is not a competing dealer on the same client order."
+      ],
+      [
+        "surrounding messages",
+        "Persistent-chat thread (single-name room, times ET), 2026-03-05:\n  14:02  Broker K: got a small axe to show in the Emberline 29s, you around\n  14:03  Trader H7: maybe. where's it marked\n  14:04  Broker K: last I saw low 68s, nothing trading, super thin\n  14:05  Trader H7: yeah it's a graveyard, i might have a buyer later\n  14:06  Broker K: if you show 68 and i show 68 we just sit here\n  14:07  Trader H7: no need for us both to be showing at 68 on the Emberline 29s - leave it with me and I'll bell your mobile in five, don't put the rest of this in here   [FLAGGED]\n  14:08  Broker K: ok\n  14:13  Broker K: thanks, speak later\n  (no further substantive messages in the room that afternoon)"
+      ],
+      [
+        "known business relationship",
+        "Desk 4 is investment-grade / crossover credit. The 'Emberline 29s' are Emberline Industries 5.25% senior notes due 2029 — a thin, rarely-quoted line priced in the high 60s. Aldgate Brokers is one of several inter-dealer brokers the desk uses. No related Harborview client order was located for this line in the window on the provided record."
+      ],
+      [
+        "prior alert notes",
+        "(1) Chat export (as above) with system timestamps; single bilateral room, internal-to-external.\n(2) Prior-alert note on Trader H7: one earlier 'off-channel' lexicon alert in 2026-01 was closed as a false positive (arranging a callback to a legitimate voice-recorded line).\n(3) Recordkeeping policy extract (generic): substantive trading discussions must remain on monitored channels; arranging to continue business on a personal mobile is a recordkeeping concern independent of any conduct theme.\n(4) Desk blotter check: no related client order was located for the Emberline 29s in the 14:00-15:00 window on the provided record (absence noted, not independently confirmed)."
+      ],
+      [
+        "earlier disposition or draft",
+        "None — first review of this alert; baseline."
+      ]
+    ]
+  },
+  "market-abuse-case.md": {
+    "scenario": "A prop trader's first-ever long in Calderon Therapeutics built two days before an all-cash takeover and liquidated on the announcement.",
+    "fills": [
+      [
+        "INSIDER_DEALING",
+        "INSIDER_DEALING"
+      ],
+      [
+        "generic label",
+        "Trader R2 — proprietary book, Harborview desk PB-3 (generic label)"
+      ],
+      [
+        "listed equity",
+        "Ordinary shares and short-dated call options of Calderon Therapeutics Inc. (fictional; ticker CLDT); listed equity on a national exchange, with listed options on the same name."
+      ],
+      [
+        "what surfaced this",
+        "Surveillance scenario 'PreAnnouncement_Trading_v2' fired: an atypical long build in CLDT in the 48 hours before a takeover announcement, followed by a same-day liquidation on the news."
+      ],
+      [
+        "date/time range",
+        "2026-02-23 09:30 ET through 2026-02-25 16:00 ET."
+      ],
+      [
+        "announcement timestamp",
+        "2026-02-25 08:01 ET — Calderon Therapeutics announces an agreed all-cash acquisition by Northwind Pharma at a 41% premium; CLDT opened roughly +38% that morning. No CLDT-specific public news in the 2026-02-23 to 2026-02-24 window per the provided news scan."
+      ],
+      [
+        "sizes, direction",
+        "CLDT trade/order blotter for Trader R2, book PB-3 (times ET):\n  2026-02-23 10:11  BUY 20,000 CLDT shares @ 22.40  (first-ever CLDT position on this book)\n  2026-02-23 10:12  BUY  8,000 CLDT shares @ 22.44\n  2026-02-23 13:37  BUY  150 CLDT calls, strike 25, expiry 2026-03-20 @ 0.35\n  2026-02-24 09:41  BUY 12,000 CLDT shares @ 22.71\n  2026-02-24 14:02  BUY  100 CLDT calls, strike 25, expiry 2026-03-20 @ 0.41\n  2026-02-25 08:01  [PUBLIC ANNOUNCEMENT — Calderon agreed all-cash takeover by Northwind Pharma, +41% premium]\n  2026-02-25 09:31  SELL 40,000 CLDT shares @ 31.05\n  2026-02-25 09:33  SELL   250 CLDT calls, strike 25, expiry 2026-03-20 @ 6.10\nNet: a first-ever long built on T-2 and T-1 across shares and short-dated out-of-the-money calls, entirely liquidated in the first minutes after the announcement. Realized gain per blotter: shares about +$300,000; options about +$150,000."
+      ],
+      [
+        "insider-list status",
+        "Trader R2 sits on PB-3, a directional proprietary book with no healthcare-sector mandate. Harborview's advisory arm advised Northwind Pharma on the Calderon deal, separated from PB-3 by a documented information barrier. R2 is NOT on the deal insider list. However, per a provided org note, R2 shares a reporting-line manager ('Manager Q') with an analyst who attended a 2026-02-20 cross-divisional wall-crossing meeting. Any personal connection between R2 and the issuer/deal is UNKNOWN."
+      ],
+      [
+        "off-channel signals",
+        "One internal chat 2026-02-23 10:14 ET from R2 to a colleague ('C3'): 'got a good feeling on a name, going big today' — no name given. Telephony metadata: two calls on 2026-02-22 in the 19:20s ET from R2's desk line to an external mobile; call content not captured. A message the prior week referenced 'call me after 6' (possible personal-device use). No recorded content available."
+      ],
+      [
+        "trade blotter",
+        "(1) Trade blotter (above), source: prop-book OMS export.\n(2) News timeline: 2026-02-25 08:01 ET Calderon/Northwind deal announcement (public wire); no CLDT-specific public news in the 2026-02-23 to 2026-02-24 window per the provided scan.\n(3) Access/org note: Harborview advisory advised Northwind; a wall-crossing meeting occurred 2026-02-20; Trader R2 is not on the deal insider list; R2 and a wall-crossed analyst share reporting-line manager 'Manager Q'; barrier controls documented, with no logged crossing of R2.\n(4) Comms extract: internal chat 2026-02-23 10:14 ET from R2 to 'C3': 'got a good feeling on a name, going big today'. Telephony metadata: two 2026-02-22 evening calls from R2's desk line to an external mobile; content not recorded.\n(5) No prior interview notes."
+      ],
+      [
+        "draft memo",
+        "None — first investigation build; baseline. A first-line trade-surveillance triage exists but is not attached."
+      ],
+      [
+        "subject",
+        "Trader R2 (desk PB-3)"
+      ],
+      [
+        "instrument",
+        "Calderon Therapeutics Inc. (CLDT) — shares and short-dated calls"
+      ],
+      [
+        "if provided",
+        "MA-2026-0219"
+      ],
+      [
+        "...",
+        "Insider dealing (suspected)"
+      ],
+      [
+        "...",
+        "2026-02-23 to 2026-02-25 ET"
+      ],
+      [
+        "...",
+        "2026-03-02"
+      ]
+    ]
+  },
+  "trade-surveillance-review.md": {
+    "scenario": "A spoofing/layering alert on stacked single-stock-future sell orders cancelled within milliseconds of opposite-side buy fills.",
+    "fills": [
+      [
+        "vendor alert name",
+        "Spoofing / layering — vendor rule 'LayeredOrders_CancelBeforeExec_v4': large one-sided displayed orders away from the touch with a high cancel-to-fill ratio, cancels clustered immediately after opposite-side fills."
+      ],
+      [
+        "generic label if anonymizing",
+        "Trader label 'D-Voss / Desk 2' (proprietary futures)."
+      ],
+      [
+        "exchange or venue",
+        "Front-month single-stock futures on Halcyon Grid Corp (fictional; ticker HGRD), listed derivatives, on the venue 'NDX-Derivatives'."
+      ],
+      [
+        "time range of the flagged activity",
+        "2026-03-06, 10:31:12 to 10:33:48 ET — a burst of about two and a half minutes."
+      ],
+      [
+        "cancellations, fills",
+        "HGRD front-month future order log, subject D-Voss / Desk 2, venue NDX-Derivatives (times ET, ms precision), 2026-03-06:\n  10:31:12.004  NEW  SELL 250 @ 41.28  (touch 41.22/41.24)  ordID S1\n  10:31:12.006  NEW  SELL 300 @ 41.31  ordID S2\n  10:31:12.009  NEW  SELL 275 @ 41.34  ordID S3   [stacked sell depth 3-5 ticks above touch]\n  10:31:14.210  NEW  BUY   40 @ 41.24  ordID B1\n  10:31:14.395  FILL BUY  40 @ 41.24  (B1 lifts the offer)\n  10:31:14.560  CXL  SELL 250  S1  (165ms after the B1 fill)\n  10:31:14.564  CXL  SELL 300  S2\n  10:31:14.569  CXL  SELL 275  S3\n  10:31:31.180  NEW  SELL 280 @ 41.30  S4\n  10:31:31.184  NEW  SELL 320 @ 41.33  S5\n  10:31:33.902  NEW  BUY   50 @ 41.25  B2\n  10:31:34.061  FILL BUY  50 @ 41.25\n  10:31:34.240  CXL  SELL 280  S4\n  10:31:34.245  CXL  SELL 320  S5\n  ... (the same place-then-cancel-on-fill cycle repeats through 10:33:48)\nAggregate over the window: 384 sell orders posted 3-6 ticks above touch, 361 cancelled (94.0% cancel rate), mean resting time about 240ms, displayed sell size never executed; 22 buy orders, 20 filled (small, at or through touch); net position built +190 lots long; cancels cluster within roughly 150-200ms of each opposite-side buy fill."
+      ],
+      [
+        "prevailing price/spread/volume",
+        "Prevailing HGRD front-month around 41.22 bid / 41.24 offer, a roughly 2-tick spread, thin top-of-book (about 40 lots each side). No news or scheduled event in the window. Not near the open, close, or an auction; no benchmark/fixing referenced."
+      ],
+      [
+        "prior alerts on this subject",
+        "Desk 2 mandate: directional proprietary trading; permitted (but not obligated) to provide liquidity; no registered market-maker obligation in HGRD. Prior alerts: two similar 'layering' alerts on this subject in the trailing 90 days (2026-01-14 and 2026-02-19), both previously closed as 'liquidity provision'. No comms provided."
+      ],
+      [
+        "order log",
+        "(1) Vendor surveillance alert export: rule 'LayeredOrders_CancelBeforeExec_v4', score 88/100, window 10:31:12-10:33:48, subject D-Voss / Desk 2, instrument HGRD front-month.\n(2) Order log (as above), source: venue drop-copy.\n(3) Desk mandate note: Desk 2 is directional proprietary; no registered market-maker obligation in HGRD; permitted but not required to provide liquidity.\n(4) Prior-alert log: two prior 'layering' alerts on this subject in the trailing 90 days (2026-01-14, 2026-02-19), both closed 'liquidity provision'; no comms attached to either."
+      ],
+      [
+        "earlier disposition or analyst note",
+        "None — first disposition of this alert; baseline. The two prior alerts on the subject were closed separately and are noted under KNOWN CONTEXT."
+      ]
+    ]
+  }
+}

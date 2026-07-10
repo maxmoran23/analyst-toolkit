@@ -1,0 +1,72 @@
+{
+  "expected-value-analysis.md": {
+    "scenario": "A sports bettor evaluates a single-game moneyline against a model probability, sizing it with quarter-Kelly against a stated bankroll and watching the hard cap bind.",
+    "fills": [
+      [
+        "describe the position",
+        "A single-game moneyline bet on the home team, the Riverside Foxes, to beat the visiting Granite City Miners in a regular-season basketball game on 2026-07-14."
+      ],
+      [
+        "the market price or odds",
+        "Decimal odds 2.10 on the Foxes moneyline (American +110)."
+      ],
+      [
+        "your independent estimate that the outcome occurs",
+        "0.55 probability that the Foxes win, from a power-rating model."
+      ],
+      [
+        "how the estimate was derived",
+        "A power-rating model that blends season-to-date net rating, pace, injury-adjusted lineups, and home-court advantage, converted to a win probability with a logistic function. The model was validated on the three prior seasons and produced a Brier score of 0.19 out of sample (better than the 0.25 no-skill baseline)."
+      ],
+      [
+        "total capital this position is sized against",
+        "25,000 dollars"
+      ],
+      [
+        "default = quarter-Kelly",
+        "Quarter-Kelly (default)."
+      ],
+      [
+        "model output, base-rate tables",
+        "Supporting data behind the estimate (all illustrative and internal to this scenario):\n- Model inputs: Foxes net rating +4.1, Miners net rating +1.3; adjusted for a Miners starter listed out; home-court advantage worth an estimated 2.6 points; projected spread Foxes -3.0.\n- Spread-to-moneyline conversion: a projected 3.0-point favorite historically wins outright about 55 to 57 percent of the time in this league (base-rate table over three seasons).\n- Line history: opened at decimal 2.05 (Foxes) and drifted to 2.10 after the Miners starter was ruled out; one book has been slow to move, so mild residual value may remain if the market converges toward the model.\n- Model calibration: predictions in the 0.50 to 0.60 bucket resolved at 0.56 realized over the backtest (well calibrated in this range)."
+      ],
+      [
+        "OPPORTUNITY",
+        "Foxes Moneyline vs. Miners, 2026-07-14"
+      ]
+    ]
+  },
+  "local-market-analytics.md": {
+    "scenario": "A real-estate research analyst produces an institutional-grade market read on a fictional Hudson Valley town from a pasted local dataset, ahead of a possible multi-family purchase.",
+    "fills": [
+      [
+        "a town, ZIP code, or neighborhood",
+        "Cedar Hollow, a fictional town of about 14,000 people in the Hudson Valley region of New York State, roughly 70 miles north of a major metro."
+      ],
+      [
+        "why this is being run",
+        "An investment screen ahead of a possible small multi-family (2-8 unit) acquisition, with a hold horizon of 5 to 10 years."
+      ],
+      [
+        "single-family / multi-family",
+        "Multi-family (2-8 unit), with a single-family cross-read for context."
+      ],
+      [
+        "DATE",
+        "2026-07-01"
+      ],
+      [
+        "listing exports, recent sales",
+        "Cedar Hollow local dataset (all fictional and illustrative; treat as the primary evidence base and cite it as the provided dataset).\nActive inventory (as of 2026-07-01): 48 active residential listings (31 single-family, 12 multi-family, 5 condo). Median single-family list price 415,000 dollars; median 2-4 unit multi-family list price 560,000 dollars. Median price per square foot 265 dollars. Median days on market 34 (down from 51 a year ago). 9 listings had a price cut in the last 30 days; new listings in June numbered 14.\nClosed sales (trailing 6 months): 63 single-family closings, median sale price 398,000 dollars, median sale-to-list ratio 0.99, median days to contract 22, year-over-year price change +6.4 percent. Multi-family closings: only 7 in the period (thin sample), median 545,000 dollars.\nRental market: median rent 2-bed 1,950 dollars (up 5.8 percent year over year), 1-bed 1,500 dollars, 3-bed 2,600 dollars; estimated vacancy about 3 percent (tight); gross rent-to-price ratio on a typical 3-unit near 0.011 monthly (about 13 percent annual gross yield before expenses).\nMarket-level: median home value approximately 405,000 dollars, up from 381,000 a year ago; roughly 2.1 months of supply (seller's market); the town trades at about a 12 percent discount to the county median of 460,000 dollars.\nTransformation signals: a 120-unit mixed-use development approved in 2026-Q1 near the train station; a commuter-rail schedule improvement announced for 2027; two new restaurants and a coworking space opened downtown in the last year; the regional hospital announced a 40-job expansion; the elementary school rating rose one band in 2026; commercial vacancy on Main Street fell from 14 percent to 9 percent.\nMacro and regional: 30-year mortgage rates around 6.3 percent; regional economy stable with modest in-migration from the metro; broad national housing flat to slightly up."
+      ],
+      [
+        "paste the last report",
+        "None — first run; baseline. No prior report to produce a what-changed delta against."
+      ],
+      [
+        "LOCATION",
+        "Cedar Hollow, NY"
+      ]
+    ]
+  }
+}

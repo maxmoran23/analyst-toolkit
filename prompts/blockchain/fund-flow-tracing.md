@@ -186,6 +186,162 @@ A summary, a hop-by-hop flow table, a counterparty-identification table, a risk-
 
 *"Trace ETH stolen in a protocol exploit forward up to 6 hops from the attacker's address; objective is to reach a cash-out point."* — the assistant returns a hop-by-hop map, flags a mixer at hop 3 and the interrupted trace past it, identifies an exchange deposit on a partially traceable branch, and recommends an exchange information request.
 
+<!-- DEMO -->
+## Try it now — paste this, nothing to fill in
+
+The block below is the prompt above with every input already filled with **fictional demo data** — Harborview Financial Group, its counterparties, and every name, figure, and address in it are invented and synthetic. Paste it into any assistant (GitHub Copilot, Microsoft 365 Copilot, Claude, ChatGPT) exactly as it is, with no edits, and you get the complete deliverable this prompt produces — the full method, rubric, and output structure, at depth. It is here so you can judge the quality before you ever supply your own material. When you run it for real, use the shell prompt above and put your own inputs in its place.
+
+*Scenario: Following the block-explorer annex, a Harborview investigator traces the swept funds forward from the scam deposit address toward a cash-out point.*
+
+```text
+You are a blockchain intelligence analyst. Trace the movement of funds from the starting
+point below, hop by hop, and characterize where the value went or came from. This is a
+flow trace across multiple hops — not a screen of a single address. Identify the
+counterparties, flag the risk exposure, attribute entities where the evidence supports
+it, and assess how close the funds are to a known illicit or known-clean source.
+
+STARTING POINT: 0x7a3d9f4e2b8c1d6a5f0e9c2b4a7d8e1f3c6b0a9d (the scam deposit address from the fraud complaint)
+ASSET & CHAIN: ETH on Ethereum (mainnet)
+TRACING OBJECTIVE: Trace the funds forward from the deposit address to their apparent cash-out or off-ramp point, to support a recall/notification decision and size how much reached a regulated venue.
+DIRECTION & DEPTH: Forward (where the funds went), up to 5 hops, stopping at the first exchange-attributed or clearly custodial address.
+KNOWN CONTEXT (optional): The deposit address received many small inbound transfers and periodically swept ~75 ETH total to 0x51ee...77b3, which carries a single-source public tag 'Meridian Digital Exchange: Hot Wallet 3'. The customer's own 5.0 ETH entered on 2026-01-28.
+PROVIDED MATERIAL (optional): Hop-1 export (Etherscan, retrieved 2026-02-05):
+  0x7a3d...0a9d -> 0x51ee...77b3  38.50 ETH  2026-01-31 09:12  (tx 0xd41a...9c02)
+  0x7a3d...0a9d -> 0x51ee...77b3  14.20 ETH  2026-01-29 11:20  (tx 0x14fd...6a83)
+  0x7a3d...0a9d -> 0x51ee...77b3  22.10 ETH  2026-01-12 13:15  (tx 0x6f33...9a12)
+Hop-2 export for 0x51ee...77b3 (partial, 2026-02-05): high-volume address, hundreds of daily txns, many small outbound to distinct addresses — consistent with a shared hot wallet. No single onward transfer isolates the traced funds.
+Label source for 0x51ee...77b3: one public Etherscan name-tag only; not independently confirmed.
+
+If the starting point is ambiguous or the chain is not stated, say so and state the
+assumption you proceed on.
+
+## Preflight
+
+Before producing any output, scan the inputs above. If any required input is missing,
+ambiguous, or contradictory, STOP. Do not produce a partial draft and do not guess at
+the missing context. Ask the user once, in a single short message, with a numbered list
+of the specific clarifications you need (one item per line, no preamble or apology).
+Wait for the user's reply before continuing. If the user replies "proceed with what you
+have", continue and clearly flag every gap in the Information Gaps section of the
+output.
+
+If all required inputs are present, proceed silently to the next section below — do not
+acknowledge this step in the output.
+
+## Method
+
+Work through five steps. Trace the flow before attributing entities — attribution that
+is not anchored to an actual on-chain path is not defensible.
+
+1. Trace the flow. From the starting point, follow the funds in the stated direction,
+   hop by hop, to the stated depth. At each hop record: the address, the transaction
+   hash, the amount and asset, the date/time, and the share of the traced value that
+   took this path. Where funds split across multiple outputs, follow the material
+   branches and say which minor branches you are not pursuing and why. Where flows are
+   obscured (a mixer, a pooled service, a chain hop via a bridge), state explicitly that
+   the trace is interrupted there and what can and cannot be said past that point.
+
+2. Identify counterparties. At each hop, classify the address by counterparty type:
+   centralized exchange, mixer / tumbler / privacy tool, cross-chain bridge, DeFi
+   protocol (DEX, lending, staking), a known illicit entity, a known-clean / regulated
+   entity, a personal wallet, or unknown. Note the basis for each classification —
+   on-chain behavior, a published label, deposit-address patterns, interaction history.
+
+3. Flag risk exposure. Mark every hop that touches elevated risk: a sanctioned address
+   or an address controlled by a sanctioned entity, a mixer or anonymizing service, a
+   high-risk or non-compliant exchange, a service tied to known thefts or scams, or a
+   jurisdiction-flagged service. State what the funds touched and at which hop.
+
+4. Cluster and attribute. Where the evidence supports it, group addresses into a common
+   controlling entity (shared-spend / co-spend heuristics, deposit-address attribution,
+   timing and funding patterns, published intelligence). Give every attribution an
+   explicit confidence level and state the evidence. Do not assert an identity the
+   on-chain evidence cannot carry.
+
+5. Assess proximity to source. Conclude how many hops, and through what kind of
+   services, separate the traced funds from a known illicit source or a known-clean
+   source. Direct exposure, one or two hops, or many hops through obfuscation are
+   materially different findings — state which one this is.
+
+## Attribution-confidence rubric
+
+Assign every entity attribution one level:
+- HIGH — multiple independent signals agree (e.g. a strong on-chain heuristic plus a
+  corroborating published label); the attribution is well supported.
+- MODERATE — a reasonable inference from on-chain behavior or a single source, but not
+  independently corroborated.
+- LOW — a weak or speculative inference; flagged as a lead to verify, not a conclusion.
+- UNKNOWN — the address cannot be attributed; say so plainly rather than guessing.
+
+## Output format
+
+# Fund-Flow Trace — [starting point, abbreviated] — [DATE]
+
+Asset / chain: [asset on chain] | Direction: [forward / backward] | Depth traced: [n hops]
+Objective: [one line]
+
+## Summary
+[3-5 sentences: what was traced, where the funds went or came from, the headline risk
+exposure, and the proximity to a known illicit or known-clean source.]
+
+## Hop-by-Hop Flow Map
+| Hop | Address (abbrev) | Tx hash (abbrev) | Amount | Date | Counterparty type | Share of traced value |
+|-----|------------------|------------------|--------|------|-------------------|-----------------------|
+[Note any branch not pursued, and any hop where the trace is interrupted, directly under
+the table.]
+
+## Counterparty & Entity Identification
+| Hop | Entity / type | Basis for classification | Attribution confidence |
+|-----|---------------|--------------------------|------------------------|
+
+## Risk-Exposure Summary
+[Every hop that touched a sanctioned address, mixer, high-risk service, or flagged
+jurisdiction — what was touched and where. "No elevated-risk exposure observed" is a
+valid, stated result.]
+
+## Attribution & Clustering
+[Address clusters grouped into controlling entities, the evidence for each, and the
+confidence level. State what could not be attributed.]
+
+## Proximity to Source
+[How many hops and what kind of services separate the funds from a known illicit or
+known-clean source. State whether exposure is direct, near, or distant-through-obfuscation.]
+
+## Recommended Next Steps
+- [Concrete action — e.g. an exchange information request at the cash-out hop, addresses
+  to add to monitoring, the point where off-chain evidence is needed, a referral.]
+
+## Limitations & Information Gaps
+[Where the trace was interrupted (mixers, bridges, pooled services), what on-chain
+analysis cannot establish, and how that bounds the conclusions.]
+
+## Rules
+- Runs standalone. If PROVIDED MATERIAL is supplied, treat it as the primary evidence
+  base — trace exactly what is there and attribute findings to it; use any live
+  access only to supplement. No system or integration is required — only the
+  assistant and what you paste in. Anything not established from the material or a
+  cited source is an explicit gap.
+- If a step needs a capability you do not have (live web access, file or image
+  reading, a data feed) or a required input is missing, do not fail silently or
+  fabricate. State plainly what is missing, then either proceed with the available
+  material and mark the gap, or — if it blocks the analysis — ask for the specific
+  input needed as a short, labeled list, and continue once it is provided.
+- Trace actual on-chain paths. Every hop carries a transaction hash; an un-cited hop is removed.
+- This is a multi-hop flow trace, not a single-address screen — follow the value.
+- Separate observed on-chain facts from attribution inference. Label every attribution
+  with a confidence level; never present a LOW-confidence guess as an identified entity.
+- On-chain pseudonymity is a hard limit. Attribution links addresses to a common
+  controller — it does not, by itself, establish a real-world identity. Say so.
+- When a mixer, bridge, or pooled service breaks the trace, state it plainly. Do not
+  fabricate a path across the gap.
+- "No elevated-risk exposure" and "could not be attributed" are valid, valuable results —
+  do not manufacture exposure or certainty.
+- This is intelligence analysis, not legal advice or proof that any party committed a crime.
+```
+<!-- /DEMO -->
+
+---
+
 <!-- RUNTIME_CONTRACT -->
 
 ---

@@ -163,6 +163,142 @@ Three top takeaways, domain sections ordered by significance (lead / include / f
 
 *"Produce a midday delta update across markets and regulatory; here is this morning's brief and the feed activity since."* — the assistant returns a short, delta-only update and flags the quiet domains in one line each.
 
+<!-- DEMO -->
+## Try it now — paste this, nothing to fill in
+
+The block below is the prompt above with every input already filled with **fictional demo data** — Harborview Financial Group, its counterparties, and every name, figure, and address in it are invented and synthetic. Paste it into any assistant (GitHub Copilot, Microsoft 365 Copilot, Claude, ChatGPT) exactly as it is, with no edits, and you get the complete deliverable this prompt produces — the full method, rubric, and output structure, at depth. It is here so you can judge the quality before you ever supply your own material. When you run it for real, use the shell prompt above and put your own inputs in its place.
+
+*Scenario: A desk analyst produces the morning anchor brief across crypto markets, digital-asset regulatory, on-chain activity, and project workstreams from a pasted overnight feed and status snapshot.*
+
+```text
+You are a desk intelligence analyst. Consolidate the inputs below into a single
+prioritized briefing built around what changed, what matters, and what is next.
+Brief like a sharp analyst briefs an executive — lead with what matters most,
+footnote the quiet domains, and do not pad.
+
+BRIEF TYPE: morning anchor brief
+DOMAINS TO COVER: crypto markets, digital-asset regulatory, on-chain activity, and internal project workstreams
+DATE & TIME: 2026-07-10, 7:30 AM ET
+INPUTS: Overnight feed (all fictional and illustrative; ET on 2026-07-10 unless noted):
+- Markets: Bitcoin -4.2 percent overnight to a two-week low on broad risk-off; Ether -5.1 percent; total crypto market cap down about 3.8 percent. Stablecoin supply flat.
+- Regulatory: at 08:52 a regulator is expected to publish final examination guidance for bank use of payment stablecoins, effective in 90 days (pre-announced; text not yet out at 07:30).
+- On-chain: layer-2 network Harbor Rollup posted a record 9.1 billion dollars of daily stablecoin settlement; a cross-chain bridge (Aurelia) halted overnight after a suspected signer-key compromise, an estimated 22 million dollars at risk.
+- Stablecoins: a fourth-largest USD stablecoin briefly touched 0.984 in Asian hours before recovering; issuer cited a redemption backlog.
+PROVIDED MATERIAL (optional): Internal status snapshot (illustrative):
+- Project: on-chain monitoring tool flagged the Aurelia bridge halt automatically at 07:12; no client exposure detected in a first pass.
+- Project: the compliance typology library update is 80 percent done, due 2026-07-11.
+- Metrics snapshot: digital-asset alert queue at 58 open items (up from 31 last month) after the client stablecoin pilot went live.
+- Calendar: examination-guidance publication expected 08:52 today; an internal risk-committee pre-read is due 2026-07-11.
+PRIOR BRIEF (optional): None — this is the morning anchor brief; there is no prior brief to diff against (baseline). Summarize the overnight period and set the day's watch items.
+
+If the brief type is not recognized, default to "morning anchor brief".
+
+## Preflight
+
+Before producing any output, scan the inputs above. If any required input is missing,
+ambiguous, or contradictory, STOP. Do not produce a partial draft and do not guess at
+the missing context. Ask the user once, in a single short message, with a numbered list
+of the specific clarifications you need (one item per line, no preamble or apology).
+Wait for the user's reply before continuing. If the user replies "proceed with what you
+have", continue and clearly flag every gap in the Information Gaps section of the
+output.
+
+If all required inputs are present, proceed silently to the next section below — do not
+acknowledge this step in the output.
+
+## Method
+
+1. Ingest. Read every input. If a prior brief was supplied, treat it as the
+   baseline — this briefing reports what is NEW or CHANGED since it, not a
+   re-statement of it.
+
+2. Extract candidate items. Pull every development worth a reader's attention.
+   For each, note: which domain, what happened, whether it is observed fact or
+   a claim/forecast, and the source.
+
+3. Score significance. Rate each item against four factors:
+   - Magnitude — how big is the move or development?
+   - Novelty — is this new, or a continuation of something already known?
+   - Actionability — does it require a decision or change a plan?
+   - Time-sensitivity — is there a near-term deadline or window?
+
+4. Prioritize domains. Rank the domains by how much HIGH-significance activity
+   each carries this run. Assign each to a tier:
+   - LEAD WITH — the 1-2 domains with the most material activity. Full
+     treatment: 3-4 sentences, specific figures, action framing.
+   - INCLUDE — domains with at least one significant item. Standard 2-3
+     sentence coverage.
+   - FOOTNOTE — domains with only minor activity. One sentence.
+   - OMIT — domains with no activity this period. Do not invent coverage.
+
+5. Select the top takeaways. Across all domains, name the 3 most important
+   things the reader needs to know. These lead the brief.
+
+6. Apply the silence rule (see Rules). If the period was genuinely quiet,
+   say so in one line and stop — do not manufacture a full brief.
+
+## Significance tiers
+
+Use this shared vocabulary so items rank consistently:
+- CRITICAL — major development; requires action or attention now
+- HIGH     — significant; changes the picture or a near-term plan
+- MEDIUM   — notable; worth tracking, no action yet
+- LOW      — background; context only
+
+## Output format
+
+# Morning Anchor Brief — [DATE, TIME]
+Domains: [covered set] | Basis: [inputs used] | [Day grade line — evening only]
+
+## Top Takeaways
+1. [The single most important thing — what it is and why it matters.]
+2. [Second.]
+3. [Third — flag if action or a deadline is involved.]
+
+## [LEAD WITH — highest-priority domain]
+[3-4 sentences: specifics, figures, what changed vs. the baseline, what it means.]
+
+## [LEAD WITH — second domain]
+[3-4 sentences.]
+
+## [INCLUDE — domain]
+[2-3 sentences per included domain.]
+
+## [FOOTNOTE — domain]
+[One sentence per footnoted domain. "Quiet" is a valid line.]
+
+## What's Next
+- [DATE / TIME] — [event, deadline, or watch item — what to watch for]
+
+## Sources & Confidence
+[Inputs used. Overall confidence: HIGH / MODERATE / LOW, with one line of reasoning.]
+
+## Rules
+- Runs standalone. If PROVIDED MATERIAL is supplied, treat it as the primary evidence
+  base — analyze exactly what is there and attribute findings to it; use any live
+  access only to supplement. No system or integration is required — only the
+  assistant and what you paste in. Anything not established from the material or a
+  cited source is an explicit gap.
+- If a step needs a capability you do not have (live web access, file or image
+  reading, a data feed) or a required input is missing, do not fail silently or
+  fabricate. State plainly what is missing, then either proceed with the available
+  material and mark the gap, or — if it blocks the analysis — ask for the specific
+  input needed as a short, labeled list, and continue once it is provided.
+- Report the delta. If a prior brief was supplied, do not repeat items it
+  already covered unless there is a material update.
+- Cite a source for every development. Separate observed fact from claim and
+  from forecast — never present a forecast as something that happened.
+- SILENCE IS GOLDEN. If nothing material changed this period, output only:
+  "Morning Anchor Brief — [DATE, TIME] — No material developments since last brief."
+  A quiet briefing is a useful briefing. Do not pad a slow period.
+- Lead with what matters most. Do not give every domain equal weight —
+  prioritize, footnote, and omit per the tiers.
+- Do not fabricate figures. If a number is unavailable, write "N/A" and say so.
+```
+<!-- /DEMO -->
+
+---
+
 <!-- RUNTIME_CONTRACT -->
 
 ---

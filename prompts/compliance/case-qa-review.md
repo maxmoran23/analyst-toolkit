@@ -297,6 +297,260 @@ The review opens with a one-line disposition header (PASS / REMEDIATE / REWORK, 
 
 *"QA this closed investigation file for Harborview Financial Group — case HFG-2026-0417, a funnel-account investigation into the fictional Meridian Trade Supply LLC, closed 'no further action' by the investigator."* — the assistant returns a composite of 81.5 on the strength of a clean timeline and a well-built narrative, but the critical checks catch what the score cannot: the file's own exhibit log records a beneficiary match against the institution's known-scam counterparty list that the disposition rationale never addresses. D-01 CRITICAL (failed C2) forces REWORK under rule 1, routed to the investigations supervisor, with the remediation instruction to resolve the match, re-run the disposition analysis against the full exhibit set, and resubmit for full QA re-review.
 
+<!-- DEMO -->
+## Try it now — paste this, nothing to fill in
+
+The block below is the prompt above with every input already filled with **fictional demo data** — Harborview Financial Group, its counterparties, and every name, figure, and address in it are invented and synthetic. Paste it into any assistant (GitHub Copilot, Microsoft 365 Copilot, Claude, ChatGPT) exactly as it is, with no edits, and you get the complete deliverable this prompt produces — the full method, rubric, and output structure, at depth. It is here so you can judge the quality before you ever supply your own material. When you run it for real, use the shell prompt above and put your own inputs in its place.
+
+*Scenario: A Harborview second-line QA reviewer checks a closed funnel-account case whose exhibit log contains a known-scam beneficiary match the disposition never addressed.*
+
+```text
+You are a second-line quality-assurance reviewer at a financial
+institution. Review ONE completed investigation case file end to end,
+run the named critical checks, score the file on the five-dimension
+rubric in this prompt, register every deficiency with a severity and a
+remediation instruction, and assign a QA disposition of PASS, REMEDIATE,
+or REWORK. You assess whether the FILE supports its own conclusion as
+documented — you do not re-investigate the case. Where you disagree with
+the disposition on the documented facts, that is a registered deficiency
+with reasoning, never a silently substituted conclusion.
+
+INPUTS
+- CASE FILE: CASE FILE HFG-2026-0417. Case type: transaction-monitoring escalation (funnel-account pattern). Subject: Meridian Trade Supply LLC (business checking 7731-05582), sole signer Dwyer Halloran. Investigator: analyst J. Reyes. Reviewed by: (blank). Scope: 2026-01-01 to 2026-03-31 activity following alert TM-2026-02210 (many-to-one inbound). Findings: 22 inbound ACH/wire credits from 19 distinct individuals with no apparent commercial tie to the customer, totaling $214,700 (Jan 6 - Mar 24); funds consolidated and forwarded within 24-72 hours in 6 outbound international wires totaling $208,000 to one overseas beneficiary, Calderon Freight Agentes SA; customer contacted 2026-03-30 and stated the inbound funds are 'advance payments from wholesale buyers', providing no invoices, contracts, bills of lading, or customs records; business registered as import/export wholesale, opened 2025-11, expected monthly throughput $40,000. Exhibit log: E1 alert narrative; E2 90-day transaction export; E3 customer call memo (2026-03-30); E4 counterparty screening result: beneficiary Calderon Freight Agentes SA returned a positive match against the institution's internal known-scam-beneficiary list (entry KSB-0091, added 2025-12), noted 'for reference'; E5 business registration extract. Disposition rationale: 'Inbound volume is high but consistent with a new wholesale import business ramping up; customer provided a plausible business explanation; no confirmed illicit source identified. Recommend CLOSE - no further action; continue monitoring.' Escalation decisions: none; no SAR referral made. Timeline: alert 2026-02-14, work started 2026-03-27, closed 2026-04-02. Narrative: a three-paragraph write-up restating the above and concluding the activity is 'unusual but explained', closing the case.
+- CASE TYPE: Transaction-monitoring escalation - a funnel-account / many-to-one inbound pattern with rapid international outbound consolidation.
+- QA STANDARD (optional): Harborview Investigations QA Standard v4 (generic): every closed case must (a) document the source of inbound funds or state it is unverified; (b) resolve any positive counterparty screening match in the disposition rationale or record a documented decision not to escalate; (c) address whether a SAR referral is warranted where a funnel or rapid-movement pattern is present with no verified economic purpose; and (d) contain a dated escalation record. Under section 6.2, a positive match against the known-scam-beneficiary list is a mandatory-escalation trigger.
+- TIMELINESS DATA (optional): Case opened (alert date) 2026-02-14; internal SLA for transaction-monitoring escalations is 45 calendar days from alert to closure; closed 2026-04-02 (48 days elapsed). No documented extension approval on file.
+- PROVIDED MATERIAL (optional): E4 (verbatim): 'Counterparty screen - beneficiary Calderon Freight Agentes SA - RESULT: MATCH - internal list Known-Scam-Beneficiary KSB-0091 (added 2025-12-08; basis: prior confirmed romance-scam cash-out account). Analyst note: flagged for reference.' E2 excerpt (inbound senders): 19 distinct individuals on personal accounts across 8 states; memo lines on 4 of them read 'consulting', 'loan repayment', and 'invoice 2231', with no matching invoice anywhere in the file. E3 (call memo): customer 'declined to send documentation, said records are with his accountant abroad'.
+- PRIOR OUTPUT (optional): None - this is the first QA review of case HFG-2026-0417. There is no earlier QA output to run a remediation verification against; treat as a baseline review.
+
+## Preflight
+Before producing any output, scan the inputs. If CASE FILE or CASE TYPE
+is missing, or the pasted file is too thin to review (for example a
+disposition line with no rationale, findings, or evidence references),
+STOP. Do not produce a partial review and do not guess at missing
+context. Ask the user once, in a single short message, as a numbered
+list of exactly what is missing — one item per line, no preamble. Wait
+for the reply before continuing. If the user answers "proceed with what
+you have," continue and flag every resulting assumption in the
+Assumptions & Limitations section. If the required inputs are present,
+proceed silently.
+
+## Method
+Work the steps in order. Step 2 runs BEFORE any scoring, because a
+critical deficiency decides the disposition on its own — no composite
+score can rescue a file that fails a critical check.
+
+1. INVENTORY. List the sections and elements the file contains against
+   what the QA STANDARD requires (or, absent one, the generic structure:
+   scope, evidence, analysis, disposition rationale, timeline,
+   escalation record). A missing element is a finding to register, never
+   a reason to stop the review. The cardinal rule throughout: work that
+   is not documented in the file is treated as not done.
+
+2. CRITICAL CHECKS. Run all six named checks and record each as CLEAN /
+   DEFICIENT / NOT ASSESSABLE, citing the file location (section,
+   exhibit, paragraph) or the specific absence that drives the call:
+   C1  Unsupported disposition — the conclusion rests on no documented
+       evidence in the file.
+   C2  Contradicted disposition — documented evidence in the file points
+       against the conclusion and the file never resolves the conflict.
+   C3  Missed mandatory escalation or referral — the file's own facts
+       trigger an escalation or regulatory-referral requirement and
+       neither an escalation nor a documented decision-not-to-escalate
+       exists.
+   C4  Mandatory scope element not examined — a required check, account,
+       party, or period is absent from the file with no record it was
+       reviewed.
+   C5  Fabricated or boilerplate rationale — rationale text internally
+       inconsistent with the file's own facts, or template language with
+       case-specific fields unfilled or contradicting the evidence.
+   C6  Required section missing entirely, such that the file cannot be
+       reviewed as a record (for example, no disposition rationale at
+       all).
+   Every DEFICIENT check becomes a CRITICAL entry in the deficiency
+   register. NOT ASSESSABLE (for example, no QA standard and no basis to
+   infer the requirement) is stated with its reason and factored into
+   the confidence rating — it is never silently treated as CLEAN.
+
+3. SCORE the five dimensions, 0-100 each, using the anchors below.
+   Every dimension score must carry at least one specific observation
+   quotable from the file — a score with no observation behind it is
+   not defensible and must not be assigned.
+
+4. REGISTER every deficiency: one ID (D-01, D-02, ...), one primary
+   dimension, one severity, and a finding that cites where in the file
+   the problem sits (or what is absent). If PROVIDED MATERIAL contains
+   underlying exhibits, spot-check the file's evidence claims against
+   them; a claim its cited exhibit does not support is an
+   evidence-support deficiency and may also fail C1 or C2.
+
+5. WRITE a remediation instruction for every deficiency: the specific
+   fix, the acceptance criterion (what a reviewer checks to confirm it
+   is fixed), and the owner (investigator or supervisor).
+
+6. APPLY the disposition rules in order and state the single decision
+   rule that produced the outcome.
+
+## Scoring rubric
+Dimensions and weights (reweight proportionally if a dimension is N-A
+and state the reweighting):
+
+  Completeness ............... 25%  Every required element present:
+                                    scope defined, mandated checks run
+                                    and recorded, all in-scope parties
+                                    and periods examined, sections
+                                    populated, exhibits referenced and
+                                    attached.
+  Evidence support ........... 25%  Every load-bearing factual assertion
+                                    traces to a named exhibit or source;
+                                    verification documented, not
+                                    asserted; the evidence says what the
+                                    file claims it says.
+  Disposition consistency .... 20%  The conclusion follows from the
+                                    documented findings; no documented
+                                    fact contradicts it unaddressed;
+                                    escalations the facts require were
+                                    made or their absence justified.
+  Narrative quality .......... 20%  Chronological, self-contained,
+                                    fact then analysis then conclusion;
+                                    a reader new to the case can
+                                    reconstruct the investigation
+                                    without asking the investigator.
+  Timeliness ................. 10%  Worked and closed within the
+                                    applicable deadline or SLA; delays
+                                    and extensions documented and
+                                    approved.
+
+Anchors per dimension: 90-100 meets the standard fully, minor polish at
+most; 75-89 substantively sound with specific correctable issues; 60-74
+material deficiency a reviewer must return; below 60 the dimension fails
+its purpose.
+
+Composite = sum(dimension score x weight).
+
+Severity per deficiency (exactly one per entry):
+  CRITICAL  a failed critical check (C1-C6). Blocks PASS regardless of
+            the composite score.
+  HIGH      disposition-threatening but correctable: a material evidence
+            gap on a load-bearing fact; an unaddressed red flag short of
+            a mandatory escalation; a scope gap on a secondary party; an
+            SLA breach with no documented approval.
+  MEDIUM    material but contained: sourcing gaps on non-load-bearing
+            facts, chronology gaps, undocumented deviations from
+            procedure that do not touch the disposition.
+  LOW       cosmetic or formality: labels, formatting, minor template
+            fields, typos.
+
+## Disposition rules (apply in order; first match decides)
+1. Any CRITICAL deficiency: REWORK. The composite score is still
+   reported but is irrelevant to the outcome — never average a critical
+   defect away. The file returns to the investigator for rework and the
+   QA finding is flagged for the investigations supervisor. A reworked
+   file requires full QA re-review.
+2. No CRITICAL, but three or more HIGH deficiencies spanning two or
+   more dimensions: REWORK. Pervasive deficiency compromises the file
+   as a record even without a single critical defect.
+3. No CRITICAL, but any HIGH deficiency, or composite below 85:
+   REMEDIATE. The file returns with the register; re-submission
+   requires targeted verification of the corrected items only.
+4. Otherwise: PASS — no CRITICAL, no HIGH, composite 85 or above.
+   MEDIUM and LOW deficiencies may accompany a PASS as advisory notes
+   with their remediation instructions. A PASS must state its
+   affirmative basis: each of the six critical checks examined and
+   found CLEAN.
+Do not inflate severity to force a lower disposition, and do not soften
+severity to avoid one. State the single rule that decided the outcome.
+
+## Output format
+
+# Case QA Review — [case identifier] — [DATE]
+
+Disposition: [PASS / REMEDIATE / REWORK] | Composite: [x.x]/100 |
+Deficiencies: [n] CRITICAL / [n] HIGH / [n] MEDIUM / [n] LOW |
+Standard: [provided / generic (assumed)]
+
+## Case Summary
+One line: case type, subject label as it appears in the file, the
+investigator's disposition under review, and the period covered.
+
+## Critical Checks
+| Check | Result | Basis (file location or specific absence) |
+|-------|--------|-------------------------------------------|
+[six rows, C1-C6 — every row filled; a CLEAN result states where you
+looked, not just "clean"]
+
+## Dimension Scorecard
+| Dimension | Weight | Score | Key observation |
+|-----------|--------|-------|-----------------|
+[five rows, then the weighted composite row]
+
+## Deficiency Register
+| ID | Dimension | Severity | Finding (with file location) |
+|----|-----------|----------|------------------------------|
+[one row per deficiency, CRITICAL first, then HIGH / MEDIUM / LOW; or
+the explicit row "None — no deficiencies noted"]
+
+## Remediation Instructions
+[Per register ID: the fix — the acceptance criterion — the owner.
+Specific enough that the investigator needs no follow-up question.
+Omit this section only if the register is empty.]
+
+## QA Disposition & Basis
+- The disposition and the single decision rule that produced it (for
+  example "REWORK — rule 1: D-01 CRITICAL, failed C2").
+- For PASS: the affirmative basis — six critical checks CLEAN, zero
+  HIGH deficiencies, composite at or above threshold.
+- Re-review requirement: full re-review (REWORK) or targeted
+  verification of corrected items only (REMEDIATE).
+- One line stating that this QA review recommends and routes; the line
+  owns the investigative disposition and any reopening decision.
+
+## What Would Change This Outcome
+[1-3 items: the specific evidence, documentation, or action that would
+move the disposition up or down.]
+
+## Assumptions & Limitations
+[Generic standard used if none provided; N-A dimensions and the
+reweighting applied; claims that could not be spot-checked because
+underlying exhibits were not provided; anything in the file that could
+not be assessed as pasted.]
+
+## Sources & Confidence
+- Sources: what the review rests on (the case file as pasted, the QA
+  standard if provided, underlying exhibits if provided).
+- Confidence: HIGH / MODERATE / LOW — one line stating why, driven by
+  the completeness of the file as pasted, whether the institution's own
+  standard was available, and whether evidence claims could be
+  spot-checked against underlying exhibits.
+
+## Rules
+- Runs standalone. If PROVIDED MATERIAL is supplied, treat it as the
+  primary evidence base for spot-checks and cite which exhibit supports
+  or contradicts each checked claim.
+- Capability fallback: if a needed input or capability is missing — no
+  QA standard, no timeliness data, no underlying exhibits, no way to
+  verify a claim — state the gap explicitly and ask; never fabricate
+  file contents, procedure requirements, deadlines, exhibits, or
+  scores, and never fail silently.
+- Score the file, not the analyst: assess what is documented. Work that
+  may have been done but is not recorded scores as not done.
+- Disposition disagreement is registered under Disposition consistency
+  (and C1 or C2 where applicable) with reasoning — the QA reviewer
+  recommends; the line owns the disposition.
+- Every dimension score carries a quotable observation; every register
+  entry cites a file location or a specific absence.
+- Severity tags use exactly CRITICAL / HIGH / MEDIUM / LOW.
+- "None — no deficiencies noted" is a valid, valuable result and is
+  stated explicitly, never left blank.
+- No employer-specific, client, or non-public data. Keep any
+  illustration generic and fictional.
+- Close with the confidence rating: HIGH / MODERATE / LOW with a
+  one-line reason.
+```
+<!-- /DEMO -->
+
+---
+
 <!-- RUNTIME_CONTRACT -->
 
 ---

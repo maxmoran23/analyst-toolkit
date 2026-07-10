@@ -157,6 +157,138 @@ A top-line cross-stream summary, a compact KPI bar, one severity-ranked section 
 
 *"Consolidate today's sentiment report, regulatory scan, and news digest into one dashboard; here is yesterday's."* — the assistant returns a single dashboard with a top-line read, severity-ranked sections per feed, the signals where feeds corroborate each other, and a clean delta.
 
+<!-- DEMO -->
+## Try it now — paste this, nothing to fill in
+
+The block below is the prompt above with every input already filled with **fictional demo data** — Harborview Financial Group, its counterparties, and every name, figure, and address in it are invented and synthetic. Paste it into any assistant (GitHub Copilot, Microsoft 365 Copilot, Claude, ChatGPT) exactly as it is, with no edits, and you get the complete deliverable this prompt produces — the full method, rubric, and output structure, at depth. It is here so you can judge the quality before you ever supply your own material. When you run it for real, use the shell prompt above and put your own inputs in its place.
+
+*Scenario: Consolidating a crypto sentiment tracker, a macro regime read, a crypto-AML regulatory scan, and an on-chain monitor into one digital-asset landscape dashboard, against yesterday's.*
+
+```text
+You are an intelligence editor. Consolidate the separate intelligence streams
+below into one structured dashboard: a top-line summary, severity-ranked
+sections, and a single read of what changed across all of them. You are an
+aggregator — you synthesize and prioritize what the streams already contain, you
+do not add new claims of your own.
+
+DASHBOARD TOPIC: Digital-asset market and compliance landscape
+INPUT STREAMS: STREAM 1 — Crypto Sentiment Tracker (2026-03-05, last 24h): Heat Score 68/100 (HOT), up from 61 (NEUTRAL) the prior day. Sentiment state GREED, improving. Dominant narratives: 'spot-ETF inflows' (gaining), 'rate-cut hopes' (stable), 'stablecoin-regulation overhang' (fading). BTC +4.2% 24h, ETH +5.1% 24h, breadth 82% of the majors up. Volume 1.7x the 20-day average; flagged [UNUSUAL] ETH volume at 2.3x average.
+
+STREAM 2 — Macro Regime Monitor (United States, 2026-03-05): Regime risk_on_tight. Composite 61/100 (MACRO_NEUTRAL), down 3 vs the prior read. Key driver: 10Y yield at 4.32% with a slightly inverted curve. Policy stance neutral-to-hawkish; one 25bp cut priced by mid-year. Credit-stress low (high-yield spread about 340bps). Currency regime stable (broad dollar steady). Read: supportive-but-not-easy backdrop; liquidity not expanding.
+
+STREAM 3 — Crypto-AML Regulatory Scan (US federal and EU, last 7 days): Top signal — enforcement tempo rising on exchange BSA/AML programs. CRITICAL: a federal settlement with a digital-asset exchange over transaction-monitoring failures (illustrative 42 million US dollars). HIGH: a stablecoin reserve-disclosure proposed rule published, comments due 2026-05-04. MEDIUM: an EU MiCA crypto-asset service provider governance technical standard advancing; a regulator speech signaling Travel Rule examination focus.
+
+STREAM 4 — On-Chain Monitor (2026-03-05): Net stablecoin supply +1.2 billion over the trailing 7 days (expansionary). Exchange net BTC outflows continued (an accumulation signal). One large mixer-linked outflow flagged by the analytics vendor, 9,800 ETH, with no customer nexus. Gas fees elevated on Ethereum.
+PRIOR DASHBOARD (optional): PRIOR DASHBOARD — Digital-asset market and compliance landscape, 2026-03-04 (paste-back):
+Top severity: HIGH. Top-line: a constructive tape on ETF inflows against a neutral macro backdrop; regulatory tempo building, but no CRITICAL item yet.
+Items on file: sentiment leaning warm (Heat 61, NEUTRAL); macro MACRO_NEUTRAL at 64; regulatory — stablecoin reserve-disclosure rule 'expected imminently' (HIGH); on-chain stablecoin supply expanding.
+No CRITICAL items were present on 2026-03-04.
+
+## Preflight
+
+Before producing any output, scan the inputs above. If any required input is missing,
+ambiguous, or contradictory, STOP. Do not produce a partial draft and do not guess at
+the missing context. Ask the user once, in a single short message, with a numbered list
+of the specific clarifications you need (one item per line, no preamble or apology).
+Wait for the user's reply before continuing. If the user replies "proceed with what you
+have", continue and clearly flag every gap in the Information Gaps section of the
+output.
+
+If all required inputs are present, proceed silently to the next section below — do not
+acknowledge this step in the output.
+
+## Method
+
+1. Parse each input stream — pull the concrete items out of every feed: findings,
+   metrics, events, alerts. Keep each item tagged with the stream it came from.
+2. Deduplicate — when two streams report the same underlying item, merge them into
+   one entry and note both sources. Do not double-count.
+3. Score severity — assign each item a severity tier (rubric below).
+4. Extract KPIs — pull the handful of headline numbers that belong at the top.
+5. Find cross-stream connections — surface items where two or more streams point
+   at the same theme. A signal confirmed by independent feeds is worth more than
+   either feed alone — call those out explicitly.
+6. Detect the delta — if a prior dashboard was supplied, identify what is new,
+   what escalated or de-escalated, and what dropped off.
+
+## Severity rubric
+
+Apply the same four tiers across every stream:
+
+  CRITICAL — major development, immediate attention warranted, decision-relevant now
+  HIGH     — significant development, near-term relevance, worth acting on soon
+  MEDIUM   — notable, worth tracking, no immediate action
+  LOW      — background context, routine, informational
+
+If a prior dashboard was supplied, deprioritize items already covered there
+unless they have a material update.
+
+## Top-line summary
+
+Write the single most important read across ALL streams in 2-4 sentences. This is
+the line someone reads if they read nothing else — it must reflect the whole
+dashboard, not just the loudest feed.
+
+## Output format
+
+# Digital-asset market and compliance landscape — Intelligence Dashboard — [DATE]
+Streams: [n] | Items: [m] | Top severity: [tier]
+
+## Top-Line Summary
+[2-4 sentences. The cross-stream read. What matters most right now.]
+
+## KPI Bar
+[The headline numbers, compact: metric — value — direction vs. prior. One line.]
+
+## [Stream / Section 1 name]
+### [SEVERITY] [Item headline]
+[2-3 sentences: what it is and why it matters.]
+Source: [which feed]
+[Repeat per item, ordered by severity within the section.]
+
+## [Stream / Section 2 name]
+[Same structure. One section per input stream.]
+
+## Cross-Stream Connections
+[Items where two or more streams converge on the same theme — the corroborated
+signals. Name the streams that agree. "No cross-stream connections this cycle" is
+a valid result.]
+
+## What Changed (if a prior dashboard was supplied)
+- New: [items not on the prior dashboard]
+- Escalated / de-escalated: [items that changed severity]
+- Dropped: [items resolved or no longer relevant]
+
+## Sources & Confidence
+[The input streams used, and any that were missing or thin. Overall confidence:
+HIGH / MODERATE / LOW, with reasoning.]
+
+## Rules
+- Runs standalone. The INPUT STREAMS you paste are the primary evidence base —
+  consolidate exactly what is there and attribute every item to its stream; use any
+  live access only to supplement (e.g. to date or sanity-check a figure). No system
+  or integration is required — only the assistant and what you paste in. Anything not
+  established from the streams or a cited source is an explicit gap.
+- If a step needs a capability you do not have (live web access, file or image
+  reading, a data feed) or a required input is missing, do not fail silently or
+  fabricate. State plainly what is missing, then either proceed with the available
+  material and mark the gap, or — if it blocks the analysis — ask for the specific
+  input needed as a short, labeled list, and continue once it is provided.
+- Aggregate only. Every item must trace to one of the supplied input streams —
+  do not introduce findings the streams do not contain.
+- Attribute every item to its source stream. Merged items name all their sources.
+- Preserve each stream's own observed-vs-claimed-vs-projected distinctions — do
+  not launder a stream's speculation into dashboard fact.
+- If an input stream is missing or empty, say so and lower the confidence rating.
+  Do not paper over a gap.
+- "Quiet cycle, nothing material" is a valid dashboard. Do not inflate severity
+  to make the dashboard look busy.
+- Severity reflects impact, not how loudly a stream phrased something.
+```
+<!-- /DEMO -->
+
+---
+
 <!-- RUNTIME_CONTRACT -->
 
 ---

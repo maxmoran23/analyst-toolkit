@@ -87,6 +87,7 @@ Optional: `--trials 5`, `--hits 200000`.
 | File | What |
 |---|---|
 | [`METHODOLOGY.md`](METHODOLOGY.md) | The regulator-facing spec — entity resolution, relevance, disposition logic, governance. |
+| [`SOURCE-LIBRARY.md`](SOURCE-LIBRARY.md) | Where the hits come from: a tiered public-source whitelist, the sourcing method, and action-item scoping per screening outcome. |
 | [`scorer.py`](scorer.py) | The deterministic engine (reuses `../_lib/match` + `../_lib/relevance`). |
 | [`generate_synthetic_data.py`](generate_synthetic_data.py) | Seeded subjects + labelled media hits. |
 | [`run_validation.py`](run_validation.py) | Validation harness + evidence; FN-safety gate. |

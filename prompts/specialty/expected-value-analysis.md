@@ -198,6 +198,173 @@ An inputs table, an edge-and-EV calculation with every conversion shown, a three
 
 *"I can take a contract priced at $0.55; my model puts the true probability at 0.64 against a base rate of comparable events. Bankroll is $20,000. Size it."* — the assistant converts the price to an implied probability, computes the edge and EV, returns the full-/half-/quarter-Kelly ladder in dollars, applies the cap, and gives a take/pass call with a confidence rating tied to the model's strength.
 
+<!-- DEMO -->
+## Try it now — paste this, nothing to fill in
+
+The block below is the prompt above with every input already filled with **fictional demo data** — Harborview Financial Group, its counterparties, and every name, figure, and address in it are invented and synthetic. Paste it into any assistant (GitHub Copilot, Microsoft 365 Copilot, Claude, ChatGPT) exactly as it is, with no edits, and you get the complete deliverable this prompt produces — the full method, rubric, and output structure, at depth. It is here so you can judge the quality before you ever supply your own material. When you run it for real, use the shell prompt above and put your own inputs in its place.
+
+*Scenario: A sports bettor evaluates a single-game moneyline against a model probability, sizing it with quarter-Kelly against a stated bankroll and watching the hard cap bind.*
+
+```text
+You are a quantitative analyst specializing in decision-making under
+uncertainty. Evaluate the opportunity below: determine whether the market has
+mispriced it, quantify the expected value, and size the position with the Kelly
+criterion. Be rigorous and audit-defensible — every number traces to a method.
+
+OPPORTUNITY: A single-game moneyline bet on the home team, the Riverside Foxes, to beat the visiting Granite City Miners in a regular-season basketball game on 2026-07-14.
+QUOTED PRICE OR ODDS: Decimal odds 2.10 on the Foxes moneyline (American +110).
+YOUR PROBABILITY ESTIMATE: 0.55 probability that the Foxes win, from a power-rating model.
+ESTIMATE BASIS: A power-rating model that blends season-to-date net rating, pace, injury-adjusted lineups, and home-court advantage, converted to a win probability with a logistic function. The model was validated on the three prior seasons and produced a Brier score of 0.19 out of sample (better than the 0.25 no-skill baseline).
+BANKROLL / CAPITAL BASE: 25,000 dollars
+RISK POSTURE (optional): Quarter-Kelly (default).
+PROVIDED MATERIAL (optional): Supporting data behind the estimate (all illustrative and internal to this scenario):
+- Model inputs: Foxes net rating +4.1, Miners net rating +1.3; adjusted for a Miners starter listed out; home-court advantage worth an estimated 2.6 points; projected spread Foxes -3.0.
+- Spread-to-moneyline conversion: a projected 3.0-point favorite historically wins outright about 55 to 57 percent of the time in this league (base-rate table over three seasons).
+- Line history: opened at decimal 2.05 (Foxes) and drifted to 2.10 after the Miners starter was ruled out; one book has been slow to move, so mild residual value may remain if the market converges toward the model.
+- Model calibration: predictions in the 0.50 to 0.60 bucket resolved at 0.56 realized over the backtest (well calibrated in this range).
+
+If the probability estimate has no stated basis, say so and treat the whole
+analysis as low-confidence — an unsupported probability is the weakest link in
+this method and must be flagged, not smoothed over.
+
+## Preflight
+
+Before producing any output, scan the inputs above. If any required input is missing,
+ambiguous, or contradictory, STOP. Do not produce a partial draft and do not guess at
+the missing context. Ask the user once, in a single short message, with a numbered list
+of the specific clarifications you need (one item per line, no preamble or apology).
+Wait for the user's reply before continuing. If the user replies "proceed with what you
+have", continue and clearly flag every gap in the Information Gaps section of the
+output.
+
+If all required inputs are present, proceed silently to the next section below — do not
+acknowledge this step in the output.
+
+## Method
+
+1. Convert the market quote to an implied probability.
+   - Decimal odds d:        implied probability = 1 / d
+   - American odds:         convert to decimal first, then 1 / d
+   - Contract price p (0-1): implied probability = p
+   State the conversion explicitly. If the quote includes a spread, margin, or
+   vig, note it — the raw implied probability is inflated by it.
+
+2. Establish the two probabilities side by side:
+   - p_est  = your independent estimate the outcome occurs
+   - p_imp  = the market-implied probability
+   The gap between them is the claimed edge. If p_est <= p_imp, there is no
+   positive edge — say so and stop sizing.
+
+3. Compute expected value per unit staked. For a position that pays net
+   decimal odds b (b = d - 1) on a win and loses the stake on a loss:
+
+     EV per unit = (p_est x b) - (1 - p_est)
+
+   Express EV both per unit and as a percentage of stake. EV > 0 is the
+   threshold to proceed; EV <= 0 means pass.
+
+4. Size with the Kelly criterion. The full-Kelly fraction of bankroll is:
+
+     f* = (p_est x b - (1 - p_est)) / b      (equivalently (bp - q)/b, q = 1 - p_est)
+
+   Report the full ladder:
+   - Full-Kelly:    f*
+   - Half-Kelly:    f* / 2
+   - Quarter-Kelly: f* / 4   (default recommendation)
+   Convert each to a currency amount against the bankroll.
+
+5. Give risk-of-ruin context. Explain why fractional Kelly is the disciplined
+   default: full-Kelly maximizes long-run growth only if p_est is exact, and
+   it carries severe drawdowns and real ruin risk when the estimate is even
+   slightly off. Fractional Kelly trades a small amount of growth for a large
+   reduction in drawdown and ruin probability. State qualitatively how
+   sensitive the sizing is to estimate error — if a modest overestimate of
+   p_est flips EV negative, the position is fragile.
+
+6. Apply a hard cap. Regardless of Kelly output, cap any single position at a
+   stated maximum fraction of bankroll (default 3%). If Kelly suggests more,
+   cap it and note that the signal is strong but concentration risk governs.
+
+7. Make the call. TAKE (with the recommended fractional-Kelly size) or PASS,
+   with reasoning. If EV is positive but thin, or the estimate is weakly
+   supported, PASS or size at the bottom of the ladder is the honest answer.
+
+## Confidence rubric
+
+Rate the analysis HIGH / MODERATE / LOW on the strength of the probability
+estimate — not on the size of the edge:
+- HIGH     — estimate from a validated model or a solid base rate; inputs verifiable
+- MODERATE — estimate from reasonable comparables or a defensible read; some uncertainty
+- LOW      — estimate is a judgment call, thinly supported, or unsourced
+A large edge built on a LOW-confidence probability is not a strong opportunity.
+
+## Output format
+
+# EV & Sizing Analysis — Foxes Moneyline vs. Miners, 2026-07-14
+
+Verdict: [TAKE at {fraction}-Kelly / PASS] — Confidence: [HIGH / MODERATE / LOW]
+
+## Inputs
+| Field | Value |
+|-------|-------|
+| Quoted price / odds | [value] |
+| Market-implied probability | [p_imp] |
+| Independent probability estimate | [p_est] |
+| Estimate basis | [method] |
+| Bankroll | [amount] |
+
+## Edge & Expected Value
+- Implied probability: [p_imp] — [conversion shown]
+- Estimated probability: [p_est]
+- Claimed edge: [p_est - p_imp]
+- Expected value: [EV per unit] — [EV as % of stake]
+
+## Position Sizing (Kelly)
+| Fraction | Bankroll fraction | Currency amount |
+|----------|-------------------|-----------------|
+| Full-Kelly | [f*] | [amount] |
+| Half-Kelly | [f*/2] | [amount] |
+| Quarter-Kelly | [f*/4] | [amount] |
+Hard cap applied: [yes/no — at X% of bankroll]
+Recommended stake: [amount, at the recommended fraction]
+
+## Risk-of-Ruin Context
+[Why fractional Kelly is the default here. How sensitive the sizing is to
+error in p_est. Whether the position is robust or fragile.]
+
+## Recommendation
+[TAKE or PASS, with reasoning. If the edge is thin or the estimate weak, say so.]
+
+## Rules
+- Runs standalone. The numeric inputs above are the user's own data; if PROVIDED
+  MATERIAL is supplied, treat it as the primary evidence base for the probability
+  estimate — analyze exactly what is there and attribute the estimate's strength to
+  it; use any live access only to supplement. No system or integration is required —
+  only the assistant and what you paste in. Anything not established from the inputs,
+  the material, or a cited source is an explicit gap that lowers confidence.
+- If a step needs a capability you do not have (live web access, file or image
+  reading, a data feed) or a required input is missing, do not fail silently or
+  fabricate. State plainly what is missing, then either proceed with the available
+  material and mark the gap, or — if it blocks the analysis — ask for the specific
+  input needed as a short, labeled list, and continue once it is provided.
+- Show every conversion and every formula input. A reader must be able to
+  reproduce EV and f* from the numbers stated.
+- The probability estimate is the load-bearing input. Separate it clearly from
+  the market-implied probability — never blend the two.
+- No positive edge (p_est <= p_imp) or no positive EV -> the answer is PASS.
+  Do not size a position that does not clear the threshold.
+- Quarter-Kelly is the default. Recommend full-Kelly only if explicitly asked,
+  and pair it with an explicit drawdown and ruin warning.
+- Be honest about estimate quality. A large edge on an unsupported probability
+  is a LOW-confidence result and must be labeled one — do not let edge size
+  mask estimate weakness.
+- This is a sizing and expected-value method, not a guarantee. Positive EV is
+  a long-run statistical edge; any single outcome can lose.
+```
+<!-- /DEMO -->
+
+---
+
 <!-- RUNTIME_CONTRACT -->
 
 ---

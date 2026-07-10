@@ -1,0 +1,122 @@
+{
+  "breaking-news-scan.md": {
+    "scenario": "A digital-asset desk runs a mid-morning breaking-news scan across crypto markets, stablecoins, and digital-asset regulation from a pasted batch of overnight wire items.",
+    "fills": [
+      [
+        "the topics you track",
+        "Crypto markets, stablecoins, and digital-asset regulation."
+      ],
+      [
+        "what counts as relevant",
+        "Moves a major-asset price by more than about 3 percent, changes a rule or its published timeline, or affects a tracked entity (a major exchange, a top-two USD stablecoin issuer, or a G20 regulator)."
+      ],
+      [
+        "DATE, TIME with timezone",
+        "2026-07-10, 9:15 AM ET"
+      ],
+      [
+        "news articles, headlines, wire copy",
+        "Raw wire items and headlines pulled this morning (all fictional and illustrative; entities and figures are synthetic). Timestamps are ET on 2026-07-10 unless noted.\n1. 08:52 — Regulator publishes final examination guidance for bank use of payment stablecoins; effective in 90 days. (Primary: regulator newsroom.)\n2. 08:40 — Bitcoin down 4.2 percent overnight to a two-week low on broad risk-off; Ether down 5.1 percent. (Market data wire.)\n3. 08:15 — Meridian Digital Exchange confirms it paused withdrawals of one low-cap token after detecting anomalous contract activity; customer funds 'unaffected'. (Exchange statement.)\n4. 07:58 — A mid-cap USD stablecoin ('the fourth-largest') briefly traded to 0.984 in Asian hours before recovering; issuer cites a temporary redemption backlog. (Two wires, one issuer note.)\n5. 07:30 — EU authority opens a consultation on extending MiCA reporting thresholds; comment period 60 days. (Primary: authority notice.)\n6. Yesterday 18:00 — Opinion column argues stablecoins will 'replace correspondent banking'. (Op-ed, no new fact.)\n7. 06:40 — Layer-2 network Harbor Rollup reports record daily stablecoin settlement volume of 9.1 billion dollars. (Network dashboard + one wire.)\n8. 05:20 — Unconfirmed forum chatter that a top-two exchange faces a regulatory probe; no named source. (Social, unverified.)\n9. Two days ago — Recap of last week's rate decision. (Stale rehash.)\n10. 08:05 — A large asset manager files to launch a tokenized money-market fund on a public chain. (Primary: filing.)\n11. 07:10 — Cross-chain bridge Aurelia halts operations after a suspected signer-key compromise; estimated 22 million dollars at risk, under investigation. (Bridge status page + two wires.)\n12. 06:00 — Minor protocol announces a routine version upgrade with no user impact. (Project blog.)"
+      ],
+      [
+        "paste the previous scan",
+        "None — first run; baseline. No prior scan to diff against; nothing to drop as already-reported."
+      ]
+    ]
+  },
+  "committee-reporting-pack.md": {
+    "scenario": "A committee secretariat assembles the June 2026 pack for Harborview Financial Group's monthly Financial Crime Risk Committee from pasted metrics, notable items, and a prior-action log.",
+    "fills": [
+      [
+        "the forum",
+        "The monthly Financial Crime Risk Committee of Harborview Financial Group — governance oversight of BSA/AML, sanctions, and fraud risk across the bank, including the digital-asset advisory line."
+      ],
+      [
+        "the period covered",
+        "June 2026"
+      ],
+      [
+        "paste the KPI/KRI data",
+        "Columns are metric | current | prior | threshold/appetite; all illustrative and internal to this scenario.\n1. Open SAR/STR investigations | 214 | 176 | appetite <= 180\n2. Average SAR filing age (days) | 41 | 33 | limit <= 30\n3. Sanctions screening alerts generated | 12,930 | 11,410 | no fixed limit (volume KRI)\n4. Sanctions alert false-positive rate | 96.1% | 95.8% | target <= 95%\n5. True-match sanctions hits escalated | 7 | 4 | all must be escalated (target 100%)\n6. KYC/CDD refresh backlog (accounts) | 1,380 | 1,510 | appetite <= 1,200\n7. High-risk customer periodic reviews overdue | 62 | 58 | limit 0\n8. Transaction-monitoring alerts closed within SLA | 88% | 91% | target >= 90%\n9. Screening-system uptime | 99.2% | 99.9% | target >= 99.9%\n10. Training completion (financial-crime, staff) | 97% | 96% | target >= 95%\n11. Adverse-media alerts pending review | 240 | 205 | appetite <= 200\n12. Digital-asset (stablecoin/on-chain) alerts | 58 | 31 | new KRI, no threshold set yet"
+      ],
+      [
+        "the period's notable events",
+        "All items illustrative and internal to this scenario.\n- 2026-06-14: Sanctions screening system suffered a 6-hour outage during a vendor update; alerts queued and were cleared by 2026-06-15 with no confirmed missed screening, but the incident breached the 99.9 percent uptime target and is subject to a post-incident review.\n- June: SAR filing age and open-investigation count both moved adversely, driven by two analyst departures and a spike in fraud alerts; the backlog pushed average filing age past the 30-day limit.\n- 2026-06-22: Internal audit issued a finding that the digital-asset transaction-monitoring rules lack documented thresholds and tuning evidence (rated Medium).\n- 2026-06-09: A sanctions-list update was applied within the required window; one true-match hit was identified, escalated, and the relationship exited.\n- Emerging risk: stablecoin/on-chain alert volume nearly doubled month over month as a client pilot went live, against a KRI that has no calibrated threshold."
+      ],
+      [
+        "paste the action log",
+        "Columns are action | owner type | due | status note; all illustrative.\n1. Recruit two additional AML investigators | HR / Financial Crime | 2026-06-30 | one offer accepted, one role still open\n2. Reduce SAR filing age below limit | Financial Crime Ops | 2026-05-31 | not achieved; age rose to 41 days\n3. Complete sanctions screening tuning to lower false positives | Sanctions team | 2026-07-15 | on track, tuning in test\n4. Document digital-asset monitoring thresholds | Digital-Asset Advisory | 2026-06-15 | overdue; work not started, owner cited competing pilot demands\n5. Vendor change-management review after prior minor outage | Technology | 2026-05-15 | overdue; not closed before the 2026-06-14 outage recurred\n6. Clear KYC/CDD refresh backlog below appetite | Onboarding Ops | 2026-08-31 | on track; backlog fell to 1,380\n7. Deliver annual financial-crime training | L&D | 2026-06-30 | closed; 97 percent completion achieved\n8. Refresh high-risk customer review procedure | Policy | 2026-07-31 | on track"
+      ],
+      [
+        "any items management already knows",
+        "(1) Approve incremental funding to complete sanctions screening-system resilience work (redundant failover) following the June outage. (2) Approve a temporary increase in the SAR filing-age limit to 40 days for one quarter while the two investigator vacancies are filled, or direct alternative resourcing. (3) Note and set an appetite threshold for the new digital-asset alert KRI."
+      ],
+      [
+        "paste the previous period's pack",
+        "None — first period reported in this format; baseline. No prior pack to carry trends or recurring escalations forward from."
+      ]
+    ]
+  },
+  "intelligence-brief.md": {
+    "scenario": "A desk analyst produces the morning anchor brief across crypto markets, digital-asset regulatory, on-chain activity, and project workstreams from a pasted overnight feed and status snapshot.",
+    "fills": [
+      [
+        "morning anchor brief",
+        "morning anchor brief"
+      ],
+      [
+        "markets, regulatory, on-chain",
+        "crypto markets, digital-asset regulatory, on-chain activity, and internal project workstreams"
+      ],
+      [
+        "DATE, TIME with timezone",
+        "2026-07-10, 7:30 AM ET"
+      ],
+      [
+        "paste source material",
+        "Overnight feed (all fictional and illustrative; ET on 2026-07-10 unless noted):\n- Markets: Bitcoin -4.2 percent overnight to a two-week low on broad risk-off; Ether -5.1 percent; total crypto market cap down about 3.8 percent. Stablecoin supply flat.\n- Regulatory: at 08:52 a regulator is expected to publish final examination guidance for bank use of payment stablecoins, effective in 90 days (pre-announced; text not yet out at 07:30).\n- On-chain: layer-2 network Harbor Rollup posted a record 9.1 billion dollars of daily stablecoin settlement; a cross-chain bridge (Aurelia) halted overnight after a suspected signer-key compromise, an estimated 22 million dollars at risk.\n- Stablecoins: a fourth-largest USD stablecoin briefly touched 0.984 in Asian hours before recovering; issuer cited a redemption backlog."
+      ],
+      [
+        "feed exports, channel/chat posts",
+        "Internal status snapshot (illustrative):\n- Project: on-chain monitoring tool flagged the Aurelia bridge halt automatically at 07:12; no client exposure detected in a first pass.\n- Project: the compliance typology library update is 80 percent done, due 2026-07-11.\n- Metrics snapshot: digital-asset alert queue at 58 open items (up from 31 last month) after the client stablecoin pilot went live.\n- Calendar: examination-guidance publication expected 08:52 today; an internal risk-committee pre-read is due 2026-07-11."
+      ],
+      [
+        "paste the previous brief",
+        "None — this is the morning anchor brief; there is no prior brief to diff against (baseline). Summarize the overnight period and set the day's watch items."
+      ],
+      [
+        "BRIEF TYPE",
+        "Morning Anchor Brief"
+      ],
+      [
+        "BRIEF TYPE",
+        "Morning Anchor Brief"
+      ]
+    ]
+  },
+  "weekly-roundup.md": {
+    "scenario": "A chief-of-staff analyst closes out the week across a personal research-and-tooling program of four active workstreams, grading the week and setting next week's priorities.",
+    "fills": [
+      [
+        "a set of projects",
+        "a personal research-and-tooling program of four active workstreams: a market-intelligence dashboard, a compliance typology library, an on-chain monitoring tool, and a betting-analytics model"
+      ],
+      [
+        "DATE",
+        "2026-07-10"
+      ],
+      [
+        "paste the week's source material",
+        "The week's source material (all fictional and illustrative; week of 2026-07-06 to 2026-07-10):\n- Mon 07-06: market-intelligence dashboard shipped a new regulatory-tracker tab; on-chain tool had a false-positive spike (12 spurious alerts) traced to a mislabeled address list.\n- Tue 07-07: compliance typology library added 2 new typologies (stablecoin de-peg exploitation, bridge signer-key compromise); betting-analytics model backtest completed on last season's data.\n- Wed 07-08: on-chain tool address-list fix deployed; false positives dropped to near zero. Dashboard latency issue reported by no users but noted internally.\n- Thu 07-09: betting-analytics model produced its first live-week edges (3 flagged, average projected edge 6 percent); typology library update entered review.\n- Fri 07-10: market sell-off (Bitcoin -4.2 percent) surfaced a data-refresh gap in the dashboard during high volume; bridge halt (Aurelia) auto-flagged by the on-chain tool as intended.\nMetrics this week: dashboard uptime 99.4 percent; on-chain alert precision recovered from 71 percent (Mon) to 98 percent (Fri); typology library at 17 total entries; betting model backtest ROI +4.1 percent, hit rate 54 percent."
+      ],
+      [
+        "a metrics export, project logs",
+        "Metrics export and log notes (illustrative): dashboard weekly active views 210; on-chain tool processed about 41,000 transactions and raised 63 alerts (58 true after the fix); typology library review queue has 1 item pending; betting model flagged 3 edges, none yet settled. Blocker log: dashboard data-refresh gap under load is unresolved; one typology entry is awaiting a regulatory-citation check."
+      ],
+      [
+        "paste last week's roundup",
+        "None — first run; baseline. No prior roundup to anchor the week-over-week comparison or the scorecard trend line."
+      ]
+    ]
+  }
+}

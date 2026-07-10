@@ -188,6 +188,167 @@ A 0-100 composite, a 4-tier rating, a per-factor scorecard, factor narratives, a
 
 *"Assess a mid-size lending protocol ahead of a counterparty exposure decision; here is last week's assessment."* — the assistant returns a scored risk read, classifies the yield as fee-based or emission-driven, and flags TVL movement against the prior baseline.
 
+<!-- DEMO -->
+## Try it now — paste this, nothing to fill in
+
+The block below is the prompt above with every input already filled with **fictional demo data** — Harborview Financial Group, its counterparties, and every name, figure, and address in it are invented and synthetic. Paste it into any assistant (GitHub Copilot, Microsoft 365 Copilot, Claude, ChatGPT) exactly as it is, with no edits, and you get the complete deliverable this prompt produces — the full method, rubric, and output structure, at depth. It is here so you can judge the quality before you ever supply your own material. When you run it for real, use the shell prompt above and put your own inputs in its place.
+
+*Scenario: A digital-asset counterparty team at Harborview screens a mid-cap lending protocol before allowing a client to route treasury yield through it.*
+
+```text
+You are a DeFi protocol risk analyst. Produce an audit-defensible risk assessment
+of the protocol below: TVL trend, yield sustainability, smart-contract and
+cross-chain risk, and governance/centralization risk. Use only public information.
+
+CONSTRAINT: This is a RISK ASSESSMENT ONLY. Never recommend buying, selling,
+investing in, allocating to, or avoiding the protocol as an investment. Frame
+every finding as risk, not as a trade.
+
+PROTOCOL: Aureus Lend (token ticker: AUR) — a cross-margin lending market on Ethereum and Arbitrum
+CONTEXT: Counterparty/exposure review: a Harborview managed-account client has proposed deploying up to $6M of idle stablecoin into this protocol for yield; we need a documented risk read before approving the venue.
+ASSESSMENT DATE: 2026-02-05
+PROVIDED MATERIAL (optional): Self-reported TVL (protocol dashboard, 2026-02-04): $842M across ETH + Arbitrum.
+Advertised APY on USDC supply: 9.4%.
+Audits: two listed — 'Trailhead Security 2025-06' (2 medium, 0 critical, all marked resolved) and 'a community review 2025-09' (no report link).
+Admin keys: docs disclose a 3-of-5 multisig controlling the upgrade proxy and the interest-rate parameters; signer identities not published; no timelock mentioned.
+Governance: AUR token votes; docs note top 4 wallets hold ~61% of circulating AUR.
+Incident history: one 2025-10 oracle-lag event that briefly mispriced an illiquid collateral asset; protocol says no funds lost, covered from a reserve.
+Oracle: single external price feed for most markets; a fallback is 'planned'.
+Insurance/backstop: a reserve fund reported at ~1.1% of TVL.
+PRIOR OUTPUT (optional): None — this is the first assessment of Aureus Lend. No prior TVL figure or score to diff against; treat as a baseline.
+
+If the protocol name is ambiguous, resolve to the most prominent match and state it.
+
+## Preflight
+
+Before producing any output, scan the inputs above. If any required input is missing,
+ambiguous, or contradictory, STOP. Do not produce a partial draft and do not guess at
+the missing context. Ask the user once, in a single short message, with a numbered list
+of the specific clarifications you need (one item per line, no preamble or apology).
+Wait for the user's reply before continuing. If the user replies "proceed with what you
+have", continue and clearly flag every gap in the Information Gaps section of the
+output.
+
+If all required inputs are present, proceed silently to the next section below — do not
+acknowledge this step in the output.
+
+## Gather
+
+Collect public evidence: TVL and TVL history (a DeFi analytics aggregator),
+category and chain breakdown, yield-pool APYs, audit reports, governance and
+admin-key documentation, oracle dependencies, and any incident history. Use a
+news search for exploit and audit-disclosure coverage. Cite a source for every
+material claim; flag what cannot be verified.
+
+## Analyze — DeFi Risk Framework
+
+1. TVL trend — current TVL, 24h and 7d change, and direction. Note acceleration
+   or deceleration vs. the prior assessment. Flag a >5% daily move as
+   noteworthy, >15% as significant.
+2. Yield sustainability — for the protocol's main pools, classify the yield
+   source: real yield (fees) vs. emission-based vs. points/airdrop speculation.
+   Apply the APY bands below. A high APY relative to category peers is a flag.
+3. Smart-contract risk — audit count, auditor quality, time since last audit,
+   contract complexity, composability exposure, and known vulnerability classes
+   in similar contracts.
+4. Centralization / governance risk — admin keys, multisig configuration and
+   threshold, contract upgradeability, timelocks, governance-token concentration,
+   and single points of failure.
+5. Cross-chain / bridge risk — reliance on bridges or wrapped assets, custodial
+   dependencies, and the chain-concentration profile of the protocol's TVL.
+6. Oracle and track record — oracle design and manipulation history; time live
+   and incident history.
+
+APY sustainability bands:
+  < 10%     Sustainable  — fees + staking rewards            — LOW
+  10-25%    Moderate     — fees + moderate emission          — MEDIUM
+  25-100%   Elevated     — primarily emission-based          — HIGH
+  > 100%    Unsustainable— emission farming, collapse likely — CRITICAL / RED FLAG
+
+## Score — Protocol Risk Score (0-100)
+
+Score each dimension 0-100 (0 = low risk, 100 = severe), then combine:
+
+  Audit status .................. 20%  (2+ recent top-firm audits 0 / 1 older audit 50 / unaudited 100)
+  Centralization risk ........... 20%  (decentralized multisig, no admin keys 0 / moderate 50 / single admin key 100)
+  TVL change (24h) .............. 15%  (+5% growth 0 / stable 30 / -5 to -10% 65 / worse than -10% 100)
+  Yield sustainability .......... 15%  (fee-based <20% APY 0 / mixed 50 / emission-only >100% APY 100)
+  Oracle dependency ............. 10%  (multi-oracle 0 / single oracle 50 / manipulable on-chain oracle 100)
+  Smart-contract complexity ..... 10%  (simple, battle-tested, 2y+ 0 / moderate 50 / complex/untested 100)
+  Track record .................. 10%  (2y+ live, no incidents 0 / 6-24mo, minor issues 50 / under 6mo 100)
+
+  PROTOCOL RISK = sum(dimension x weight)
+
+Map the score to a tier:
+
+  75-100 CRITICAL  — high exploit probability; multiple severe risk factors.
+  50-74  HIGH      — significant risk factors present; elevated concern.
+  25-49  MEDIUM    — normal protocol risk; routine concern.
+  0-24   LOW       — well-audited, decentralized, strong track record.
+
+## Output format
+
+# DeFi Protocol Risk Assessment — [PROTOCOL]
+Protocol Risk Score: [n]/100 — [TIER]
+Assessment date: [date] | Basis: Public sources only | Scope: Risk assessment, not investment advice
+
+## Executive Summary
+[3-5 sentences: what the protocol is, the headline risk picture, the risk disposition.]
+
+## Risk Scorecard
+| Factor | Score | Weight | Weighted | Key driver |
+|--------|-------|--------|----------|------------|
+[one row per factor, then a composite row]
+
+## Factor Findings
+### [Factor] — [score]/100
+[What the evidence shows. Every claim sourced. Observed vs. unverified kept separate.]
+[Repeat for all factors.]
+
+## Yield Analysis
+[Main pools, their APYs, the yield source classification, and the sustainability band.]
+
+## TVL Trend
+[Current TVL, 24h / 7d change, direction, and movement vs. the prior assessment.]
+
+## Red Flags
+[The specific findings driving the rating. "None identified" is a valid result.]
+
+## Information Gaps
+[What could not be verified — closed-source contracts, undisclosed admin keys,
+opaque governance — and how that limits confidence.]
+
+## Risk Disposition
+[A risk conclusion — e.g. acceptable risk / elevated risk, monitor / high risk,
+restrict exposure — with reasoning. NOT an investment call.]
+
+## Sources & Confidence
+[Source list. Overall confidence: HIGH / MODERATE / LOW with reasoning.]
+
+## Rules
+- Runs standalone. If PROVIDED MATERIAL is supplied, treat it as the primary evidence
+  base — assess exactly what is there and attribute findings to it; use any live
+  access only to supplement. No system or integration is required — only the
+  assistant and what you paste in. Anything not established from the material or a
+  cited source is an explicit gap.
+- If a step needs a capability you do not have (live web access, file or image
+  reading, a data feed) or a required input is missing, do not fail silently or
+  fabricate. State plainly what is missing, then either proceed with the available
+  material and mark the gap, or — if it blocks the analysis — ask for the specific
+  input needed as a short, labeled list, and continue once it is provided.
+- Public sources only. Never assert non-public protocol internals as fact.
+- Every material claim carries a source. Uncited claims are removed.
+- RISK ASSESSMENT ONLY — no buy/sell/invest/avoid language anywhere in the output.
+- Separate observed fact from allegation from projection. An unaudited contract is
+  an observation; "it will be exploited" is a projection — label it.
+- "Well-managed, low risk" is a legitimate result — do not manufacture risk.
+- If contracts are closed-source or governance is opaque, say so and lower the
+  confidence rating — do not infer a score.
+```
+<!-- /DEMO -->
+
+---
+
 <!-- RUNTIME_CONTRACT -->
 
 ---

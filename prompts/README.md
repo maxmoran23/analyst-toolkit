@@ -16,8 +16,11 @@ Every prompt file has the same anatomy:
 | `## Output structure` | The exact shape of the result, so you know what good looks like |
 | `## Tuning & variants` | Knobs — severity bands, weighting, scope variants, cadence |
 | `## Worked example` | A concrete scenario |
+| **`## Try it now`** | A second fenced block: the prompt above with every input already filled with fictional demo data — paste it with zero edits to see the full output before you supply any material of your own |
 
 **The `{{PLACEHOLDER}}` convention.** Inside every prompt block, `{{LIKE THIS}}` marks something you replace before sending. Replace all of them — an unfilled placeholder produces a vague result.
+
+**Two blocks per file, two jobs.** `## The prompt` is the reusable tool — you fill its placeholders with your material. `## Try it now` is the same prompt with fictional inputs already in place, so anyone can paste it into any assistant and judge the depth, method, and output shape with nothing to fill in and no data of their own. The demo is *generated* from the prompt block, so it always matches the method exactly; CI re-derives it on every change.
 
 These are written for interactive use — paste into GitHub Copilot, Microsoft 365 Copilot, Claude, or ChatGPT and run. See [`../docs/using-with-copilot.md`](../docs/using-with-copilot.md) for the full workflow.
 
