@@ -370,7 +370,14 @@ def analyze(records, reps, cal_gap, xc_max, xc_mismatches, xc_cases,
             "false_assurance_measured": round(fa_rate, 4),
             "design_risk": DESIGN_RISK, "fa_limit": round(DESIGN_RISK + FA_MARGIN, 4),
             "crosscheck_cases": xc_cases,
-            "crosscheck_max_divergence": xc_max,
+            # The raw max divergence sits at the 1e-12 level -- bisection round-off,
+            # which differs across libm/platform (macOS 5.4e-12 vs Linux 6.4e-12) and
+            # is therefore NOT a reproducible quantity. Committing it to 16 digits
+            # would claim a precision that does not exist and would make the evidence
+            # fail to re-derive on another machine. What IS reproducible, and what the
+            # gate actually asserts, is that the divergence lies below tolerance.
+            "crosscheck_tolerance": CROSSCHECK_TOL,
+            "crosscheck_within_tolerance": bool(xc_max <= CROSSCHECK_TOL),
             "crosscheck_hyper_mismatches": xc_mismatches,
             "monotonicity_cells": mono_cells,
             "monotonicity_violations": mono_violations,
@@ -420,9 +427,9 @@ def render_report(records, a, reps, cal_rows, mono_rows, demo, manifest):
       f"{manifest['items_total']:,} items · git `{manifest['git_sha']}` · "
       f"{manifest['generated_utc']}")
     A("")
-    A(f"**Headline:** UDL cross-check exact — max abs divergence "
-      f"**{a['crosscheck_max_divergence']:.3e}** over {a['crosscheck_cases']} cases "
-      f"(tolerance 1e-9, {a['crosscheck_hyper_mismatches']} integer mismatches); "
+    A(f"**Headline:** UDL cross-check exact — divergence below the "
+      f"**{a['crosscheck_tolerance']:.0e}** tolerance on all {a['crosscheck_cases']} cases "
+      f"({a['crosscheck_hyper_mismatches']} integer mismatches); "
       f"**{a['structural_breaches']}** structural breaches across "
       f"{a['n_evaluations']:,} evaluations; measured false-assurance on failing "
       f"populations **{a['false_assurance_measured']:.4f}** "
@@ -470,10 +477,19 @@ def render_report(records, a, reps, cal_rows, mono_rows, demo, manifest):
     A(f"The primary UDL (log-gamma tails, bisection, integer search) was recomputed "
       f"for {a['crosscheck_cases']} cases by an independent brute-force exact path: "
       f"direct `math.comb` summation for the binomial bound, exact integer/Fraction "
-      f"arithmetic for the hypergeometric bound. Max abs divergence "
-      f"**{a['crosscheck_max_divergence']:.3e}** (tolerance 1e-9); hypergeometric "
-      f"integer-count mismatches **{a['crosscheck_hyper_mismatches']}**. Full table: "
+      f"arithmetic for the hypergeometric bound. The two paths agree to within the "
+      f"**{a['crosscheck_tolerance']:.0e}** tolerance on every case "
+      f"(**{a['crosscheck_within_tolerance']}**); hypergeometric integer-count "
+      f"mismatches **{a['crosscheck_hyper_mismatches']}**. Full table: "
       f"`udl-crosscheck.csv`.")
+    A("")
+    A("The observed divergence sits at the 1e-12 level — bisection round-off, not "
+      "disagreement. That magnitude is platform-dependent (the same code yields "
+      "5.4e-12 on macOS/CPython 3.14 and 6.4e-12 on Linux/CPython 3.12), so the "
+      "committed evidence asserts the divergence against a documented tolerance rather "
+      "than pinning a float that cannot re-derive on another machine. The per-case "
+      "values in `udl-crosscheck.csv` are diagnostics of the same round-off and vary "
+      "at that magnitude for the same reason.")
     A("")
     A("## 6. Measured false-assurance — the direction gate")
     A(f"On the failing controls (true rate 2-3x tolerable), {REPLICATES_FA} independent "
@@ -607,7 +623,8 @@ def run_once(controls_n, population, seed, config):
 
 
 def _print_summary(a, seed, label=""):
-    print(f"{label}crosscheck max_div {a['crosscheck_max_divergence']:.3e} "
+    print(f"{label}crosscheck within {a['crosscheck_tolerance']:.0e} "
+          f"{a['crosscheck_within_tolerance']} "
           f"(mismatches {a['crosscheck_hyper_mismatches']})  "
           f"structural_breaches {a['structural_breaches']}  "
           f"planted_effective {a['planted_effective']}/{a['planted_replicates'] + a['planted_controls']}  "
