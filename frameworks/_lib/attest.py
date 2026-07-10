@@ -53,14 +53,22 @@ def git_sha(short: bool = True) -> str:
 
 
 def git_dirty() -> bool:
-    """True when the working tree has uncommitted changes — evidence generated from
-    a dirty tree does not correspond to any commit, and says so."""
+    """True when uncommitted **source** changes exist — evidence generated from a dirty
+    tree does not correspond to any commit, and says so.
+
+    Paths under `evidence/` are excluded deliberately. Writing an evidence pack dirties
+    the tree, and regenerating the packs in sequence would otherwise make every
+    framework after the first report `git_dirty: true` because of its own siblings'
+    output. The question this flag answers is "was the code that produced this evidence
+    committed?", not "did this process write files?".
+    """
     try:
         out = subprocess.check_output(["git", "status", "--porcelain"],
-                                      stderr=subprocess.DEVNULL).decode().strip()
-        return bool(out)
+                                      stderr=subprocess.DEVNULL).decode()
     except Exception:
         return False
+    changed = [ln for ln in out.splitlines() if ln.strip() and "/evidence/" not in ln]
+    return bool(changed)
 
 
 def environment() -> dict:
