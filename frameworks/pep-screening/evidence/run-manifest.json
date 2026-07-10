@@ -1,0 +1,10 @@
+{
+  "framework": "pep-screening",
+  "seed": 42,
+  "peps": 8000,
+  "alerts": 50000,
+  "true_matches": 2021,
+  "git_sha": "7e2eb3f",
+  "generated_utc": "2026-07-09 22:00 UTC",
+  "fn_recall_floor": 1.0
+}

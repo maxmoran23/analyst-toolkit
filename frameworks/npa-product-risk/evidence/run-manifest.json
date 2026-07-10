@@ -1,0 +1,11 @@
+{
+  "framework": "npa-product-risk",
+  "seed": 42,
+  "products": 50000,
+  "git_sha": "7e2eb3f",
+  "generated_utc": "2026-07-09 21:55 UTC",
+  "floor": {
+    "floor_triggered_tiered_low_max": 0,
+    "prohibited_missed_max": 0
+  }
+}

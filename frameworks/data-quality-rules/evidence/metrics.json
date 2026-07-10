@@ -1,0 +1,290 @@
+{
+  "operating_point": {
+    "confusion": {
+      "tp": 2750,
+      "fp": 0,
+      "tn": 47250,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "specificity": 1.0,
+      "f1": 1.0,
+      "false_negative_rate": 0.0,
+      "false_positive_rate": 0.0
+    },
+    "critical_planted": 2750,
+    "critical_detected": 2750,
+    "critical_missed": 0,
+    "false_flag_rate_clean": 0.0,
+    "clean_records": 42250,
+    "clean_flagged": 0,
+    "per_class_detection": {
+      "clean": {
+        "planted": 39250,
+        "detected": 0,
+        "detection_rate": 0.0,
+        "detected_by": ""
+      },
+      "clean_edge": {
+        "planted": 3000,
+        "detected": 0,
+        "detection_rate": 0.0,
+        "detected_by": ""
+      },
+      "stale_refresh": {
+        "planted": 2000,
+        "detected": 2000,
+        "detection_rate": 1.0,
+        "detected_by": "refresh_stale"
+      },
+      "prefix_country_mismatch": {
+        "planted": 600,
+        "detected": 600,
+        "detection_rate": 1.0,
+        "detected_by": "prefix_country_mismatch"
+      },
+      "missing_supporting": {
+        "planted": 1500,
+        "detected": 1500,
+        "detection_rate": 1.0,
+        "detected_by": "entity_type_missing, id_missing"
+      },
+      "exact_dup": {
+        "planted": 250,
+        "detected": 250,
+        "detection_rate": 1.0,
+        "detected_by": "duplicate_exact"
+      },
+      "null_name_inactive": {
+        "planted": 500,
+        "detected": 500,
+        "detection_rate": 1.0,
+        "detected_by": "name_missing_inactive"
+      },
+      "country_drift": {
+        "planted": 500,
+        "detected": 500,
+        "detection_rate": 1.0,
+        "detected_by": "country_invalid"
+      },
+      "invalid_id_checksum": {
+        "planted": 400,
+        "detected": 400,
+        "detection_rate": 1.0,
+        "detected_by": "id_format_invalid"
+      },
+      "malformed_dob": {
+        "planted": 400,
+        "detected": 400,
+        "detection_rate": 1.0,
+        "detected_by": "dob_unparseable"
+      },
+      "entity_dob_conflict": {
+        "planted": 400,
+        "detected": 400,
+        "detection_rate": 1.0,
+        "detected_by": "entity_dob_conflict"
+      },
+      "null_name_active": {
+        "planted": 400,
+        "detected": 400,
+        "detection_rate": 1.0,
+        "detected_by": "name_missing_active"
+      },
+      "missing_dob": {
+        "planted": 250,
+        "detected": 250,
+        "detection_rate": 1.0,
+        "detected_by": "dob_missing"
+      },
+      "impossible_dob_sequence": {
+        "planted": 300,
+        "detected": 300,
+        "detection_rate": 1.0,
+        "detected_by": "dob_after_onboarding, dob_out_of_range"
+      },
+      "near_dup_shared_id": {
+        "planted": 250,
+        "detected": 250,
+        "detection_rate": 1.0,
+        "detected_by": "duplicate_near"
+      }
+    },
+    "per_cde": {
+      "full_name": {
+        "weight": 1.0,
+        "screening_critical": true,
+        "defective": 900,
+        "defect_rate": 0.018,
+        "critical_defective": 400,
+        "critical_rate": 0.008,
+        "pass_rate": 0.982,
+        "ceiling": 0.005,
+        "status": "BREACH"
+      },
+      "dob": {
+        "weight": 1.0,
+        "screening_critical": true,
+        "defective": 950,
+        "defect_rate": 0.019,
+        "critical_defective": 950,
+        "critical_rate": 0.019,
+        "pass_rate": 0.981,
+        "ceiling": 0.005,
+        "status": "BREACH"
+      },
+      "country": {
+        "weight": 1.0,
+        "screening_critical": true,
+        "defective": 500,
+        "defect_rate": 0.01,
+        "critical_defective": 500,
+        "critical_rate": 0.01,
+        "pass_rate": 0.99,
+        "ceiling": 0.005,
+        "status": "BREACH"
+      },
+      "national_id": {
+        "weight": 1.0,
+        "screening_critical": true,
+        "defective": 889,
+        "defect_rate": 0.0178,
+        "critical_defective": 400,
+        "critical_rate": 0.008,
+        "pass_rate": 0.9822,
+        "ceiling": 0.005,
+        "status": "BREACH"
+      },
+      "record_uniqueness": {
+        "weight": 1.0,
+        "screening_critical": true,
+        "defective": 500,
+        "defect_rate": 0.01,
+        "critical_defective": 500,
+        "critical_rate": 0.01,
+        "pass_rate": 0.99,
+        "ceiling": 0.004,
+        "status": "BREACH"
+      },
+      "entity_type": {
+        "weight": 0.4,
+        "screening_critical": false,
+        "defective": 935,
+        "defect_rate": 0.0187,
+        "critical_defective": 0,
+        "critical_rate": 0.0,
+        "pass_rate": 0.9813,
+        "ceiling": 0.02,
+        "status": "OK"
+      },
+      "onboarding_date": {
+        "weight": 0.4,
+        "screening_critical": false,
+        "defective": 476,
+        "defect_rate": 0.0095,
+        "critical_defective": 0,
+        "critical_rate": 0.0,
+        "pass_rate": 0.9905,
+        "ceiling": 0.02,
+        "status": "OK"
+      },
+      "account_prefix": {
+        "weight": 0.3,
+        "screening_critical": false,
+        "defective": 600,
+        "defect_rate": 0.012,
+        "critical_defective": 0,
+        "critical_rate": 0.0,
+        "pass_rate": 0.988,
+        "ceiling": 0.02,
+        "status": "OK"
+      },
+      "last_refresh": {
+        "weight": 0.5,
+        "screening_critical": false,
+        "defective": 2000,
+        "defect_rate": 0.04,
+        "critical_defective": 0,
+        "critical_rate": 0.0,
+        "pass_rate": 0.96,
+        "ceiling": 0.1,
+        "status": "OK"
+      }
+    },
+    "per_dimension": {
+      "COMPLETENESS": 0.947,
+      "VALIDITY": 0.9716,
+      "CONSISTENCY": 0.9764,
+      "UNIQUENESS": 0.99,
+      "TIMELINESS": 0.96
+    },
+    "composite_score": 0.9834,
+    "feed": {
+      "feed_id": "MAIN",
+      "disposition": "BLOCK_FEED_TO_SCREENING",
+      "composite_score": 0.9834,
+      "reason": "Screening-critical CDE threshold breach \u2014 full_name critical-defect rate 0.0080 > ceiling 0.0050, dob critical-defect rate 0.0190 > ceiling 0.0050, country critical-defect rate 0.0100 > ceiling 0.0050, national_id critical-defect rate 0.0080 > ceiling 0.0050, record_uniqueness critical-defect rate 0.0100 > ceiling 0.0040. Feed held from the screening pipeline and routed to data-governance review with the full defect list; no record is dropped or silently repaired."
+    },
+    "volume": {
+      "total_records": 50000,
+      "clean_passthrough": 42250,
+      "records_with_defects": 7750,
+      "critical_records": 2750,
+      "minor_only_records": 5000,
+      "remediation_share": 0.155
+    },
+    "scenario_grid": [
+      {
+        "feed": "clean",
+        "records": 10000,
+        "expected": "FEED_PASS",
+        "disposition": "FEED_PASS",
+        "composite": 1.0,
+        "outcome": "OK"
+      },
+      {
+        "feed": "minor_degraded",
+        "records": 10000,
+        "expected": "INVESTIGATE",
+        "disposition": "INVESTIGATE",
+        "composite": 0.989,
+        "outcome": "OK"
+      },
+      {
+        "feed": "warn_band",
+        "records": 10000,
+        "expected": "INVESTIGATE",
+        "disposition": "INVESTIGATE",
+        "composite": 0.9995,
+        "outcome": "OK"
+      },
+      {
+        "feed": "critical_breach",
+        "records": 10000,
+        "expected": "BLOCK_FEED_TO_SCREENING",
+        "disposition": "BLOCK_FEED_TO_SCREENING",
+        "composite": 0.9961,
+        "outcome": "OK"
+      },
+      {
+        "feed": "dup_contaminated",
+        "records": 10000,
+        "expected": "BLOCK_FEED_TO_SCREENING",
+        "disposition": "BLOCK_FEED_TO_SCREENING",
+        "composite": 0.9976,
+        "outcome": "OK"
+      }
+    ]
+  },
+  "manifest": {
+    "framework": "data-quality-rules",
+    "seed": 42,
+    "records": 50000,
+    "scenario_records": 10000,
+    "critical_planted": 2750,
+    "near_dup_name_sim": 0.85,
+    "git_sha": "7e2eb3f",
+    "generated_utc": "2026-07-09 22:07 UTC",
+    "critical_recall_floor": 1.0
+  }
+}

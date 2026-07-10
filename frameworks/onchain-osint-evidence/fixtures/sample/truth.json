@@ -1,0 +1,46 @@
+{
+  "btc-sample-01": {
+    "address": "bc1q0001807x7e64ugjwva493cwlgnamjnfa",
+    "chain": "btc",
+    "counterparty_count": 29,
+    "duplicates_planted": 7,
+    "expected_observations": [
+      "OBS_DUST_SPAM",
+      "OBS_HIGH_FREQ_SAME_COUNTERPARTY",
+      "OBS_SELF_TRANSFER"
+    ],
+    "native_tx_count": 71,
+    "self_transfer_count": 1,
+    "token_transfer_count": 0,
+    "value_in": 7108627202,
+    "value_out": 6559774492
+  },
+  "evm-sample-01": {
+    "address": "0x000000068d116ece1738f7d93d9c172411e20b8f",
+    "chain": "evm",
+    "counterparty_count": 21,
+    "duplicates_planted": 6,
+    "expected_observations": [
+      "OBS_DUST_SPAM",
+      "OBS_HIGH_FREQ_SAME_COUNTERPARTY",
+      "OBS_SELF_TRANSFER"
+    ],
+    "native_tx_count": 84,
+    "self_transfer_count": 1,
+    "token_transfer_count": 52,
+    "value_in": 107039268654556066838,
+    "value_out": 84719593470947046222
+  },
+  "evm-sample-02": {
+    "address": "0x000000a475bba463c516bde4633289b6c4ec2750",
+    "chain": "evm",
+    "counterparty_count": 3,
+    "duplicates_planted": 0,
+    "expected_observations": [],
+    "native_tx_count": 7,
+    "self_transfer_count": 0,
+    "token_transfer_count": 5,
+    "value_in": 11131344211789788522,
+    "value_out": 11627149492107121669
+  }
+}

@@ -1,0 +1,6 @@
+stratum,count,mean_score,tier_LOW,tier_MEDIUM,tier_HIGH
+designed_low,22367,17.33,22367,0,0
+designed_medium,13556,39.82,2248,11308,0
+designed_high,6062,68.58,0,232,5830
+hard_high,4969,30.67,0,1221,3748
+prohibited,3046,30.9,0,0,3046

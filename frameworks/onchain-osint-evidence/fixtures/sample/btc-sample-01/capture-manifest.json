@@ -1,0 +1,61 @@
+{
+  "set_id": "btc-sample-01",
+  "address": "bc1q0001807x7e64ugjwva493cwlgnamjnfa",
+  "chain": "btc",
+  "captures": [
+    {
+      "kind": "btc_summary",
+      "file": "summary.json",
+      "url": "https://btc-explorer.example/api/address/bc1q0001807x7e64ugjwva493cwlgnamjnfa",
+      "retrieved_at_utc": "2026-02-11T14:20:00Z"
+    },
+    {
+      "kind": "btc_txs",
+      "file": "txs-p1.json",
+      "url": "https://btc-explorer.example/api/address/bc1q0001807x7e64ugjwva493cwlgnamjnfa/txs?page=1",
+      "retrieved_at_utc": "2026-02-11T14:20:30Z"
+    },
+    {
+      "kind": "btc_txs",
+      "file": "txs-p2.json",
+      "url": "https://btc-explorer.example/api/address/bc1q0001807x7e64ugjwva493cwlgnamjnfa/txs?page=2",
+      "retrieved_at_utc": "2026-02-11T14:21:00Z"
+    },
+    {
+      "kind": "btc_txs",
+      "file": "txs-p3.json",
+      "url": "https://btc-explorer.example/api/address/bc1q0001807x7e64ugjwva493cwlgnamjnfa/txs?page=3",
+      "retrieved_at_utc": "2026-02-11T14:21:30Z"
+    },
+    {
+      "kind": "btc_txs",
+      "file": "txs-p4.json",
+      "url": "https://btc-explorer.example/api/address/bc1q0001807x7e64ugjwva493cwlgnamjnfa/txs?page=4",
+      "retrieved_at_utc": "2026-02-11T14:22:00Z"
+    },
+    {
+      "kind": "btc_txs",
+      "file": "txs-p5.json",
+      "url": "https://btc-explorer.example/api/address/bc1q0001807x7e64ugjwva493cwlgnamjnfa/txs?page=5",
+      "retrieved_at_utc": "2026-02-11T14:22:30Z"
+    },
+    {
+      "kind": "btc_txs",
+      "file": "txs-p6.json",
+      "url": "https://btc-explorer.example/api/address/bc1q0001807x7e64ugjwva493cwlgnamjnfa/txs?page=6",
+      "retrieved_at_utc": "2026-02-11T14:23:00Z"
+    },
+    {
+      "kind": "btc_txs",
+      "file": "txs-p7.json",
+      "url": "https://btc-explorer.example/api/address/bc1q0001807x7e64ugjwva493cwlgnamjnfa/txs?page=7",
+      "retrieved_at_utc": "2026-02-11T14:23:30Z"
+    },
+    {
+      "kind": "btc_txs",
+      "file": "txs-p8.json",
+      "url": "https://btc-explorer.example/api/address/bc1q0001807x7e64ugjwva493cwlgnamjnfa/txs?page=8",
+      "retrieved_at_utc": "2026-02-11T14:24:00Z"
+    }
+  ]
+}

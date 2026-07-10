@@ -15,6 +15,10 @@ a locked-down work machine: no numpy, no pandas, no network. The modules:
     graph           transaction-graph taint propagation (hop-decay, breaker nodes) for
                     on-chain exposure scoring
     relevance       adverse-media content relevance (category severity x role x recency)
+    provenance      provenance-stamped evidence records (source URI, retrieval timestamp,
+                    content hash) for open-source evidence collection
+    sampling        exact attribute-sampling statistics (binomial/hypergeometric tails,
+                    sample-size solver, one-sided upper deviation limit)
     knowledge_base/ self-maintaining watchlist sub-package (sources/ingest/dedup/delta/
                     feedback) — assembles a live deduplicated watchlist from public lists
 

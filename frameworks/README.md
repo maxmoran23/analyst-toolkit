@@ -48,7 +48,7 @@ Shared across the pillar:
 | [`GOVERNANCE.md`](GOVERNANCE.md) | The SR 11-7 / model-risk framing every framework instantiates. |
 | [`DEPLOYMENT-PATTERN.md`](DEPLOYMENT-PATTERN.md) | The reusable Copilot Studio mapping. |
 | [`RIGOR-CONTRACT.md`](RIGOR-CONTRACT.md) | What `run_validation.py` must enforce and how it wires into CI. |
-| [`_lib/`](_lib/) | Shared pure-stdlib primitives, reused across frameworks: name normalization + token rarity, matching (Jaro-Winkler / Soundex / IDF-weighted token-set), evaluation metrics, deviation/aggregation stats, a named-rule mechanism, weighted-composite scoring + monotonicity, content relevance, and transaction-graph taint propagation. |
+| [`_lib/`](_lib/) | Shared pure-stdlib primitives, reused across frameworks: name normalization + token rarity, matching (Jaro-Winkler / Soundex / IDF-weighted token-set), evaluation metrics, deviation/aggregation stats, a named-rule mechanism, weighted-composite scoring + monotonicity, content relevance, transaction-graph taint propagation, provenance-stamped evidence records, and exact attribute-sampling statistics (binomial/hypergeometric tails, upper deviation limit). |
 
 ## Frameworks
 
@@ -61,6 +61,12 @@ Shared across the pillar:
 | [`onchain-kyt-address-risk/`](onchain-kyt-address-risk/) | Score blockchain-address KYT flags by tainted-path exposure (hop distance, value share, commingling breaks) | **Built & validated** — recall 1.0 (0 FN), 88% FP-reduction, evidence committed |
 | [`tm-threshold-tuning/`](tm-threshold-tuning/) | Above/below-the-line testing — validate & tune monitoring-rule thresholds (the model-validation framework) | **Built & validated** — every recommendation holds detection ≥95% floor, all leaks remediated, 67% volume cut, evidence committed |
 | [`watchlist-knowledge-base/`](watchlist-knowledge-base/) | Self-maintaining watchlist — ingest public lists (OFAC/EU/UN/UK), dedupe across them, track changes, learn from false positives | **Built & validated** — 0 false merges (structural), auto-merge recall 1.0, change-delta exact, feedback gated; evidence committed |
+| [`pep-screening/`](pep-screening/) | Disposition PEP-screening alerts on two axes (right party? in-scope status?) — prominence tiers, step-down decay, jurisdiction buckets | **Built & validated** — recall 1.0 (0 FN), 84% FP-reduction, evidence committed |
+| [`investigations-case-qa/`](investigations-case-qa/) | Second-line QA scoring of completed investigation case files before closure (completeness, evidence support, consistency, timeliness, narrative) | **Built & validated** — critical-deficiency recall 1.0 (0 deficient files passed QA), 100% clean-file pass rate, evidence committed |
+| [`onchain-osint-evidence/`](onchain-osint-evidence/) | Turn public block-explorer data into a provenance-stamped, investigation-grade evidence pack (annex + facts + counterparty rollup; observations, never attributions) | **Built & validated** — provenance completeness 100%, reconciliation exact (0 dropped / 0 duplicated), byte-identical output, evidence committed |
+| [`npa-product-risk/`](npa-product-risk/) | Score & route new-product / new-activity proposals pre-launch — tier, named approval route, mandatory conditions, review interval | **Built & validated** — 0 floor-triggered proposals tiered LOW, prohibited list never scored around, monotonic, discriminating, evidence committed |
+| [`data-quality-rules/`](data-quality-rules/) | Assess the critical data elements feeding screening/monitoring (name, DOB, country, identifier, uniqueness, staleness) — "is this feed fit to screen against?" | **Built & validated** — critical-defect recall 1.0 (0 missed), 0 false flags on clean records, hard feed gate holds (no breached feed passes), evidence committed |
+| [`qa-sampling/`](qa-sampling/) | Statistical attribute sampling for independent testing / QA — plan, select, and evaluate tests of controls from exact tail math instead of lookup tables | **Built & validated** — upper-deviation-limit cross-check exact (max divergence 5.4e-12), 0 structural breaches, measured false-assurance 0/150 within design risk, solver monotone, evidence committed |
 
 ## Standing caveat
 

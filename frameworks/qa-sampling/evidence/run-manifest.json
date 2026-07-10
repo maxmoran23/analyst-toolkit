@@ -1,0 +1,13 @@
+{
+  "framework": "qa-sampling",
+  "seed": 42,
+  "controls": 12,
+  "population_per_control": 40000,
+  "items_total": 480000,
+  "confidence": 0.95,
+  "design_risk_floor": 0.05,
+  "false_assurance_margin": 0.05,
+  "crosscheck_tolerance": 1e-09,
+  "git_sha": "7e2eb3f",
+  "generated_utc": "2026-07-09 22:06 UTC"
+}

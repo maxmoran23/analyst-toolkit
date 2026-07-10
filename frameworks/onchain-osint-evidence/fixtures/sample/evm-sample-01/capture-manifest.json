@@ -1,0 +1,61 @@
+{
+  "set_id": "evm-sample-01",
+  "address": "0x000000068d116ece1738f7d93d9c172411e20b8f",
+  "chain": "evm",
+  "captures": [
+    {
+      "kind": "evm_balance",
+      "file": "balance.json",
+      "url": "https://evm-explorer.example/api?module=account&action=balance&address=0x000000068d116ece1738f7d93d9c172411e20b8f",
+      "retrieved_at_utc": "2026-02-11T14:00:00Z"
+    },
+    {
+      "kind": "evm_txlist",
+      "file": "txlist-p1.json",
+      "url": "https://evm-explorer.example/api?module=account&action=txlist&address=0x000000068d116ece1738f7d93d9c172411e20b8f&page=1&offset=20&sort=asc",
+      "retrieved_at_utc": "2026-02-11T14:00:30Z"
+    },
+    {
+      "kind": "evm_txlist",
+      "file": "txlist-p2.json",
+      "url": "https://evm-explorer.example/api?module=account&action=txlist&address=0x000000068d116ece1738f7d93d9c172411e20b8f&page=2&offset=20&sort=asc",
+      "retrieved_at_utc": "2026-02-11T14:01:00Z"
+    },
+    {
+      "kind": "evm_txlist",
+      "file": "txlist-p3.json",
+      "url": "https://evm-explorer.example/api?module=account&action=txlist&address=0x000000068d116ece1738f7d93d9c172411e20b8f&page=3&offset=20&sort=asc",
+      "retrieved_at_utc": "2026-02-11T14:01:30Z"
+    },
+    {
+      "kind": "evm_txlist",
+      "file": "txlist-p4.json",
+      "url": "https://evm-explorer.example/api?module=account&action=txlist&address=0x000000068d116ece1738f7d93d9c172411e20b8f&page=4&offset=20&sort=asc",
+      "retrieved_at_utc": "2026-02-11T14:02:00Z"
+    },
+    {
+      "kind": "evm_txlist",
+      "file": "txlist-p5.json",
+      "url": "https://evm-explorer.example/api?module=account&action=txlist&address=0x000000068d116ece1738f7d93d9c172411e20b8f&page=5&offset=20&sort=asc",
+      "retrieved_at_utc": "2026-02-11T14:02:30Z"
+    },
+    {
+      "kind": "evm_tokentx",
+      "file": "tokentx-p1.json",
+      "url": "https://evm-explorer.example/api?module=account&action=tokentx&address=0x000000068d116ece1738f7d93d9c172411e20b8f&page=1&offset=20&sort=asc",
+      "retrieved_at_utc": "2026-02-11T14:03:00Z"
+    },
+    {
+      "kind": "evm_tokentx",
+      "file": "tokentx-p2.json",
+      "url": "https://evm-explorer.example/api?module=account&action=tokentx&address=0x000000068d116ece1738f7d93d9c172411e20b8f&page=2&offset=20&sort=asc",
+      "retrieved_at_utc": "2026-02-11T14:03:30Z"
+    },
+    {
+      "kind": "evm_tokentx",
+      "file": "tokentx-p3.json",
+      "url": "https://evm-explorer.example/api?module=account&action=tokentx&address=0x000000068d116ece1738f7d93d9c172411e20b8f&page=3&offset=20&sort=asc",
+      "retrieved_at_utc": "2026-02-11T14:04:00Z"
+    }
+  ]
+}

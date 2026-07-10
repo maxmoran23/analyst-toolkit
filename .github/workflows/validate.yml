@@ -71,3 +71,33 @@ jobs:
         run: |
           cd frameworks/watchlist-knowledge-base
           python3 run_validation.py --seed 42 --entities 3000 --no-write
+
+      - name: PEP screening — false-negative safety gate + evidence
+        run: |
+          cd frameworks/pep-screening
+          python3 run_validation.py --seed 42 --peps 8000 --alerts 50000 --no-write
+
+      - name: Investigations case-file QA — critical-deficiency safety gate + evidence
+        run: |
+          cd frameworks/investigations-case-qa
+          python3 run_validation.py --seed 42 --cases 50000 --no-write
+
+      - name: On-chain OSINT evidence — provenance / reconciliation / determinism gate
+        run: |
+          cd frameworks/onchain-osint-evidence
+          python3 run_validation.py --seed 42 --addresses 400 --transactions 50000 --no-write
+
+      - name: NPA product risk — floor-safety / prohibited-routing / discrimination gate
+        run: |
+          cd frameworks/npa-product-risk
+          python3 run_validation.py --seed 42 --products 50000 --no-write
+
+      - name: Data-quality rules — critical-defect recall + feed-gate evidence
+        run: |
+          cd frameworks/data-quality-rules
+          python3 run_validation.py --seed 42 --records 50000 --no-write
+
+      - name: QA attribute sampling — structural / direction / cross-check / monotonicity gate
+        run: |
+          cd frameworks/qa-sampling
+          python3 run_validation.py --seed 42 --controls 12 --population 40000 --no-write

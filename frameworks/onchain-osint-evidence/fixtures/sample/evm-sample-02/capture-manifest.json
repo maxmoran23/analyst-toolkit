@@ -1,0 +1,25 @@
+{
+  "set_id": "evm-sample-02",
+  "address": "0x000000a475bba463c516bde4633289b6c4ec2750",
+  "chain": "evm",
+  "captures": [
+    {
+      "kind": "evm_balance",
+      "file": "balance.json",
+      "url": "https://evm-explorer.example/api?module=account&action=balance&address=0x000000a475bba463c516bde4633289b6c4ec2750",
+      "retrieved_at_utc": "2026-02-11T14:10:00Z"
+    },
+    {
+      "kind": "evm_txlist",
+      "file": "txlist-p1.json",
+      "url": "https://evm-explorer.example/api?module=account&action=txlist&address=0x000000a475bba463c516bde4633289b6c4ec2750&page=1&offset=20&sort=asc",
+      "retrieved_at_utc": "2026-02-11T14:10:30Z"
+    },
+    {
+      "kind": "evm_tokentx",
+      "file": "tokentx-p1.json",
+      "url": "https://evm-explorer.example/api?module=account&action=tokentx&address=0x000000a475bba463c516bde4633289b6c4ec2750&page=1&offset=20&sort=asc",
+      "retrieved_at_utc": "2026-02-11T14:11:00Z"
+    }
+  ]
+}

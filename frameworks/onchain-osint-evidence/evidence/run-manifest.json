@@ -1,0 +1,15 @@
+{
+  "framework": "onchain-osint-evidence",
+  "seed": 42,
+  "addresses": 400,
+  "transactions_requested": 50000,
+  "transaction_records": 54915,
+  "source_records_incl_duplicates": 55147,
+  "facts_emitted": 61126,
+  "evm_sets": 265,
+  "btc_sets": 135,
+  "provenance_floor": 1.0,
+  "reconciliation_tolerance": 0,
+  "git_sha": "7e2eb3f",
+  "generated_utc": "2026-07-09 22:06 UTC"
+}

@@ -1,0 +1,104 @@
+{
+  "operating_point": {
+    "confusion": {
+      "tp": 8996,
+      "fp": 0,
+      "tn": 41004,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "specificity": 1.0,
+      "f1": 1.0,
+      "false_negative_rate": 0.0,
+      "false_positive_rate": 0.0
+    },
+    "funnel": {
+      "QA_PASS": 35070,
+      "REMEDIATE": 5934,
+      "REWORK_AND_ESCALATE": 8996
+    },
+    "per_category": {
+      "minor_findings": {
+        "count": 7434,
+        "QA_PASS": 7434,
+        "REMEDIATE": 0,
+        "REWORK_AND_ESCALATE": 0,
+        "mean_score": 95.91
+      },
+      "clean": {
+        "count": 27636,
+        "QA_PASS": 27636,
+        "REMEDIATE": 0,
+        "REWORK_AND_ESCALATE": 0,
+        "mean_score": 100.0
+      },
+      "major_findings": {
+        "count": 5934,
+        "QA_PASS": 0,
+        "REMEDIATE": 5934,
+        "REWORK_AND_ESCALATE": 0,
+        "mean_score": 87.24
+      },
+      "plant_uncited_disposition": {
+        "count": 1805,
+        "QA_PASS": 0,
+        "REMEDIATE": 0,
+        "REWORK_AND_ESCALATE": 1805,
+        "mean_score": 75.0
+      },
+      "plant_missed_escalation": {
+        "count": 1766,
+        "QA_PASS": 0,
+        "REMEDIATE": 0,
+        "REWORK_AND_ESCALATE": 1766,
+        "mean_score": 79.04
+      },
+      "plant_hidden_contradiction": {
+        "count": 1784,
+        "QA_PASS": 0,
+        "REMEDIATE": 0,
+        "REWORK_AND_ESCALATE": 1784,
+        "mean_score": 79.06
+      },
+      "plant_unreviewed_scope": {
+        "count": 1873,
+        "QA_PASS": 0,
+        "REMEDIATE": 0,
+        "REWORK_AND_ESCALATE": 1873,
+        "mean_score": 75.0
+      },
+      "plant_missing_mandatory": {
+        "count": 1768,
+        "QA_PASS": 0,
+        "REMEDIATE": 0,
+        "REWORK_AND_ESCALATE": 1768,
+        "mean_score": 74.02
+      }
+    },
+    "deficiency_recall": 1.0,
+    "planted_critical": 8996,
+    "detected_critical": 8996,
+    "missed_examples": [],
+    "critical_passed": 0,
+    "critical_passed_examples": [],
+    "clean_pass_rate": 1.0,
+    "noncritical_sent_to_rework": 0,
+    "volume": {
+      "total_cases": 50000,
+      "qa_pass": 35070,
+      "remediate": 5934,
+      "rework_and_escalate": 8996,
+      "released_share": 0.7014
+    }
+  },
+  "manifest": {
+    "framework": "investigations-case-qa",
+    "seed": 42,
+    "cases": 50000,
+    "critical_deficient": 8996,
+    "git_sha": "7e2eb3f",
+    "generated_utc": "2026-07-09 22:01 UTC",
+    "deficiency_recall_floor": 1.0,
+    "critical_pass_ceiling": 0
+  }
+}

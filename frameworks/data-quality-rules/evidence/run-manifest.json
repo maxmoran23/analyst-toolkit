@@ -1,0 +1,11 @@
+{
+  "framework": "data-quality-rules",
+  "seed": 42,
+  "records": 50000,
+  "scenario_records": 10000,
+  "critical_planted": 2750,
+  "near_dup_name_sim": 0.85,
+  "git_sha": "7e2eb3f",
+  "generated_utc": "2026-07-09 22:07 UTC",
+  "critical_recall_floor": 1.0
+}

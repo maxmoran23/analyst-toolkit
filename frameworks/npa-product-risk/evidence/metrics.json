@@ -1,0 +1,82 @@
+{
+  "analysis": {
+    "n": 50000,
+    "tier_distribution": {
+      "LOW": 24615,
+      "MEDIUM": 12761,
+      "HIGH": 12624
+    },
+    "tier_shares": {
+      "LOW": 0.4923,
+      "MEDIUM": 0.2552,
+      "HIGH": 0.2525
+    },
+    "routing_distribution": {
+      "STANDARD_APPROVAL": 24615,
+      "ENHANCED_REVIEW": 12761,
+      "FULL_COMMITTEE": 9578,
+      "REFER_PROHIBITED": 3046
+    },
+    "routing_shares": {
+      "STANDARD_APPROVAL": 0.4923,
+      "ENHANCED_REVIEW": 0.2552,
+      "FULL_COMMITTEE": 0.1916,
+      "REFER_PROHIBITED": 0.0609
+    },
+    "per_stratum": {
+      "designed_low": {
+        "count": 22367,
+        "mean_score": 17.33,
+        "tier_LOW": 22367,
+        "tier_MEDIUM": 0,
+        "tier_HIGH": 0
+      },
+      "designed_medium": {
+        "count": 13556,
+        "mean_score": 39.82,
+        "tier_LOW": 2248,
+        "tier_MEDIUM": 11308,
+        "tier_HIGH": 0
+      },
+      "designed_high": {
+        "count": 6062,
+        "mean_score": 68.58,
+        "tier_LOW": 0,
+        "tier_MEDIUM": 232,
+        "tier_HIGH": 5830
+      },
+      "hard_high": {
+        "count": 4969,
+        "mean_score": 30.67,
+        "tier_LOW": 0,
+        "tier_MEDIUM": 1221,
+        "tier_HIGH": 3748
+      },
+      "prohibited": {
+        "count": 3046,
+        "mean_score": 30.9,
+        "tier_LOW": 0,
+        "tier_MEDIUM": 0,
+        "tier_HIGH": 3046
+      }
+    },
+    "discrimination_ok": true,
+    "hard_high_tiered_low": 0,
+    "floored_tiered_low": 0,
+    "prohibited_total": 3046,
+    "prohibited_missed": 0,
+    "detected_prohibited_misrouted": 0
+  },
+  "monotonicity_ok": true,
+  "manifest": {
+    "framework": "npa-product-risk",
+    "seed": 42,
+    "products": 50000,
+    "git_sha": "7e2eb3f",
+    "generated_utc": "2026-07-09 21:55 UTC",
+    "floor": {
+      "floor_triggered_tiered_low_max": 0,
+      "prohibited_missed_max": 0
+    }
+  }
+}

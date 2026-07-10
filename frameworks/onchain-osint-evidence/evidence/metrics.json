@@ -1,0 +1,282 @@
+{
+  "provenance": {
+    "total_facts": 61126,
+    "complete": 61126,
+    "incomplete": 0,
+    "complete_rate": 1.0,
+    "incomplete_examples": []
+  },
+  "reconciliation": {
+    "sets": 400,
+    "exact_sets": 400,
+    "mismatched_sets": 0,
+    "dropped_records": 0,
+    "duplicated_records": 0,
+    "duplicates_planted": 232,
+    "duplicates_removed": 232,
+    "btc_summary_ties": true,
+    "aggregate": [
+      {
+        "chain": "btc",
+        "measure": "counterparty_count",
+        "source_truth": 2172,
+        "engine": 2172,
+        "delta": 0
+      },
+      {
+        "chain": "btc",
+        "measure": "native_tx_count",
+        "source_truth": 18680,
+        "engine": 18680,
+        "delta": 0
+      },
+      {
+        "chain": "btc",
+        "measure": "self_transfer_count",
+        "source_truth": 33,
+        "engine": 33,
+        "delta": 0
+      },
+      {
+        "chain": "btc",
+        "measure": "token_transfer_count",
+        "source_truth": 0,
+        "engine": 0,
+        "delta": 0
+      },
+      {
+        "chain": "btc",
+        "measure": "value_in",
+        "source_truth": 2589899591276,
+        "engine": 2589899591276,
+        "delta": 0
+      },
+      {
+        "chain": "btc",
+        "measure": "value_out",
+        "source_truth": 2236120303159,
+        "engine": 2236120303159,
+        "delta": 0
+      },
+      {
+        "chain": "evm",
+        "measure": "counterparty_count",
+        "source_truth": 2994,
+        "engine": 2994,
+        "delta": 0
+      },
+      {
+        "chain": "evm",
+        "measure": "native_tx_count",
+        "source_truth": 21494,
+        "engine": 21494,
+        "delta": 0
+      },
+      {
+        "chain": "evm",
+        "measure": "self_transfer_count",
+        "source_truth": 128,
+        "engine": 128,
+        "delta": 0
+      },
+      {
+        "chain": "evm",
+        "measure": "token_transfer_count",
+        "source_truth": 14741,
+        "engine": 14741,
+        "delta": 0
+      },
+      {
+        "chain": "evm",
+        "measure": "value_in",
+        "source_truth": 26986758781956592624820,
+        "engine": 26986758781956592624820,
+        "delta": 0
+      },
+      {
+        "chain": "evm",
+        "measure": "value_out",
+        "source_truth": 26646907606318957774387,
+        "engine": 26646907606318957774387,
+        "delta": 0
+      },
+      {
+        "chain": "all",
+        "measure": "pagination_duplicates",
+        "source_truth": 232,
+        "engine": 232,
+        "delta": 0
+      }
+    ],
+    "mismatch_examples": []
+  },
+  "determinism": {
+    "digest": "14fbbfbb6c3c805807580335cbe0de7f39d94d50312f4213c2938865e146c989",
+    "identical": true,
+    "artifacts_hashed": [
+      "annex.md",
+      "facts.csv",
+      "counterparties.csv"
+    ]
+  },
+  "observations": {
+    "planted": 245,
+    "detected": 245,
+    "missed": 0,
+    "spurious": 0,
+    "missed_examples": [],
+    "spurious_examples": [],
+    "ok": true
+  },
+  "sample": {
+    "present": true,
+    "sets": 3,
+    "facts": 284,
+    "provenance": {
+      "total_facts": 284,
+      "complete": 284,
+      "incomplete": 0,
+      "complete_rate": 1.0,
+      "incomplete_examples": []
+    },
+    "reconciliation": {
+      "sets": 3,
+      "exact_sets": 3,
+      "mismatched_sets": 0,
+      "dropped_records": 0,
+      "duplicated_records": 0,
+      "duplicates_planted": 13,
+      "duplicates_removed": 13,
+      "btc_summary_ties": true,
+      "aggregate": [
+        {
+          "chain": "btc",
+          "measure": "counterparty_count",
+          "source_truth": 29,
+          "engine": 29,
+          "delta": 0
+        },
+        {
+          "chain": "btc",
+          "measure": "native_tx_count",
+          "source_truth": 71,
+          "engine": 71,
+          "delta": 0
+        },
+        {
+          "chain": "btc",
+          "measure": "self_transfer_count",
+          "source_truth": 1,
+          "engine": 1,
+          "delta": 0
+        },
+        {
+          "chain": "btc",
+          "measure": "token_transfer_count",
+          "source_truth": 0,
+          "engine": 0,
+          "delta": 0
+        },
+        {
+          "chain": "btc",
+          "measure": "value_in",
+          "source_truth": 7108627202,
+          "engine": 7108627202,
+          "delta": 0
+        },
+        {
+          "chain": "btc",
+          "measure": "value_out",
+          "source_truth": 6559774492,
+          "engine": 6559774492,
+          "delta": 0
+        },
+        {
+          "chain": "evm",
+          "measure": "counterparty_count",
+          "source_truth": 24,
+          "engine": 24,
+          "delta": 0
+        },
+        {
+          "chain": "evm",
+          "measure": "native_tx_count",
+          "source_truth": 91,
+          "engine": 91,
+          "delta": 0
+        },
+        {
+          "chain": "evm",
+          "measure": "self_transfer_count",
+          "source_truth": 1,
+          "engine": 1,
+          "delta": 0
+        },
+        {
+          "chain": "evm",
+          "measure": "token_transfer_count",
+          "source_truth": 57,
+          "engine": 57,
+          "delta": 0
+        },
+        {
+          "chain": "evm",
+          "measure": "value_in",
+          "source_truth": 118170612866345855360,
+          "engine": 118170612866345855360,
+          "delta": 0
+        },
+        {
+          "chain": "evm",
+          "measure": "value_out",
+          "source_truth": 96346742963054167891,
+          "engine": 96346742963054167891,
+          "delta": 0
+        },
+        {
+          "chain": "all",
+          "measure": "pagination_duplicates",
+          "source_truth": 13,
+          "engine": 13,
+          "delta": 0
+        }
+      ],
+      "mismatch_examples": []
+    },
+    "observations": {
+      "planted": 6,
+      "detected": 6,
+      "missed": 0,
+      "spurious": 0,
+      "missed_examples": [],
+      "spurious_examples": [],
+      "ok": true
+    },
+    "determinism": {
+      "digest": "e34eeacfe57face5b6f4c9049c669384824be6f232ef24bbe69438aebdfece20",
+      "identical": true
+    }
+  },
+  "live_degrade": {
+    "fetch_json_offline_none": true,
+    "collect_evm_offline_none": true,
+    "collect_btc_offline_none": true,
+    "collect_evm_no_base_none": true,
+    "all_none": true
+  },
+  "manifest": {
+    "framework": "onchain-osint-evidence",
+    "seed": 42,
+    "addresses": 400,
+    "transactions_requested": 50000,
+    "transaction_records": 54915,
+    "source_records_incl_duplicates": 55147,
+    "facts_emitted": 61126,
+    "evm_sets": 265,
+    "btc_sets": 135,
+    "provenance_floor": 1.0,
+    "reconciliation_tolerance": 0,
+    "git_sha": "7e2eb3f",
+    "generated_utc": "2026-07-09 22:06 UTC"
+  }
+}

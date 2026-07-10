@@ -1,0 +1,71 @@
+{
+  "operating_point": {
+    "confusion": {
+      "tp": 2021,
+      "fp": 7610,
+      "tn": 40369,
+      "fn": 0,
+      "precision": 0.2098,
+      "recall": 1.0,
+      "specificity": 0.8414,
+      "f1": 0.3469,
+      "false_negative_rate": 0.0,
+      "false_positive_rate": 0.1586
+    },
+    "funnel": {
+      "AUTO_CLEAR": 40369,
+      "ANALYST_REVIEW": 8916,
+      "ESCALATE_ENHANCED_REVIEW": 715
+    },
+    "review_priorities": {
+      "HIGH": 1364,
+      "MEDIUM": 5457,
+      "LOW": 2095
+    },
+    "per_category_clear_rate": {
+      "out_of_scope_former": {
+        "total": 12485,
+        "auto_cleared": 10654,
+        "clear_rate": 0.8533
+      },
+      "generic_token": {
+        "total": 11487,
+        "auto_cleared": 11433,
+        "clear_rate": 0.9953
+      },
+      "wrong_party_common_name": {
+        "total": 12520,
+        "auto_cleared": 12520,
+        "clear_rate": 1.0
+      },
+      "wrong_party_translit": {
+        "total": 5762,
+        "auto_cleared": 5762,
+        "clear_rate": 1.0
+      },
+      "common_name_ambiguous": {
+        "total": 5725,
+        "auto_cleared": 0,
+        "clear_rate": 0.0
+      }
+    },
+    "fn_count": 0,
+    "fn_leaked_examples": [],
+    "volume": {
+      "total_alerts": 50000,
+      "auto_cleared": 40369,
+      "human_reviewed": 9631,
+      "human_workload_reduction": 0.8074
+    }
+  },
+  "manifest": {
+    "framework": "pep-screening",
+    "seed": 42,
+    "peps": 8000,
+    "alerts": 50000,
+    "true_matches": 2021,
+    "git_sha": "7e2eb3f",
+    "generated_utc": "2026-07-09 22:00 UTC",
+    "fn_recall_floor": 1.0
+  }
+}

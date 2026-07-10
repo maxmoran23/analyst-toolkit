@@ -1,0 +1,10 @@
+{
+  "framework": "investigations-case-qa",
+  "seed": 42,
+  "cases": 50000,
+  "critical_deficient": 8996,
+  "git_sha": "7e2eb3f",
+  "generated_utc": "2026-07-09 22:01 UTC",
+  "deficiency_recall_floor": 1.0,
+  "critical_pass_ceiling": 0
+}

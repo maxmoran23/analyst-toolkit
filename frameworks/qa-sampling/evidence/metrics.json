@@ -1,0 +1,71 @@
+{
+  "analysis": {
+    "n_controls": 12,
+    "items_total": 480000,
+    "items_tested": 1474,
+    "test_coverage": 0.00307,
+    "conclusions": {
+      "CONTROL_EFFECTIVE": 3,
+      "CONTROL_INEFFECTIVE": 9
+    },
+    "by_scenario": {
+      "boundary": {
+        "CONTROL_INEFFECTIVE": 2,
+        "CONTROL_EFFECTIVE": 1
+      },
+      "clean": {
+        "CONTROL_EFFECTIVE": 2,
+        "CONTROL_INEFFECTIVE": 1
+      },
+      "failing": {
+        "CONTROL_INEFFECTIVE": 3
+      },
+      "planted": {
+        "CONTROL_INEFFECTIVE": 3
+      }
+    },
+    "n_evaluations": 312,
+    "structural_breaches": 0,
+    "planted_controls": 3,
+    "planted_replicates": 150,
+    "planted_effective": 0,
+    "planted_design_ok": true,
+    "failing_controls": 3,
+    "failing_replicates": 150,
+    "failing_effective": 0,
+    "false_assurance_measured": 0.0,
+    "design_risk": 0.05,
+    "fa_limit": 0.1,
+    "crosscheck_cases": 119,
+    "crosscheck_max_divergence": 5.393900603944957e-12,
+    "crosscheck_hyper_mismatches": 0,
+    "monotonicity_cells": 40,
+    "monotonicity_violations": 0,
+    "fpc_violations": 0,
+    "calibration_max_gap": 0.0193,
+    "sample_size_min": 61,
+    "sample_size_median": 127,
+    "sample_size_max": 156,
+    "gates": {
+      "structural_over_acceptance": true,
+      "planted_zero_effective": true,
+      "false_assurance_within_design_risk": true,
+      "udl_crosscheck": true,
+      "solver_monotonicity": true
+    },
+    "safety_ok": true
+  },
+  "manifest": {
+    "framework": "qa-sampling",
+    "seed": 42,
+    "controls": 12,
+    "population_per_control": 40000,
+    "items_total": 480000,
+    "confidence": 0.95,
+    "design_risk_floor": 0.05,
+    "false_assurance_margin": 0.05,
+    "crosscheck_tolerance": 1e-09,
+    "git_sha": "7e2eb3f",
+    "generated_utc": "2026-07-09 22:06 UTC"
+  }
+}
