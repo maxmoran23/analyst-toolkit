@@ -65,7 +65,15 @@
     "design_risk_floor": 0.05,
     "false_assurance_margin": 0.05,
     "crosscheck_tolerance": 1e-09,
-    "git_sha": "7e2eb3f",
-    "generated_utc": "2026-07-09 22:06 UTC"
+    "git_sha": "d2f4ef1",
+    "generated_utc": "2026-07-10 05:09 UTC",
+    "git_dirty": false,
+    "environment": {
+      "python": "3.14.5",
+      "implementation": "CPython",
+      "platform": "macOS-27.0-arm64-arm-64bit-Mach-O",
+      "machine": "arm64"
+    },
+    "wall_clock_seconds": 0.47
   }
 }

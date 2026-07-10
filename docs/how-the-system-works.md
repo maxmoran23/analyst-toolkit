@@ -232,6 +232,10 @@ across every team.
 
 - **If you run reviews or triage:** open your team's hub under `teams/`, then the prompt
   or framework it points to.
+- **If you need to check the numbers rather than believe them:** read
+  [`frameworks/EVIDENCE.md`](../frameworks/EVIDENCE.md) — the reproduction command for
+  every engine, the exact confidence bound behind every safety claim, and a plain
+  statement of what the evidence does not establish. One command re-derives all of it.
 - **If you sign off on models:** read [`frameworks/GOVERNANCE.md`](../frameworks/GOVERNANCE.md)
   and any one framework's `evidence/VALIDATION-REPORT.md` — they are worked, reproducible
   model-validation artifacts.

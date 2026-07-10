@@ -2,7 +2,7 @@
 
 > ILLUSTRATIVE / SYNTHETIC. Every figure below is produced by running the reference scorer over a seeded, fully synthetic population. All officials, countries, and offices are fictional; no real person is represented. Numbers are emitted by `run_validation.py`, not authored; re-run it to reproduce them.
 
-**Run:** seed `42` · 8,000 PEP-list entries · 50,000 alerts · git `7e2eb3f` · 2026-07-09 22:00 UTC
+**Run:** seed `42` · 8,000 PEP-list entries · 50,000 alerts · git `d2f4ef1` · 2026-07-10 05:09 UTC
 
 **Headline:** recall on genuine in-scope PEP matches **1.0000** (false negatives: **0**), false-positive reduction **84.1%**, human review volume cut by **80.7%** (50,000 alerts → 9,631 to a human).
 
@@ -56,6 +56,8 @@ A naive policy that auto-cleared on `combined <= T` alone, for comparison. The f
 | 0.8 | 47978 | 1.0 | 1913 | 0.0534 |
 
 ## 6. False-negative safety argument
+**Statistical bound.** 0 misses were observed among 2,021 labelled true PEP matches. Observing zero failures is not a guarantee of a zero failure rate: the exact one-sided 95% Clopper-Pearson upper bound on the miss rate is **0.1481%** (recall at least **99.8519%**) *on this synthetic population*. The bound is a property of the sample size, not a promise about live data — it tightens only by testing more true cases.
+
 1. Of 2,021 genuine in-scope PEP matches, **0 were auto-cleared** — recall 1.0000.
 2. Safety is structural: a genuine in-scope match cannot exhibit any clearing cause. Its identifiers corroborate or are absent — never doubly contradict — so `wrong_party` cannot fire; its distinctive token aligns (transliteration noise is vowel-only, preserving the phonetic key), and a fully common-named entry has no unmatched distinctive token, so `generic_token_only` cannot fire; and it is in scope — current, TIER_1/TIER_2 (no horizon exists), within the horizon, or adverse-flagged — so `out_of_scope_status` cannot fire.
 3. The sweep (Section 5) shows what the deployed policy refuses to do: a bare threshold starts leaking decayed-but-in-scope senior matches almost immediately, because "low combined score" and "safe to clear" are not the same claim.

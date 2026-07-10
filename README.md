@@ -242,6 +242,7 @@ Full workflow, including the Copilot copy/paste loop and getting output into cle
 Every prompt in this library follows the same discipline — documented in full under [`methodology/`](methodology/):
 
 - **Audit-defensible.** Every claim carries a source. Observed fact, allegation, and projection are never blended.
+- **Evidence, not assertion.** Every number in every `evidence/` pack is emitted by a harness, and CI **re-derives all thirteen packs from seed on every commit** and fails if one differs. Safety claims carry an exact confidence bound, not just "recall 1.0". Check it yourself in twenty seconds: `python3 _tooling/verify_evidence.py`. See [`frameworks/EVIDENCE.md`](frameworks/EVIDENCE.md).
 - **Two-file ceiling, machine-enforced.** Any feature replicates with at most one prompt + [`BASE.md`](BASE.md). CI fails if a paste payload references another file or any prompt names a different companion.
 - **Runs anywhere.** Every prompt is self-contained and assistant-agnostic — no tool, integration, memory, or specific product required. If a capability is missing it degrades gracefully and asks for what it needs. See [running on any assistant](docs/running-on-any-assistant.md).
 - **Structured output.** Each prompt specifies an exact output format — scorecards, severity tiers, confidence ratings — so results are comparable and reusable.

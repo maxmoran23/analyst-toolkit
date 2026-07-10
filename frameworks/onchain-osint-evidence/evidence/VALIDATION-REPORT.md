@@ -2,7 +2,7 @@
 
 > ILLUSTRATIVE / SYNTHETIC. Figures are produced by running the engine over a seeded population of synthetic explorer fixtures (Blockscout-style EVM and mempool-style BTC payloads) with known ground truth. No real address, transaction, or explorer is represented. Numbers are emitted by `run_validation.py`, not authored.
 
-**Run:** seed `42` · 400 addresses (265 EVM / 135 BTC) · 54,915 unique transaction records (55,147 source records incl. planted duplicates) · git `7e2eb3f` · 2026-07-09 22:06 UTC
+**Run:** seed `42` · 400 addresses (265 EVM / 135 BTC) · 54,915 unique transaction records (55,147 source records incl. planted duplicates) · git `d2f4ef1` · 2026-07-10 05:09 UTC
 
 **Headline:** provenance completeness **100.0%** across **61,126 facts** (floor 100%), reconciliation **exact** — **0 dropped / 0 duplicated** (232 pagination duplicates planted, 232 removed), rendered evidence **byte-identical across repeat runs** (digest `14fbbfbb6c3c8058`).
 

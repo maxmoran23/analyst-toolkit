@@ -2,7 +2,7 @@
 
 > ILLUSTRATIVE / SYNTHETIC. Figures are produced by running the reference scorer over a seeded, fully synthetic population whose exposure features are derived by the real `_lib/graph` taint propagation. No real address is represented. Numbers are emitted by `run_validation.py`, not authored.
 
-**Run:** seed `42` · 50,000 addresses · git `423f27c` · 2026-06-23 16:22 UTC
+**Run:** seed `42` · 50,000 addresses · git `d2f4ef1` · 2026-07-10 05:09 UTC
 
 **Headline:** recall on high-risk addresses **1.0000** (false negatives: **0**), false-positive reduction **87.9%**, human review volume cut by **82.5%** (50,000 addresses → 8,741 to a human).
 
@@ -54,6 +54,8 @@ A naive policy auto-clearing on the risk score `<= T`, for comparison. The deplo
 | 0.6 | 46945 | 1.0 | 2645 | 0.1342 |
 
 ## 6. False-negative safety argument
+**Statistical bound.** 0 misses were observed among 3,055 labelled truly tainted addresses. Observing zero failures is not a guarantee of a zero failure rate: the exact one-sided 95% Clopper-Pearson upper bound on the miss rate is **0.0980%** (recall at least **99.9020%**) *on this synthetic population*. The bound is a property of the sample size, not a promise about live data — it tightens only by testing more true cases.
+
 1. Of 3,055 genuinely high-risk addresses, **0 were auto-cleared** — recall 1.0000.
 2. Safety is structural: material, proximate, unbroken exposure to a serious category cannot satisfy any clear cause — it is not benign, not broken by an intermediary, not de-minimis, and not diluted/distant.
 3. Enforced as a build gate — `run_validation.py` exits non-zero if any high-risk address is auto-cleared.

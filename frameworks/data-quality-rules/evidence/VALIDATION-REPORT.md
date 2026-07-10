@@ -2,7 +2,7 @@
 
 > ILLUSTRATIVE / SYNTHETIC. Every figure is produced by running the reference engine over a seeded, fully synthetic Harborview Financial Group customer extract. No real customer or record is represented. Numbers are emitted by `run_validation.py`, not authored; re-run it to reproduce them.
 
-**Run:** seed `42` · 50,000 records · 5 scenario feeds x 10,000 · git `7e2eb3f` · 2026-07-09 22:07 UTC
+**Run:** seed `42` · 50,000 records · 5 scenario feeds x 10,000 · git `d2f4ef1` · 2026-07-10 05:09 UTC
 
 **Headline:** recall on planted critical defects **1.0000** (missed: **0** of 2,750), false-flag rate on clean records **0.0000%** (0 of 42,250, including the adversarial-benign edge cases), and no critical-breach feed passed — the contaminated main feed was correctly dispositioned **BLOCK_FEED_TO_SCREENING** while the conformant scenario feed passed.
 
@@ -83,6 +83,8 @@ A NAME-SIMILARITY-ONLY near-duplicate detector (phonetic and single-edit fallbac
 | 0.98 | 0 | 0.0 | 1.0 | 0 |
 
 ## 6. False-negative safety argument
+**Statistical bound.** 0 misses were observed among 2,750 labelled planted critical defects. Observing zero failures is not a guarantee of a zero failure rate: the exact one-sided 95% Clopper-Pearson upper bound on the miss rate is **0.1089%** (recall at least **99.8911%**) *on this synthetic population*. The bound is a property of the sample size, not a promise about live data — it tightens only by testing more true cases.
+
 1. Of 2,750 planted critical defects, **0 were missed** — recall 1.0000. Every class is caught by a deterministic parser or rule, not a statistical guess: blank-name and blank-DOB checks, a strict ISO/calendar date parse, the approved country reference set, the identifier check-digit contract, the DOB/onboarding ordering test, and identifier-blocked duplicate detection with phonetic and single-edit fallbacks.
 2. The feed-level gate is structural: the BLOCK branch is evaluated before any pass logic, so a screening-critical breach can never be outweighed by a high composite score. FEED_PASS is only reachable when every screening-critical CDE is at or below its warn threshold.
 3. Both are enforced as build gates — `run_validation.py` exits non-zero if any planted critical defect goes undetected, if any feed with a planted screening-critical breach receives FEED_PASS, or if the scenario grid below deviates from its expected outcomes.

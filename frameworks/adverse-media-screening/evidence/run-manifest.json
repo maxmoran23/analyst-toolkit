@@ -4,6 +4,14 @@
   "subjects": 8000,
   "hits": 50000,
   "true_hits": 2468,
-  "git_sha": "6d2ef9d",
-  "generated_utc": "2026-06-23 13:12 UTC"
+  "git_sha": "d2f4ef1",
+  "generated_utc": "2026-07-10 05:09 UTC",
+  "git_dirty": false,
+  "environment": {
+    "python": "3.14.5",
+    "implementation": "CPython",
+    "platform": "macOS-27.0-arm64-arm-64bit-Mach-O",
+    "machine": "arm64"
+  },
+  "wall_clock_seconds": 1.15
 }

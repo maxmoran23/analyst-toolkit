@@ -69,6 +69,8 @@ Shared across the pillar:
 
 | File | Role |
 |---|---|
+| [`EVIDENCE.md`](EVIDENCE.md) | **The evidence archive** — the reproduction command per framework, the exact confidence bound behind every safety claim, a results digest per pack, and what the evidence does *not* establish. Generated from the committed packs; CI fails if hand-edited. |
+| [`REPRODUCE.json`](REPRODUCE.json) | Single source of truth for the command that re-derives each evidence pack. |
 | [`GOVERNANCE.md`](GOVERNANCE.md) | The SR 11-7 / model-risk framing every framework instantiates. |
 | [`DEPLOYMENT-PATTERN.md`](DEPLOYMENT-PATTERN.md) | The reusable Copilot Studio mapping. |
 | [`RIGOR-CONTRACT.md`](RIGOR-CONTRACT.md) | What `run_validation.py` must enforce and how it wires into CI. |

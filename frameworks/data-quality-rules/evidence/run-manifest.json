@@ -5,7 +5,15 @@
   "scenario_records": 10000,
   "critical_planted": 2750,
   "near_dup_name_sim": 0.85,
-  "git_sha": "7e2eb3f",
-  "generated_utc": "2026-07-09 22:07 UTC",
-  "critical_recall_floor": 1.0
+  "git_sha": "d2f4ef1",
+  "generated_utc": "2026-07-10 05:09 UTC",
+  "critical_recall_floor": 1.0,
+  "git_dirty": false,
+  "environment": {
+    "python": "3.14.5",
+    "implementation": "CPython",
+    "platform": "macOS-27.0-arm64-arm-64bit-Mach-O",
+    "machine": "arm64"
+  },
+  "wall_clock_seconds": 2.86
 }

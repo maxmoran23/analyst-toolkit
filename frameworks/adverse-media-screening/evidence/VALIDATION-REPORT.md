@@ -2,7 +2,7 @@
 
 > ILLUSTRATIVE / SYNTHETIC. Figures are produced by running the reference scorer over a seeded, fully synthetic population. No real person or article is represented. Numbers are emitted by `run_validation.py`, not authored.
 
-**Run:** seed `42` · 8,000 subjects · 50,000 hits · git `6d2ef9d` · 2026-06-23 13:12 UTC
+**Run:** seed `42` · 8,000 subjects · 50,000 hits · git `d2f4ef1` · 2026-07-10 05:09 UTC
 
 **Headline:** recall on genuine adverse matches **1.0000** (false negatives: **0**), false-positive reduction **79.9%**, human review volume cut by **76.0%** (50,000 hits → 12,018 to a human).
 
@@ -55,6 +55,8 @@ A naive policy auto-clearing on the combined score `<= T`, for comparison. The d
 | 0.8 | 47532 | 1.0 | 1739 | 0.2954 |
 
 ## 6. False-negative safety argument
+**Statistical bound.** 0 misses were observed among 2,468 labelled materially adverse true hits. Observing zero failures is not a guarantee of a zero failure rate: the exact one-sided 95% Clopper-Pearson upper bound on the miss rate is **0.1213%** (recall at least **99.8787%**) *on this synthetic population*. The bound is a property of the sample size, not a promise about live data — it tightens only by testing more true cases.
+
 1. Of 2,468 genuine adverse matches, **0 were auto-cleared** — recall 1.0000.
 2. Safety is structural: a genuine adverse match is a name-match on materially adverse content with the subject as a perpetrator/alleged actor, so it cannot satisfy any of the four clear causes (wrong-entity, non-adverse, low-role, stale-immaterial). A common-name match with no identifier is never cleared — it is routed to review precisely because it cannot be safely resolved.
 3. Enforced as a build gate — `run_validation.py` exits non-zero if any genuine adverse match is auto-cleared.

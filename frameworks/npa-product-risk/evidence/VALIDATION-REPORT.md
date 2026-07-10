@@ -2,7 +2,7 @@
 
 > ILLUSTRATIVE / SYNTHETIC. Figures are produced by running the reference engine over a seeded, fully synthetic population of product proposals at the fictional Harborview Financial Group. No real product or institution is represented. Numbers are emitted by `run_validation.py`, not authored.
 
-**Run:** seed `42` · 50,000 product proposals · git `7e2eb3f` · 2026-07-09 21:55 UTC
+**Run:** seed `42` · 50,000 product proposals · git `d2f4ef1` · 2026-07-10 05:09 UTC
 
 **Headline:** discrimination PASS (mean score rises across designed strata), floor safety **0 floor-triggered products tiered LOW**, prohibited routing **0 of 3,046 prohibited proposals routed past REFER_PROHIBITED**, monotonicity PASS.
 

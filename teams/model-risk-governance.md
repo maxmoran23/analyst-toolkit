@@ -26,6 +26,7 @@ This team is the independent check on every model and AI tool the financial-crim
 | Thirteen worked, reproducible validation evidence packs | frameworks | framework pillar | [../frameworks/](../frameworks/) |
 | The pillar-wide SR 11-7 governance framing | frameworks GOVERNANCE | reference | [../frameworks/GOVERNANCE.md](../frameworks/GOVERNANCE.md) |
 | How every framework proves it works (the rigor contract) | RIGOR-CONTRACT | reference | [../frameworks/RIGOR-CONTRACT.md](../frameworks/RIGOR-CONTRACT.md) |
+| The evidence archive — bounds, digests, reproduction commands | EVIDENCE | reference | [../frameworks/EVIDENCE.md](../frameworks/EVIDENCE.md) |
 
 ## How the pieces fit
 

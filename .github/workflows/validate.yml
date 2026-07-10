@@ -53,6 +53,26 @@ jobs:
       - name: Content hygiene — leak shapes and emoji
         run: python3 _tooling/validate_hygiene.py
 
+  evidence:
+    # Attestation. The `frameworks` job below proves the safety gates still hold;
+    # this job proves the COMMITTED evidence is what the current code produces.
+    # Without it a VALIDATION-REPORT could drift from the engine it describes and no
+    # build would notice — "numbers are emitted, never authored" would be an honour
+    # system. Every commit to main re-derives all 13 packs from seed on a machine the
+    # author does not control; that public run history IS the attestation.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Committed evidence re-derives from seed (metrics + report)
+        run: python3 _tooling/verify_evidence.py
+
+      - name: EVIDENCE.md is generated, not hand-edited
+        run: python3 _tooling/build_evidence_index.py --check
+
   frameworks:
     runs-on: ubuntu-latest
     steps:

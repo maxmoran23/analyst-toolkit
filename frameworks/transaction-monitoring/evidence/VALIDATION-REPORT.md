@@ -2,7 +2,7 @@
 
 > ILLUSTRATIVE / SYNTHETIC. Every figure is produced by running the reference scorer over a seeded, fully synthetic population. No real customer or transaction is represented. Numbers are emitted by `run_validation.py`, not authored; re-run it to reproduce them.
 
-**Run:** seed `42` · 5,000 customers · 50,000 alerts · git `4db88bc` · 2026-06-23 07:54 UTC
+**Run:** seed `42` · 5,000 customers · 50,000 alerts · git `d2f4ef1` · 2026-07-10 05:10 UTC
 
 **Headline:** recall on suspicious activity **1.0000** (false negatives: **0**), false-positive reduction **85.1%**, human review volume cut by **81.7%** (50,000 alerts → 9,175 to a human).
 
@@ -55,6 +55,8 @@ A naive policy that auto-closed on `suspicion_score <= T` alone, for comparison.
 | 0.9 | 47948 | 1.0 | 892 | 0.5653 |
 
 ## 6. False-negative safety argument
+**Statistical bound.** 0 misses were observed among 2,052 labelled truly suspicious alerts. Observing zero failures is not a guarantee of a zero failure rate: the exact one-sided 95% Clopper-Pearson upper bound on the miss rate is **0.1459%** (recall at least **99.8541%**) *on this synthetic population*. The bound is a property of the sample size, not a promise about live data — it tightens only by testing more true cases.
+
 1. Of 2,052 planted suspicious alerts, **0 were auto-closed** — recall 1.0000.
 2. Safety is structural: a genuinely suspicious alert fires a typology rule (structuring / funnel / pass-through), and the auto-close branches are reached only when NO typology has fired. A suspicious case therefore cannot be auto-closed regardless of its score.
 3. Enforced as a build gate — `run_validation.py` exits non-zero if any suspicious alert is auto-closed.

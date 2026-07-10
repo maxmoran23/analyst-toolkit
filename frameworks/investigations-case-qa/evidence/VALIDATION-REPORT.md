@@ -2,7 +2,7 @@
 
 > ILLUSTRATIVE / SYNTHETIC. Every figure is produced by running the reference QA engine over a seeded, fully synthetic population of investigation case files. No real case, customer, or institution is represented. Numbers are emitted by `run_validation.py`, not authored; re-run it to reproduce them.
 
-**Run:** seed `42` · 50,000 case files · git `7e2eb3f` · 2026-07-09 22:01 UTC
+**Run:** seed `42` · 50,000 case files · git `d2f4ef1` · 2026-07-10 05:09 UTC
 
 **Headline:** critical-deficiency recall **1.0000** (8,996 of 8,996 planted critical deficiencies detected), critical-deficient cases passed QA: **0**, clean-case pass rate **100.0%** (false-flag burden on clean files: 0.0%).
 
@@ -56,6 +56,8 @@ A naive policy that granted QA_PASS on `quality_score >= T` alone, for compariso
 | 100 | 27636 | 0 | 0 | 7434 | 0.212 |
 
 ## 6. Critical-deficiency safety argument
+**Statistical bound.** 0 misses were observed among 8,996 labelled critical deficiencies. Observing zero failures is not a guarantee of a zero failure rate: the exact one-sided 95% Clopper-Pearson upper bound on the miss rate is **0.0333%** (recall at least **99.9667%**) *on this synthetic population*. The bound is a property of the sample size, not a promise about live data — it tightens only by testing more true cases.
+
 1. Of 8,996 planted critical deficiencies, **8,996 were detected** by their named check (recall 1.0000) and **0 critical-deficient cases received QA_PASS**.
 2. Safety is structural: the QA_PASS branch of the disposition logic is reachable only when zero critical checks have fired. A case with an unsupported disposition, a contradiction, a missed escalation trigger, a missing mandatory element, or a no-finding closure over unreviewed scope therefore cannot pass QA regardless of its quality score.
 3. Enforced as a build gate — `run_validation.py` exits non-zero if any planted critical deficiency goes undetected or any critical-deficient case passes QA.

@@ -2,7 +2,7 @@
 
 > ILLUSTRATIVE / SYNTHETIC. Figures are produced by running the pipeline over a seeded synthetic multi-list population with known ground truth. No real list data is represented. Numbers are emitted by `run_validation.py`, not authored.
 
-**Run:** seed `42` · 3,000 true entities · 5,447 list records · git `3d41738` · 2026-07-10 04:31 UTC
+**Run:** seed `42` · 3,000 true entities · 5,447 list records · git `d2f4ef1` · 2026-07-10 05:10 UTC
 
 **Headline:** **0 false merges** (distinct parties wrongly combined — must be 0, and is structurally guaranteed), auto-merge recall **1.0000** on identifier-linked duplicates, dedup reduction **30.4%** (5,447 records → 3,793 entities); **467** name-only pairs surfaced for analyst review.
 

@@ -2,7 +2,7 @@
 
 > ILLUSTRATIVE / SYNTHETIC. Figures are produced by running the tuning engine over a seeded population of monitoring rules whose correct action is known by construction. No real rule or customer is represented. Numbers are emitted by `run_validation.py`, not authored.
 
-**Run:** seed `42` · 12 rules · 480,000 observations · git `b13053f` · 2026-06-23 17:36 UTC
+**Run:** seed `42` · 12 rules · 480,000 observations · git `d2f4ef1` · 2026-07-10 05:10 UTC
 
 **Headline:** every recommendation keeps detection at or above the 95% floor (min **0.9506**), all **6** leaking rules remediated, recommendation-direction accuracy **100%**.
 

@@ -2,7 +2,7 @@
 
 > ILLUSTRATIVE / SYNTHETIC. Every figure below is produced by running the reference scorer over a seeded, fully synthetic population. No real person, entity, vessel, or list entry is represented. Numbers are emitted by `run_validation.py`, not authored; re-run it to reproduce them.
 
-**Run:** seed `42` · 4,000 watchlist entries · 50,000 alerts · git `ad43c39` · 2026-06-23 06:09 UTC
+**Run:** seed `42` · 4,000 watchlist entries · 50,000 alerts · git `d2f4ef1` · 2026-07-10 05:09 UTC
 
 **Headline:** recall on true matches **1.0000** (false negatives: **0**), false-positive reduction **92.2%**, human review volume cut by **90.4%** (50,000 alerts → 4,801 to a human).
 
@@ -56,6 +56,8 @@ A naive policy that auto-cleared on `match_likelihood <= T` alone, for compariso
 | 0.95 | 48421 | 0.9881 | 13 | 0.987 |
 
 ## 6. False-negative safety argument
+**Statistical bound.** 0 misses were observed among 997 labelled true matches. Observing zero failures is not a guarantee of a zero failure rate: the exact one-sided 95% Clopper-Pearson upper bound on the miss rate is **0.3000%** (recall at least **99.7000%**) *on this synthetic population*. The bound is a property of the sample size, not a promise about live data — it tightens only by testing more true cases.
+
 1. Of 997 planted true matches, **0 were auto-cleared** — recall 1.0000.
 2. Safety is structural, not threshold-dependent: auto-clear fires only on a named, provable false-positive cause. A true match has a distinctive name that aligns (transliteration noise is vowel-only, preserving the phonetic/Soundex key), a compatible entity type, and no contradicting identifier — so it can exhibit none of the three clearing causes.
 3. The threshold sweep (Section 5) shows recall holding at 1.0 across the whole low-threshold band the deployed policy operates in, then degrading only when a bare threshold is pushed higher — so the operating point sits on a plateau, not a cliff edge.

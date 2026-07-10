@@ -96,9 +96,17 @@
     "seed": 42,
     "cases": 50000,
     "critical_deficient": 8996,
-    "git_sha": "7e2eb3f",
-    "generated_utc": "2026-07-09 22:01 UTC",
+    "git_sha": "d2f4ef1",
+    "generated_utc": "2026-07-10 05:09 UTC",
     "deficiency_recall_floor": 1.0,
-    "critical_pass_ceiling": 0
+    "critical_pass_ceiling": 0,
+    "git_dirty": false,
+    "environment": {
+      "python": "3.14.5",
+      "implementation": "CPython",
+      "platform": "macOS-27.0-arm64-arm-64bit-Mach-O",
+      "machine": "arm64"
+    },
+    "wall_clock_seconds": 1.13
   }
 }

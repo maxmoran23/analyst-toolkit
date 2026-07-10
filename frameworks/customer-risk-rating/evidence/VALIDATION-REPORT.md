@@ -2,7 +2,7 @@
 
 > ILLUSTRATIVE / SYNTHETIC. Figures are produced by running the reference engine over a seeded, fully synthetic customer population. No real customer is represented. Numbers are emitted by `run_validation.py`, not authored.
 
-**Run:** seed `42` · 50,000 customers · git `0e91912` · 2026-06-23 08:42 UTC
+**Run:** seed `42` · 50,000 customers · git `d2f4ef1` · 2026-07-10 05:09 UTC
 
 **Headline:** discrimination PASS (mean score rises across designed strata), floor safety **0 hard-risk customers rated LOW**, monotonicity PASS.
 

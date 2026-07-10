@@ -2,7 +2,7 @@
 
 > ILLUSTRATIVE / SYNTHETIC. Figures are produced by running plan-select-evaluate over a seeded population of controls whose true deviation rates are known by construction. No real control, tester, or institution is represented (the fictional institution is Harborview Financial Group). Numbers are emitted by `run_validation.py`, not authored.
 
-**Run:** seed `42` · 12 controls · 480,000 items · git `7e2eb3f` · 2026-07-09 22:06 UTC
+**Run:** seed `42` · 12 controls · 480,000 items · git `d2f4ef1` · 2026-07-10 05:09 UTC
 
 **Headline:** UDL cross-check exact — max abs divergence **5.394e-12** over 119 cases (tolerance 1e-9, 0 integer mismatches); **0** structural breaches across 312 evaluations; measured false-assurance on failing populations **0.0000** (0/150) vs design risk 5%; solver monotonicity **0** violations across 40 grid cells.
 
