@@ -2,9 +2,9 @@
 
 > ILLUSTRATIVE / SYNTHETIC. Figures are produced by running plan-select-evaluate over a seeded population of controls whose true deviation rates are known by construction. No real control, tester, or institution is represented (the fictional institution is Harborview Financial Group). Numbers are emitted by `run_validation.py`, not authored.
 
-**Run:** seed `42` · 12 controls · 480,000 items · git `d2f4ef1` · 2026-07-10 05:09 UTC
+**Run:** seed `42` · 12 controls · 480,000 items · git `531971e` · 2026-07-10 05:15 UTC
 
-**Headline:** UDL cross-check exact — max abs divergence **5.394e-12** over 119 cases (tolerance 1e-9, 0 integer mismatches); **0** structural breaches across 312 evaluations; measured false-assurance on failing populations **0.0000** (0/150) vs design risk 5%; solver monotonicity **0** violations across 40 grid cells.
+**Headline:** UDL cross-check exact — divergence below the **1e-09** tolerance on all 119 cases (0 integer mismatches); **0** structural breaches across 312 evaluations; measured false-assurance on failing populations **0.0000** (0/150) vs design risk 5%; solver monotonicity **0** violations across 40 grid cells.
 
 ## 1. Methodology summary
 For each control the engine PLANS an exact attribute sample (smallest n and acceptance number c such that a population deviating at the tolerable rate is accepted with probability at most the design risk — exact hypergeometric, no lookup-table approximations), SELECTS it by seeded stratified random sampling, and EVALUATES the observed deviations into the exact one-sided upper deviation limit (UDL) and a named-rule conclusion. Observed deviations above the acceptance number can never conclude CONTROL_EFFECTIVE — that rule fires first. Full spec: `METHODOLOGY.md`.
@@ -49,7 +49,9 @@ Every plan's achieved risk is at or below the 5% design risk (confidence 95%); s
 By scenario — boundary: 1 CONTROL_EFFECTIVE, 2 CONTROL_INEFFECTIVE; clean: 2 CONTROL_EFFECTIVE, 1 CONTROL_INEFFECTIVE; failing: 3 CONTROL_INEFFECTIVE; planted: 3 CONTROL_INEFFECTIVE.
 
 ## 5. UDL cross-check (gate)
-The primary UDL (log-gamma tails, bisection, integer search) was recomputed for 119 cases by an independent brute-force exact path: direct `math.comb` summation for the binomial bound, exact integer/Fraction arithmetic for the hypergeometric bound. Max abs divergence **5.394e-12** (tolerance 1e-9); hypergeometric integer-count mismatches **0**. Full table: `udl-crosscheck.csv`.
+The primary UDL (log-gamma tails, bisection, integer search) was recomputed for 119 cases by an independent brute-force exact path: direct `math.comb` summation for the binomial bound, exact integer/Fraction arithmetic for the hypergeometric bound. The two paths agree to within the **1e-09** tolerance on every case (**True**); hypergeometric integer-count mismatches **0**. Full table: `udl-crosscheck.csv`.
+
+The observed divergence sits at the 1e-12 level — bisection round-off, not disagreement. That magnitude is platform-dependent (the same code yields 5.4e-12 on macOS/CPython 3.14 and 6.4e-12 on Linux/CPython 3.12), so the committed evidence asserts the divergence against a documented tolerance rather than pinning a float that cannot re-derive on another machine. The per-case values in `udl-crosscheck.csv` are diagnostics of the same round-off and vary at that magnitude for the same reason.
 
 ## 6. Measured false-assurance — the direction gate
 On the failing controls (true rate 2-3x tolerable), 50 independent replicate samples were drawn per control and evaluated. CONTROL_EFFECTIVE conclusions: **0/150** (measured false-assurance 0.0000; gate fails above 0.10 = design risk + margin).
