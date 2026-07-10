@@ -1,0 +1,14 @@
+version: 2
+
+# The library itself has no runtime dependencies — the frameworks and quant/ are
+# pure standard library, by design. The only thing here that can go stale (or
+# carry a vulnerability) is the set of GitHub Actions the validate workflow pins.
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    commit-message:
+      prefix: "ci"
+    labels:
+      - "ci"

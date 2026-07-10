@@ -21,8 +21,32 @@ These are code, not paste payloads, so the repository's two-file rule (which kee
 every pasted prompt self-contained) does not apply to them — exactly as it does not
 apply to [`quant/`](../quant/). A framework is multi-file by design: a methodology
 spec, an engine, a data generator, a validation harness, and an evidence pack.
-Pure Python standard library only (no numpy, no pandas, no network), so a framework
-runs unchanged on a locked-down machine.
+Pure Python standard library only — no numpy, no pandas, no third-party package of
+any kind — so a framework runs unchanged on a locked-down machine.
+
+### On network access
+
+**No framework requires the network, and no validation run touches it.** Every
+harness, every metric, and every committed evidence pack is produced offline from a
+seeded synthetic population; that is what makes the evidence reproducible.
+
+Two frameworks additionally expose an **optional, opt-in live-ingest path**, isolated
+in a single module each and reachable only when a caller explicitly asks for it:
+
+| Framework | Module | What it may fetch | Default |
+|---|---|---|---|
+| [`watchlist-knowledge-base/`](watchlist-knowledge-base/) | [`_lib/knowledge_base/ingest.py`](_lib/knowledge_base/ingest.py) | The public OFAC SDN consolidated CSV (the one source shipping a verified parser; the rest are configured sources awaiting one) | Harness passes `offline=True`; nothing is cached or redistributed |
+| [`onchain-osint-evidence/`](onchain-osint-evidence/) | [`engine.py`](onchain-osint-evidence/engine.py) (`fetch_json`) | Public block-explorer JSON responses | Harness runs from committed fixtures |
+
+Both fetchers **degrade gracefully rather than raise**: on `offline=True`, a timeout,
+an HTTP error, or an unparseable body they return `None`, and the caller falls back to
+the synthetic or fixture path so the pipeline always completes. The watchlist harness
+asserts this explicitly — it fails the build if any source raises instead of degrading
+when offline. Nothing else in `frameworks/` imports `urllib`.
+
+Note the direct-call default: `ingest_source(key)` uses `offline=False`, so calling it
+yourself will attempt a fetch. Pass `offline=True` on a machine where egress is
+restricted or where a reproducible run matters.
 
 ## The package standard
 

@@ -16,7 +16,7 @@ This is a stronger claim than "the code looks right" — it is an executable ass
 
 | Module | Status | Python source | Kotlin file | Parity test |
 |--------|--------|---------------|-------------|-------------|
-| Kelly criterion | ✓ ported | [`../quant/kelly.py`](../quant/kelly.py) | [`Kelly.kt`](src/main/kotlin/org/maxmoran/quant/Kelly.kt) | [`KellyParityTest.kt`](src/test/kotlin/org/maxmoran/quant/KellyParityTest.kt) |
+| Kelly criterion | ported | [`../quant/kelly.py`](../quant/kelly.py) | [`Kelly.kt`](src/main/kotlin/org/maxmoran/quant/Kelly.kt) | [`KellyParityTest.kt`](src/test/kotlin/org/maxmoran/quant/KellyParityTest.kt) |
 | Sharpe / Sortino / Calmar / Omega | planned | `../quant/sharpe.py` | — | — |
 | Drawdown | planned | `../quant/drawdown.py` | — | — |
 | Volatility (realized, EWMA, GARCH) | planned | `../quant/vol.py` | — | — |

@@ -15,8 +15,8 @@ document in this repository, read this one.
 
 ## 1. What this is, in one page
 
-It is a **library, not software**. There is nothing to install, no system to run, no
-data feed to connect. You do not deploy it; you *use* it:
+It is a **library, not software**. There is nothing to install, no system to run, and
+nothing you are required to connect it to. You do not deploy it; you *use* it:
 
 - For most tasks, you copy a **prompt** — a page of written instructions — and paste it
   into an AI assistant (Microsoft 365 Copilot, GitHub Copilot, Claude, ChatGPT). The
@@ -146,7 +146,12 @@ unacceptable.** Concretely:
 **Nothing here uses real data.** Every example and every test dataset is synthetic, and
 every entity assessed is fictional (the recurring institution is "Harborview Financial
 Group," the recurring counterparty "Meridian Digital Exchange"). The library is built
-from generic, public knowledge — public regulatory bodies and public guidance only.
+from generic, public knowledge — public regulatory bodies and public guidance only. No
+validation run touches the network: the numbers in every evidence pack are computed
+offline from a fixed seed, which is what makes them reproducible. Two frameworks offer
+an optional, opt-in path to fetch a *public* list or block-explorer response at run
+time; it is never exercised by a validation run, it caches and redistributes nothing,
+and it degrades to the synthetic path when unreachable.
 
 ---
 

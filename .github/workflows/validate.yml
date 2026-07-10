@@ -5,6 +5,14 @@ on:
     branches: [main]
   pull_request:
 
+# A superseded run on the same ref carries no information — cancel it.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
 jobs:
   validate:
     runs-on: ubuntu-latest
@@ -25,6 +33,25 @@ jobs:
 
       - name: Two-file rule — self-containment and pairing budget
         run: python3 _tooling/validate_self_containment.py
+
+  navigation:
+    # The framework harnesses guard the engines; these guard the prose about them.
+    # Every defect they catch has shipped to main at least once.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Relative links resolve
+        run: python3 _tooling/validate_links.py
+
+      - name: Indexes complete and declared counts match disk
+        run: python3 _tooling/validate_index.py
+
+      - name: Content hygiene — leak shapes and emoji
+        run: python3 _tooling/validate_hygiene.py
 
   frameworks:
     runs-on: ubuntu-latest
