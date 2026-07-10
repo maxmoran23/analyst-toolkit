@@ -35,7 +35,7 @@ in a single module each and reachable only when a caller explicitly asks for it:
 
 | Framework | Module | What it may fetch | Default |
 |---|---|---|---|
-| [`watchlist-knowledge-base/`](watchlist-knowledge-base/) | [`_lib/knowledge_base/ingest.py`](_lib/knowledge_base/ingest.py) | The public OFAC SDN consolidated CSV (the one source shipping a verified parser; the rest are configured sources awaiting one) | Harness passes `offline=True`; nothing is cached or redistributed |
+| [`watchlist-knowledge-base/`](watchlist-knowledge-base/) | [`_lib/knowledge_base/ingest.py`](_lib/knowledge_base/ingest.py) | The public OFAC SDN CSV, UN consolidated XML, and UK OFSI ConList CSV — each parser written against the live document. The EU list is registered without a parser: its endpoint answers 403 unauthenticated | Harness passes `offline=True`; nothing is cached or redistributed |
 | [`onchain-osint-evidence/`](onchain-osint-evidence/) | [`engine.py`](onchain-osint-evidence/engine.py) (`fetch_json`) | Public block-explorer JSON responses | Harness runs from committed fixtures |
 
 Both fetchers **degrade gracefully rather than raise**: on `offline=True`, a timeout,

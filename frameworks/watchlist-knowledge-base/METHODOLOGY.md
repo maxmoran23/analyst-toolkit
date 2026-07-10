@@ -28,10 +28,14 @@ aliases, ids`), assembled and maintained automatically.
 ## 2. The five stages
 
 1. **Sources** — a registry of the public consolidated lists (OFAC SDN, EU, UN, UK)
-   with each one's public URL, format, and licence note. One reference parser is fully
-   implemented (the OFAC SDN consolidated CSV, whose layout is published and stable);
-   the others are registered with the same normalized target and a parser supplied per
-   their published schema.
+   with each one's public URL, format, and licence note. Three parsers are fully
+   implemented, each written against the live published document and covered by a
+   schema-reproducing self-test that runs as a build gate: the OFAC SDN consolidated
+   CSV (headerless positional layout), the UN Security Council consolidated XML, and
+   the UK OFSI ConList CSV (which publishes one row per *name variant* and must be
+   resolved to designated targets by `Group ID`). The EU list is registered without a
+   parser because its endpoint requires a caller token and answers 403 unauthenticated;
+   supply the token and its schema to add one against the same normalized target.
 2. **Ingest** — fetch each source (stdlib `urllib`) and parse it to normalized records.
    Network is optional and isolated here: on failure or offline, ingestion returns
    nothing rather than raising, and the consumer falls back to synthetic data, so the

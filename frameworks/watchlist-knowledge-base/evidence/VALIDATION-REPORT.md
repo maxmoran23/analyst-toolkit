@@ -2,7 +2,7 @@
 
 > ILLUSTRATIVE / SYNTHETIC. Figures are produced by running the pipeline over a seeded synthetic multi-list population with known ground truth. No real list data is represented. Numbers are emitted by `run_validation.py`, not authored.
 
-**Run:** seed `42` · 3,000 true entities · 5,447 list records · git `c171ae4` · 2026-06-23 20:58 UTC
+**Run:** seed `42` · 3,000 true entities · 5,447 list records · git `3d41738` · 2026-07-10 04:31 UTC
 
 **Headline:** **0 false merges** (distinct parties wrongly combined — must be 0, and is structurally guaranteed), auto-merge recall **1.0000** on identifier-linked duplicates, dedup reduction **30.4%** (5,447 records → 3,793 entities); **467** name-only pairs surfaced for analyst review.
 
@@ -24,11 +24,25 @@ Planted {'added': 25, 'removed': 20, 'amended': 15} → detected {'added': 25, '
 ## 5. False-positive feedback safety
 Common tokens learned as generic: ['CAPITAL', 'GLOBAL', 'HOLDINGS', 'TRADING']. Distinctive on-list token `BABENOFON` correctly **BLOCKED** from genericization. The loop can only clear more false positives, never make a true match clearable — gate **PASS**.
 
-## 6. Ingest degradation
-All sources return None offline (graceful degrade, no exceptions): **True**. Sources shipping a live parser today: ['OFAC_SDN'] (others are registered with URL + licence + the normalized target; supply a parser to ingest them live).
+## 6. Ingest degradation and parser self-test
+All sources return None offline (graceful degrade, no exceptions): **True**. Sources shipping a live parser today: ['OFAC_SDN', 'UN_CONSOLIDATED', 'UK_OFSI'] (others are registered with URL + licence + the normalized target; supply a parser to ingest them live).
+
+Each shipped parser is exercised against a synthetic document that reproduces its published schema — including the specific quirks the live files exhibit. The fixtures embed no real list data; the knowledge base redistributes nothing. Every check below is a build gate: a parser regression fails the run.
+
+| Parser | Records parsed | Checks | Result |
+|---|---|---|---|
+| `OFAC_SDN` | 2 | 5/5 | **PASS** |
+| `UN_CONSOLIDATED` | 3 | 9/9 | **PASS** |
+| `UK_OFSI` | 4 | 7/7 | **PASS** |
+
+**OFAC_SDN** — both records parsed (ok); '-0-' treated as blank, not a value (ok); entity type from sdn_type (ok); dob mined from remarks (ok); passport mined from remarks (ok)
+**UN_CONSOLIDATED** — individuals and entities both parsed (ok); split name parts assembled (ok); empty <ALIAS_NAME> dropped (ok); DOB from bare YEAR (ok); DOB from FROM/TO range (ok); passport matched across language variant (ok); national id matched across embedded newline (ok); place of birth joined (ok); DTD/entity declaration refused (ok)
+**UK_OFSI** — one record per Group ID, not per name row (ok); canonical name from the primary row (ok); other variants become aliases (ok); identifiers recovered from a non-primary row (ok); two primary rows: first in file order wins (ok); zero primary rows: falls back to first row (ok); ship normalizes to VESSEL (ok)
 
 ## 7. Limitations
-- One reference parser (OFAC SDN CSV) is implemented and verified against the published layout; EU / UN / UK are registered sources awaiting their parser. Live fetch hits real endpoints — validate each parser against the current schema.
+- Three parsers are implemented and each was written against the live published document, not a guessed schema: OFAC SDN CSV, the UN consolidated XML, and the UK OFSI ConList CSV. The EU consolidated list is registered **without** a parser by design — its endpoint answers 403 unauthenticated, so no document is available to verify one against. Live fetch hits real endpoints; re-verify each parser against the current schema before reliance, since publishers change layouts without notice.
+- The UK list publishes one row per *name variant*: the parser resolves rows to designated targets by `Group ID`. Parsing it row-per-target would inflate the watchlist roughly fourfold with duplicate parties — the self-test gates that.
+- XML ingestion refuses any document declaring a DTD. `xml.etree.ElementTree` does not resolve external entities, but it does expand internal ones (the billion-laughs vector); refusing DTDs removes that exposure without a third-party dependency.
 - Synthetic name variance and identifier structure model the shape of real cross-list variation, not its full messiness. Calibrate the dedup thresholds against a labelled sample before reliance (`tuning.md`).
 - The KB assembles and resolves; designation and de-listing decisions are made by the issuing authorities, and screening decisions remain human.
 

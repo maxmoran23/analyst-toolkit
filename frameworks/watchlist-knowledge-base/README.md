@@ -56,7 +56,7 @@ offline:
 
 ```python
 from _lib.knowledge_base import ingest, dedup
-records = sum(ingest.ingest_all().values(), [])     # OFAC SDN ships a parser today
+records = sum(ingest.ingest_all().values(), [])     # OFAC SDN, UN, and UK OFSI ship parsers
 entities, merges, review = dedup.resolve(records)
 ```
 
@@ -65,16 +65,20 @@ entities, merges, review = dedup.resolve(records)
 | File | What |
 |---|---|
 | [`METHODOLOGY.md`](METHODOLOGY.md) | The regulator-facing spec — the five stages, the zero-false-merge guarantee, governance. |
-| [`../_lib/knowledge_base/`](../_lib/knowledge_base/) | The library: `sources` (registry + OFAC parser), `ingest`, `dedup`, `delta`, `feedback`. |
+| [`../_lib/knowledge_base/`](../_lib/knowledge_base/) | The library: `sources` (registry + OFAC / UN / UK parsers), `ingest`, `dedup`, `delta`, `feedback`. |
 | [`generate_synthetic_data.py`](generate_synthetic_data.py) | Seeded multi-list population with ground truth. |
 | [`run_validation.py`](run_validation.py) | Pipeline validation harness + evidence; the zero-false-merge gate. |
 | [`tuning.md`](tuning.md) · [`DEPLOYMENT.md`](DEPLOYMENT.md) · [`evidence/`](evidence/) | Calibration · live-deployment notes · committed run output. |
 
 ## Standing caveat
 
-A transparent **reference design + pipeline**, not a production data service. One source
-parser (OFAC SDN CSV) is implemented and verified against the published layout; EU / UN /
-UK are registered with their URLs and licences and await a parser per their current
-schema. Each list has its own usage terms; the pipeline fetches at run time and
-redistributes nothing. All validation data is synthetic. Calibrate the dedup thresholds
-against a labelled sample before reliance.
+A transparent **reference design + pipeline**, not a production data service. Three source
+parsers are implemented — OFAC SDN CSV, the UN consolidated XML, and the UK OFSI ConList
+CSV — each written against the live published document and gated by a self-test that
+reproduces its schema. The EU consolidated list is registered **without** a parser by
+design: its endpoint answers 403 to an unauthenticated request, so no document is
+available to verify one against. Each list has its own usage terms; the pipeline fetches
+at run time and redistributes nothing — the parser fixtures are synthetic. All validation
+data is synthetic. Publishers change layouts without notice: re-verify each parser against
+the current schema before reliance, and calibrate the dedup thresholds against a labelled
+sample.
