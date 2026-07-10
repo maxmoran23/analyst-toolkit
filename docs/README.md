@@ -17,7 +17,7 @@ method, the scoring rubric, the required output structure, and the quality bar â
 result comes back structured, sourced, and comparable to what a colleague would get from
 the same prompt.
 
-A small part of the library is different: [`frameworks/`](../frameworks/) holds thirteen
+A small part of the library is different: [`frameworks/`](../frameworks/) holds fourteen
 runnable scoring engines for the high-volume problems (triaging tens of thousands of
 alerts). Those you run rather than paste, and each one publishes evidence of exactly how
 accurate it is â€” evidence an automated check re-derives from scratch on every change to

@@ -2,7 +2,7 @@
 
 > **Generated file.** Every figure below is read out of a committed `frameworks/<name>/evidence/metrics.json`; every confidence bound is recomputed from the observed counts. Regenerate with `python3 _tooling/build_evidence_index.py`. CI fails the build if this file has been edited by hand.
 
-This repository makes an empirical claim about thirteen scoring engines. The claim is **not** "trust the report." It is: *here is the exact command, run it, and you will get these numbers.* This page is the contract that makes that checkable.
+This repository makes an empirical claim about fourteen scoring engines. The claim is **not** "trust the report." It is: *here is the exact command, run it, and you will get these numbers.* This page is the contract that makes that checkable.
 
 ## Verify the whole pillar in one command
 
@@ -10,7 +10,7 @@ This repository makes an empirical claim about thirteen scoring engines. The cla
 python3 _tooling/verify_evidence.py
 ```
 
-This re-derives all thirteen evidence packs from seed, compares every metric to the committed values, and exits non-zero on any difference. It takes about twenty seconds and needs nothing but Python — the engines are pure standard library, and no run touches the network. It is also a CI job, so **every commit to `main` re-derives every number in this repository on a machine nobody here controls.** The green check on the latest commit is the attestation; it is not a claim made by the author.
+This re-derives all fourteen evidence packs from seed, compares every metric to the committed values, and exits non-zero on any difference. It takes about twenty seconds and needs nothing but Python — the engines are pure standard library, and no run touches the network. It is also a CI job, so **every commit to `main` re-derives every number in this repository on a machine nobody here controls.** The green check on the latest commit is the attestation; it is not a claim made by the author.
 
 To re-derive one framework by hand, run its command from its own directory:
 
@@ -20,6 +20,7 @@ To re-derive one framework by hand, run its command from its own directory:
 | [`customer-risk-rating/`](customer-risk-rating/) | `python3 run_validation.py --seed 42 --customers 50000` |
 | [`data-quality-rules/`](data-quality-rules/) | `python3 run_validation.py --seed 42 --records 50000` |
 | [`investigations-case-qa/`](investigations-case-qa/) | `python3 run_validation.py --seed 42 --cases 50000` |
+| [`jurisdiction-risk/`](jurisdiction-risk/) | `python3 run_validation.py --seed 42 --jurisdictions 40000` |
 | [`npa-product-risk/`](npa-product-risk/) | `python3 run_validation.py --seed 42 --products 50000` |
 | [`onchain-kyt-address-risk/`](onchain-kyt-address-risk/) | `python3 run_validation.py --seed 42 --addresses 50000` |
 | [`onchain-osint-evidence/`](onchain-osint-evidence/) | `python3 run_validation.py --seed 42 --addresses 400 --transactions 50000` |
@@ -58,6 +59,7 @@ The digest is a SHA-256 over the substantive metrics with volatile fields (times
 | [`customer-risk-rating/`](customer-risk-rating/) | 50,000 | 42 | 0.55s | `d2f4ef1` · 2026-07-10 05:09 UTC | `2289abbaef5813f2` |
 | [`data-quality-rules/`](data-quality-rules/) | 50,000 | 42 | 2.86s | `d2f4ef1` · 2026-07-10 05:09 UTC | `6f6c9df784f391d9` |
 | [`investigations-case-qa/`](investigations-case-qa/) | 50,000 | 42 | 1.13s | `d2f4ef1` · 2026-07-10 05:09 UTC | `0adfa7eb40d35f11` |
+| [`jurisdiction-risk/`](jurisdiction-risk/) | 40,000 | 42 | 0.6s | `3312293` (dirty tree) · 2026-07-10 21:08 UTC | `b309d40e9ecc163b` |
 | [`npa-product-risk/`](npa-product-risk/) | 50,000 | 42 | 0.69s | `d2f4ef1` · 2026-07-10 05:09 UTC | `0a05434c0ea578b2` |
 | [`onchain-kyt-address-risk/`](onchain-kyt-address-risk/) | 50,000 | 42 | 0.53s | `d2f4ef1` · 2026-07-10 05:09 UTC | `36430cd5379711c3` |
 | [`onchain-osint-evidence/`](onchain-osint-evidence/) | 400 | 42 | 3.46s | `d2f4ef1` · 2026-07-10 05:09 UTC | `23f2f8c77e1c3737` |

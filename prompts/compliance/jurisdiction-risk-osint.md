@@ -188,7 +188,7 @@ against the FATF statement of record, obtain the internal rating scale.]
 - The **hard-risk overrides** are the point. A FATF black-listing or a comprehensive sanctions program floors the tier at CRITICAL no matter how the weighted mean lands — so a jurisdiction cannot be talked down by one favourable index.
 - Use `PROVIDED MATERIAL` to conform the output to an internal geographic-risk rating scale — paste the scale and the memo maps its tiers onto yours.
 - Run it per corridor endpoint for a payment-corridor read: score both jurisdictions and let the worse tier drive the corridor's inherent risk.
-- The authoritative public sources — with URLs, coverage, and retrieval discipline — are catalogued in [`reference/osint-source-library.md`](../../reference/osint-source-library.md) (§7), which composites the same seven dimensions this prompt scores.
+- The authoritative public sources — with URLs, coverage, and retrieval discipline — are catalogued in [`reference/osint-source-library.md`](../../reference/osint-source-library.md) (§7). For a deterministic, runnable version of this composite at scale — the same seven dimensions and hard-risk floors enforced in code, with reproducible validation evidence — see the [jurisdiction-risk framework](../../frameworks/jurisdiction-risk/README.md).
 
 ## Output structure
 

@@ -1,6 +1,6 @@
 # Runnable financial-crime engines, each with evidence you can re-derive
 
-**Thirteen small, transparent scoring engines for the financial-crime problems that are
+**Fourteen small, transparent scoring engines for the financial-crime problems that are
 really a volume problem** — sorting 50,000 sanctions alerts a month, tuning a monitoring
 rule's threshold, deciding whether a customer file is fit to screen against. Each one
 ships the method written out in full, a generator that builds a realistic test population
@@ -104,6 +104,7 @@ Shared across the pillar:
 | [`npa-product-risk/`](npa-product-risk/) | Score & route new-product / new-activity proposals pre-launch — tier, named approval route, mandatory conditions, review interval | **Built & validated** — 0 floor-triggered proposals tiered LOW, prohibited list never scored around, monotonic, discriminating, evidence committed |
 | [`data-quality-rules/`](data-quality-rules/) | Assess the critical data elements feeding screening/monitoring (name, DOB, country, identifier, uniqueness, staleness) — "is this feed fit to screen against?" | **Built & validated** — critical-defect recall 1.0 (0 missed), 0 false flags on clean records, hard feed gate holds (no breached feed passes), evidence committed |
 | [`qa-sampling/`](qa-sampling/) | Statistical attribute sampling for independent testing / QA — plan, select, and evaluate tests of controls from exact tail math instead of lookup tables | **Built & validated** — upper-deviation-limit cross-check exact (max divergence 5.4e-12), 0 structural breaches, measured false-assurance 0/150 within design risk, solver monotone, evidence committed |
+| [`jurisdiction-risk/`](jurisdiction-risk/) | Composite a country/territory's inherent risk from seven public indices (FATF, Basel, CPI, WGI, secrecy, organized crime, terrorism) with hard-risk floors — LOW/MEDIUM/HIGH/CRITICAL | **Built & validated** — 0 hard-designated jurisdictions rated below floor, monotonic, discriminating, evidence committed |
 
 ## Standing caveat
 

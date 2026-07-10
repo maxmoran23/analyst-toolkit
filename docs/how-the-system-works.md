@@ -57,7 +57,7 @@ screen this name, disposition this alert, extract the obligations from this rule
 ### Frameworks — small runnable engines, with proof they work
 A framework is a different kind of thing: a transparent, runnable scoring engine for a
 problem that is fundamentally about **volume** — sorting 50,000 sanctions or monitoring
-alerts a month, where almost all are false positives. There are 13 of them. Each
+alerts a month, where almost all are false positives. There are 14 of them. Each
 framework comes with a methodology document (every weight and threshold written out),
 the engine itself, a generator that creates realistic synthetic test data, and —
 crucially — a **validation report with real numbers** showing how well it performs.
@@ -88,7 +88,7 @@ one place, in plain English. The short version:
 | **Investigations & SAR** | Narrative drafting, SAR file/no-file decisioning, UBO unwinding, network link analysis, and a case-QA engine that gates files before closure | It drafts the narrative and the decision memo; the filing decision is human. A critically deficient case file can never pass QA |
 | **Financial-Crime Risk Assessment** | Risk-register, control-matrix, and enterprise-wide risk assessment (EWRA) builders | Generic, bank-grade templates — not employer-specific |
 | **Controls, Testing & QA** | Control-matrix, independent-testing, QA, and issue-remediation prompts, plus an attribute-sampling engine that computes sample size and the exact upper deviation limit | The sampling engine hands the tester the exact statistical statement; the tester still grades the control |
-| **Model Risk & Governance** | Model-governance review and SR 11-7 validation-workpaper prompts, plus all 13 frameworks' validation evidence as worked examples | The frameworks *are* worked examples of validated models |
+| **Model Risk & Governance** | Model-governance review and SR 11-7 validation-workpaper prompts, plus all 14 frameworks' validation evidence as worked examples | The frameworks *are* worked examples of validated models |
 | **Regulatory Affairs & Exam** | Regulatory-scan, obligation-extraction, gap-analysis, and exam-response prompts | Reference tables are point-in-time; confirm against the source |
 | **Fraud** | Scam (APP), wire, and check-fraud disposition prompts, mule-account review, and fraud-typology-to-detection-rule mapping | It prepares the case and frames the liability view; a human holds, recalls, reimburses, or files |
 | **Trade & Communications Surveillance** | Trade-alert triage, flagged-communications review, and market-abuse case construction | It always weighs the legitimate-strategy alternative before concluding manipulation |

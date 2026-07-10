@@ -27,7 +27,7 @@
       "brief": {
         "audience": "Data-governance teams, and the screening and monitoring functions that consume their feeds.",
         "question": "Is this customer extract fit to screen against, or will it silently miss people?",
-        "never": "It never drops, imputes, or repairs a record. A feed whose screening-critical fields breach their ceiling can never pass \u2014 it routes to a data owner with the full defect list.",
+        "never": "It never drops, imputes, or repairs a record. A feed whose screening-critical fields breach their ceiling can never pass — it routes to a data owner with the full defect list.",
         "kind": "data-quality inspection engine"
       }
     },
@@ -77,14 +77,14 @@
       "brief": {
         "audience": "Screening teams working politically-exposed-person alerts.",
         "question": "Is this customer actually the listed official, and does that listing still carry material risk?",
-        "never": "It never auto-clears a currently-serving official, a senior former one, or any corroborated identity match \u2014 regardless of score.",
+        "never": "It never auto-clears a currently-serving official, a senior former one, or any corroborated identity match — regardless of score.",
         "kind": "scoring engine"
       }
     },
     "qa-sampling": {
       "command": "python3 run_validation.py --seed 42 --controls 12 --population 40000",
       "brief": {
-        "audience": "Independent testing, QA, and internal audit \u2014 anyone who samples a control and must defend the conclusion.",
+        "audience": "Independent testing, QA, and internal audit — anyone who samples a control and must defend the conclusion.",
         "question": "How many items must I test, which ones, and what do the exceptions I found actually prove?",
         "never": "It never grades the control. It hands the tester the exact statistical statement; the tester owns the conclusion.",
         "structural_claim": "The claim here is exactness, not accuracy: the sample size and the upper deviation limit are **computed from exact binomial and hypergeometric tail probabilities**, not read off a lookup table, and each is cross-checked against an independent brute-force computation on every run.",
@@ -95,7 +95,7 @@
       "command": "python3 run_validation.py --seed 42 --watchlist 4000 --alerts 50000",
       "positive_class": "true matches",
       "brief": {
-        "audience": "Sanctions & screening teams \u2014 the analysts who work the alert queue, and the second line reviewing their dispositions.",
+        "audience": "Sanctions & screening teams — the analysts who work the alert queue, and the second line reviewing their dispositions.",
         "question": "Of the tens of thousands of screening alerts we get a month, which can be cleared with a reason an examiner would accept, and which must a human read?",
         "never": "It never auto-blocks a payment, freezes an account, or files anything. It clears an alert only when it can name a provable cause; a bare common-name match with no identifiers always goes to a person.",
         "kind": "scoring engine"
@@ -126,9 +126,19 @@
       "brief": {
         "audience": "Sanctions-list data owners and the screening operations team that depends on their feed.",
         "question": "Is our watchlist current, deduplicated across sources, and did anything change since yesterday?",
-        "never": "It never merges two distinct designated parties \u2014 a false merge would erase a designation, and that is a hard build gate. It designates nobody; issuing authorities do.",
-        "structural_claim": "The claim here is structural: **zero false merges**. Combining two genuinely different designated parties would erase a designation, so the run fails outright if it ever happens \u2014 it is a build gate, not a score.",
+        "never": "It never merges two distinct designated parties — a false merge would erase a designation, and that is a hard build gate. It designates nobody; issuing authorities do.",
+        "structural_claim": "The claim here is structural: **zero false merges**. Combining two genuinely different designated parties would erase a designation, so the run fails outright if it ever happens — it is a build gate, not a score.",
         "kind": "ingestion, deduplication, and change-tracking pipeline"
+      }
+    },
+    "jurisdiction-risk": {
+      "command": "python3 run_validation.py --seed 42 --jurisdictions 40000",
+      "brief": {
+        "audience": "Financial-crime risk teams setting geographic risk ratings, and the correspondent-banking, EDD, and enterprise-risk-assessment functions that consume them.",
+        "question": "How much inherent financial-crime risk does this jurisdiction carry, and can I show how the score was reached?",
+        "never": "It never decides whether to enter, exit, bank, or de-risk a market, and it is not a political judgement about a country. It composites public indices into a documented, floored rating and hands the reasoning to a human.",
+        "structural_claim": "The claim here is structural, not a hit rate: **no jurisdiction carrying a hard-risk designation was ever rated below its mandated floor** — a comprehensive sanctions program or a FATF black listing forces CRITICAL, and a FATF grey listing, an EU high-risk designation, or an INCSR primary-concern listing forces at least HIGH — the score discriminates cleanly across the designed-risk strata, and raising any dimension never lowers the score (the model is monotonic). All three are tested on every run, and the run fails if any breaks.",
+        "kind": "scoring engine"
       }
     }
   }

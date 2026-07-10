@@ -58,7 +58,7 @@ def build() -> str:
       "`python3 _tooling/build_evidence_index.py`. CI fails the build if this file has "
       "been edited by hand.")
     A("")
-    A("This repository makes an empirical claim about thirteen scoring engines. The claim "
+    A("This repository makes an empirical claim about fourteen scoring engines. The claim "
       "is **not** \"trust the report.\" It is: *here is the exact command, run it, and you "
       "will get these numbers.* This page is the contract that makes that checkable.")
     A("")
@@ -69,7 +69,7 @@ def build() -> str:
     A("python3 _tooling/verify_evidence.py")
     A("```")
     A("")
-    A("This re-derives all thirteen evidence packs from seed, compares every metric to "
+    A("This re-derives all fourteen evidence packs from seed, compares every metric to "
       "the committed values, and exits non-zero on any difference. It takes about twenty "
       "seconds and needs nothing but Python — the engines are pure standard library, and "
       "no run touches the network. It is also a CI job, so **every commit to `main` "
@@ -134,7 +134,7 @@ def build() -> str:
         man = m.get("manifest", {})
         pop = next((fmt_int(man[k]) for k in
                     ("alerts", "records", "cases", "customers", "addresses", "products",
-                     "hits", "population", "entities", "transactions")
+                     "hits", "population", "entities", "transactions", "jurisdictions")
                     if k in man), "—")
         wall = man.get("wall_clock_seconds")
         wall = f"{wall}s" if wall is not None else "—"
