@@ -15,6 +15,39 @@ monotonicity, and floor safety.
 
 ---
 
+<!-- STANDALONE-BRIEF -->
+> **This page is written to be read on its own.** You do not need to browse the rest of
+> the repository to judge what is here. Links out are optional background, never a
+> prerequisite.
+
+|  |  |
+|---|---|
+| **Who this is for** | KYC / CDD / onboarding teams and the periodic-review function. |
+| **The question it answers** | What risk rating does this customer get, and can I defend how it was reached? |
+| **What it is** | A small, transparent, runnable scoring engine. Every rule, weight, and threshold is written out in [`METHODOLOGY.md`](METHODOLOGY.md) — there is no black box. It is a reference implementation chosen for auditability, **not a production control**. |
+| **What it never does** | It never onboards, exits, or off-boards a customer. A customer carrying a hard risk factor can never be rated LOW, whatever the composite score says. |
+| **The data** | 100% synthetic. Every person, entity, and account is fictional — the recurring institution is "Harborview Financial Group". No real customer, list entry, or transaction appears anywhere in this repository. |
+| **Who decides** | A qualified human, always. Nothing here clears, blocks, freezes, files, designates, or approves on its own. |
+
+### Do not take the numbers on faith — re-derive them
+
+```bash
+cd frameworks/customer-risk-rating
+python3 run_validation.py --seed 42 --customers 50000
+```
+
+Pure Python standard library: nothing to install, no network access, well under a second. It prints
+the same figures published on this page. A continuous-integration job re-runs it on every
+change, on a machine the author does not control — the
+[workflow](../../.github/workflows/validate.yml) is public, and every claim across the
+pillar is indexed in [`../EVIDENCE.md`](../EVIDENCE.md).
+
+### How to read the result on this page
+
+The claim here is structural, not a hit rate: **no customer carrying a hard risk factor was rated LOW**, and worsening any single factor never lowers the score (the model is monotonic). Both are tested on every run, and the run fails if either breaks.
+
+<!-- /STANDALONE-BRIEF -->
+
 ## What it produces
 
 Per customer, a `Rating`: a 0-100 `score`, a `tier` (LOW / MEDIUM / HIGH), the

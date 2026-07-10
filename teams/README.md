@@ -1,12 +1,16 @@
-# teams/ — the toolkit, organized by who does the work
+# Start with your team — everything that applies to you, in one page
 
-The rest of this repository is organized by *artifact type* — prompts here, runnable
-frameworks there, reference and templates elsewhere. These hub pages are a second view
-over the same content, organized by **team**: each one bundles everything relevant
-to a team in one place, in plain English, so you can start from your function instead of
-the file layout. The coverage spans the whole financial-crime organization — the
-front-line and investigative teams, the assurance and governance functions around them,
-and the data and product teams they depend on.
+**Fifteen hub pages, one per team across a financial-crime organization.** Find your
+function below, open its hub, and it tells you — in plain English — exactly which tools
+apply to your work, what they do, what they refuse to do, and where to start. You do not
+need to know how this repository is laid out, and you do not need to read any other part
+of it.
+
+The coverage spans the whole organization: the front-line and investigative teams, the
+assurance and governance functions around them, and the data and product teams they all
+depend on. Elsewhere the material is filed by *artifact type* — prompts in one place,
+runnable engines in another. These hubs are a second view over the same content, filed by
+**who does the work**.
 
 > **In plain terms:** find your team below, open its hub, and it points you to exactly
 > the prompts, engines, references, and templates you'd actually use — no need to know

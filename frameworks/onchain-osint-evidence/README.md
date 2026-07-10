@@ -20,6 +20,39 @@ on every re-run over the same captures.
 
 ---
 
+<!-- STANDALONE-BRIEF -->
+> **This page is written to be read on its own.** You do not need to browse the rest of
+> the repository to judge what is here. Links out are optional background, never a
+> prerequisite.
+
+|  |  |
+|---|---|
+| **Who this is for** | Crypto investigators and anyone who must hand blockchain evidence to a reviewer or a court. |
+| **The question it answers** | Where exactly did each fact in this evidence pack come from, when was it pulled, and can anyone re-check it? |
+| **What it is** | A small, transparent, runnable evidence-capture engine. Every rule, weight, and threshold is written out in [`METHODOLOGY.md`](METHODOLOGY.md) — there is no black box. It is a reference implementation chosen for auditability, **not a production control**. |
+| **What it never does** | It never says who owns an address or whether anything is wrong. It records observations with provenance; attribution is a human act. |
+| **The data** | 100% synthetic. Every person, entity, and account is fictional — the recurring institution is "Harborview Financial Group". No real customer, list entry, or transaction appears anywhere in this repository. |
+| **Who decides** | A qualified human, always. Nothing here clears, blocks, freezes, files, designates, or approves on its own. |
+
+### Do not take the numbers on faith — re-derive them
+
+```bash
+cd frameworks/onchain-osint-evidence
+python3 run_validation.py --seed 42 --addresses 400 --transactions 50000
+```
+
+Pure Python standard library: nothing to install, no network access, about 3 seconds. It prints
+the same figures published on this page. A continuous-integration job re-runs it on every
+change, on a machine the author does not control — the
+[workflow](../../.github/workflows/validate.yml) is public, and every claim across the
+pillar is indexed in [`../EVIDENCE.md`](../EVIDENCE.md).
+
+### How to read the result on this page
+
+The claim here is evidentiary, not statistical: **every captured fact carries its source, retrieval time, and a hash of the exact bytes**; the totals reconcile to the captures with nothing dropped or double-counted; and the same captures re-render byte-for-byte identically months later.
+
+<!-- /STANDALONE-BRIEF -->
+
 ## What it produces
 
 Per address, an evidence pack: a markdown **annex** (source captures, address

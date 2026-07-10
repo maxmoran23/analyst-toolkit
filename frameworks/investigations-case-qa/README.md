@@ -22,6 +22,39 @@ can never pass QA.
 
 ---
 
+<!-- STANDALONE-BRIEF -->
+> **This page is written to be read on its own.** You do not need to browse the rest of
+> the repository to judge what is here. Links out are optional background, never a
+> prerequisite.
+
+|  |  |
+|---|---|
+| **Who this is for** | Second-line quality assurance and investigations leads, before a case file closes. |
+| **The question it answers** | Is this finished investigation file structurally sound enough to close? |
+| **What it is** | A small, transparent, runnable structural quality-assurance engine. Every rule, weight, and threshold is written out in [`METHODOLOGY.md`](METHODOLOGY.md) — there is no black box. It is a reference implementation chosen for auditability, **not a production control**. |
+| **What it never does** | It never re-investigates or overturns a judgement on the merits. It grades the file's structure, and a file with a critical defect can never pass QA no matter how high it scores. |
+| **The data** | 100% synthetic. Every person, entity, and account is fictional — the recurring institution is "Harborview Financial Group". No real customer, list entry, or transaction appears anywhere in this repository. |
+| **Who decides** | A qualified human, always. Nothing here clears, blocks, freezes, files, designates, or approves on its own. |
+
+### Do not take the numbers on faith — re-derive them
+
+```bash
+cd frameworks/investigations-case-qa
+python3 run_validation.py --seed 42 --cases 50000
+```
+
+Pure Python standard library: nothing to install, no network access, about a second. It prints
+the same figures published on this page. A continuous-integration job re-runs it on every
+change, on a machine the author does not control — the
+[workflow](../../.github/workflows/validate.yml) is public, and every claim across the
+pillar is indexed in [`../EVIDENCE.md`](../EVIDENCE.md).
+
+### How to read "recall 1.0000" on this page
+
+The engine missed **none** of the 8,996 critical deficiencies planted in the test population. Read that the way you would read an attribute sample that came back with zero exceptions: you do not conclude the deviation rate is zero — you conclude it is **below 0.03% at 95% confidence**. That exact one-sided bound is published for every engine in [`../EVIDENCE.md`](../EVIDENCE.md), and it tightens only by testing more true cases. It is a property of this synthetic population, not a forecast about live data.
+
+<!-- /STANDALONE-BRIEF -->
+
 ## What it produces
 
 Per completed case file (a structured record of scope, evidence, disposition

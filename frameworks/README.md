@@ -1,12 +1,23 @@
-# frameworks/ — runnable scoring engines with validation evidence
+# Runnable financial-crime engines, each with evidence you can re-derive
 
-A different artifact class from the rest of this repository. Where [`prompts/`](../prompts/)
-and [`standalone/`](../standalone/) are **paste payloads** — text you drop into an
-AI assistant — `frameworks/` are **things you run**: small, deterministic,
-pure-standard-library reference engines for the financial-crime problems that are
-genuinely a *scoring / triage / matching* problem with a measurable error rate.
-Each ships with a seeded synthetic-data generator and a validation harness that
-produces **real, reproducible evidence** that the engine performs as specified.
+**Thirteen small, transparent scoring engines for the financial-crime problems that are
+really a volume problem** — sorting 50,000 sanctions alerts a month, tuning a monitoring
+rule's threshold, deciding whether a customer file is fit to screen against. Each one
+ships the method written out in full, a generator that builds a realistic test population
+with known answers, and a validation harness that measures how well the engine did and
+**fails the build if it ever misses a true hit**.
+
+> **In plain terms:** Most of this repository is *written instructions* you paste into an
+> AI assistant. This folder is different — these are **working calculators**. You run one,
+> and it scores tens of thousands of made-up-but-realistic cases and reports exactly how
+> accurate it was, including that it never wrongly cleared a real match. Nothing is taken
+> on trust: every number published here is re-derived from scratch by an automated check
+> on every change to this repository.
+
+**New here?** Pick the engine for your team from the table below and open its folder —
+each one's page is written to be read on its own. Want the whole evidence picture in one
+place, including the exact confidence bound behind every accuracy claim?
+Read [`EVIDENCE.md`](EVIDENCE.md).
 
 > **In plain terms:** The prompts elsewhere in this repo tell an AI assistant how to
 > *think about* a task. The frameworks here are working calculators for the tasks

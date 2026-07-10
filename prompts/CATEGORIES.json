@@ -1,0 +1,57 @@
+{
+  "_comment": "Per-category registry for prompts/. _tooling/build_briefs.py renders the standalone brief onto each prompts/<category>/README.md from this file; CI checks it has not drifted.",
+  "categories": {
+    "compliance": {
+      "audience": "Financial-crime analysts and investigators \u2014 screening, alert triage, case work, the file/no-file decision, and the second line that quality-checks them.",
+      "question": "How do I work this alert, case, or counterparty to a documented, defensible conclusion?"
+    },
+    "fraud": {
+      "audience": "Fraud detection, investigations, and disputes teams.",
+      "question": "What kind of fraud is this, how strong are the indicators, and what should happen to the payment?"
+    },
+    "surveillance": {
+      "audience": "Trade-surveillance and communications-surveillance teams, and the market-abuse investigators they escalate to.",
+      "question": "Is this alert or message market abuse, or is there a legitimate explanation I have to rule out first?"
+    },
+    "third-party": {
+      "audience": "Third-party risk, anti-bribery and corruption, and correspondent-banking teams.",
+      "question": "What risk does this vendor, intermediary, or respondent relationship carry, and what must we put in place?"
+    },
+    "blockchain": {
+      "audience": "Crypto and digital-asset compliance teams.",
+      "question": "How exposed is this address, token, or protocol \u2014 and can I show my work?"
+    },
+    "regulatory": {
+      "audience": "Regulatory affairs, policy, and exam-management teams.",
+      "question": "What changed, what obligations does it create, where are we short, and how do we answer the examiner?"
+    },
+    "controls": {
+      "audience": "Controls design, independent testing, QA, model governance, and internal audit.",
+      "question": "Are the controls documented, tested, and evidenced well enough to survive an examination?"
+    },
+    "data-governance": {
+      "audience": "Data-governance teams that own the data the financial-crime systems run on.",
+      "question": "Which data fields do our controls actually depend on, where do they come from, and are they fit to use?"
+    },
+    "npa": {
+      "audience": "New-product approval committees and the financial-crime advisors who brief them.",
+      "question": "Before this product launches, what is its financial-crime risk and what must be true first?"
+    },
+    "research": {
+      "audience": "Anyone who needs a rigorous, sourced deep-dive rather than a search-engine summary.",
+      "question": "What does the evidence actually say, what contradicts it, and how confident should I be?"
+    },
+    "market": {
+      "audience": "Teams tracking digital-asset markets, macro conditions, and market narrative.",
+      "question": "What is the market actually signalling, and where does the consensus look wrong?"
+    },
+    "briefs": {
+      "audience": "Anyone producing a recurring intelligence briefing or a governance-committee reporting pack.",
+      "question": "How do I turn a pile of updates into something a busy reader \u2014 or a committee \u2014 can act on?"
+    },
+    "specialty": {
+      "audience": "Analysts doing focused quantitative work: expected value, position sizing, local-market analytics.",
+      "question": "What is the edge, and how much should be staked on it?"
+    }
+  }
+}

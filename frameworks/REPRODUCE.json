@@ -1,51 +1,135 @@
 {
-  "_comment": "Single source of truth for reproducing every committed evidence pack. Each command is run from frameworks/<name>/ and writes an evidence pack. CI (_tooling/verify_evidence.py) runs these and diffs the result against the committed pack; docs/EVIDENCE.md is generated from the same registry.",
+  "_comment": "Per-framework registry: the reproduction command that re-derives the committed evidence pack, plus the audience brief rendered onto each framework README. CI (_tooling/verify_evidence.py) runs the commands and diffs the result against the committed pack; _tooling/build_evidence_index.py and _tooling/build_briefs.py generate frameworks/EVIDENCE.md and the standalone briefs from this same file.",
   "frameworks": {
     "adverse-media-screening": {
       "command": "python3 run_validation.py --seed 42 --subjects 8000 --hits 50000",
-      "positive_class": "materially adverse true hits"
+      "positive_class": "materially adverse true hits",
+      "brief": {
+        "audience": "Negative-news and adverse-media reviewers, and the analysts handling their escalations.",
+        "question": "Is this negative-news hit actually about our customer, and is what it alleges materially adverse?",
+        "never": "It never clears a hit on a bare name match with no identifier, and it never decides the relationship. It sorts the queue and writes the basis.",
+        "kind": "scoring engine"
+      }
     },
     "customer-risk-rating": {
-      "command": "python3 run_validation.py --seed 42 --customers 50000"
+      "command": "python3 run_validation.py --seed 42 --customers 50000",
+      "brief": {
+        "audience": "KYC / CDD / onboarding teams and the periodic-review function.",
+        "question": "What risk rating does this customer get, and can I defend how it was reached?",
+        "never": "It never onboards, exits, or off-boards a customer. A customer carrying a hard risk factor can never be rated LOW, whatever the composite score says.",
+        "structural_claim": "The claim here is structural, not a hit rate: **no customer carrying a hard risk factor was rated LOW**, and worsening any single factor never lowers the score (the model is monotonic). Both are tested on every run, and the run fails if either breaks.",
+        "kind": "scoring engine"
+      }
     },
     "data-quality-rules": {
       "command": "python3 run_validation.py --seed 42 --records 50000",
-      "positive_class": "planted critical defects"
+      "positive_class": "planted critical defects",
+      "brief": {
+        "audience": "Data-governance teams, and the screening and monitoring functions that consume their feeds.",
+        "question": "Is this customer extract fit to screen against, or will it silently miss people?",
+        "never": "It never drops, imputes, or repairs a record. A feed whose screening-critical fields breach their ceiling can never pass \u2014 it routes to a data owner with the full defect list.",
+        "kind": "data-quality inspection engine"
+      }
     },
     "investigations-case-qa": {
       "command": "python3 run_validation.py --seed 42 --cases 50000",
-      "positive_class": "critical deficiencies"
+      "positive_class": "critical deficiencies",
+      "brief": {
+        "audience": "Second-line quality assurance and investigations leads, before a case file closes.",
+        "question": "Is this finished investigation file structurally sound enough to close?",
+        "never": "It never re-investigates or overturns a judgement on the merits. It grades the file's structure, and a file with a critical defect can never pass QA no matter how high it scores.",
+        "kind": "structural quality-assurance engine"
+      }
     },
     "npa-product-risk": {
-      "command": "python3 run_validation.py --seed 42 --products 50000"
+      "command": "python3 run_validation.py --seed 42 --products 50000",
+      "brief": {
+        "audience": "The new-product approval committee and the financial-crime advisors who brief it.",
+        "question": "Before we launch this product, how attractive is it to a launderer, and what must be in place first?",
+        "never": "It never approves anything. It scores, routes, and names the mandatory pre-launch conditions; the committee decides whether to launch.",
+        "structural_claim": "The claim here is structural: **no proposal carrying a serious hard attribute was tiered LOW**, a prohibited activity is always referred rather than scored around, and worsening any factor never lowers the score. The run fails if any of the three breaks.",
+        "kind": "scoring engine"
+      }
     },
     "onchain-kyt-address-risk": {
       "command": "python3 run_validation.py --seed 42 --addresses 50000",
-      "positive_class": "truly tainted addresses"
+      "positive_class": "truly tainted addresses",
+      "brief": {
+        "audience": "Crypto and blockchain-analytics teams screening wallet activity.",
+        "question": "How exposed is this blockchain address to illicit funds, and how close is that exposure?",
+        "never": "It never freezes funds, blocks an address, or reports. It distinguishes 'one hop from a mixer' from 'six hops away through an exchange' and hands the analyst the reasoning.",
+        "kind": "scoring engine"
+      }
     },
     "onchain-osint-evidence": {
-      "command": "python3 run_validation.py --seed 42 --addresses 400 --transactions 50000"
+      "command": "python3 run_validation.py --seed 42 --addresses 400 --transactions 50000",
+      "brief": {
+        "audience": "Crypto investigators and anyone who must hand blockchain evidence to a reviewer or a court.",
+        "question": "Where exactly did each fact in this evidence pack come from, when was it pulled, and can anyone re-check it?",
+        "never": "It never says who owns an address or whether anything is wrong. It records observations with provenance; attribution is a human act.",
+        "structural_claim": "The claim here is evidentiary, not statistical: **every captured fact carries its source, retrieval time, and a hash of the exact bytes**; the totals reconcile to the captures with nothing dropped or double-counted; and the same captures re-render byte-for-byte identically months later.",
+        "kind": "evidence-capture engine"
+      }
     },
     "pep-screening": {
       "command": "python3 run_validation.py --seed 42 --peps 8000 --alerts 50000",
-      "positive_class": "true PEP matches"
+      "positive_class": "true PEP matches",
+      "brief": {
+        "audience": "Screening teams working politically-exposed-person alerts.",
+        "question": "Is this customer actually the listed official, and does that listing still carry material risk?",
+        "never": "It never auto-clears a currently-serving official, a senior former one, or any corroborated identity match \u2014 regardless of score.",
+        "kind": "scoring engine"
+      }
     },
     "qa-sampling": {
-      "command": "python3 run_validation.py --seed 42 --controls 12 --population 40000"
+      "command": "python3 run_validation.py --seed 42 --controls 12 --population 40000",
+      "brief": {
+        "audience": "Independent testing, QA, and internal audit \u2014 anyone who samples a control and must defend the conclusion.",
+        "question": "How many items must I test, which ones, and what do the exceptions I found actually prove?",
+        "never": "It never grades the control. It hands the tester the exact statistical statement; the tester owns the conclusion.",
+        "structural_claim": "The claim here is exactness, not accuracy: the sample size and the upper deviation limit are **computed from exact binomial and hypergeometric tail probabilities**, not read off a lookup table, and each is cross-checked against an independent brute-force computation on every run.",
+        "kind": "statistical attribute-sampling engine"
+      }
     },
     "sanctions-name-screening": {
       "command": "python3 run_validation.py --seed 42 --watchlist 4000 --alerts 50000",
-      "positive_class": "true matches"
+      "positive_class": "true matches",
+      "brief": {
+        "audience": "Sanctions & screening teams \u2014 the analysts who work the alert queue, and the second line reviewing their dispositions.",
+        "question": "Of the tens of thousands of screening alerts we get a month, which can be cleared with a reason an examiner would accept, and which must a human read?",
+        "never": "It never auto-blocks a payment, freezes an account, or files anything. It clears an alert only when it can name a provable cause; a bare common-name match with no identifiers always goes to a person.",
+        "kind": "scoring engine"
+      }
     },
     "tm-threshold-tuning": {
-      "command": "python3 run_validation.py --seed 42 --rules 12 --population 40000"
+      "command": "python3 run_validation.py --seed 42 --rules 12 --population 40000",
+      "brief": {
+        "audience": "Transaction-monitoring rule owners and the model-validation function that must challenge them.",
+        "question": "Is this rule's threshold in the right place, and how do you know?",
+        "never": "It never changes a live rule. It recommends a threshold with the evidence behind it, and it will never recommend one that pushes detection of suspicious activity below the required floor.",
+        "structural_claim": "The claim here is a floor, not an accuracy figure: **every recommended threshold still detects at least 95% of the suspicious activity**, and the run fails if any recommendation would push a rule below that line. Rules that currently leak suspicious activity below the line are recommended *down*, never up.",
+        "kind": "threshold-testing and recommendation engine"
+      }
     },
     "transaction-monitoring": {
       "command": "python3 run_validation.py --seed 42 --customers 5000 --alerts 50000",
-      "positive_class": "truly suspicious alerts"
+      "positive_class": "truly suspicious alerts",
+      "brief": {
+        "audience": "Transaction-monitoring analysts and the investigations team receiving their escalations.",
+        "question": "Which monitoring alerts are worth an analyst's time, and which can be closed with a documented reason?",
+        "never": "It never auto-closes a recognised laundering pattern and never files a SAR. Every escalate/close decision is a human one.",
+        "kind": "scoring engine"
+      }
     },
     "watchlist-knowledge-base": {
-      "command": "python3 run_validation.py --seed 42 --entities 3000"
+      "command": "python3 run_validation.py --seed 42 --entities 3000",
+      "brief": {
+        "audience": "Sanctions-list data owners and the screening operations team that depends on their feed.",
+        "question": "Is our watchlist current, deduplicated across sources, and did anything change since yesterday?",
+        "never": "It never merges two distinct designated parties \u2014 a false merge would erase a designation, and that is a hard build gate. It designates nobody; issuing authorities do.",
+        "structural_claim": "The claim here is structural: **zero false merges**. Combining two genuinely different designated parties would erase a designation, so the run fails outright if it ever happens \u2014 it is a build gate, not a score.",
+        "kind": "ingestion, deduplication, and change-tracking pipeline"
+      }
     }
   }
 }

@@ -53,6 +53,12 @@ jobs:
       - name: Content hygiene — leak shapes and emoji
         run: python3 _tooling/validate_hygiene.py
 
+      # Every entry page must stand on its own: a reader sent a direct link to one
+      # engine or one prompt category must learn who it is for, what it refuses to do,
+      # and how to check its numbers, without navigating anywhere else.
+      - name: Standalone briefs current with the registries
+        run: python3 _tooling/build_briefs.py --check
+
   evidence:
     # Attestation. The `frameworks` job below proves the safety gates still hold;
     # this job proves the COMMITTED evidence is what the current code produces.

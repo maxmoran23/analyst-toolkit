@@ -19,6 +19,39 @@ engine computes the statements themselves.
 
 ---
 
+<!-- STANDALONE-BRIEF -->
+> **This page is written to be read on its own.** You do not need to browse the rest of
+> the repository to judge what is here. Links out are optional background, never a
+> prerequisite.
+
+|  |  |
+|---|---|
+| **Who this is for** | Independent testing, QA, and internal audit — anyone who samples a control and must defend the conclusion. |
+| **The question it answers** | How many items must I test, which ones, and what do the exceptions I found actually prove? |
+| **What it is** | A small, transparent, runnable statistical attribute-sampling engine. Every rule, weight, and threshold is written out in [`METHODOLOGY.md`](METHODOLOGY.md) — there is no black box. It is a reference implementation chosen for auditability, **not a production control**. |
+| **What it never does** | It never grades the control. It hands the tester the exact statistical statement; the tester owns the conclusion. |
+| **The data** | 100% synthetic. Every person, entity, and account is fictional — the recurring institution is "Harborview Financial Group". No real customer, list entry, or transaction appears anywhere in this repository. |
+| **Who decides** | A qualified human, always. Nothing here clears, blocks, freezes, files, designates, or approves on its own. |
+
+### Do not take the numbers on faith — re-derive them
+
+```bash
+cd frameworks/qa-sampling
+python3 run_validation.py --seed 42 --controls 12 --population 40000
+```
+
+Pure Python standard library: nothing to install, no network access, well under a second. It prints
+the same figures published on this page. A continuous-integration job re-runs it on every
+change, on a machine the author does not control — the
+[workflow](../../.github/workflows/validate.yml) is public, and every claim across the
+pillar is indexed in [`../EVIDENCE.md`](../EVIDENCE.md).
+
+### How to read the result on this page
+
+The claim here is exactness, not accuracy: the sample size and the upper deviation limit are **computed from exact binomial and hypergeometric tail probabilities**, not read off a lookup table, and each is cross-checked against an independent brute-force computation on every run.
+
+<!-- /STANDALONE-BRIEF -->
+
 ## What it produces
 
 Per control, a `SamplingPlan` (exact sample size, acceptance number, achieved

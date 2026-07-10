@@ -4,7 +4,57 @@
 
 **A copy/paste library of prompts, runnable scoring engines, and output templates for AI-assisted analytical work at financial institutions — covering every function of a financial-crime organization, plus the regulatory, research, market, and quantitative work around it.**
 
-> **New here, or not technical?** Start with **[How the system works](docs/how-the-system-works.md)** — a plain-English guide to the whole library for senior reviewers (what it is, what it can and cannot do, why its results can be trusted). Already know your function? Jump straight to your **[team hub](teams/)**.
+---
+
+## If you have five minutes
+
+**Who this is for.** People who work financial crime for a living — sanctions and
+screening, transaction monitoring, fraud, surveillance, investigations, KYC, crypto,
+controls and testing, model risk, data governance, new-product approval, regulatory
+affairs. It assumes you know your domain. It does not assume you write code.
+
+**What it gives you.** Two things, and they are different in kind:
+
+- **68 prompts.** A page of written instructions you copy and paste into an AI assistant
+  you already have — Microsoft 365 Copilot, GitHub Copilot, Claude, ChatGPT. Nothing to
+  install. Each one turns the assistant into a specific analyst with a defined method, a
+  scoring rubric, and a fixed output shape, so two people running it get comparable work.
+- **13 runnable engines.** Small, transparent calculators for the problems that are
+  really about volume — triaging 50,000 sanctions alerts, tuning a monitoring threshold,
+  deciding whether a customer extract is fit to screen against.
+
+**Why you should believe any of it.** Because you do not have to. Every accuracy figure
+in this repository is produced by a script, not typed by a person, and an automated check
+re-derives all of them from scratch on every change — on a machine nobody here controls.
+You can run the same check yourself in about twenty seconds:
+
+```bash
+python3 _tooling/verify_evidence.py
+```
+
+And when an engine reports "no missed true matches," it also reports the bound that
+claim actually supports. Zero misses across 997 planted true matches does not mean the
+miss rate is zero — it means it is **below 0.30% at 95% confidence**, exactly as an
+attribute sample returning zero exceptions bounds a deviation rate rather than proving it
+is nil. Every such bound is published in **[`frameworks/EVIDENCE.md`](frameworks/EVIDENCE.md)**.
+
+**What none of it does.** Nothing here connects to a bank system, blocks a payment,
+files a report, or off-boards a customer. It drafts, it scores, and it documents. A
+qualified person decides. All test data is synthetic and every entity is fictional.
+
+### Where to go
+
+| If you are… | Start here |
+|---|---|
+| On a team, and want what applies to your work | **[Your team hub](teams/)** — 15 pages, one per function |
+| A senior reviewer asking "can I trust this?" | **[How the system works](docs/how-the-system-works.md)**, then **[EVIDENCE.md](frameworks/EVIDENCE.md)** |
+| Validating models, or preparing for an exam | **[EVIDENCE.md](frameworks/EVIDENCE.md)** and **[RIGOR-CONTRACT.md](frameworks/RIGOR-CONTRACT.md)** |
+| Just here for a tool | **[Browse the prompt catalog](prompts/)** or **[the engines](frameworks/)** |
+| An AI agent working on this repo | **[AGENTS.md](AGENTS.md)** — not this page |
+
+Every folder in this repository is written to be read on its own. If someone sends you a
+link to one engine or one prompt category, that page will tell you who it is for, what it
+refuses to do, and how to check its numbers — without sending you anywhere else.
 
 ---
 

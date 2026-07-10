@@ -16,6 +16,39 @@ rule that currently leaks suspicious activity below the line.
 
 ---
 
+<!-- STANDALONE-BRIEF -->
+> **This page is written to be read on its own.** You do not need to browse the rest of
+> the repository to judge what is here. Links out are optional background, never a
+> prerequisite.
+
+|  |  |
+|---|---|
+| **Who this is for** | Transaction-monitoring rule owners and the model-validation function that must challenge them. |
+| **The question it answers** | Is this rule's threshold in the right place, and how do you know? |
+| **What it is** | A small, transparent, runnable threshold-testing and recommendation engine. Every rule, weight, and threshold is written out in [`METHODOLOGY.md`](METHODOLOGY.md) — there is no black box. It is a reference implementation chosen for auditability, **not a production control**. |
+| **What it never does** | It never changes a live rule. It recommends a threshold with the evidence behind it, and it will never recommend one that pushes detection of suspicious activity below the required floor. |
+| **The data** | 100% synthetic. Every person, entity, and account is fictional — the recurring institution is "Harborview Financial Group". No real customer, list entry, or transaction appears anywhere in this repository. |
+| **Who decides** | A qualified human, always. Nothing here clears, blocks, freezes, files, designates, or approves on its own. |
+
+### Do not take the numbers on faith — re-derive them
+
+```bash
+cd frameworks/tm-threshold-tuning
+python3 run_validation.py --seed 42 --rules 12 --population 40000
+```
+
+Pure Python standard library: nothing to install, no network access, about a second. It prints
+the same figures published on this page. A continuous-integration job re-runs it on every
+change, on a machine the author does not control — the
+[workflow](../../.github/workflows/validate.yml) is public, and every claim across the
+pillar is indexed in [`../EVIDENCE.md`](../EVIDENCE.md).
+
+### How to read the result on this page
+
+The claim here is a floor, not an accuracy figure: **every recommended threshold still detects at least 95% of the suspicious activity**, and the run fails if any recommendation would push a rule below that line. Rules that currently leak suspicious activity below the line are recommended *down*, never up.
+
+<!-- /STANDALONE-BRIEF -->
+
 ## What it produces
 
 Per rule, a `TuningResult`: an action (RAISE / LOWER / KEEP), the current and
