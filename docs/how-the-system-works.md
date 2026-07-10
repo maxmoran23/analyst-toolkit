@@ -32,9 +32,10 @@ stripped to its portable core — the analytical method, the scoring logic, the 
 structure, and the quality bar — so it travels to any assistant, any account, any
 machine, with nothing proprietary attached.
 
-The library covers the full range of a financial institution's financial-crime and
-compliance teams: sanctions and screening, transaction monitoring, crypto/blockchain,
-KYC/CDD, investigations, risk assessment, controls and testing, model governance, and
+The library covers every team in a financial-crime organization: sanctions and screening,
+transaction monitoring, fraud, trade and communications surveillance, crypto/blockchain,
+KYC/CDD, investigations and SAR, anti-bribery and third-party risk, risk assessment,
+controls and testing, model governance, data governance, new-product approval, and
 regulatory affairs.
 
 ---
@@ -47,7 +48,7 @@ is most of what you need to navigate it.
 ### Prompts — the analyst's method, written down
 A prompt is a self-contained page you paste into an AI assistant. It carries the method
 (how to think about the task), the scoring rubric, the required output structure, and
-the quality bar. There are 50+ of them across eight categories. You fill in a few
+the quality bar. There are 68 of them across 13 categories. You fill in a few
 blanks (the entity, the document, the date) and run it. The work product is the prompt
 itself — the discipline is baked in, so two different people get comparably rigorous
 output. *What you'd use it for: any one-off analytical task — assess this counterparty,
@@ -56,11 +57,12 @@ screen this name, disposition this alert, extract the obligations from this rule
 ### Frameworks — small runnable engines, with proof they work
 A framework is a different kind of thing: a transparent, runnable scoring engine for a
 problem that is fundamentally about **volume** — sorting 50,000 sanctions or monitoring
-alerts a month, where almost all are false positives. Each framework comes with a
-methodology document (every weight and threshold written out), the engine itself, a
-generator that creates realistic synthetic test data, and — crucially — a **validation
-report with real numbers** showing how well it performs. *What you'd use it for: the
-high-volume triage problems where an analyst cannot read every item by hand.*
+alerts a month, where almost all are false positives. There are 13 of them. Each
+framework comes with a methodology document (every weight and threshold written out),
+the engine itself, a generator that creates realistic synthetic test data, and —
+crucially — a **validation report with real numbers** showing how well it performs.
+*What you'd use it for: the high-volume triage problems where an analyst cannot read
+every item by hand.*
 
 ### Reference and templates — the knowledge and the formatting
 The reference files are sourced domain cheat-sheets (money-laundering typologies, the
@@ -78,20 +80,21 @@ one place, in plain English. The short version:
 
 | Team | What the toolkit gives them | One thing to remember |
 |------|------------------------------|------------------------|
-| **Sanctions & Screening** | A runnable engine that clears ~92% of false-positive name-match alerts with zero missed true matches, plus ad-hoc screening prompts | It clears only alerts it can *name a reason* for; everything else goes to an analyst |
+| **Sanctions & Screening** | A name-screening engine that clears ~92% of false-positive alerts with zero missed true matches, a PEP engine (~84% cut) that answers both "right party?" and "still material?", a watchlist knowledge base that keeps the list data deduplicated, plus ad-hoc screening prompts | It clears only alerts it can *name a reason* for; everything else goes to an analyst — and a current PEP is never auto-cleared |
 | **Transaction Monitoring** | An alert-scoring engine (~85% false-positive cut) and a rule threshold-tuning engine (above/below-the-line testing) | It never auto-closes a recognised laundering pattern, and never files a SAR |
-| **Crypto / Blockchain** | An on-chain address-risk engine (~88% false-positive cut) and tracing/screening prompts | It distinguishes "near a mixer" from "six hops away through an exchange" |
+| **Crypto / Blockchain** | An on-chain address-risk engine (~88% false-positive cut), an OSINT evidence engine that stamps every captured fact with its source, retrieval time, and content hash, plus tracing/screening prompts | It distinguishes "near a mixer" from "six hops away through an exchange" — and it states observations, never attributions |
 | **KYC / CDD / Onboarding** | A customer risk-rating engine and entity-assessment prompts | A customer with a serious red flag can *never* be rated low |
 | **Adverse-Media Screening** | An engine that sorts negative-news hits by "right party?" and "really adverse?" | A bare common-name match with no identifier is never auto-cleared — it goes to a person |
-| **Investigations & SAR** | Case- and SAR-narrative drafting prompts | It drafts the narrative; the filing decision is human |
-| **Financial-Crime Risk Assessment** | Risk-register and control-matrix builders | Generic, bank-grade templates — not employer-specific |
-| **Controls, Testing & QA** | Control-matrix, independent-testing, QA, and data-quality prompts | The frameworks also provide reproducible model-test evidence |
-| **Model Risk & Governance** | Model-governance review prompts, plus every framework's validation evidence as worked examples | The frameworks *are* worked examples of validated models |
+| **Investigations & SAR** | Narrative drafting, SAR file/no-file decisioning, UBO unwinding, network link analysis, and a case-QA engine that gates files before closure | It drafts the narrative and the decision memo; the filing decision is human. A critically deficient case file can never pass QA |
+| **Financial-Crime Risk Assessment** | Risk-register, control-matrix, and enterprise-wide risk assessment (EWRA) builders | Generic, bank-grade templates — not employer-specific |
+| **Controls, Testing & QA** | Control-matrix, independent-testing, QA, and issue-remediation prompts, plus an attribute-sampling engine that computes sample size and the exact upper deviation limit | The sampling engine hands the tester the exact statistical statement; the tester still grades the control |
+| **Model Risk & Governance** | Model-governance review and SR 11-7 validation-workpaper prompts, plus all 13 frameworks' validation evidence as worked examples | The frameworks *are* worked examples of validated models |
 | **Regulatory Affairs & Exam** | Regulatory-scan, obligation-extraction, gap-analysis, and exam-response prompts | Reference tables are point-in-time; confirm against the source |
-
-Three teams — **Fraud**, **Trade & Communications Surveillance**, and **Anti-Bribery /
-Third-Party** — are on the roadmap: the engines and prompts for them are being built
-out next.
+| **Fraud** | Scam (APP), wire, and check-fraud disposition prompts, mule-account review, and fraud-typology-to-detection-rule mapping | It prepares the case and frames the liability view; a human holds, recalls, reimburses, or files |
+| **Trade & Communications Surveillance** | Trade-alert triage, flagged-communications review, and market-abuse case construction | It always weighs the legitimate-strategy alternative before concluding manipulation |
+| **ABC, Third-Party & Correspondent** | Vendor diligence, bribery/corruption exposure, correspondent and nested-access risk, and TBML red-flag screening | Third-party risk is assessed on the relationship, not just the counterparty's paperwork |
+| **Data Governance** | A data-quality engine that decides whether a customer extract is fit to screen against, plus CDE-inventory, lineage, rule-authoring, and incident-triage prompts | A feed whose screening-critical fields breach their ceiling can never pass — and nothing is ever silently repaired |
+| **New-Product Approval** | A product-risk engine that tiers and routes a proposal pre-launch, plus assessment, launch-readiness, and post-implementation-review prompts | A proposal with a serious hard attribute can never be tiered low, and a prohibited activity is referred rather than scored |
 
 ---
 
@@ -121,12 +124,24 @@ unacceptable.** Concretely:
   engine ever clears a single planted true positive. The reported recall on true
   positives is **1.000 with zero false negatives** across every screening/monitoring
   framework.
-- The risk-rating engine must never rate a known-high-risk customer "low," and its score
-  must never fall when risk rises (it is mathematically monotonic). Both are tested.
+- The scoring engines must never rate a known-high-risk case "low," and their scores must
+  never fall when risk rises (they are mathematically monotonic). This holds for the
+  customer risk-rating engine and for the new-product engine, where a proposal carrying a
+  serious hard attribute can never be tiered LOW and a prohibited activity is referred to
+  the policy owner rather than scored around. Both properties are tested.
+- The same rule holds wherever a "pass" is consequential: a critically deficient
+  investigation case file can never pass QA, and a customer feed whose screening-critical
+  data elements breach their documented ceiling can never be passed to screening. Each is
+  a hard gate, not a weight — no composite score can outvote it.
 - An engine only auto-clears an alert when it can state a **named, provable reason** (a
   contradicting date of birth, an entity-type mismatch, exposure broken by an exchange).
   It never clears something merely because a score was low. That is the difference
   between a decision that survives an examination and one that does not.
+- Where the output is evidence rather than a score, the guarantees are evidentiary: every
+  captured fact carries its source, retrieval time, and content hash; totals reconcile
+  exactly to the captures with nothing dropped or double-counted; and the same captures
+  re-render byte-identically on every run. The sampling engine's statistical conclusions
+  are cross-checked against an independent computation rather than a lookup table.
 
 **Nothing here uses real data.** Every example and every test dataset is synthetic, and
 every entity assessed is fictional (the recurring institution is "Harborview Financial
@@ -189,7 +204,11 @@ across every team.
 - **ATL / BTL (above/below-the-line)** — testing whether a monitoring rule's threshold is
   set right: are the alerts it fires productive (above the line), and is real risk
   slipping past undetected (below the line)?
+- **CDE** — Critical Data Element; a field (name, date of birth, country, identifier) that
+  a financial-crime control depends on to work at all.
 - **EWRA** — Enterprise-Wide Risk Assessment, the institution's top-level AML risk picture.
+- **NPA** — New Product Approval; the committee process that assesses a product's
+  financial-crime risk before it launches.
 - **False negative** — a real match or real suspicious case wrongly cleared. The
   catastrophic error this library is built to avoid.
 - **KYT** — Know Your Transaction; risk-scoring blockchain addresses and flows.

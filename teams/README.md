@@ -2,9 +2,11 @@
 
 The rest of this repository is organized by *artifact type* — prompts here, runnable
 frameworks there, reference and templates elsewhere. These hub pages are a second view
-over the same content, organized by **financial-crime team**: each one bundles everything relevant
+over the same content, organized by **team**: each one bundles everything relevant
 to a team in one place, in plain English, so you can start from your function instead of
-the file layout.
+the file layout. The coverage spans the whole financial-crime organization — the
+front-line and investigative teams, the assurance and governance functions around them,
+and the data and product teams they depend on.
 
 > **In plain terms:** find your team below, open its hub, and it points you to exactly
 > the prompts, engines, references, and templates you'd actually use — no need to know
@@ -18,28 +20,35 @@ files stay the single source of truth.
 
 | Team | Accountable for | Maturity |
 |------|------------------|----------|
-| [Sanctions & Screening](sanctions-screening.md) | Screening customers/payments against sanctions & watchlists; alert disposition | Mature — engine + prompts |
+| [Sanctions & Screening](sanctions-screening.md) | Screening customers/payments against sanctions, PEP & watchlist data; alert disposition | Mature — 3 engines + prompts |
 | [Transaction Monitoring](transaction-monitoring.md) | Detecting & dispositioning suspicious activity; keeping rules calibrated | Mature — 2 engines + prompts |
-| [Crypto / Blockchain Intelligence](crypto-blockchain.md) | Address, flow, token, and protocol risk | Mature — engine + prompts |
+| [Crypto / Blockchain Intelligence](crypto-blockchain.md) | Address, flow, token, and protocol risk; provenance-stamped on-chain evidence | Mature — 2 engines + prompts |
 | [KYC / CDD / Onboarding](kyc-cdd-onboarding.md) | Customer risk rating; entity & counterparty assessment | Mature — engine + prompts |
 | [Adverse-Media Screening](adverse-media-screening.md) | Is the negative-news hit the right party, and is it materially adverse? | Mature — engine |
-| [Investigations & SAR](investigations-sar.md) | Case investigation & suspicious-activity narratives | Core covered — narrative; SAR decisioning on roadmap |
-| [Financial-Crime Risk Assessment](fincrime-risk-assessment.md) | Enterprise risk register, controls, residual exposure | Covered — register + control matrix |
-| [Controls, Testing & QA](controls-testing-qa.md) | Control design and independent testing | Mature — full controls suite |
-| [Model Risk & Governance](model-risk-governance.md) | Governing & validating models / AI tools | Strong — reviews + worked validation evidence |
+| [Investigations & SAR](investigations-sar.md) | Case investigation, file/no-file decisioning, narratives, and second-line case QA | Mature — QA engine + 6 prompts |
+| [Financial-Crime Risk Assessment](fincrime-risk-assessment.md) | Enterprise risk register, controls, residual exposure, EWRA roll-up | Mature — EWRA + register + control matrix |
+| [Controls, Testing & QA](controls-testing-qa.md) | Control design, statistical sampling, independent testing, issue closure | Mature — 2 engines + full controls suite |
+| [Model Risk & Governance](model-risk-governance.md) | Governing & validating models / AI tools | Mature — reviews, validation workpaper, 13 worked evidence packs |
 | [Regulatory Affairs & Exam](regulatory-affairs-exam.md) | Regulatory tracking, obligations, gaps, exam response | Mature — full regulatory suite |
 | [Fraud](fraud.md) | Scams, payment fraud, account misuse, mule detection | Covered — 5 prompts |
 | [Trade & Communications Surveillance](trade-comms-surveillance.md) | Market abuse in trading and misconduct in communications | Covered — 3 prompts |
 | [ABC, Third-Party & Correspondent Banking](abc-third-party.md) | Vendor/intermediary, bribery & corruption, correspondent/nested, TBML risk | Covered — 4 prompts |
+| [Data Governance](data-governance.md) | The data the controls run on: critical data elements, lineage, quality rules, incidents | Mature — engine + 4 prompts |
+| [New-Product Approval & Product Risk](npa-product-committee.md) | Pre-launch product risk, approval routing, launch readiness, post-implementation review | Mature — engine + 3 prompts |
 
 ## On the roadmap
 
-The team coverage above is complete. Remaining build-out is additive depth within
-existing teams rather than new teams:
+Team coverage is complete, and the depth build-out that was queued here has shipped:
+the watchlist knowledge base, the compliance prompts (SAR decisioning, UBO unwinding,
+periodic-review triggers, case QA, network/link analysis), and the controls and
+governance prompts (EWRA, SR 11-7 model-validation workpaper, issue/remediation
+tracking) are all in the library now, alongside six additional runnable engines.
 
-- **More compliance prompts** — SAR decisioning (file vs no-file), UBO / beneficial-ownership unwinding, periodic-review triggers, case-QA orchestration, network/link analysis.
-- **More controls/governance prompts** — enterprise-wide risk assessment (EWRA), SR 11-7 model-validation workpaper, issue/remediation tracking.
-- **A self-updating watchlist knowledge base** — ingesting public OFAC/EU/UN/UK lists with dedup and change detection to feed the screening frameworks.
+What remains is genuinely optional:
+
+- **A fraud-detection engine** — the fraud team is covered by prompts; whether the
+  mule-detection and scam-scoring problem warrants a runnable engine with its own
+  validation evidence is an open call, not a commitment.
 
 ---
 

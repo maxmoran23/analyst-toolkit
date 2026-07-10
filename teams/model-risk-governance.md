@@ -20,20 +20,23 @@ This team is the independent check on every model and AI tool the financial-crim
 | Need | Tool | Type | Where |
 | --- | --- | --- | --- |
 | Run a model/AI-tool governance review | model-governance-review | prompt | [../prompts/controls/model-governance-review.md](../prompts/controls/model-governance-review.md) |
+| Write the independent validation workpaper (SR 11-7 pillars) | model-validation-workpaper | prompt | [../prompts/controls/model-validation-workpaper.md](../prompts/controls/model-validation-workpaper.md) |
 | Assess input data quality and lineage | data-quality-review | prompt | [../prompts/controls/data-quality-review.md](../prompts/controls/data-quality-review.md) |
 | Productized model validation (ATL/BTL outcomes analysis) | tm-threshold-tuning | framework (runnable) | [../frameworks/tm-threshold-tuning/](../frameworks/tm-threshold-tuning/) |
+| Thirteen worked, reproducible validation evidence packs | frameworks | framework pillar | [../frameworks/](../frameworks/) |
 | The pillar-wide SR 11-7 governance framing | frameworks GOVERNANCE | reference | [../frameworks/GOVERNANCE.md](../frameworks/GOVERNANCE.md) |
 | How every framework proves it works (the rigor contract) | RIGOR-CONTRACT | reference | [../frameworks/RIGOR-CONTRACT.md](../frameworks/RIGOR-CONTRACT.md) |
 
 ## How the pieces fit
 
-The two prompts handle ad-hoc, one-off analysis — point them at a specific model or its input data to produce a structured governance review or a data-quality-and-lineage assessment on demand. The tm-threshold-tuning framework is the runnable counterpart: it performs above-the-line and below-the-line outcomes analysis at scale and emits reproducible validation evidence, making it itself a worked example of a validated model a reviewer can study. The two reference documents sit underneath everything — GOVERNANCE.md supplies the SR 11-7 framing the prompts apply, and RIGOR-CONTRACT.md is the standard every framework must meet to claim it works. In practice: governance review -> data-quality assessment -> validation outcomes analysis -> human review and sign-off.
+The prompts handle ad-hoc, one-off analysis — point model-governance-review at a specific model to surface gaps in ownership, tiering, and approval; point data-quality-review at its inputs; and use model-validation-workpaper when the engagement calls for a full independent validation along the conceptual-soundness, ongoing-monitoring, and outcomes-analysis pillars, with the effective challenge documented rather than asserted. The tm-threshold-tuning framework is the runnable counterpart: it performs above-the-line and below-the-line outcomes analysis at scale and emits reproducible validation evidence, making it itself a worked example of a validated model a reviewer can study. So do the other twelve — every framework in this repository ships an `evidence/VALIDATION-REPORT.md` whose numbers are emitted by a script anyone can re-run from a fixed seed, which is what a validation function usually has to demand rather than inherit. The two reference documents sit underneath everything — GOVERNANCE.md supplies the SR 11-7 framing the prompts apply, and RIGOR-CONTRACT.md is the standard every framework must meet to claim it works. In practice: governance review -> data-quality assessment -> validation workpaper -> outcomes analysis -> human review and sign-off.
 
 ## Capabilities & limitations
 
 **What these tools DO**
 
 - Structure a governance review and surface gaps in ownership, documentation, tiering, and approval.
+- Draft an independent validation workpaper against the SR 11-7 pillars, with a findings register and the effective challenge written down.
 - Assess input data completeness, accuracy, timeliness, and lineage before a model is trusted.
 - Run above-the-line and below-the-line outcomes analysis at scale and produce reproducible validation evidence.
 - Give a non-technical reviewer a clear, citable trail to challenge and approve.
@@ -50,4 +53,4 @@ If you do one thing, do this:
 
 1. Read [../frameworks/GOVERNANCE.md](../frameworks/GOVERNANCE.md) to see the SR 11-7 framing this team applies — what governance and validation are expected to cover.
 2. Open [../frameworks/tm-threshold-tuning/](../frameworks/tm-threshold-tuning/) and look at its evidence — it is a worked, validated model you can study end to end, and the proof standard it meets is defined in [../frameworks/RIGOR-CONTRACT.md](../frameworks/RIGOR-CONTRACT.md).
-3. When you have a real model or AI tool to review, run the [../prompts/controls/model-governance-review.md](../prompts/controls/model-governance-review.md) prompt first, then [../prompts/controls/data-quality-review.md](../prompts/controls/data-quality-review.md) on its inputs — and hand both drafts to a qualified reviewer to challenge and sign.
+3. When you have a real model or AI tool to review, run the [../prompts/controls/model-governance-review.md](../prompts/controls/model-governance-review.md) prompt first, then [../prompts/controls/data-quality-review.md](../prompts/controls/data-quality-review.md) on its inputs. If the engagement is a full validation rather than a governance check, run [../prompts/controls/model-validation-workpaper.md](../prompts/controls/model-validation-workpaper.md) — and hand every draft to a qualified reviewer to challenge and sign.
