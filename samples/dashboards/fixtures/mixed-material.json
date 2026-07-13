@@ -1,0 +1,34 @@
+{
+  "title": "Mixed Material Overview",
+  "subtitle": "Synthetic KPI, ranked-list, nested, prose, and deliberately unparsed material.",
+  "date": "2026-02-20",
+  "source": "Synthetic validation fixture",
+  "confidence": "Moderate for structural inference",
+  "kpis": {
+    "Total observations": 1280,
+    "Completion rate": "94.6%",
+    "Open questions": 7,
+    "Median interval": "3.8 days",
+    "Validation state": "Ready"
+  },
+  "ranked": [
+    {"rank": 1, "label": "Clarity", "value": 91},
+    {"rank": 2, "label": "Completeness", "value": 87},
+    {"rank": 3, "label": "Consistency", "value": 82},
+    {"rank": 4, "label": "Timeliness", "value": 76}
+  ],
+  "narrative": "The supplied material combines independently useful structures. Values are illustrative only; no real organization, person, or operational process is represented.",
+  "hierarchy": {
+    "Collection": {
+      "Set Alpha": ["Unit 1", "Unit 2"],
+      "Set Beta": ["Unit 3", "Unit 4", "Unit 5"]
+    }
+  },
+  "miscellany": {
+    "literal": "Preserve <not markup> as supplied text",
+    "blank": "",
+    "zero": 0,
+    "false_value": false,
+    "null_value": null
+  }
+}
