@@ -28,6 +28,7 @@ class RuleResult:
     severity: float   # 0..1 contribution (0 when not fired)
     typology: str     # "" when the rule carries no typology
     detail: str       # human-readable reason, for the audit trail
+    corroborating_causes: tuple[str, ...] = ()
 
 
 @dataclass
@@ -38,13 +39,24 @@ class Rule:
     typology: str = ""
 
     def evaluate(self, features: dict) -> RuleResult:
-        fired, severity, detail = self.test(features)
+        evaluated = self.test(features)
+        if len(evaluated) == 3:
+            fired, severity, detail = evaluated
+            corroborating_causes = ()
+        elif len(evaluated) == 4:
+            fired, severity, detail, corroborating_causes = evaluated
+        else:
+            raise ValueError(
+                f"rule {self.name!r} must return (fired, severity, detail) "
+                "or (fired, severity, detail, corroborating_causes)"
+            )
         return RuleResult(
             name=self.name,
             fired=bool(fired),
             severity=float(severity) if fired else 0.0,
             typology=self.typology if fired else "",
             detail=detail,
+            corroborating_causes=tuple(corroborating_causes) if fired else (),
         )
 
 

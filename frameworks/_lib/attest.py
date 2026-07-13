@@ -29,6 +29,7 @@ import platform
 import subprocess
 import sys
 import time
+from pathlib import Path
 
 from . import sampling
 
@@ -170,6 +171,59 @@ def results_digest(metrics: dict) -> str:
     """
     canonical = json.dumps(strip_volatile(metrics), sort_keys=True, separators=(",", ":"))
     return hashlib.sha256(canonical.encode("utf-8")).hexdigest()
+
+
+# --- Deterministic-manifest helpers -------------------------------------------
+# Used by engines whose entire manifest must be byte-reproducible from seed
+# (fraud-detection). Unlike `enrich_manifest`, these record no clock, host, VCS,
+# or timing field, so the committed manifest is a pure function of source + config.
+
+def failure_rate_bound(exposures: int, failures: int, confidence: float = 0.95) -> dict:
+    """Exact one-sided upper confidence bound for a failure rate.
+
+    The rate-agnostic companion to `false_negative_bound`: the positive class is
+    `exposures` (e.g. legitimate events that could be wrongly declined) rather than
+    labelled true cases. Same Clopper-Pearson inversion via `_lib/sampling`.
+    """
+    if exposures < 1:
+        raise ValueError("exposures must be >= 1")
+    upper = sampling.upper_deviation_limit(exposures, failures, confidence)
+    return {
+        "exposures": exposures,
+        "failures": failures,
+        "observed_rate": failures / exposures,
+        "confidence": confidence,
+        "upper_bound": upper,
+        "method": "exact one-sided Clopper-Pearson upper limit (_lib/sampling)",
+    }
+
+
+def canonical_digest(value: dict) -> str:
+    """SHA-256 over stable, canonical JSON — the digest primitive behind the
+    deterministic manifest's `results_sha256`."""
+    encoded = json.dumps(value, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    return hashlib.sha256(encoded).hexdigest()
+
+
+def file_hashes(paths: list[str | Path], root: str | Path) -> dict[str, str]:
+    """Deterministic SHA-256 hashes keyed by paths relative to `root` — the source
+    provenance block pinning exactly which code produced a pack."""
+    root_path = Path(root).resolve()
+    result = {}
+    for raw_path in sorted(Path(path).resolve() for path in paths):
+        key = raw_path.relative_to(root_path).as_posix()
+        result[key] = hashlib.sha256(raw_path.read_bytes()).hexdigest()
+    return result
+
+
+def deterministic_manifest(base: dict, source_hashes: dict[str, str], results: dict) -> dict:
+    """A stable manifest with no clocks, host details, VCS, or timing fields — so the
+    same source, configuration, and seed yield byte-identical evidence."""
+    manifest = dict(base)
+    manifest["source_sha256"] = dict(sorted(source_hashes.items()))
+    manifest["results_sha256"] = canonical_digest(results)
+    manifest["determinism"] = "same source, configuration, and seed yield byte-identical evidence"
+    return manifest
 
 
 if __name__ == "__main__":  # tiny self-check: python3 -m _lib.attest

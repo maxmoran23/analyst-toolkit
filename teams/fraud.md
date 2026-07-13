@@ -35,6 +35,7 @@ it prepares the case and a human acts.
 | Analyze a check / deposit fraud case | check-fraud-analysis | prompt | [../prompts/fraud/check-fraud-analysis.md](../prompts/fraud/check-fraud-analysis.md) |
 | Assess an account for money-mule indicators | mule-account-review | prompt | [../prompts/fraud/mule-account-review.md](../prompts/fraud/mule-account-review.md) |
 | Turn a fraud typology into detection logic | fraud-typology-mapping | prompt | [../prompts/fraud/fraud-typology-mapping.md](../prompts/fraud/fraud-typology-mapping.md) |
+| Triage transaction/session fraud at volume | fraud-detection | framework | [../frameworks/fraud-detection/](../frameworks/fraud-detection/) |
 | Trace where mule funds went on-chain | fund-flow-tracing | prompt | [../prompts/blockchain/fund-flow-tracing.md](../prompts/blockchain/fund-flow-tracing.md) |
 | Render any output as Word/Excel/PDF/HTML | BASE.md | companion | [../BASE.md](../BASE.md) |
 

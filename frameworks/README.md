@@ -1,11 +1,11 @@
 # Runnable financial-crime engines, each with evidence you can re-derive
 
-**Fourteen small, transparent scoring engines for the financial-crime problems that are
+**Fifteen small, transparent scoring engines for the financial-crime problems that are
 really a volume problem** — sorting 50,000 sanctions alerts a month, tuning a monitoring
 rule's threshold, deciding whether a customer file is fit to screen against. Each one
 ships the method written out in full, a generator that builds a realistic test population
 with known answers, and a validation harness that measures how well the engine did and
-**fails the build if it ever misses a true hit**.
+**fails the build if it ever breaches its named safety invariant**.
 
 > **In plain terms:** Most of this repository is *written instructions* you paste into an
 > AI assistant. This folder is different — these are **working calculators**. You run one,
@@ -93,6 +93,7 @@ Shared across the pillar:
 |---|---|---|
 | [`sanctions-name-screening/`](sanctions-name-screening/) | Disposition sanctions-screening alerts (the ~50k/month false-positive backlog) | **Built & validated** — recall 1.0 (0 FN), 92% FP-reduction, evidence committed |
 | [`transaction-monitoring/`](transaction-monitoring/) | Score & triage TM alerts (structuring, funnel, pass-through, velocity, geography) against the customer baseline | **Built & validated** — recall 1.0 (0 FN), 85% FP-reduction, evidence committed |
+| [`fraud-detection/`](fraud-detection/) | Transaction/session fraud triage across account takeover, card-not-present, first-party/bust-out, mule inflow, and synthetic identity | **Built & validated** — dual gate: zero confirmed-fraud approvals and zero legitimate hard declines; exact bounds and six-seed stability committed |
 | [`customer-risk-rating/`](customer-risk-rating/) | Weighted customer risk score + LOW/MEDIUM/HIGH tiering with mandatory floors | **Built & validated** — 0 hard-risk customers rated LOW, monotonic, discriminating, evidence committed |
 | [`adverse-media-screening/`](adverse-media-screening/) | Disposition negative-news hits on two axes (right party? materially adverse?) | **Built & validated** — recall 1.0 (0 FN), 80% FP-reduction, evidence committed |
 | [`onchain-kyt-address-risk/`](onchain-kyt-address-risk/) | Score blockchain-address KYT flags by tainted-path exposure (hop distance, value share, commingling breaks) | **Built & validated** — recall 1.0 (0 FN), 88% FP-reduction, evidence committed |

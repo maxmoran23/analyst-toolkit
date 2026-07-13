@@ -31,6 +31,17 @@
         "kind": "data-quality inspection engine"
       }
     },
+    "fraud-detection": {
+      "command": "python3 run_validation.py --seed 42 --transactions 50000 --trials 6",
+      "positive_class": "confirmed-fraud transaction and session events",
+      "brief": {
+        "audience": "Fraud-strategy, fraud-operations, independent-validation, and control teams.",
+        "question": "Which transaction or session can be approved on a named trusted-continuity cause, and which requires stronger authentication or human review?",
+        "never": "It never executes a decline, block, freeze, filing, or customer action. Hard recommendations require a named fired fraud rule and corroborating causes; a score alone never decides.",
+        "structural_claim": "The symmetric claim has two gates: zero confirmed-fraud events may receive APPROVE, and zero legitimate events may receive a hard disposition. Each zero count must also place its exact one-sided 95% upper failure-rate bound at or below 0.1%.",
+        "kind": "scoring and triage engine"
+      }
+    },
     "investigations-case-qa": {
       "command": "python3 run_validation.py --seed 42 --cases 50000",
       "positive_class": "critical deficiencies",
@@ -39,6 +50,16 @@
         "question": "Is this finished investigation file structurally sound enough to close?",
         "never": "It never re-investigates or overturns a judgement on the merits. It grades the file's structure, and a file with a critical defect can never pass QA no matter how high it scores.",
         "kind": "structural quality-assurance engine"
+      }
+    },
+    "jurisdiction-risk": {
+      "command": "python3 run_validation.py --seed 42 --jurisdictions 40000",
+      "brief": {
+        "audience": "Financial-crime risk teams setting geographic risk ratings, and the correspondent-banking, EDD, and enterprise-risk-assessment functions that consume them.",
+        "question": "How much inherent financial-crime risk does this jurisdiction carry, and can I show how the score was reached?",
+        "never": "It never decides whether to enter, exit, bank, or de-risk a market, and it is not a political judgement about a country. It composites public indices into a documented, floored rating and hands the reasoning to a human.",
+        "structural_claim": "The claim here is structural, not a hit rate: **no jurisdiction carrying a hard-risk designation was ever rated below its mandated floor** — a comprehensive sanctions program or a FATF black listing forces CRITICAL, and a FATF grey listing, an EU high-risk designation, or an INCSR primary-concern listing forces at least HIGH — the score discriminates cleanly across the designed-risk strata, and raising any dimension never lowers the score (the model is monotonic). All three are tested on every run, and the run fails if any breaks.",
+        "kind": "scoring engine"
       }
     },
     "npa-product-risk": {
@@ -129,16 +150,6 @@
         "never": "It never merges two distinct designated parties — a false merge would erase a designation, and that is a hard build gate. It designates nobody; issuing authorities do.",
         "structural_claim": "The claim here is structural: **zero false merges**. Combining two genuinely different designated parties would erase a designation, so the run fails outright if it ever happens — it is a build gate, not a score.",
         "kind": "ingestion, deduplication, and change-tracking pipeline"
-      }
-    },
-    "jurisdiction-risk": {
-      "command": "python3 run_validation.py --seed 42 --jurisdictions 40000",
-      "brief": {
-        "audience": "Financial-crime risk teams setting geographic risk ratings, and the correspondent-banking, EDD, and enterprise-risk-assessment functions that consume them.",
-        "question": "How much inherent financial-crime risk does this jurisdiction carry, and can I show how the score was reached?",
-        "never": "It never decides whether to enter, exit, bank, or de-risk a market, and it is not a political judgement about a country. It composites public indices into a documented, floored rating and hands the reasoning to a human.",
-        "structural_claim": "The claim here is structural, not a hit rate: **no jurisdiction carrying a hard-risk designation was ever rated below its mandated floor** — a comprehensive sanctions program or a FATF black listing forces CRITICAL, and a FATF grey listing, an EU high-risk designation, or an INCSR primary-concern listing forces at least HIGH — the score discriminates cleanly across the designed-risk strata, and raising any dimension never lowers the score (the model is monotonic). All three are tested on every run, and the run fails if any breaks.",
-        "kind": "scoring engine"
       }
     }
   }
