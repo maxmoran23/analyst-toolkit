@@ -6,6 +6,7 @@ package org.maxmoran.quant
  *
  * Example:
  *   ./gradlew run --args="kelly --mode single --p 0.55 --odds 2.0"
+ *   ./gradlew run --args="sharpe --returns-json returns.json --rf 0.05 --annualize 252"
  */
 fun main(args: Array<String>) {
     if (args.isEmpty()) {
@@ -16,6 +17,7 @@ fun main(args: Array<String>) {
     val rest = args.drop(1).toTypedArray()
     when (module) {
         "kelly" -> runKelly(rest)
+        "sharpe" -> runSharpe(rest)
         "--help", "-h", "help" -> println(USAGE)
         else -> {
             System.err.println("unknown module: $module")
@@ -32,11 +34,13 @@ Usage: <module> [args...]
 
 Modules implemented:
   kelly       Kelly criterion (single + portfolio)
+  sharpe      Sharpe, Sortino, Calmar, and Omega ratios
 
 Modules planned (not yet ported):
-  sharpe, drawdown, vol, correlation, var, markowitz, monte_carlo, dcf
+  drawdown, vol, correlation, var, markowitz, monte_carlo, dcf
 
 Per-module help:
   kelly --mode single --p <prob> --odds <decimal_odds> [--fraction 0.25]
   kelly --mode portfolio --edges-json <path> [--fraction 0.25] [--correlation-matrix <path>]
+  sharpe (--returns-json <path> | --stdin) [--rf 0.05] [--annualize 252]
 """.trimIndent()

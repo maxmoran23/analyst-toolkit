@@ -1,6 +1,6 @@
 # Standalone Prompts — single-file copy/paste
 
-Every file in this directory is a **complete, self-contained instruction set**. Copy one whole file into any AI assistant (GitHub Copilot, Microsoft 365 Copilot, Claude, ChatGPT, or anything comparable), reply with your inputs when asked, and the assistant performs the analysis to a defensible standard. **No other file from this repo is needed** — no references, no companion docs, no zip downloads.
+Every file in this directory is a **complete, self-contained instruction set**. Copy one whole file into any AI assistant (GitHub Copilot, Microsoft 365 Copilot, Claude, ChatGPT, or anything comparable), reply with your inputs when asked, and the assistant performs the analysis to a defensible standard. Most need no repository companion. The two artifact-preservation workflows are explicit exceptions: `data-to-dashboard.md` may use one supplied HTML shell, and `material-to-deck.md` pairs the semantic plan with a supplied branded deck and the placeholder-only injector.
 
 Each file now also embeds a **multi-format renderer**: after the analysis runs, ask for a Word doc, an Excel workbook, a PDF narrative report, or an interactive HTML dashboard, and the same single file tells the assistant how to produce it — to the same visual quality bar as the dedicated templates in `../output-templates/`, but without needing any of those files. The renderer ships working Python skeletons (`python-docx`, `openpyxl`, `reportlab`) plus a self-contained HTML+Chart.js dashboard template.
 
@@ -33,6 +33,8 @@ The two directories cover the same kinds of work; pick the shape that matches ho
 | [decision-memo.md](decision-memo.md) | One-page decision memo with recommendation, trade-offs, risks + mitigations, mandatory dissenting view, flip conditions |
 | [weekly-comms-digest.md](weekly-comms-digest.md) | A week of emails / Slack / notes turned into a structured digest organized by your priorities, with commitments, decisions, and overdue items surfaced |
 | [action-items-extractor.md](action-items-extractor.md) | Clean accountable action-item list from any conversational source — meeting notes, email thread, transcript — with owner / action / due / dependency / source |
+| [data-to-dashboard.md](data-to-dashboard.md) | Arbitrary CSV, JSON, tables, lists, or numeric prose turned into a domain-neutral, single-file interactive dashboard with a layout inferred from the data |
+| [material-to-deck.md](material-to-deck.md) | Arbitrary source material mapped into an existing branded PowerPoint template while preserving its theme, masters, layouts, fonts, colors, and logo |
 
 ### Domain templates (financial crime / intelligence)
 | File | What it produces |

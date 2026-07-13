@@ -1,0 +1,16 @@
+{
+  "title": "Four-Measure Category Comparison",
+  "subtitle": "Synthetic item-by-four-column data used to exercise categorical inference.",
+  "date": "2026-01-15",
+  "source": "Synthetic validation fixture",
+  "confidence": "High for rendering validation",
+  "rows": [
+    {"Item": "Atlas", "Measure One": 72, "Measure Two": 45, "Measure Three": 88, "Measure Four": 61},
+    {"Item": "Beacon", "Measure One": 65, "Measure Two": 71, "Measure Three": 54, "Measure Four": 79},
+    {"Item": "Cedar", "Measure One": 83, "Measure Two": 62, "Measure Three": 76, "Measure Four": 68},
+    {"Item": "Delta", "Measure One": 58, "Measure Two": 84, "Measure Three": 69, "Measure Four": 73},
+    {"Item": "Ember", "Measure One": 77, "Measure Two": 56, "Measure Three": 81, "Measure Four": 66},
+    {"Item": "Flint", "Measure One": 69, "Measure Two": 78, "Measure Three": 63, "Measure Four": 85},
+    {"Item": "Grove", "Measure One": 86, "Measure Two": 67, "Measure Three": 72, "Measure Four": 70}
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "additional_trials": 6,
+  "confidence": 0.95,
+  "config": {
+    "ato_contact_change_hours": 24,
+    "ato_failed_logins": 3,
+    "bustout_amount_ratio": 2.0,
+    "bustout_returns": 2,
+    "bustout_utilization": 0.95,
+    "cnp_amount_ratio": 4.0,
+    "cnp_merchant_trust_ceiling": 0.25,
+    "mule_account_age_days": 180,
+    "mule_flowthrough_ratio": 0.9,
+    "mule_inbound_senders": 5,
+    "refer_severity": 0.88,
+    "synthetic_account_age_days": 90,
+    "synthetic_identity_mismatches": 3
+  },
+  "confirmed_fraud": 4000,
+  "determinism": "same source, configuration, and seed yield byte-identical evidence",
+  "framework": "fraud-detection",
+  "legitimate": 46000,
+  "maximum_failure_rate": 0.001,
+  "results_sha256": "fb19646b2eaa3c650bc12ffd720232ce55d8784e107614d4646e376461fa3118",
+  "schema_version": 1,
+  "seed": 42,
+  "source_sha256": {
+    "_lib/__init__.py": "9a72b191e6d7a92491a60e6b9b932466a0a1345c7f220ec32093161b51f91766",
+    "_lib/aggregations.py": "44c145522ec67b666b2ed65421dc8be24a94d94e58de584695727562c9865cdd",
+    "_lib/attest.py": "e77a29aa8b9423ff5f3cd640a72e5eddc46579a43c69b4a5c35dbef36e4349ef",
+    "_lib/metrics.py": "89761638713536d5fcaf87ff35f9808049197cbe1212e1e622bc47767cc63761",
+    "_lib/rules.py": "69abce70555fd51e37947510419c0f7d595c3cb65620f3f4a71b375af4bf82e9",
+    "_lib/sampling.py": "20b4b971035c2abf925e7f47140a65c2abd0ee7026a3988ca01e069027f5dd54",
+    "fraud-detection/generate_synthetic_data.py": "28e843b4edbead7217ad0b4d303d163fe6e601112a0b3171a258771fb349dd02",
+    "fraud-detection/run_validation.py": "3257ddb265bf51b4d6a928c2c35ece605501a462da87c1350e1efeac49198e2e",
+    "fraud-detection/scorer.py": "a7dfb5c4c1f50cb9705a419cda08235df69a74d807ae850ed2799d135f6ddaf0"
+  },
+  "transactions": 50000,
+  "trial_seeds": [
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48
+  ]
+}

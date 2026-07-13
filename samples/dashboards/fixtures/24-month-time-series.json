@@ -1,0 +1,33 @@
+{
+  "title": "Twenty-Four Month Activity Series",
+  "subtitle": "Synthetic, domain-neutral monthly observations used to exercise time-series inference.",
+  "date": "2025-12-31",
+  "source": "Synthetic validation fixture",
+  "confidence": "High for rendering validation",
+  "data": [
+    {"Month": "2024-01", "Measure Alpha": 118, "Measure Beta": 82, "Measure Gamma": 41},
+    {"Month": "2024-02", "Measure Alpha": 121, "Measure Beta": 85, "Measure Gamma": 43},
+    {"Month": "2024-03", "Measure Alpha": 125, "Measure Beta": 84, "Measure Gamma": 44},
+    {"Month": "2024-04", "Measure Alpha": 123, "Measure Beta": 88, "Measure Gamma": 46},
+    {"Month": "2024-05", "Measure Alpha": 129, "Measure Beta": 91, "Measure Gamma": 48},
+    {"Month": "2024-06", "Measure Alpha": 134, "Measure Beta": 94, "Measure Gamma": 47},
+    {"Month": "2024-07", "Measure Alpha": 132, "Measure Beta": 96, "Measure Gamma": 50},
+    {"Month": "2024-08", "Measure Alpha": 138, "Measure Beta": 98, "Measure Gamma": 52},
+    {"Month": "2024-09", "Measure Alpha": 141, "Measure Beta": 97, "Measure Gamma": 54},
+    {"Month": "2024-10", "Measure Alpha": 145, "Measure Beta": 101, "Measure Gamma": 55},
+    {"Month": "2024-11", "Measure Alpha": 143, "Measure Beta": 104, "Measure Gamma": 57},
+    {"Month": "2024-12", "Measure Alpha": 149, "Measure Beta": 106, "Measure Gamma": 59},
+    {"Month": "2025-01", "Measure Alpha": 152, "Measure Beta": 109, "Measure Gamma": 60},
+    {"Month": "2025-02", "Measure Alpha": 150, "Measure Beta": 111, "Measure Gamma": 62},
+    {"Month": "2025-03", "Measure Alpha": 157, "Measure Beta": 114, "Measure Gamma": 64},
+    {"Month": "2025-04", "Measure Alpha": 161, "Measure Beta": 113, "Measure Gamma": 65},
+    {"Month": "2025-05", "Measure Alpha": 164, "Measure Beta": 117, "Measure Gamma": 67},
+    {"Month": "2025-06", "Measure Alpha": 168, "Measure Beta": 120, "Measure Gamma": 69},
+    {"Month": "2025-07", "Measure Alpha": 165, "Measure Beta": 122, "Measure Gamma": 70},
+    {"Month": "2025-08", "Measure Alpha": 172, "Measure Beta": 125, "Measure Gamma": 72},
+    {"Month": "2025-09", "Measure Alpha": 176, "Measure Beta": 127, "Measure Gamma": 74},
+    {"Month": "2025-10", "Measure Alpha": 179, "Measure Beta": 130, "Measure Gamma": 73},
+    {"Month": "2025-11", "Measure Alpha": 183, "Measure Beta": 132, "Measure Gamma": 76},
+    {"Month": "2025-12", "Measure Alpha": 187, "Measure Beta": 135, "Measure Gamma": 78}
+  ]
+}

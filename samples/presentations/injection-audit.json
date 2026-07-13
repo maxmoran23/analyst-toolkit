@@ -1,0 +1,239 @@
+{
+  "template": "northstar-branded-template.pptx",
+  "plan": "sample-slide-plan.json",
+  "output": "northstar-injected-output.pptx",
+  "starting_slides": 1,
+  "slides_added": 5,
+  "ending_slides": 6,
+  "masters_before_save": 1,
+  "layouts_before_save": 11,
+  "layout_inventory": [
+    {
+      "index": 0,
+      "name": "Title Slide",
+      "placeholder_types": [
+        "CENTER_TITLE (3)",
+        "SUBTITLE (4)",
+        "DATE (16)",
+        "FOOTER (15)",
+        "SLIDE_NUMBER (13)"
+      ]
+    },
+    {
+      "index": 1,
+      "name": "Title and Content",
+      "placeholder_types": [
+        "TITLE (1)",
+        "OBJECT (7)",
+        "DATE (16)",
+        "FOOTER (15)",
+        "SLIDE_NUMBER (13)"
+      ]
+    },
+    {
+      "index": 2,
+      "name": "Section Header",
+      "placeholder_types": [
+        "TITLE (1)",
+        "BODY (2)",
+        "DATE (16)",
+        "FOOTER (15)",
+        "SLIDE_NUMBER (13)"
+      ]
+    },
+    {
+      "index": 3,
+      "name": "Two Content",
+      "placeholder_types": [
+        "TITLE (1)",
+        "OBJECT (7)",
+        "OBJECT (7)",
+        "DATE (16)",
+        "FOOTER (15)",
+        "SLIDE_NUMBER (13)"
+      ]
+    },
+    {
+      "index": 4,
+      "name": "Comparison",
+      "placeholder_types": [
+        "TITLE (1)",
+        "BODY (2)",
+        "OBJECT (7)",
+        "BODY (2)",
+        "OBJECT (7)",
+        "DATE (16)",
+        "FOOTER (15)",
+        "SLIDE_NUMBER (13)"
+      ]
+    },
+    {
+      "index": 5,
+      "name": "Title Only",
+      "placeholder_types": [
+        "TITLE (1)",
+        "DATE (16)",
+        "FOOTER (15)",
+        "SLIDE_NUMBER (13)"
+      ]
+    },
+    {
+      "index": 6,
+      "name": "Blank",
+      "placeholder_types": [
+        "DATE (16)",
+        "FOOTER (15)",
+        "SLIDE_NUMBER (13)"
+      ]
+    },
+    {
+      "index": 7,
+      "name": "Content with Caption",
+      "placeholder_types": [
+        "TITLE (1)",
+        "OBJECT (7)",
+        "BODY (2)",
+        "DATE (16)",
+        "FOOTER (15)",
+        "SLIDE_NUMBER (13)"
+      ]
+    },
+    {
+      "index": 8,
+      "name": "Picture with Caption",
+      "placeholder_types": [
+        "TITLE (1)",
+        "PICTURE (18)",
+        "BODY (2)",
+        "DATE (16)",
+        "FOOTER (15)",
+        "SLIDE_NUMBER (13)"
+      ]
+    },
+    {
+      "index": 9,
+      "name": "Title and Vertical Text",
+      "placeholder_types": [
+        "TITLE (1)",
+        "BODY (2)",
+        "DATE (16)",
+        "FOOTER (15)",
+        "SLIDE_NUMBER (13)"
+      ]
+    },
+    {
+      "index": 10,
+      "name": "Vertical Title and Text",
+      "placeholder_types": [
+        "TITLE (1)",
+        "BODY (2)",
+        "DATE (16)",
+        "FOOTER (15)",
+        "SLIDE_NUMBER (13)"
+      ]
+    }
+  ],
+  "mappings": [
+    {
+      "plan_index": 1,
+      "role": "title",
+      "title": "The pilot earned enough demand to justify a second season",
+      "layout_name": "Title Slide",
+      "layout_score": 130,
+      "selection_basis": "title-placeholder, title-layout-name, subtitle-placeholder",
+      "placeholders_written": [
+        {
+          "idx": 0,
+          "purpose": "title"
+        },
+        {
+          "idx": 1,
+          "purpose": "subtitle"
+        }
+      ],
+      "fallbacks": []
+    },
+    {
+      "plan_index": 2,
+      "role": "content",
+      "title": "The pilot sustained repeat participation",
+      "layout_name": "Title and Content",
+      "layout_score": 140,
+      "selection_basis": "title-placeholder, content-layout-name, body-placeholder",
+      "placeholders_written": [
+        {
+          "idx": 0,
+          "purpose": "title"
+        },
+        {
+          "idx": 1,
+          "purpose": "bullets"
+        }
+      ],
+      "fallbacks": []
+    },
+    {
+      "plan_index": 3,
+      "role": "content",
+      "title": "Attendance grew while satisfaction held",
+      "layout_name": "Title and Content",
+      "layout_score": 140,
+      "selection_basis": "title-placeholder, content-layout-name, body-placeholder",
+      "placeholders_written": [
+        {
+          "idx": 0,
+          "purpose": "title"
+        },
+        {
+          "idx": 1,
+          "purpose": "bullets"
+        }
+      ],
+      "fallbacks": []
+    },
+    {
+      "plan_index": 4,
+      "role": "content",
+      "title": "Volunteer capacity limits expansion",
+      "layout_name": "Title and Content",
+      "layout_score": 140,
+      "selection_basis": "title-placeholder, content-layout-name, body-placeholder",
+      "placeholders_written": [
+        {
+          "idx": 0,
+          "purpose": "title"
+        },
+        {
+          "idx": 1,
+          "purpose": "bullets"
+        }
+      ],
+      "fallbacks": []
+    },
+    {
+      "plan_index": 5,
+      "role": "summary",
+      "title": "Scale carefully to preserve quality",
+      "layout_name": "Title and Content",
+      "layout_score": 140,
+      "selection_basis": "title-placeholder, content-layout-name, body-placeholder",
+      "placeholders_written": [
+        {
+          "idx": 0,
+          "purpose": "title"
+        },
+        {
+          "idx": 1,
+          "purpose": "bullets"
+        }
+      ],
+      "fallbacks": []
+    }
+  ],
+  "policy": {
+    "slides_added_only_with_template_layouts": true,
+    "content_written_only_to_placeholders": true,
+    "new_shapes_created": false,
+    "theme_or_master_edited": false
+  }
+}

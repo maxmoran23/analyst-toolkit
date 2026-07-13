@@ -1,0 +1,261 @@
+{
+  "operating_point": {
+    "disposition_funnel": {
+      "APPROVE": 34010,
+      "DECLINE_PENDING_REVIEW": 1600,
+      "REFER_FOR_BLOCK_CONFIRMATION": 2400,
+      "STEP_UP_AUTH": 11990
+    },
+    "dual_safety": {
+      "false_decline": {
+        "count": 0,
+        "exact_bound": {
+          "confidence": 0.95,
+          "exposures": 46000,
+          "failures": 0,
+          "method": "exact one-sided Clopper-Pearson upper limit (_lib/sampling)",
+          "observed_rate": 0.0,
+          "upper_bound": 6.512249408079572e-05
+        },
+        "legitimate_accept_or_step_up_rate": 1.0,
+        "offending_event_ids": [],
+        "rate": 0.0
+      },
+      "fraud_miss": {
+        "count": 0,
+        "exact_bound": {
+          "confidence": 0.95,
+          "exposures": 4000,
+          "failures": 0,
+          "method": "exact one-sided Clopper-Pearson upper limit (_lib/sampling)",
+          "observed_rate": 0.0,
+          "upper_bound": 0.00074865268801778
+        },
+        "fraud_recall": 1.0,
+        "offending_event_ids": [],
+        "rate": 0.0
+      },
+      "maximum_95pct_upper_bound": 0.001,
+      "required_observed_count": 0
+    },
+    "intervention": {
+      "count": 15990,
+      "fraud_count": 4000,
+      "lift_over_prevalence": 3.1269543464665412,
+      "precision": 0.2501563477173233
+    },
+    "per_legitimate_category": {
+      "cnp_recurring_burst_mimic": {
+        "approved": 0,
+        "boundary_cases": 1,
+        "hard_declines": 0,
+        "step_up": 2147,
+        "total": 2147
+      },
+      "credit_rebuild_mimic": {
+        "approved": 890,
+        "boundary_cases": 1,
+        "hard_declines": 0,
+        "step_up": 1256,
+        "total": 2146
+      },
+      "high_value_known_payee_mimic": {
+        "approved": 0,
+        "boundary_cases": 1,
+        "hard_declines": 0,
+        "step_up": 2147,
+        "total": 2147
+      },
+      "identity_refresh_mimic": {
+        "approved": 0,
+        "boundary_cases": 1,
+        "hard_declines": 0,
+        "step_up": 2146,
+        "total": 2146
+      },
+      "new_device_travel_mimic": {
+        "approved": 0,
+        "boundary_cases": 1,
+        "hard_declines": 0,
+        "step_up": 2147,
+        "total": 2147
+      },
+      "trusted_session_continuity": {
+        "approved": 33120,
+        "boundary_cases": 0,
+        "hard_declines": 0,
+        "step_up": 0,
+        "total": 33120
+      },
+      "young_account_payroll_mimic": {
+        "approved": 0,
+        "boundary_cases": 1,
+        "hard_declines": 0,
+        "step_up": 2147,
+        "total": 2147
+      }
+    },
+    "per_typology": {
+      "account_takeover": {
+        "boundary_cases": 2,
+        "detected": 800,
+        "dispositions": {
+          "APPROVE": 0,
+          "DECLINE_PENDING_REVIEW": 0,
+          "REFER_FOR_BLOCK_CONFIRMATION": 800,
+          "STEP_UP_AUTH": 0
+        },
+        "recall": 1.0,
+        "total": 800
+      },
+      "card_not_present": {
+        "boundary_cases": 2,
+        "detected": 800,
+        "dispositions": {
+          "APPROVE": 0,
+          "DECLINE_PENDING_REVIEW": 800,
+          "REFER_FOR_BLOCK_CONFIRMATION": 0,
+          "STEP_UP_AUTH": 0
+        },
+        "recall": 1.0,
+        "total": 800
+      },
+      "first_party_bustout": {
+        "boundary_cases": 2,
+        "detected": 800,
+        "dispositions": {
+          "APPROVE": 0,
+          "DECLINE_PENDING_REVIEW": 800,
+          "REFER_FOR_BLOCK_CONFIRMATION": 0,
+          "STEP_UP_AUTH": 0
+        },
+        "recall": 1.0,
+        "total": 800
+      },
+      "mule_inflow": {
+        "boundary_cases": 2,
+        "detected": 800,
+        "dispositions": {
+          "APPROVE": 0,
+          "DECLINE_PENDING_REVIEW": 0,
+          "REFER_FOR_BLOCK_CONFIRMATION": 800,
+          "STEP_UP_AUTH": 0
+        },
+        "recall": 1.0,
+        "total": 800
+      },
+      "synthetic_identity": {
+        "boundary_cases": 2,
+        "detected": 800,
+        "dispositions": {
+          "APPROVE": 0,
+          "DECLINE_PENDING_REVIEW": 0,
+          "REFER_FOR_BLOCK_CONFIRMATION": 800,
+          "STEP_UP_AUTH": 0
+        },
+        "recall": 1.0,
+        "total": 800
+      }
+    },
+    "population": {
+      "confirmed_fraud": 4000,
+      "fraud_prevalence": 0.08,
+      "legitimate": 46000,
+      "transactions": 50000
+    },
+    "structural_invariants": {
+      "approve_without_trusted_session_continuity": 0,
+      "hard_disposition_without_named_corroboration": 0,
+      "missing_legitimate_categories": [],
+      "missing_typologies": [],
+      "offending_event_ids": [],
+      "risk_floor_violations": 0
+    }
+  },
+  "stability": [
+    {
+      "false_decline_rate": 0.0,
+      "false_decline_upper_bound": 6.512249408079572e-05,
+      "false_declines": 0,
+      "fraud_miss_upper_bound": 0.00074865268801778,
+      "fraud_misses": 0,
+      "fraud_recall": 1.0,
+      "intervention_lift": 3.1269543464665412,
+      "intervention_precision": 0.2501563477173233,
+      "seed": 42,
+      "transactions": 50000
+    },
+    {
+      "false_decline_rate": 0.0,
+      "false_decline_upper_bound": 6.512249408079572e-05,
+      "false_declines": 0,
+      "fraud_miss_upper_bound": 0.00074865268801778,
+      "fraud_misses": 0,
+      "fraud_recall": 1.0,
+      "intervention_lift": 3.1257814453613406,
+      "intervention_precision": 0.25006251562890724,
+      "seed": 43,
+      "transactions": 50000
+    },
+    {
+      "false_decline_rate": 0.0,
+      "false_decline_upper_bound": 6.512249408079572e-05,
+      "false_declines": 0,
+      "fraud_miss_upper_bound": 0.00074865268801778,
+      "fraud_misses": 0,
+      "fraud_recall": 1.0,
+      "intervention_lift": 3.1316547663785546,
+      "intervention_precision": 0.2505323813102844,
+      "seed": 44,
+      "transactions": 50000
+    },
+    {
+      "false_decline_rate": 0.0,
+      "false_decline_upper_bound": 6.512249408079572e-05,
+      "false_declines": 0,
+      "fraud_miss_upper_bound": 0.00074865268801778,
+      "fraud_misses": 0,
+      "fraud_recall": 1.0,
+      "intervention_lift": 3.129498654315579,
+      "intervention_precision": 0.2503598923452463,
+      "seed": 45,
+      "transactions": 50000
+    },
+    {
+      "false_decline_rate": 0.0,
+      "false_decline_upper_bound": 6.512249408079572e-05,
+      "false_declines": 0,
+      "fraud_miss_upper_bound": 0.00074865268801778,
+      "fraud_misses": 0,
+      "fraud_recall": 1.0,
+      "intervention_lift": 3.131066441229883,
+      "intervention_precision": 0.25048531529839063,
+      "seed": 46,
+      "transactions": 50000
+    },
+    {
+      "false_decline_rate": 0.0,
+      "false_decline_upper_bound": 6.512249408079572e-05,
+      "false_declines": 0,
+      "fraud_miss_upper_bound": 0.00074865268801778,
+      "fraud_misses": 0,
+      "fraud_recall": 1.0,
+      "intervention_lift": 3.132832080200501,
+      "intervention_precision": 0.2506265664160401,
+      "seed": 47,
+      "transactions": 50000
+    },
+    {
+      "false_decline_rate": 0.0,
+      "false_decline_upper_bound": 6.512249408079572e-05,
+      "false_declines": 0,
+      "fraud_miss_upper_bound": 0.00074865268801778,
+      "fraud_misses": 0,
+      "fraud_recall": 1.0,
+      "intervention_lift": 3.1261723146179814,
+      "intervention_precision": 0.25009378516943853,
+      "seed": 48,
+      "transactions": 50000
+    }
+  ]
+}

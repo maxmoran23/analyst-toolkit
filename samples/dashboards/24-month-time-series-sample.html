@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Adaptive Data Dashboard</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+:root,
+[data-theme="dark"] {
+  --bg: #0a0a0f;
+  --bg2: #111118;
+  --bg3: #1a1a24;
+  --text: #f5f5f7;
+  --text2: #a1a1a6;
+  --text3: #73737b;
+  --accent: #0a84ff;
+  --accent-soft: rgba(10,132,255,.16);
+  --critical: #ef4444;
+  --high: #f59e0b;
+  --medium: #22d3ee;
+  --low: #85858d;
+  --positive: #30d158;
+  --card: rgba(28,28,35,.72);
+  --glass: rgba(255,255,255,.045);
+  --border: rgba(255,255,255,.09);
+  --shadow: 0 20px 55px rgba(0,0,0,.18);
+  --radius: 16px;
+  --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
+}
+[data-theme="light"] {
+  --bg: #faf8f6;
+  --bg2: #ffffff;
+  --bg3: #f0ecea;
+  --text: #1d1d1f;
+  --text2: #5f5f67;
+  --text3: #76767e;
+  --accent-soft: rgba(10,132,255,.10);
+  --card: rgba(255,255,255,.86);
+  --glass: rgba(0,0,0,.035);
+  --border: rgba(0,0,0,.09);
+  --shadow: 0 20px 55px rgba(35,31,32,.08);
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 14px;
+  line-height: 1.55;
+  background-image:
+    radial-gradient(circle at 15% 12%, rgba(10,132,255,.11), transparent 36%),
+    radial-gradient(circle at 88% 78%, rgba(191,90,242,.07), transparent 36%);
+  background-attachment: fixed;
+}
+button,
+input { font: inherit; }
+.container { width: min(100%, 1400px); margin: 0 auto; padding: 0 24px; }
+.theme-toggle {
+  position: fixed;
+  top: 18px;
+  right: 18px;
+  z-index: 30;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: var(--card);
+  color: var(--text);
+  cursor: pointer;
+  backdrop-filter: blur(20px);
+  box-shadow: var(--shadow);
+}
+.theme-toggle:focus-visible,
+.sort-button:focus-visible,
+.table-search:focus-visible,
+nav.sticky a:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+header.hero { padding: 62px 0 30px; }
+.hero-eyebrow {
+  margin: 0 0 10px;
+  color: var(--accent);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+h1.hero-title { margin: 0; max-width: 900px; font-size: 42px; line-height: 1.08; letter-spacing: -1.2px; }
+.hero-sub { margin-top: 10px; max-width: 850px; color: var(--text2); font-size: 16px; }
+.hero-meta { margin-top: 12px; color: var(--text3); font-size: 12px; }
+.adaptive-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 14px;
+}
+.kpi-grid { margin-top: 28px; }
+.kpi,
+section.card {
+  border: 1px solid var(--border);
+  background: var(--card);
+  backdrop-filter: blur(20px);
+  box-shadow: var(--shadow);
+}
+.kpi { min-width: 0; padding: 18px 20px; border-radius: var(--radius); transition: transform .15s ease; }
+.kpi:hover { transform: translateY(-2px); }
+.kpi-label { overflow-wrap: anywhere; color: var(--text2); font-size: 10px; font-weight: 600; letter-spacing: 1.7px; text-transform: uppercase; }
+.kpi-value { margin-top: 6px; overflow-wrap: anywhere; color: var(--text); font-size: 27px; font-weight: 700; line-height: 1.2; }
+.kpi-detail { margin-top: 4px; overflow-wrap: anywhere; color: var(--text3); font-size: 11px; }
+nav.sticky {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  margin: 8px 0 24px;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  background: color-mix(in srgb, var(--bg) 86%, transparent);
+  backdrop-filter: blur(22px);
+}
+nav.sticky .container { display: flex; flex-wrap: wrap; gap: 6px; padding-top: 11px; padding-bottom: 11px; }
+nav.sticky a {
+  border-radius: 8px;
+  padding: 6px 11px;
+  color: var(--text2);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1.2px;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+nav.sticky a:hover,
+nav.sticky a.active { background: var(--accent); color: #fff; }
+main { padding-bottom: 16px; }
+section.card { margin-bottom: 20px; padding: 27px; border-left: 3px solid var(--accent); border-radius: var(--radius); transition: transform .15s ease; }
+section.card:hover { transform: translateY(-1px); }
+section.card h2 { margin: 0; font-size: 18px; letter-spacing: 1.8px; text-transform: uppercase; }
+.section-note { margin: 5px 0 18px; color: var(--text2); }
+.chart-wrap { position: relative; min-height: 310px; }
+.chart-fallback { margin: 12px 0 0; color: var(--text3); font-size: 12px; }
+.table-controls { display: flex; justify-content: flex-end; margin: 0 0 12px; }
+.table-search {
+  width: min(100%, 340px);
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  padding: 9px 11px;
+  background: var(--bg2);
+  color: var(--text);
+}
+.table-search::placeholder { color: var(--text3); }
+.table-wrap { max-width: 100%; overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th { border-bottom: 1px solid var(--border); padding: 9px 11px; text-align: left; color: var(--text2); font-size: 10px; font-weight: 600; letter-spacing: 1.25px; text-transform: uppercase; }
+td { border-bottom: 1px solid var(--border); padding: 10px 11px; color: var(--text); vertical-align: top; overflow-wrap: anywhere; }
+tbody tr:hover { background: var(--glass); }
+.sort-button { border: 0; padding: 0; background: transparent; color: inherit; cursor: pointer; font: inherit; font-weight: inherit; letter-spacing: inherit; text-align: left; text-transform: inherit; }
+.rank-list,
+.text-blocks,
+.unparsed-list { display: grid; gap: 10px; }
+.rank-row { display: grid; grid-template-columns: minmax(32px, auto) minmax(120px, 1fr) minmax(80px, auto); gap: 12px; align-items: center; border-bottom: 1px solid var(--border); padding: 10px 0; }
+.rank-position { color: var(--text3); font-variant-numeric: tabular-nums; }
+.rank-label { min-width: 0; overflow-wrap: anywhere; }
+.rank-value { color: var(--text2); text-align: right; font-variant-numeric: tabular-nums; }
+.hierarchy-list,
+.hierarchy-list ul { margin: 0; padding-left: 22px; }
+.hierarchy-list li { margin: 7px 0; }
+.hierarchy-key { color: var(--text2); }
+.text-block { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+.unparsed-item { border-left: 3px solid var(--medium); padding: 10px 12px; background: var(--glass); border-radius: 8px; }
+.unparsed-path { color: var(--text3); font-size: 11px; letter-spacing: .7px; text-transform: uppercase; }
+.unparsed-value { margin-top: 3px; white-space: pre-wrap; overflow-wrap: anywhere; }
+.empty-state { margin: 0; color: var(--text2); }
+footer { margin-top: 26px; padding: 24px 0 32px; border-top: 1px solid var(--border); color: var(--text3); font-size: 12px; text-align: center; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; }
+@media (max-width: 1200px) { .adaptive-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 900px) {
+  .adaptive-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  h1.hero-title { font-size: 34px; }
+  .kpi-value { font-size: 23px; }
+}
+@media (max-width: 600px) {
+  .adaptive-grid { grid-template-columns: minmax(0, 1fr); }
+  .container { padding-left: 16px; padding-right: 16px; }
+  header.hero { padding-top: 72px; }
+  h1.hero-title { font-size: 29px; }
+  section.card { padding: 18px; }
+  .rank-row { grid-template-columns: 28px minmax(0, 1fr); }
+  .rank-value { grid-column: 2; text-align: left; }
+}
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .kpi, section.card { transition: none; } }
+@media print { body { background: var(--bg); } nav.sticky, .theme-toggle, .table-controls { display: none; } section.card { break-inside: avoid; } }
+</style>
+</head>
+<body>
+<button type="button" class="theme-toggle" id="theme-toggle" aria-label="Switch to light theme">◐</button>
+<div class="container">
+  <header class="hero" id="dashboard-hero">
+    <p class="hero-eyebrow" id="hero-eyebrow"></p>
+    <h1 class="hero-title" id="hero-title"></h1>
+    <p class="hero-sub" id="hero-subtitle"></p>
+    <p class="hero-meta" id="hero-meta"></p>
+    <div class="adaptive-grid kpi-grid" id="kpi-grid" aria-label="Key metrics"></div>
+  </header>
+</div>
+<nav class="sticky" aria-label="Dashboard sections"><div class="container" id="dashboard-nav"></div></nav>
+<main class="container" id="dashboard-sections"></main>
+<div class="container"><footer id="dashboard-footer"></footer></div>
+<script>
+const EMBEDDED_INPUT = /*__EMBEDDED_INPUT__*/ {
+  "title": "Twenty-Four Month Activity Series",
+  "subtitle": "Synthetic, domain-neutral monthly observations used to exercise time-series inference.",
+  "date": "2025-12-31",
+  "source": "Synthetic validation fixture",
+  "confidence": "High for rendering validation",
+  "data": [
+    {
+      "Month": "2024-01",
+      "Measure Alpha": 118,
+      "Measure Beta": 82,
+      "Measure Gamma": 41
+    },
+    {
+      "Month": "2024-02",
+      "Measure Alpha": 121,
+      "Measure Beta": 85,
+      "Measure Gamma": 43
+    },
+    {
+      "Month": "2024-03",
+      "Measure Alpha": 125,
+      "Measure Beta": 84,
+      "Measure Gamma": 44
+    },
+    {
+      "Month": "2024-04",
+      "Measure Alpha": 123,
+      "Measure Beta": 88,
+      "Measure Gamma": 46
+    },
+    {
+      "Month": "2024-05",
+      "Measure Alpha": 129,
+      "Measure Beta": 91,
+      "Measure Gamma": 48
+    },
+    {
+      "Month": "2024-06",
+      "Measure Alpha": 134,
+      "Measure Beta": 94,
+      "Measure Gamma": 47
+    },
+    {
+      "Month": "2024-07",
+      "Measure Alpha": 132,
+      "Measure Beta": 96,
+      "Measure Gamma": 50
+    },
+    {
+      "Month": "2024-08",
+      "Measure Alpha": 138,
+      "Measure Beta": 98,
+      "Measure Gamma": 52
+    },
+    {
+      "Month": "2024-09",
+      "Measure Alpha": 141,
+      "Measure Beta": 97,
+      "Measure Gamma": 54
+    },
+    {
+      "Month": "2024-10",
+      "Measure Alpha": 145,
+      "Measure Beta": 101,
+      "Measure Gamma": 55
+    },
+    {
+      "Month": "2024-11",
+      "Measure Alpha": 143,
+      "Measure Beta": 104,
+      "Measure Gamma": 57
+    },
+    {
+      "Month": "2024-12",
+      "Measure Alpha": 149,
+      "Measure Beta": 106,
+      "Measure Gamma": 59
+    },
+    {
+      "Month": "2025-01",
+      "Measure Alpha": 152,
+      "Measure Beta": 109,
+      "Measure Gamma": 60
+    },
+    {
+      "Month": "2025-02",
+      "Measure Alpha": 150,
+      "Measure Beta": 111,
+      "Measure Gamma": 62
+    },
+    {
+      "Month": "2025-03",
+      "Measure Alpha": 157,
+      "Measure Beta": 114,
+      "Measure Gamma": 64
+    },
+    {
+      "Month": "2025-04",
+      "Measure Alpha": 161,
+      "Measure Beta": 113,
+      "Measure Gamma": 65
+    },
+    {
+      "Month": "2025-05",
+      "Measure Alpha": 164,
+      "Measure Beta": 117,
+      "Measure Gamma": 67
+    },
+    {
+      "Month": "2025-06",
+      "Measure Alpha": 168,
+      "Measure Beta": 120,
+      "Measure Gamma": 69
+    },
+    {
+      "Month": "2025-07",
+      "Measure Alpha": 165,
+      "Measure Beta": 122,
+      "Measure Gamma": 70
+    },
+    {
+      "Month": "2025-08",
+      "Measure Alpha": 172,
+      "Measure Beta": 125,
+      "Measure Gamma": 72
+    },
+    {
+      "Month": "2025-09",
+      "Measure Alpha": 176,
+      "Measure Beta": 127,
+      "Measure Gamma": 74
+    },
+    {
+      "Month": "2025-10",
+      "Measure Alpha": 179,
+      "Measure Beta": 130,
+      "Measure Gamma": 73
+    },
+    {
+      "Month": "2025-11",
+      "Measure Alpha": 183,
+      "Measure Beta": 132,
+      "Measure Gamma": 76
+    },
+    {
+      "Month": "2025-12",
+      "Measure Alpha": 187,
+      "Measure Beta": 135,
+      "Measure Gamma": 78
+    }
+  ]
+};
+const RAW_INPUT = window.ADAPTIVE_DASHBOARD_INPUT || EMBEDDED_INPUT;
+
+function el(tag, options) {
+  const opts = options || {};
+  const node = document.createElement(tag);
+  if (opts.className) node.className = opts.className;
+  if (opts.text !== undefined && opts.text !== null) node.textContent = String(opts.text);
+  if (opts.attrs) Object.keys(opts.attrs).forEach((key) => node.setAttribute(key, String(opts.attrs[key])));
+  if (opts.children) opts.children.forEach((child) => { if (child) node.appendChild(child); });
+  return node;
+}
+
+function isPlainObject(value) {
+  return value !== null && typeof value === "object" && !Array.isArray(value);
+}
+
+function displayValue(value) {
+  if (value === null) return "null";
+  if (value === undefined) return "undefined";
+  if (typeof value === "string") return value;
+  if (typeof value === "number" || typeof value === "boolean") return String(value);
+  try { return JSON.stringify(value); } catch (error) { return String(value); }
+}
+
+function flattenLeaves(value, path, output) {
+  const currentPath = path || "$";
+  const rows = output || [];
+  if (Array.isArray(value)) {
+    if (value.length === 0) rows.push({path: currentPath, value: "[]"});
+    value.forEach((item, index) => flattenLeaves(item, currentPath + "[" + index + "]", rows));
+    return rows;
+  }
+  if (isPlainObject(value)) {
+    const keys = Object.keys(value);
+    if (keys.length === 0) rows.push({path: currentPath, value: "{}"});
+    keys.forEach((key) => flattenLeaves(value[key], currentPath === "$" ? key : currentPath + "." + key, rows));
+    return rows;
+  }
+  rows.push({path: currentPath, value: displayValue(value)});
+  return rows;
+}
+
+function firstDefined(object, keys, fallback) {
+  for (const key of keys) if (object && object[key] !== undefined && object[key] !== null) return object[key];
+  return fallback;
+}
+
+function humanize(value) {
+  return String(value).replace(/[_-]+/g, " ").replace(/\b\w/g, (char) => char.toUpperCase());
+}
+
+function objectRows(value) {
+  return Array.isArray(value) && value.length > 0 && value.every((row) => isPlainObject(row));
+}
+
+function orderedHeaders(rows) {
+  const seen = new Set();
+  const headers = [];
+  rows.forEach((row) => Object.keys(row).forEach((key) => { if (!seen.has(key)) { seen.add(key); headers.push(key); } }));
+  return headers;
+}
+
+function numericKeys(rows, headers) {
+  return headers.filter((key) => {
+    const populated = rows.filter((row) => row[key] !== undefined && row[key] !== null && row[key] !== "");
+    return populated.length > 0 && populated.every((row) => typeof row[key] === "number" && Number.isFinite(row[key]));
+  });
+}
+
+function dateLikeKey(headers) {
+  return headers.find((key) => /^(date|day|week|month|quarter|year|period|timestamp)$/i.test(key));
+}
+
+function labelLikeKey(headers, numeric) {
+  const explicit = headers.find((key) => /^(item|name|label|category|group|type|segment|rank)$/i.test(key));
+  return explicit || headers.find((key) => !numeric.includes(key));
+}
+
+function normalizeKpis(value) {
+  if (Array.isArray(value)) {
+    return value.map((item, index) => isPlainObject(item) ? {
+      label: firstDefined(item, ["label", "name", "metric"], "Metric " + (index + 1)),
+      value: firstDefined(item, ["value", "amount", "score"], displayValue(item)),
+      detail: firstDefined(item, ["detail", "delta", "context"], "")
+    } : {label: "Metric " + (index + 1), value: item, detail: ""});
+  }
+  if (isPlainObject(value)) return Object.keys(value).map((key) => ({label: humanize(key), value: value[key], detail: ""}));
+  return value === undefined ? [] : [{label: "Metric", value: value, detail: ""}];
+}
+
+function normalizeRankedList(value) {
+  if (!Array.isArray(value)) return [];
+  return value.map((item, index) => {
+    if (!isPlainObject(item)) return {rank: index + 1, label: item, value: ""};
+    return {
+      rank: firstDefined(item, ["rank", "position"], index + 1),
+      label: firstDefined(item, ["label", "name", "item", "category"], "Item " + (index + 1)),
+      value: firstDefined(item, ["value", "score", "amount", "total"], "")
+    };
+  });
+}
+
+function normalizeInput(input) {
+  const source = isPlainObject(input) ? input : {material: input};
+  const consumed = new Set(["title", "name", "subject", "subtitle", "description", "date", "period", "source", "basis", "confidence", "accent"]);
+  const metadata = {
+    eyebrow: firstDefined(source, ["reportType", "report_type", "eyebrow"], "Adaptive data dashboard"),
+    title: firstDefined(source, ["title", "name", "subject"], "Untitled data dashboard"),
+    subtitle: firstDefined(source, ["subtitle", "description"], "Structure inferred from the supplied material."),
+    date: firstDefined(source, ["date", "period"], "Date not supplied"),
+    source: firstDefined(source, ["source", "basis"], "Provided material"),
+    confidence: firstDefined(source, ["confidence"], "Not assessed"),
+    accent: firstDefined(source, ["accent"], "#0a84ff")
+  };
+  const sections = [];
+  let kpis = [];
+  const kpiKey = ["kpis", "metrics", "summary_metrics"].find((key) => source[key] !== undefined);
+  if (kpiKey) {
+    consumed.add(kpiKey);
+    kpis = normalizeKpis(source[kpiKey]);
+    sections.push({type: "kpi", title: "Key metrics", note: "Values supplied in the source material.", items: kpis});
+  }
+
+  const arrayKey = ["data", "rows", "records", "items", "table"].find((key) => objectRows(source[key]));
+  if (arrayKey) {
+    consumed.add(arrayKey);
+    const rows = source[arrayKey];
+    const headers = orderedHeaders(rows);
+    const numbers = numericKeys(rows, headers);
+    const dateKey = dateLikeKey(headers);
+    const labelKey = labelLikeKey(headers, numbers);
+    if (numbers.length > 0 && (dateKey || labelKey)) {
+      const categoryKey = dateKey || labelKey;
+      sections.push({
+        type: "chart",
+        title: dateKey ? "Time-series view" : "Category comparison",
+        note: dateKey ? "Line chart inferred from a period field and numeric measures." : "Bar chart inferred from a category field and numeric measures.",
+        chart: {
+          type: dateKey ? "line" : "bar",
+          labels: rows.map((row) => displayValue(row[categoryKey])),
+          datasets: numbers.map((key, index) => ({label: humanize(key), data: rows.map((row) => row[key]), series: index}))
+        }
+      });
+    }
+    sections.push({type: "table", title: humanize(arrayKey), note: "Search all values or sort by any column.", headers, rows: rows.map((row) => headers.map((key) => row[key]))});
+  }
+
+  const rankedKey = ["ranked", "ranking", "rankings", "priorities"].find((key) => Array.isArray(source[key]));
+  if (rankedKey) {
+    consumed.add(rankedKey);
+    sections.push({type: "ranked-list", title: humanize(rankedKey), note: "Ordering retained from the supplied material.", items: normalizeRankedList(source[rankedKey])});
+  }
+
+  const hierarchyKey = ["hierarchy", "tree", "structure"].find((key) => isPlainObject(source[key]) || Array.isArray(source[key]));
+  if (hierarchyKey) {
+    consumed.add(hierarchyKey);
+    sections.push({type: "hierarchy", title: humanize(hierarchyKey), note: "Nested relationships preserved from the source.", value: source[hierarchyKey]});
+  }
+
+  const textKeys = ["narrative", "prose", "summary", "notes"].filter((key) => typeof source[key] === "string");
+  textKeys.forEach((key) => {
+    consumed.add(key);
+    sections.push({type: "text", title: humanize(key), note: "Verbatim supplied text.", blocks: [source[key]]});
+  });
+
+  const unparsed = Object.keys(source).filter((key) => !consumed.has(key)).map((key) => ({path: key, value: displayValue(source[key])}));
+  if (unparsed.length > 0) sections.push({type: "unparsed-material", title: "Unparsed material", note: "Retained verbatim because no safe structural inference was made.", items: unparsed});
+
+  const ledger = flattenLeaves(input);
+  sections.push({type: "table", title: "Source value ledger", note: "A lossless leaf-level inventory of every supplied value.", headers: ["Source path", "Supplied value"], rows: ledger.map((item) => [item.path, item.value])});
+  if (kpis.length === 0) {
+    kpis = [
+      {label: "Source values", value: ledger.length, detail: "Leaf values retained"},
+      {label: "Derived sections", value: sections.length, detail: "Including the source ledger"},
+      {label: "Unparsed groups", value: unparsed.length, detail: unparsed.length ? "Shown explicitly" : "None"}
+    ];
+  }
+  return {metadata, kpis, sections, ledger};
+}
+
+function renderKpis(root, items) {
+  items.forEach((item) => root.appendChild(el("div", {className: "kpi", children: [
+    el("div", {className: "kpi-label", text: item.label}),
+    el("div", {className: "kpi-value", text: displayValue(item.value)}),
+    el("div", {className: "kpi-detail", text: displayValue(item.detail || "")})
+  ]})));
+}
+
+function sectionShell(section, id) {
+  const content = el("div", {className: "section-content"});
+  const node = el("section", {className: "card", attrs: {id}, children: [
+    el("h2", {text: section.title}),
+    el("p", {className: "section-note", text: section.note || ""}),
+    content
+  ]});
+  return {node, content};
+}
+
+function renderChart(root, section) {
+  const wrapper = el("div", {className: "chart-wrap"});
+  const canvas = el("canvas", {attrs: {role: "img", "aria-label": section.title + ": " + section.chart.datasets.map((set) => set.label).join(", ")}});
+  wrapper.appendChild(canvas);
+  root.appendChild(wrapper);
+  const fallback = el("p", {className: "chart-fallback", text: "Values are also available in the corresponding table or source ledger."});
+  root.appendChild(fallback);
+  if (typeof window.Chart !== "function") {
+    fallback.textContent = "Chart library unavailable. All source values remain available in the tables below.";
+    return;
+  }
+  const styles = getComputedStyle(document.documentElement);
+  const colors = ["#0a84ff", "#30d158", "#bf5af2", "#ff9f0a", "#64d2ff", "#ff375f"];
+  const gridColor = styles.getPropertyValue("--border").trim();
+  const textColor = styles.getPropertyValue("--text2").trim();
+  new Chart(canvas.getContext("2d"), {
+    type: section.chart.type,
+    data: {
+      labels: section.chart.labels,
+      datasets: section.chart.datasets.map((set, index) => ({
+        label: set.label,
+        data: set.data,
+        borderColor: colors[index % colors.length],
+        backgroundColor: section.chart.type === "line" ? colors[index % colors.length] + "28" : colors[index % colors.length] + "B8",
+        borderWidth: 2,
+        pointRadius: section.chart.labels.length > 18 ? 2 : 3,
+        tension: section.chart.type === "line" ? .25 : 0
+      }))
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: {mode: "index", intersect: false},
+      plugins: {legend: {labels: {color: textColor, usePointStyle: true}}},
+      scales: {
+        x: {ticks: {color: textColor, maxRotation: 45, minRotation: 0}, grid: {color: gridColor}},
+        y: {beginAtZero: section.chart.type === "bar", ticks: {color: textColor}, grid: {color: gridColor}}
+      }
+    }
+  });
+}
+
+function comparable(value) {
+  const numeric = Number(value);
+  return value !== "" && Number.isFinite(numeric) ? numeric : String(value).toLocaleLowerCase();
+}
+
+function renderTable(root, section) {
+  let rows = section.rows.slice();
+  let sortIndex = -1;
+  let sortDirection = 1;
+  const search = el("input", {className: "table-search", attrs: {type: "search", placeholder: "Search this table", "aria-label": "Search " + section.title}});
+  const controls = el("div", {className: "table-controls", children: [search]});
+  const table = el("table");
+  const tbody = el("tbody");
+  const renderRows = () => {
+    while (tbody.firstChild) tbody.removeChild(tbody.firstChild);
+    const query = search.value.trim().toLocaleLowerCase();
+    const visible = rows.filter((row) => !query || row.some((value) => displayValue(value).toLocaleLowerCase().includes(query)));
+    visible.forEach((row) => tbody.appendChild(el("tr", {children: row.map((value) => el("td", {text: displayValue(value)}))})));
+    if (visible.length === 0) tbody.appendChild(el("tr", {children: [el("td", {text: "No rows match the search.", attrs: {colspan: section.headers.length}})]}));
+  };
+  const headCells = section.headers.map((header, index) => {
+    const button = el("button", {className: "sort-button", text: header, attrs: {type: "button", "aria-label": "Sort by " + header}});
+    button.addEventListener("click", () => {
+      sortDirection = sortIndex === index ? -sortDirection : 1;
+      sortIndex = index;
+      rows.sort((a, b) => {
+        const left = comparable(a[index]);
+        const right = comparable(b[index]);
+        return left < right ? -sortDirection : left > right ? sortDirection : 0;
+      });
+      renderRows();
+    });
+    return el("th", {children: [button]});
+  });
+  table.appendChild(el("thead", {children: [el("tr", {children: headCells})]}));
+  table.appendChild(tbody);
+  search.addEventListener("input", renderRows);
+  renderRows();
+  root.appendChild(controls);
+  root.appendChild(el("div", {className: "table-wrap", children: [table]}));
+}
+
+function renderRanked(root, section) {
+  const list = el("div", {className: "rank-list"});
+  section.items.forEach((item) => list.appendChild(el("div", {className: "rank-row", children: [
+    el("div", {className: "rank-position", text: item.rank}),
+    el("div", {className: "rank-label", text: displayValue(item.label)}),
+    el("div", {className: "rank-value", text: displayValue(item.value)})
+  ]})));
+  root.appendChild(list);
+}
+
+function hierarchyBranch(value) {
+  if (!isPlainObject(value) && !Array.isArray(value)) return el("span", {text: displayValue(value)});
+  const list = el("ul", {className: "hierarchy-list"});
+  Object.keys(value).forEach((key) => {
+    const nested = value[key];
+    const children = [el("span", {className: "hierarchy-key", text: Array.isArray(value) ? "Item " + (Number(key) + 1) : humanize(key)})];
+    if (isPlainObject(nested) || Array.isArray(nested)) children.push(hierarchyBranch(nested));
+    else children.push(el("span", {text: ": " + displayValue(nested)}));
+    list.appendChild(el("li", {children}));
+  });
+  return list;
+}
+
+function renderSection(section, root, index) {
+  const id = "section-" + (index + 1);
+  const shell = sectionShell(section, id);
+  if (section.type === "kpi") {
+    const grid = el("div", {className: "adaptive-grid"});
+    renderKpis(grid, section.items);
+    shell.content.appendChild(grid);
+  } else if (section.type === "chart") renderChart(shell.content, section);
+  else if (section.type === "table") renderTable(shell.content, section);
+  else if (section.type === "ranked-list") renderRanked(shell.content, section);
+  else if (section.type === "hierarchy") shell.content.appendChild(hierarchyBranch(section.value));
+  else if (section.type === "text") {
+    const blocks = el("div", {className: "text-blocks"});
+    section.blocks.forEach((block) => blocks.appendChild(el("p", {className: "text-block", text: block})));
+    shell.content.appendChild(blocks);
+  } else if (section.type === "unparsed-material") {
+    const list = el("div", {className: "unparsed-list"});
+    section.items.forEach((item) => list.appendChild(el("div", {className: "unparsed-item", children: [
+      el("div", {className: "unparsed-path", text: item.path}),
+      el("div", {className: "unparsed-value", text: item.value})
+    ]})));
+    shell.content.appendChild(list);
+  } else shell.content.appendChild(el("p", {className: "empty-state", text: "Section type retained but no renderer was selected."}));
+  root.appendChild(shell.node);
+  return {id, label: section.title};
+}
+
+function renderDashboard(model) {
+  document.documentElement.style.setProperty("--accent", displayValue(model.metadata.accent));
+  document.title = displayValue(model.metadata.title) + " — Dashboard";
+  document.getElementById("hero-eyebrow").textContent = displayValue(model.metadata.eyebrow);
+  document.getElementById("hero-title").textContent = displayValue(model.metadata.title);
+  document.getElementById("hero-subtitle").textContent = displayValue(model.metadata.subtitle);
+  document.getElementById("hero-meta").textContent = [model.metadata.date, model.metadata.source, "Confidence: " + model.metadata.confidence].map(displayValue).join(" · ");
+  renderKpis(document.getElementById("kpi-grid"), model.kpis);
+  const sectionRoot = document.getElementById("dashboard-sections");
+  const navRoot = document.getElementById("dashboard-nav");
+  const navItems = model.sections.map((section, index) => renderSection(section, sectionRoot, index));
+  navItems.forEach((item) => navRoot.appendChild(el("a", {text: item.label, attrs: {href: "#" + item.id}})));
+  document.getElementById("dashboard-footer").textContent = "Generated from " + displayValue(model.metadata.source) + " · " + displayValue(model.metadata.date) + " · Confidence: " + displayValue(model.metadata.confidence) + " · Every source leaf is retained in the value ledger.";
+
+  if ("IntersectionObserver" in window) {
+    const links = Array.from(navRoot.querySelectorAll("a"));
+    const observer = new IntersectionObserver((entries) => entries.forEach((entry) => {
+      if (entry.isIntersecting) links.forEach((link) => link.classList.toggle("active", link.getAttribute("href") === "#" + entry.target.id));
+    }), {threshold: .35});
+    sectionRoot.querySelectorAll("section.card").forEach((section) => observer.observe(section));
+  }
+}
+
+document.getElementById("theme-toggle").addEventListener("click", (event) => {
+  const next = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+  document.documentElement.dataset.theme = next;
+  event.currentTarget.setAttribute("aria-label", next === "dark" ? "Switch to light theme" : "Switch to dark theme");
+});
+
+window.DASHBOARD_MODEL = normalizeInput(RAW_INPUT);
+renderDashboard(window.DASHBOARD_MODEL);
+</script>
+</body>
+</html>

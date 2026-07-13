@@ -10,6 +10,7 @@ templates with an AI assistant to assemble the deliverable.
 | Directory | What it provides |
 |-----------|------------------|
 | `dashboards/` | Design systems and templates for interactive HTML dashboards — multi-section analytical dashboards and lighter single-topic deep dives. |
+| `presentations/` | A theme-preserving `python-pptx` injector for adding content through an existing template's own layouts and placeholders without changing its brand kit. |
 | `pdf-reports/` | A design system for multi-page PDF reports — narrative, report-style document layouts. |
 | `compliance-docs/` | AML/CFT compliance workbook specifications — control matrix, risk register, and independent testing workpaper. Generic, bank-grade, structured around FFIEC and FATF frameworks. |
 | `communications/` | Templates for sharing work with people — an HTML email design system and a structured-update formatting guide for team channels. |

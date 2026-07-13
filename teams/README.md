@@ -32,7 +32,7 @@ files stay the single source of truth.
 | [Investigations & SAR](investigations-sar.md) | Case investigation, file/no-file decisioning, narratives, and second-line case QA | Mature — QA engine + 6 prompts |
 | [Financial-Crime Risk Assessment](fincrime-risk-assessment.md) | Enterprise risk register, controls, residual exposure, EWRA roll-up | Mature — EWRA + register + control matrix |
 | [Controls, Testing & QA](controls-testing-qa.md) | Control design, statistical sampling, independent testing, issue closure | Mature — 2 engines + full controls suite |
-| [Model Risk & Governance](model-risk-governance.md) | Governing & validating models / AI tools | Mature — reviews, validation workpaper, 14 worked evidence packs |
+| [Model Risk & Governance](model-risk-governance.md) | Governing & validating models / AI tools | Mature — reviews, validation workpaper, 15 worked evidence packs |
 | [Regulatory Affairs & Exam](regulatory-affairs-exam.md) | Regulatory tracking, obligations, gaps, exam response | Mature — full regulatory suite |
 | [Fraud](fraud.md) | Scams, payment fraud, account misuse, mule detection | Covered — 5 prompts |
 | [Trade & Communications Surveillance](trade-comms-surveillance.md) | Market abuse in trading and misconduct in communications | Covered — 3 prompts |
