@@ -71,7 +71,7 @@ jobs:
     # this job proves the COMMITTED evidence is what the current code produces.
     # Without it a VALIDATION-REPORT could drift from the engine it describes and no
     # build would notice — "numbers are emitted, never authored" would be an honour
-    # system. Every commit to main re-derives all 13 packs from seed on a machine the
+    # system. Every commit to main re-derives all 14 packs from seed on a machine the
     # author does not control; that public run history IS the attestation.
     runs-on: ubuntu-latest
     steps:
@@ -161,3 +161,8 @@ jobs:
         run: |
           cd frameworks/qa-sampling
           python3 run_validation.py --seed 42 --controls 12 --population 40000 --no-write
+
+      - name: Jurisdiction risk — floor-safety / discrimination / monotonicity gate
+        run: |
+          cd frameworks/jurisdiction-risk
+          python3 run_validation.py --seed 42 --jurisdictions 40000 --no-write
