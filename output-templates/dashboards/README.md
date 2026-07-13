@@ -1,7 +1,7 @@
 # Dashboard Templates
 
-Two self-contained, interactive HTML dashboard templates for analytical work.
-Both open directly in a browser, need no build step, and are designed to be
+Three self-contained, interactive HTML dashboard templates for analytical work.
+All three open directly in a browser, need no build step, and are designed to be
 populated with your own data — by hand or, faster, by an AI assistant.
 
 | File                          | What it is                                          |
@@ -10,6 +10,7 @@ populated with your own data — by hand or, faster, by an AI assistant.
 | `dashboard-big-guide.md`      | Full usage guide for `dashboard-big.html`           |
 | `deep-dive-dashboard.html`    | Lightweight, three-tab, single-topic dashboard      |
 | `deep-dive-guide.md`          | Full usage guide for `deep-dive-dashboard.html`     |
+| `adaptive-dashboard.html`     | Domain-neutral shell whose cards, charts, lists, and searchable tables are derived from arbitrary supplied data |
 
 ## Previews
 
@@ -23,24 +24,32 @@ KPI cards, charts, and tables, ready to populate in minutes:
 
 ![deep-dive-dashboard.html template](previews/deep-dive-dashboard-preview.png)
 
-*Previews are 1440×900. The full populated samples — the entity risk assessment
-above and a regulatory-landscape deep-dive — are in [`samples/`](../../samples/).*
+The adaptive template ships with three domain-neutral populated samples and their
+raw fixtures: a [24-month series](../../samples/dashboards/24-month-time-series-sample.html)
+([fixture](../../samples/dashboards/fixtures/24-month-time-series.json)), a
+[four-measure categorical table](../../samples/dashboards/four-column-categories-sample.html)
+([fixture](../../samples/dashboards/fixtures/four-column-categories.json)), and a
+[mixed-material input](../../samples/dashboards/mixed-material-sample.html)
+([fixture](../../samples/dashboards/fixtures/mixed-material.json)).
+
+*The legacy previews are 1440×900. Additional populated samples are in
+[`samples/`](../../samples/).*
 
 ## Which template to use
 
-The two templates sit at opposite ends of a weight spectrum. Pick by the depth
-the topic actually warrants — not every question needs twenty sections.
+The templates cover a weight spectrum plus a data-derived option. Pick by the
+depth and structure the material actually warrants.
 
-| Dimension          | `dashboard-big.html`                      | `deep-dive-dashboard.html`            |
-|--------------------|-------------------------------------------|---------------------------------------|
-| Weight             | Heavyweight                               | Lightweight                           |
-| Sections           | 10–20+                                    | 3 tabs                                |
-| File size          | ~40 KB                                    | ~17 KB                                |
-| Build time         | Substantial — plan on real effort         | Quick — minutes to populate           |
-| Dependencies       | Chart.js + html2canvas (CDN)              | Chart.js only (CDN)                   |
-| Theme              | Dark + light toggle                       | Dark only                             |
-| Interactivity      | Modals, global search, sortable/paginated tables, carousels, export FAB | Tab switching, charts |
-| Best for           | A topic explored from every angle; a permanent reference; replacing a stack of separate reports | A one-off investigation; a single-topic deep-dive; "let me look at this more closely" |
+| Dimension          | `dashboard-big.html` | `deep-dive-dashboard.html` | `adaptive-dashboard.html` |
+|--------------------|----------------------|----------------------------|---------------------------|
+| Weight             | Heavyweight | Lightweight | Data-derived |
+| Sections           | 10–20+ | 3 tabs | Inferred from the supplied structures |
+| File size          | ~40 KB | ~17 KB | ~27 KB before embedded data |
+| Build time         | Substantial | Minutes to populate | Quick once arbitrary input is normalized |
+| Dependencies       | Chart.js + html2canvas (CDN) | Chart.js only (CDN) | Chart.js 4.4.1 only (CDN); tables and ledger remain usable without it |
+| Theme              | Dark + light toggle | Dark only | Dark + light toggle |
+| Interactivity      | Modals, search, sortable/paginated tables, carousels, export | Tab switching, charts | Sticky navigation, charts, table search and sort |
+| Best for           | A deep, permanent analytical reference | A focused single-topic investigation | CSV, JSON, tables, lists, prose, or mixed material with no required input schema |
 
 **Use `dashboard-big.html`** when the topic deserves a deep, lasting,
 multi-section analytical experience — a market review, portfolio analysis,
@@ -50,12 +59,16 @@ competitive intelligence, a regulatory landscape, a research compilation.
 focused question and don't need the full treatment — variance analysis, a
 quality investigation, a correlation study, a calibration check.
 
+**Use `adaptive-dashboard.html`** when the source shape should determine the
+layout. It retains every leaf value in a source ledger and routes anything it
+cannot safely normalize to an explicit Unparsed material section.
+
 When in doubt, start with the deep-dive. It is far cheaper to produce, and you
 can always escalate to the heavyweight template if the topic grows.
 
 ## How to use these templates with an AI assistant
 
-Both templates are built to be filled in by a capable AI assistant. The
+All three templates are built to be filled in by a capable AI assistant. The
 templates supply the structure, styling, and interaction logic; the assistant
 supplies the content and wires up the data.
 
@@ -93,7 +106,7 @@ Tips:
 
 ## Notes
 
-- Both files are standalone. Opening them straight from disk (`file://`) works.
+- All three files are standalone. Opening them straight from disk (`file://`) works.
 - If you wire `dashboard-big.html` to load data via `fetch()` from a separate
   JSON file, serve the folder over a local HTTP server so the browser allows
   the request.
