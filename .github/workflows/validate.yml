@@ -66,12 +66,49 @@ jobs:
       - name: Try-it-now demos current with the prompt blocks
         run: python3 _tooling/build_demos.py --check
 
+      - name: Adaptive dashboard samples are current, lossless, and DOM-safe
+        run: python3 _tooling/validate_adaptive_dashboard.py
+
+  quant-jvm:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: gradle
+      - name: Kotlin / Python parity suite
+        working-directory: quant-jvm
+        run: ./gradlew test --no-daemon
+
+  presentation-preservation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - name: Install the injector's declared runtime
+        run: python3 -m pip install python-pptx
+      - name: Template theme, master, layout, and logo remain unchanged
+        run: |
+          python3 validation/scripts/verify_theme_preservation.py \
+            --template samples/presentations/northstar-branded-template.pptx \
+            --output samples/presentations/northstar-injected-output.pptx \
+            --plan samples/presentations/sample-slide-plan.json \
+            --json /tmp/theme-preservation.json \
+            --report /tmp/theme-preservation.md
+
   evidence:
     # Attestation. The `frameworks` job below proves the safety gates still hold;
     # this job proves the COMMITTED evidence is what the current code produces.
     # Without it a VALIDATION-REPORT could drift from the engine it describes and no
     # build would notice — "numbers are emitted, never authored" would be an honour
-    # system. Every commit to main re-derives all 14 packs from seed on a machine the
+    # system. Every commit to main re-derives all 15 packs from seed on a machine the
     # author does not control; that public run history IS the attestation.
     runs-on: ubuntu-latest
     steps:
@@ -166,3 +203,8 @@ jobs:
         run: |
           cd frameworks/jurisdiction-risk
           python3 run_validation.py --seed 42 --jurisdictions 40000 --no-write
+
+      - name: Fraud detection — dual miss / false-decline safety gate + stability
+        run: |
+          cd frameworks/fraud-detection
+          python3 run_validation.py --seed 42 --transactions 50000 --trials 6 --no-write
