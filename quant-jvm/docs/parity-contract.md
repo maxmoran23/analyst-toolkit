@@ -16,17 +16,21 @@ Numerical functions split into three regimes, each with a different tolerance an
 
 **Rationale:** IEEE 754 double-precision arithmetic is deterministic per-operation. Cross-language drift here comes from (a) transcendental function ordering (Python's `math.exp` vs Kotlin's `kotlin.math.exp` may compile to different libm calls), and (b) compiler reorderings of associative operations. Both effects are bounded by a few ulps — well inside 1e-10 for the operation counts in this library.
 
-**Verification:** Test harness invokes Python via `ProcessBuilder` on identical inputs, parses JSON output, asserts each numerical field within tolerance.
+**Verification:** Test harness invokes Python via `ProcessBuilder` on identical inputs, parses JSON output, and asserts each numerical field within tolerance. The unchanged `sharpe.py` CLI intentionally exposes only rounded report fields, so `SharpeParityTest` uses a `python3 -c` oracle that imports its `mean`, `stdev`, `downside_stdev`, and `max_drawdown` helpers and reconstructs the remaining raw operations in the same order. This keeps the authorized Python source byte-identical while still testing unrounded Kotlin values to `1e-10`.
 
 ### 1.2 Rounded display fields
 
-**Examples:** `edge_pct`, `full_kelly_pct`, `fractional_kelly_pct`, `total_exposure_pct`, percentile reports.
+**Examples:** `edge_pct`, `full_kelly_pct`, `fractional_kelly_pct`, `total_exposure_pct`, Sharpe-family ratios, and the two-decimal `win_rate_pct` field.
 
 **Tolerance:** **Exact equality** after applying Python's `round(x, 3)` semantics.
 
 **Rationale:** Python 3's `round()` uses half-to-even (banker's rounding) on floats — but the actual behavior depends on the float's binary representation, which is *not* obvious from the decimal input. The string `"1.235"` is stored as `1.234999999...`, so `round(1.235, 3) == 1.234` (not 1.235). To get exact agreement, Kotlin's `round3` uses `BigDecimal(value).setScale(3, RoundingMode.HALF_EVEN)`, which matches Python's behavior on the same binary representation.
 
-**Verification:** A dedicated `round3` parity test runs both implementations on a set of edge cases (half-points, denormal-adjacent values, negatives) and asserts identical outputs.
+**Verification:** A dedicated `round3` parity test runs both implementations on a set of edge cases (half-points, denormal-adjacent values, negatives) and asserts identical outputs. Sharpe public-contract tests compare the complete parsed JSON object field-for-field; `win_rate_pct` uses the equivalent two-decimal HALF_EVEN helper.
+
+### 1.2.1 Infinity serialization
+
+The Python public contract emits the JSON string `"inf"` when Omega has no losses below its threshold or profit factor has no negative returns. Kotlin emits the same string in those two fields; it never emits non-standard bare `Infinity`. Tests cover zero downside, zero volatility, infinite Omega, and infinite profit factor.
 
 ### 1.3 Stochastic functions (planned, applies to `monte_carlo`, parts of `var`)
 
@@ -78,7 +82,7 @@ Numerical functions split into three regimes, each with a different tolerance an
 
 ## 4. When parity tests should *not* fail the build
 
-1. Python interpreter missing on the build machine → tests log "skipped" and pass. Kotlin-internal hand-math assertions still run and must pass.
+1. Python interpreter missing on the build machine → cross-language Sharpe tests use JUnit assumptions and are reported as skipped. Kotlin-only hand-math and CLI-contract assertions still run and must pass.
 2. Stochastic test fails once → automatic retry with new seed. Two consecutive failures = real divergence.
 3. JSON field ordering changes → not asserted, by design.
 

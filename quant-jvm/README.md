@@ -17,7 +17,7 @@ This is a stronger claim than "the code looks right" — it is an executable ass
 | Module | Status | Python source | Kotlin file | Parity test |
 |--------|--------|---------------|-------------|-------------|
 | Kelly criterion | ported | [`../quant/kelly.py`](../quant/kelly.py) | [`Kelly.kt`](src/main/kotlin/org/maxmoran/quant/Kelly.kt) | [`KellyParityTest.kt`](src/test/kotlin/org/maxmoran/quant/KellyParityTest.kt) |
-| Sharpe / Sortino / Calmar / Omega | planned | `../quant/sharpe.py` | — | — |
+| Sharpe / Sortino / Calmar / Omega | ported | [`../quant/sharpe.py`](../quant/sharpe.py) | [`Sharpe.kt`](src/main/kotlin/org/maxmoran/quant/Sharpe.kt) | [`SharpeParityTest.kt`](src/test/kotlin/org/maxmoran/quant/SharpeParityTest.kt) |
 | Drawdown | planned | `../quant/drawdown.py` | — | — |
 | Volatility (realized, EWMA, GARCH) | planned | `../quant/vol.py` | — | — |
 | Correlation | planned | `../quant/correlation.py` | — | — |
@@ -46,6 +46,7 @@ export JAVA_HOME=/opt/homebrew/opt/openjdk@21/libexec/openjdk.jdk/Contents/Home 
 ./gradlew build           # compile + test
 ./gradlew test            # tests only
 ./gradlew test --tests KellyParityTest  # specific class
+./gradlew test --tests org.maxmoran.quant.SharpeParityTest
 ```
 
 Parity tests resolve the Python interpreter from `PATH`. If `python3` is missing, parity assertions are **skipped with a logged message**, not silently passed — Kotlin-internal correctness tests (e.g. hand-math spot checks) still run and must pass.
@@ -63,6 +64,12 @@ The project ships a single `main` entrypoint that dispatches by module name, mir
 
 # Portfolio with correlation matrix
 ./gradlew run --args="kelly --mode portfolio --edges-json edges.json --correlation-matrix corr.json --fraction 0.25"
+
+# Return-series ratios from a JSON file
+./gradlew run --args="sharpe --returns-json returns.json --rf 0.05 --annualize 252"
+
+# Or provide the same 30-or-more-period JSON array on standard input
+./gradlew run --args="sharpe --stdin --rf 0.05 --annualize 252" < returns.json
 ```
 
 Output goes to stdout as pretty-printed JSON, matching the Python schema exactly. Errors go to stdout as `{"error": "..."}` with exit code 1.
@@ -79,7 +86,7 @@ Output goes to stdout as pretty-printed JSON, matching the Python schema exactly
 | Category | Tolerance | Rationale |
 |----------|-----------|-----------|
 | Deterministic math | `\|py - kt\| < 1e-10` on raw doubles | Floating-point determinism modulo transcendental ordering |
-| Rounded output fields | Exact equality after `round(x, 3)` half-to-even | Matches Python's `round()` semantics via BigDecimal HALF_EVEN |
+| Rounded output fields | Exact JSON equality (`round(x, 3)`, and `round(x, 2)` for `win_rate_pct`) | Matches Python's `round()` semantics via BigDecimal HALF_EVEN; infinity is serialized as the string `"inf"` |
 | Stochastic outputs (planned) | Within 2 standard errors at N=10,000 paths | RNG implementations differ across languages; distribution is the invariant |
 
 Full contract: [`docs/parity-contract.md`](docs/parity-contract.md).
