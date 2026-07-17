@@ -34,5 +34,9 @@ third file**, and a CI job fails the build if any prompt breaks that rule.
 | [fund-flow-tracing](fund-flow-tracing.md) | Trace funds hop by hop across a chain; counterparties, mixers, exchanges, attribution confidence |
 | [defi-protocol-risk](defi-protocol-risk.md) | Score a DeFi protocol on TVL, yield, contract, governance, and bridge risk |
 | [token-compliance-screen](token-compliance-screen.md) | Screen a digital asset on both thesis quality and AML red flags |
+| [travel-rule-compliance-review](travel-rule-compliance-review.md) | Assess Travel Rule readiness and per-transfer data completeness; severity-rated gap table with remediation owners |
+| [vasp-counterparty-assessment](vasp-counterparty-assessment.md) | Score a counterparty VASP/DASP on licensing, ownership, controls, enforcement, and nested exposure — observed vs claimed evidence |
+| [stablecoin-reserve-review](stablecoin-reserve-review.md) | Review a stablecoin issuer's reserve attestations, composition, redemption terms, and depeg risk |
+| [bridge-mixer-exposure-playbook](bridge-mixer-exposure-playbook.md) | Disposition mixer, bridge, and privacy-protocol exposure — typing, materiality, sanctioned-service handling, clear vs escalate |
 
 Every prompt is a standalone copy/paste tool — see the [prompt catalog](../README.md) for how the files are built and the [repository overview](../../README.md) for the full toolkit.

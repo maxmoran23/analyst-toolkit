@@ -2,6 +2,11 @@
 
 All notable changes to `quant-jvm` are recorded here. This changelog tracks parity with `../quant/` (Python) — when a Python module changes, the corresponding entry here records the Kotlin re-port.
 
+## [0.2.1] — 2026-07-17
+
+### Removed
+- `gradle-wrapper.jar`, `gradlew`, `gradlew.bat` — executable wrapper artifacts removed so the repository's "Download ZIP" passes enterprise secure-web-gateway policies that block archives containing JARs or batch scripts. The Gradle version stays pinned in `gradle/wrapper/gradle-wrapper.properties`; build with an installed `gradle` (CI provisions Gradle 8.10.2 explicitly), or run `gradle wrapper` locally to regenerate a wrapper. Historical `./gradlew` commands in earlier entries reflect the toolchain at that time.
+
 ## [0.1.0] — 2026-05-26
 
 Initial scaffold.

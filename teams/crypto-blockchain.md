@@ -28,6 +28,10 @@ This team answers a narrow but high-volume question: given a blockchain address,
 | Build a sourced evidence annex from a block explorer | block-explorer-osint | prompt | [../prompts/blockchain/block-explorer-osint.md](../prompts/blockchain/block-explorer-osint.md) |
 | Assess a DeFi protocol | defi-protocol-risk | prompt | [../prompts/blockchain/defi-protocol-risk.md](../prompts/blockchain/defi-protocol-risk.md) |
 | Screen a token/project | token-compliance-screen | prompt | [../prompts/blockchain/token-compliance-screen.md](../prompts/blockchain/token-compliance-screen.md) |
+| Assess Travel Rule readiness and transfer data completeness | travel-rule-compliance-review | prompt | [../prompts/blockchain/travel-rule-compliance-review.md](../prompts/blockchain/travel-rule-compliance-review.md) |
+| Risk-assess a counterparty VASP | vasp-counterparty-assessment | prompt | [../prompts/blockchain/vasp-counterparty-assessment.md](../prompts/blockchain/vasp-counterparty-assessment.md) |
+| Review a stablecoin issuer's reserves | stablecoin-reserve-review | prompt | [../prompts/blockchain/stablecoin-reserve-review.md](../prompts/blockchain/stablecoin-reserve-review.md) |
+| Disposition mixer/bridge exposure in an alert | bridge-mixer-exposure-playbook | prompt | [../prompts/blockchain/bridge-mixer-exposure-playbook.md](../prompts/blockchain/bridge-mixer-exposure-playbook.md) |
 | Classify a blockchain entity type | blockchain-entity-typologies | reference | [../reference/blockchain-entity-typologies.md](../reference/blockchain-entity-typologies.md) |
 | See a finished fund-flow trace | fund-flow-tracing-sample | sample | [../samples/compliance/fund-flow-tracing-sample.md](../samples/compliance/fund-flow-tracing-sample.md) |
 

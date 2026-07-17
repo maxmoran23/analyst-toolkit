@@ -48,7 +48,7 @@ is most of what you need to navigate it.
 ### Prompts — the analyst's method, written down
 A prompt is a self-contained page you paste into an AI assistant. It carries the method
 (how to think about the task), the scoring rubric, the required output structure, and
-the quality bar. There are 70 of them across 13 categories. You fill in a few
+the quality bar. There are 78 of them across 14 categories. You fill in a few
 blanks (the entity, the document, the date) and run it. The work product is the prompt
 itself — the discipline is baked in, so two different people get comparably rigorous
 output. *What you'd use it for: any one-off analytical task — assess this counterparty,

@@ -52,6 +52,10 @@
     "specialty": {
       "audience": "Analysts doing focused quantitative work: expected value, position sizing, local-market analytics.",
       "question": "What is the edge, and how much should be staked on it?"
+    },
+    "automation": {
+      "audience": "Any analyst or team running repeatable communications-driven workflows.",
+      "question": "How do I turn raw email and chat material into structured, continuously-maintained files without redoing the work each run?"
     }
   }
 }

@@ -1,6 +1,6 @@
 # Prompts
 
-70 paste-ready analytical prompt templates across 13 categories. Each one turns an AI assistant into a specific kind of analyst — an entity risk reviewer, a sanctions or PEP screener, a transaction-monitoring analyst, a fraud investigator, a surveillance reviewer, a control tester, a data-governance analyst, a new-product risk assessor, a blockchain investigator, a regulatory monitor, a deep researcher — with a defined method, a scoring rubric, and a structured output format.
+78 paste-ready analytical prompt templates across 14 categories. Each one turns an AI assistant into a specific kind of analyst — an entity risk reviewer, a sanctions or PEP screener, a transaction-monitoring analyst, a fraud investigator, a surveillance reviewer, a control tester, a data-governance analyst, a new-product risk assessor, a blockchain investigator, a regulatory monitor, a deep researcher, a communications-automation pipeline builder — with a defined method, a scoring rubric, and a structured output format.
 
 **The two-file rule.** Every prompt block here is fully self-contained as pasted — no other file is required at run time. The only companion that ever adds anything is [`../BASE.md`](../BASE.md) (the audit-defensible voice, the quality floor, and the Word / Excel / PDF / HTML renderer in one document). One prompt + `BASE.md` is the entire quality system; there is never a third file, and CI enforces it. Links inside these files are browse-time navigation only — each file states this in its **Run-time needs** row and its run-time contract footer.
 
@@ -67,6 +67,10 @@ The financial-crime files cover a full analytical lifecycle: **detect** → **mo
 - **[block-explorer-osint](blockchain/block-explorer-osint.md)** — convert public block-explorer data into a provenance-stamped evidence annex: source and retrieval date on every fact, reconciliation tie-out, observation-vs-attribution firewall
 - **[defi-protocol-risk](blockchain/defi-protocol-risk.md)** — score a DeFi protocol on TVL, yield, contract, governance, and bridge risk
 - **[token-compliance-screen](blockchain/token-compliance-screen.md)** — screen a digital asset on both thesis quality and AML red flags
+- **[travel-rule-compliance-review](blockchain/travel-rule-compliance-review.md)** — assess Travel Rule readiness and per-transfer originator/beneficiary data completeness against FATF R.16; gap table with severity and remediation owner
+- **[vasp-counterparty-assessment](blockchain/vasp-counterparty-assessment.md)** — scored counterparty VASP/DASP risk assessment: licensing, ownership, controls signals, nested exposure, with observed-vs-claimed evidence discipline
+- **[stablecoin-reserve-review](blockchain/stablecoin-reserve-review.md)** — review a stablecoin issuer's reserve attestations: assurance grading, composition ladder, redemption terms, regime placement, depeg indicators
+- **[bridge-mixer-exposure-playbook](blockchain/bridge-mixer-exposure-playbook.md)** — disposition mixer, bridge, and privacy-protocol exposure in alerts: exposure typing, hop-and-value materiality, sanctioned-service handling, clear-vs-escalate documentation standard
 
 ### [`regulatory/`](regulatory/) — regulatory landscape & obligations
 - **[regulatory-intelligence-scan](regulatory/regulatory-intelligence-scan.md)** — severity-rated briefing on what changed in a regulatory landscape
@@ -99,6 +103,13 @@ The product-risk committee workflow, end to end: assess before launch, verify re
 - **[npa-risk-assessment](npa/npa-risk-assessment.md)** — nine-factor financial-crime risk assessment of a proposed product; tier with raise-only floors, mandatory pre-launch conditions, approval routing
 - **[product-launch-readiness](npa/product-launch-readiness.md)** — verify every approval condition against actual evidence; GO / GO-WITH-CONDITIONS / NO-GO with launch-blocking classification
 - **[post-implementation-review](npa/post-implementation-review.md)** — projected-vs-observed comparison at the committed review date; condition compliance, new risks since launch, close / extend / remediate / escalate
+
+### [`automation/`](automation/) — communications automation & maintained artifacts
+Backend, repeatable pipelines — these prompts build and *maintain* structured artifacts across repeated runs (deterministic IDs, incremental deltas, byte-preserved unchanged content), unlike the one-off summaries in `briefs/`.
+- **[email-thread-structured-extraction](automation/email-thread-structured-extraction.md)** — one thread or export in, a rigorously structured record out: participants, timeline, commitments, decisions, embedded tables re-emitted clean, quoted-reply deduplication
+- **[comms-driven-report-refresh](automation/comms-driven-report-refresh.md)** — surgically update an existing report from new communications: changed-sections-only diff, update log, unchanged sections byte-preserved
+- **[chat-history-index](automation/chat-history-index.md)** — normalize any chat or Teams-style export into a per-conversation markdown archive with thread reconstruction and an incremental mode
+- **[recurring-review-pipeline-spec](automation/recurring-review-pipeline-spec.md)** — meta-prompt: turn a description of a recurring review process into a full assistant-run pipeline spec (inputs, cadence, extraction rules, outputs, refresh rules, quality checks)
 
 ### [`research/`](research/) — deep research and idea work
 - **[deep-research-storm](research/deep-research-storm.md)** — multi-perspective deep research into a cited long-form article

@@ -80,10 +80,15 @@ jobs:
         with:
           distribution: temurin
           java-version: "21"
-          cache: gradle
+      # The repo deliberately ships no gradle-wrapper.jar/gradlew/gradlew.bat —
+      # executable archive members trip enterprise download gateways (see
+      # quant-jvm/README.md). CI provisions the pinned Gradle version instead.
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "8.10.2"
       - name: Kotlin / Python parity suite
         working-directory: quant-jvm
-        run: ./gradlew test --no-daemon
+        run: gradle test --no-daemon
 
   presentation-preservation:
     runs-on: ubuntu-latest
@@ -208,3 +213,18 @@ jobs:
         run: |
           cd frameworks/fraud-detection
           python3 run_validation.py --seed 42 --transactions 50000 --trials 6 --no-write
+
+  reference-data:
+    # Same philosophy as `evidence`, applied to the committed sample inputs: each
+    # framework's reference-data/ pack must be exactly what its own seeded
+    # generator produces at the registered small sizes. A pack that no longer
+    # reproduces byte-identically fails the build, naming the file that drifted.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Committed reference-data packs re-derive from seed (byte-identical)
+        run: python3 _tooling/build_reference_data.py --check

@@ -74,6 +74,7 @@ read one you can navigate any other:
 | `tuning.md` | How to recalibrate the operating point for a real environment. |
 | `DEPLOYMENT.md` | How the engine maps onto a Microsoft Copilot Studio / Power Platform deployment. |
 | `evidence/` | The committed real-run output: validation report, metrics JSON, threshold sweep, confusion matrix, run manifest. |
+| `reference-data/` | A small committed sample of the engine's input (roughly 1-5% of validation scale), produced by the same seeded generator, plus a README documenting each file's schema. Rebuilt by `_tooling/build_reference_data.py`; CI verifies it re-derives byte-identically. Makes every package self-contained for a reader who never runs the generator. |
 | `data/` | `.gitignore`d — regenerated from seed, never committed. Credibility is reproduction-from-seed, not data-in-repo. |
 
 Shared across the pillar:

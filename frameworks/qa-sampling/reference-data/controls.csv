@@ -1,0 +1,13 @@
+control_id,name,scenario,population,confidence,tolerable_rate,expected_rate,true_rate,planted_stratum
+CTRL-000,alert disposition rationale documented,clean,250,0.95,0.04,0.0082,0.008,
+CTRL-001,alert disposition rationale documented,failing,250,0.95,0.08,0.0212,0.164,
+CTRL-002,exception approved before processing,boundary,250,0.95,0.06,0.0213,0.06,
+CTRL-003,periodic review completed on schedule,planted,250,0.95,0.08,0.032,0.38,operations
+CTRL-004,sanctions screening evidence retained,clean,250,0.95,0.08,0.0268,0.008,
+CTRL-005,high-risk relationship approval obtained,failing,250,0.95,0.05,0.0181,0.144,
+CTRL-006,sanctions screening evidence retained,boundary,250,0.95,0.04,0.0101,0.044,
+CTRL-007,annual training completion recorded,planted,250,0.95,0.1,0.037,0.288,digital-channel
+CTRL-008,exception approved before processing,clean,250,0.95,0.04,0.0133,0.0,
+CTRL-009,annual training completion recorded,failing,250,0.95,0.1,0.0231,0.288,
+CTRL-010,exception approved before processing,boundary,250,0.95,0.1,0.0314,0.092,
+CTRL-011,user access recertification performed,planted,250,0.95,0.06,0.0132,0.348,commercial

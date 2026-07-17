@@ -10,6 +10,7 @@ the template supplies the structure.
 |------|------------|
 | `html-email-template.md` | A design system for HTML emails — dark header, indigo accent, table-based layout that renders reliably across email clients. Includes a color palette, typography scale, a copy-paste base template, a component library (data tables, severity badges, callout boxes, metric rows, checklists), and example section layouts for daily briefs, digests, weekly reviews, and report deliveries. |
 | `structured-update-formatting.md` | A formatting standard for posting a status update or analytical finding to a team channel (Slack, Teams, Discord, a wiki). Covers the header line, summary dashboard, score bars, finding cards, data tables, alerts, threading discipline, and persistent-dashboard formatting — all in plain markdown that renders anywhere. |
+| `eml_composer.py` | A runnable, stdlib-only Python composer: reads a JSON spec (array of drafts — to/cc/bcc/subject/text and optional HTML body, reply-threading headers) and writes one RFC 5322 `.eml` file per draft, openable as an editable draft in any standards-compliant mail client. Deterministic output (no auto-generated Date or Message-ID, fixed MIME boundaries) so re-runs are diffable. `--sample` prints a demo spec. Drafts only — it contains no sending code. |
 
 ## How to use with an AI assistant
 

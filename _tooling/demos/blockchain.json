@@ -28,6 +28,39 @@
       ]
     ]
   },
+  "bridge-mixer-exposure-playbook.md": {
+    "scenario": "A Harborview Financial Group alert analyst dispositions a monitoring alert on a customer withdrawal address showing two-hop upstream mixer exposure plus a bridge crossing in the same path, with the mixer's designation status known only from an internal blocklist entry.",
+    "fills": [
+      [
+        "internal reference",
+        "Alert HV-TM-2026-0412, open investigation ref INV-2026-077. Subject: customer withdrawal address 0x9e2f7a1c4b8d0e3a6f9c2b5d8e1a4f7c0b3d6e9a"
+      ],
+      [
+        "chain",
+        "ETH on Ethereum mainnet; one exposure path crosses to a second EVM chain via the fictional 'SpanPort' bridge"
+      ],
+      [
+        "what fired",
+        "Monitoring rule MIX-02 fired: indirect mixer exposure detected upstream of a customer withdrawal address within the 30-day window. Customer is a retail brokerage client in good standing, 14 months tenure, no prior alerts. Generic context only — no client identifiers included here"
+      ],
+      [
+        "exposure evidence",
+        "Vendor tracing-tool export, run 2026-02-09 (screenshots transcribed):\nEXPOSURE E1 — mixer, upstream, 2 hops:\n  path: TumbleWorks mixer pool (tool label) -> 0x5b8e2d9f1a4c7e0b3d6f9a2c5e8b1d4f7a0c3e6b -> 0x2d7f4a9c1e6b8d0f3a5c7e9b2d4f6a8c0e1b3d5f -> subject 0x9e2f...6e9a\n  value at subject leg: 3.2 ETH received 2026-01-28; subject's total inflows in the 30-day window: 52.4 ETH (tool denominator)\nEXPOSURE E2 — bridge crossing, downstream, direct:\n  subject sent 5.0 ETH on 2026-02-01 to the SpanPort bridge deposit contract; tool attributes a continuation on the destination chain to address 0x7c3e9b5d1f8a2c4e6b0d9f3a5c7e1b4d8f0a2c6e via the bridge's own event log; no obfuscation-capable service identified within 3 hops of the destination-side address\nNo other mixer, bridge, or privacy-protocol contact within 3 hops in the window."
+      ],
+      [
+        "designation status",
+        "TumbleWorks appears on Harborview's internal high-risk service blocklist (entry dated 2025-08) with no sanctions-list source recorded on the entry; whether TumbleWorks is currently designated on any sanctions list has NOT been verified this session. SpanPort bridge: no designation known; status unknown."
+      ],
+      [
+        "materiality thresholds",
+        ""
+      ],
+      [
+        "prior disposition",
+        ""
+      ]
+    ]
+  },
   "defi-protocol-risk.md": {
     "scenario": "A digital-asset counterparty team at Harborview screens a mid-cap lending protocol before allowing a client to route treasury yield through it.",
     "fills": [
@@ -107,6 +140,31 @@
       ]
     ]
   },
+  "stablecoin-reserve-review.md": {
+    "scenario": "A Harborview Financial Group treasury analyst reviews HUSD, a fictional dollar stablecoin the firm accepts for settlement, pasting the issuer's latest monthly attestation extract and the redemption page before renewing the acceptance decision.",
+    "fills": [
+      [
+        "stablecoin",
+        "HUSD, issued by Halcyon Digital Issuer LLC (fictional) — the coin is marketed as 'HUSD by Halcyon'"
+      ],
+      [
+        "treasury",
+        "Treasury exposure review: Harborview Financial Group accepts HUSD for client settlement and currently holds a working balance; annual renewal of the acceptance decision is due"
+      ],
+      [
+        "DATE",
+        "2026-02-10"
+      ],
+      [
+        "attestation",
+        "Extract from Halcyon's January 2026 reserve report (published 2026-02-03, retrieved 2026-02-09):\n- 'Independent accountant's report on management's assertion' — describes agreed-upon procedures applied to reserve account balances as of 2026-01-31, 23:59 UTC. Marketing page headline: 'audited monthly'.\n- Reserve breakdown as of 2026-01-31, total USD 1,842,000,000 against 1,839,500,000 HUSD outstanding:\n  - US Treasury bills (maturity under 90 days): 61%\n  - Overnight reverse repo collateralized by US government securities: 12%\n  - Cash at two US banks (one named, one 'other depository institutions'): 16%\n  - Certificates of deposit: 4%\n  - 'Other short-term investments': 7%\n- Redemption page (retrieved 2026-02-09): direct redemption limited to 'verified institutional customers' with a USD 100,000 minimum; 0.1% redemption fee; settlement 'typically within two business days'; Halcyon 'may suspend or delay redemptions during periods of market disruption or as required by law'; redemption unavailable to persons in listed jurisdictions.\n- Regime statement on the issuer's site: 'operating in compliance with applicable US federal stablecoin requirements' — no license or registration number cited.\n- Market observation (public price aggregator, retrieved 2026-02-09): HUSD traded at 0.9931 for roughly 36 hours in November 2025 during a banking-sector headline, then recovered to peg; no other sustained deviations in the trailing year."
+      ],
+      [
+        "last review",
+        ""
+      ]
+    ]
+  },
   "token-compliance-screen.md": {
     "scenario": "A listings/treasury review at Harborview screens an emerging token a client wants exposure to, before any custody or settlement decision.",
     "fills": [
@@ -129,6 +187,68 @@
       [
         "last screen",
         "None — first screen of NMB. No prior score to diff against; baseline."
+      ]
+    ]
+  },
+  "travel-rule-compliance-review.md": {
+    "scenario": "A Harborview Financial Group compliance officer runs a combined program-and-sample Travel Rule review of Meridian Digital Exchange ahead of onboarding it as a transfer counterparty, using Meridian's questionnaire responses and a 6-transfer pilot-corridor sample.",
+    "fills": [
+      [
+        "institution or VASP",
+        "Meridian Digital Exchange (counterparty under pre-onboarding review by Harborview Financial Group — not our own program)"
+      ],
+      [
+        "PER-TRANSFER",
+        "BOTH — program-level readiness plus a per-transfer test of the 6-transfer pilot-corridor sample below"
+      ],
+      [
+        "jurisdictions",
+        "US (FinCEN funds-transfer rules as applied to convertible virtual currency) and the EU Transfer of Funds Regulation — Meridian claims registrations in both; verify current status of each threshold and field list as part of the review"
+      ],
+      [
+        "DATE",
+        "2026-02-10"
+      ],
+      [
+        "transfer records",
+        "Pilot corridor sample (Harborview -> Meridian outbound unless noted), from the pilot log retrieved 2026-02-09:\nT1 OUT 2026-01-12 0.85 ETH — originator: name J.R., wallet 0x4c1a9e7b2d5f8a0c3e6b9d1f4a7c0e2b5d8f1a3c, customer ID HV-88213, physical address transmitted. Beneficiary: name present, wallet present. Counterparty VASP: Meridian (identified via messaging protocol).\nT2 OUT 2026-01-14 2.10 ETH — originator: name M.T., wallet present, customer ID present, address transmitted. Beneficiary: name present, wallet present. Counterparty VASP identified.\nT3 OUT 2026-01-19 0.28 ETH — below-threshold transfer per Meridian's configuration; no data transmitted. Wallet-to-wallet fields only.\nT4 IN 2026-01-21 1.40 ETH — received from Meridian; beneficiary (our customer) name present; originator name field arrived as 'CUST' (truncated), originator wallet present, no address/ID field.\nT5 IN 2026-01-26 3.75 ETH — received from Meridian; originator name present; originator wallet present; no third originator field received.\nT6 OUT 2026-01-30 0.95 ETH — sent to a wallet Meridian's tool flagged as possibly non-custodial; sent anyway with standard fields; no ownership verification recorded."
+      ],
+      [
+        "program documentation",
+        "From Meridian's counterparty questionnaire (received 2026-02-02) and its public policy summary:\n- Uses a commercial Travel Rule messaging solution; questionnaire claims coverage of 'all major counterparty VASPs'; no interoperability evidence attached.\n- Threshold configured at USD 3,000 equivalent for US-nexus transfers; questionnaire states no aggregation of related transfers is performed.\n- Inbound handling: questionnaire describes a hold-and-request procedure for incomplete inbound data; the public policy summary does not mention it.\n- Sunrise handling: questionnaire states 'we transmit where the counterparty can receive'; no documented procedure for corridors where it cannot.\n- Non-custodial wallets: policy summary says transfers to self-hosted wallets are permitted with a risk-based review above USD 1,000; no procedure document provided.\n- Counterparty VASP due diligence: questionnaire references an annual review of top-20 counterparties by volume; no records provided.\n- Retention: 5 years claimed for transmitted data; data-protection handling not described."
+      ],
+      [
+        "prior review",
+        ""
+      ]
+    ]
+  },
+  "vasp-counterparty-assessment.md": {
+    "scenario": "Harborview Financial Group's digital-asset risk team scores Meridian Digital Exchange before approving it as a standing transfer counterparty, working from Meridian's questionnaire, two register checks, and a screening summary.",
+    "fills": [
+      [
+        "VASP/DASP",
+        "Meridian Digital Exchange Ltd (trading as 'Meridian'), primary domain meridian-digital.example"
+      ],
+      [
+        "pre-onboarding",
+        "Pre-onboarding as a standing transfer counterparty for Harborview Financial Group's digital-asset settlement flows"
+      ],
+      [
+        "DATE",
+        "2026-02-10"
+      ],
+      [
+        "jurisdictions",
+        "US (Harborview's operating base), EU (Meridian claims a MiCA-era authorization for its Irish affiliate), and the Cayman Islands (Meridian's stated place of incorporation)"
+      ],
+      [
+        "questionnaire",
+        "From the onboarding file (assembled 2026-02-08):\n- Register checks performed by Harborview: US FinCEN MSB registration for Meridian Digital Exchange Ltd CONFIRMED on the public MSB registry, checked 2026-02-08. EU: no entry found for 'Meridian' on the Irish regulator's public register, checked 2026-02-08; Meridian's questionnaire says the authorization is 'in final approval'.\n- Questionnaire: Meridian states full KYC on all tiers, no privacy-coin listings, and an institutional omnibus product ('Meridian Prime') serving 'a small number of vetted platforms'.\n- Screening summary (vendor tool, run 2026-02-07): one 2023 state-level consent order against Meridian Digital Exchange Ltd for BSA program deficiencies, civil penalty paid, matter closed; no current sanctions or watchlist hits on the entity or named directors.\n- Ownership: questionnaire names two individual founders (58% combined) and a venture fund (31%); no public filing located that confirms the split.\n- Transparency page: quarterly proof-of-reserves 'attested by an independent accountant'; the linked report describes agreed-upon procedures on exchange wallet balances as of quarter-end.\n- Prior on-chain work: none on file for Meridian's hot wallets."
+      ],
+      [
+        "last assessment",
+        ""
       ]
     ]
   }

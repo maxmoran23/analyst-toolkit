@@ -1,0 +1,902 @@
+{
+  "CUSTOMER-000000": {
+    "customer_id": "CUSTOMER-000000",
+    "expected_amount": 621.6,
+    "expected_transaction_count_10m": 3.0,
+    "tenure_days": 2187
+  },
+  "CUSTOMER-000001": {
+    "customer_id": "CUSTOMER-000001",
+    "expected_amount": 427.95,
+    "expected_transaction_count_10m": 2.0,
+    "tenure_days": 1659
+  },
+  "CUSTOMER-000002": {
+    "customer_id": "CUSTOMER-000002",
+    "expected_amount": 403.35,
+    "expected_transaction_count_10m": 2.0,
+    "tenure_days": 189
+  },
+  "CUSTOMER-000003": {
+    "customer_id": "CUSTOMER-000003",
+    "expected_amount": 574.98,
+    "expected_transaction_count_10m": 1.0,
+    "tenure_days": 731
+  },
+  "CUSTOMER-000004": {
+    "customer_id": "CUSTOMER-000004",
+    "expected_amount": 327.3,
+    "expected_transaction_count_10m": 2.0,
+    "tenure_days": 1382
+  },
+  "CUSTOMER-000005": {
+    "customer_id": "CUSTOMER-000005",
+    "expected_amount": 459.27,
+    "expected_transaction_count_10m": 3.0,
+    "tenure_days": 2583
+  },
+  "CUSTOMER-000006": {
+    "customer_id": "CUSTOMER-000006",
+    "expected_amount": 173.19,
+    "expected_transaction_count_10m": 1.0,
+    "tenure_days": 202
+  },
+  "CUSTOMER-000007": {
+    "customer_id": "CUSTOMER-000007",
+    "expected_amount": 76.45,
+    "expected_transaction_count_10m": 1.0,
+    "tenure_days": 2736
+  },
+  "CUSTOMER-000008": {
+    "customer_id": "CUSTOMER-000008",
+    "expected_amount": 577.67,
+    "expected_transaction_count_10m": 2.0,
+    "tenure_days": 3902
+  },
+  "CUSTOMER-000009": {
+    "customer_id": "CUSTOMER-000009",
+    "expected_amount": 295.5,
+    "expected_transaction_count_10m": 2.0,
+    "tenure_days": 473
+  },
+  "CUSTOMER-000010": {
+    "customer_id": "CUSTOMER-000010",
+    "expected_amount": 102.2,
+    "expected_transaction_count_10m": 1.0,
+    "tenure_days": 1588
+  },
+  "CUSTOMER-000011": {
+    "customer_id": "CUSTOMER-000011",
+    "expected_amount": 564.73,
+    "expected_transaction_count_10m": 2.0,
+    "tenure_days": 832
+  },
+  "CUSTOMER-000012": {
+    "customer_id": "CUSTOMER-000012",
+    "expected_amount": 333.67,
+    "expected_transaction_count_10m": 1.0,
+    "tenure_days": 3315
+  },
+  "CUSTOMER-000013": {
+    "customer_id": "CUSTOMER-000013",
+    "expected_amount": 516.77,
+    "expected_transaction_count_10m": 3.0,
+    "tenure_days": 4016
+  },
+  "CUSTOMER-000014": {
+    "customer_id": "CUSTOMER-000014",
+    "expected_amount": 227.87,
+    "expected_transaction_count_10m": 1.0,
+    "tenure_days": 4815
+  },
+  "CUSTOMER-000015": {
+    "customer_id": "CUSTOMER-000015",
+    "expected_amount": 149.28,
+    "expected_transaction_count_10m": 2.0,
+    "tenure_days": 586
+  },
+  "CUSTOMER-000016": {
+    "customer_id": "CUSTOMER-000016",
+    "expected_amount": 59.44,
+    "expected_transaction_count_10m": 1.0,
+    "tenure_days": 3464
+  },
+  "CUSTOMER-000017": {
+    "customer_id": "CUSTOMER-000017",
+    "expected_amount": 181.79,
+    "expected_transaction_count_10m": 2.0,
+    "tenure_days": 1102
+  },
+  "CUSTOMER-000018": {
+    "customer_id": "CUSTOMER-000018",
+    "expected_amount": 417.01,
+    "expected_transaction_count_10m": 2.0,
+    "tenure_days": 849
+  },
+  "CUSTOMER-000019": {
+    "customer_id": "CUSTOMER-000019",
+    "expected_amount": 262.26,
+    "expected_transaction_count_10m": 1.0,
+    "tenure_days": 3619
+  },
+  "CUSTOMER-000020": {
+    "customer_id": "CUSTOMER-000020",
+    "expected_amount": 445.74,
+    "expected_transaction_count_10m": 2.0,
+    "tenure_days": 2482
+  },
+  "CUSTOMER-000021": {
+    "customer_id": "CUSTOMER-000021",
+    "expected_amount": 208.28,
+    "expected_transaction_count_10m": 1.0,
+    "tenure_days": 2838
+  },
+  "CUSTOMER-000022": {
+    "customer_id": "CUSTOMER-000022",
+    "expected_amount": 205.16,
+    "expected_transaction_count_10m": 1.0,
+    "tenure_days": 2762
+  },
+  "CUSTOMER-000023": {
+    "customer_id": "CUSTOMER-000023",
+    "expected_amount": 81.27,
+    "expected_transaction_count_10m": 3.0,
+    "tenure_days": 1251
+  },
+  "CUSTOMER-000024": {
+    "customer_id": "CUSTOMER-000024",
+    "expected_amount": 608.85,
+    "expected_transaction_count_10m": 1.0,
+    "tenure_days": 2961
+  },
+  "CUSTOMER-000025": {
+    "customer_id": "CUSTOMER-000025",
+    "expected_amount": 604.34,
+    "expected_transaction_count_10m": 1.0,
+    "tenure_days": 1361
+  },
+  "CUSTOMER-000026": {
+    "customer_id": "CUSTOMER-000026",
+    "expected_amount": 516.17,
+    "expected_transaction_count_10m": 2.0,
+    "tenure_days": 2062
+  },
+  "CUSTOMER-000027": {
+    "customer_id": "CUSTOMER-000027",
+    "expected_amount": 318.09,
+    "expected_transaction_count_10m": 1.0,
+    "tenure_days": 1894
+  },
+  "CUSTOMER-000028": {
+    "customer_id": "CUSTOMER-000028",
+    "expected_amount": 206.66,
+    "expected_transaction_count_10m": 3.0,
+    "tenure_days": 4203
+  },
+  "CUSTOMER-000029": {
+    "customer_id": "CUSTOMER-000029",
+    "expected_amount": 195.65,
+    "expected_transaction_count_10m": 2.0,
+    "tenure_days": 2204
+  },
+  "CUSTOMER-000030": {
+    "customer_id": "CUSTOMER-000030",
+    "expected_amount": 349.53,
+    "expected_transaction_count_10m": 2.0,
+    "tenure_days": 4753
+  },
+  "CUSTOMER-000031": {
+    "customer_id": "CUSTOMER-000031",
+    "expected_amount": 613.26,
+    "expected_transaction_count_10m": 3.0,
+    "tenure_days": 1644
+  },
+  "CUSTOMER-000032": {
+    "customer_id": "CUSTOMER-000032",
+    "expected_amount": 111.64,
+    "expected_transaction_count_10m": 1.0,
+    "tenure_days": 4184
+  },
+  "CUSTOMER-000033": {
+    "customer_id": "CUSTOMER-000033",
+    "expected_amount": 443.93,
+    "expected_transaction_count_10m": 2.0,
+    "tenure_days": 1455
+  },
+  "CUSTOMER-000034": {
+    "customer_id": "CUSTOMER-000034",
+    "expected_amount": 518.24,
+    "expected_transaction_count_10m": 2.0,
+    "tenure_days": 2669
+  },
+  "CUSTOMER-000035": {
+    "customer_id": "CUSTOMER-000035",
+    "expected_amount": 87.15,
+    "expected_transaction_count_10m": 2.0,
+    "tenure_days": 2775
+  },
+  "CUSTOMER-000036": {
+    "customer_id": "CUSTOMER-000036",
+    "expected_amount": 63.42,
+    "expected_transaction_count_10m": 2.0,
+    "tenure_days": 626
+  },
+  "CUSTOMER-000037": {
+    "customer_id": "CUSTOMER-000037",
+    "expected_amount": 185.05,
+    "expected_transaction_count_10m": 3.0,
+    "tenure_days": 75
+  },
+  "CUSTOMER-000038": {
+    "customer_id": "CUSTOMER-000038",
+    "expected_amount": 624.15,
+    "expected_transaction_count_10m": 2.0,
+    "tenure_days": 3835
+  },
+  "CUSTOMER-000039": {
+    "customer_id": "CUSTOMER-000039",
+    "expected_amount": 642.55,
+    "expected_transaction_count_10m": 2.0,
+    "tenure_days": 2629
+  },
+  "CUSTOMER-000040": {
+    "customer_id": "CUSTOMER-000040",
+    "expected_amount": 592.72,
+    "expected_transaction_count_10m": 2.0,
+    "tenure_days": 1333
+  },
+  "CUSTOMER-000041": {
+    "customer_id": "CUSTOMER-000041",
+    "expected_amount": 513.27,
+    "expected_transaction_count_10m": 2.0,
+    "tenure_days": 1989
+  },
+  "CUSTOMER-000042": {
+    "customer_id": "CUSTOMER-000042",
+    "expected_amount": 84.56,
+    "expected_transaction_count_10m": 1.0,
+    "tenure_days": 1924
+  },
+  "CUSTOMER-000043": {
+    "customer_id": "CUSTOMER-000043",
+    "expected_amount": 290.7,
+    "expected_transaction_count_10m": 1.0,
+    "tenure_days": 3471
+  },
+  "CUSTOMER-000044": {
+    "customer_id": "CUSTOMER-000044",
+    "expected_amount": 38.63,
+    "expected_transaction_count_10m": 1.0,
+    "tenure_days": 2476
+  },
+  "CUSTOMER-000045": {
+    "customer_id": "CUSTOMER-000045",
+    "expected_amount": 526.92,
+    "expected_transaction_count_10m": 1.0,
+    "tenure_days": 4029
+  },
+  "CUSTOMER-000046": {
+    "customer_id": "CUSTOMER-000046",
+    "expected_amount": 551.91,
+    "expected_transaction_count_10m": 1.0,
+    "tenure_days": 4405
+  },
+  "CUSTOMER-000047": {
+    "customer_id": "CUSTOMER-000047",
+    "expected_amount": 195.0,
+    "expected_transaction_count_10m": 1.0,
+    "tenure_days": 1763
+  },
+  "CUSTOMER-000048": {
+    "customer_id": "CUSTOMER-000048",
+    "expected_amount": 495.65,
+    "expected_transaction_count_10m": 1.0,
+    "tenure_days": 2896
+  },
+  "CUSTOMER-000049": {
+    "customer_id": "CUSTOMER-000049",
+    "expected_amount": 128.72,
+    "expected_transaction_count_10m": 1.0,
+    "tenure_days": 3909
+  },
+  "CUSTOMER-000050": {
+    "customer_id": "CUSTOMER-000050",
+    "expected_amount": 627.7,
+    "expected_transaction_count_10m": 3.0,
+    "tenure_days": 968
+  },
+  "CUSTOMER-000051": {
+    "customer_id": "CUSTOMER-000051",
+    "expected_amount": 593.44,
+    "expected_transaction_count_10m": 2.0,
+    "tenure_days": 3279
+  },
+  "CUSTOMER-000052": {
+    "customer_id": "CUSTOMER-000052",
+    "expected_amount": 557.93,
+    "expected_transaction_count_10m": 2.0,
+    "tenure_days": 1021
+  },
+  "CUSTOMER-000053": {
+    "customer_id": "CUSTOMER-000053",
+    "expected_amount": 346.17,
+    "expected_transaction_count_10m": 1.0,
+    "tenure_days": 133
+  },
+  "CUSTOMER-000054": {
+    "customer_id": "CUSTOMER-000054",
+    "expected_amount": 317.74,
+    "expected_transaction_count_10m": 1.0,
+    "tenure_days": 3597
+  },
+  "CUSTOMER-000055": {
+    "customer_id": "CUSTOMER-000055",
+    "expected_amount": 320.9,
+    "expected_transaction_count_10m": 3.0,
+    "tenure_days": 4883
+  },
+  "CUSTOMER-000056": {
+    "customer_id": "CUSTOMER-000056",
+    "expected_amount": 320.8,
+    "expected_transaction_count_10m": 2.0,
+    "tenure_days": 3134
+  },
+  "CUSTOMER-000057": {
+    "customer_id": "CUSTOMER-000057",
+    "expected_amount": 244.31,
+    "expected_transaction_count_10m": 2.0,
+    "tenure_days": 2293
+  },
+  "CUSTOMER-000058": {
+    "customer_id": "CUSTOMER-000058",
+    "expected_amount": 501.27,
+    "expected_transaction_count_10m": 3.0,
+    "tenure_days": 3930
+  },
+  "CUSTOMER-000059": {
+    "customer_id": "CUSTOMER-000059",
+    "expected_amount": 184.63,
+    "expected_transaction_count_10m": 3.0,
+    "tenure_days": 4794
+  },
+  "CUSTOMER-000060": {
+    "customer_id": "CUSTOMER-000060",
+    "expected_amount": 467.26,
+    "expected_transaction_count_10m": 1.0,
+    "tenure_days": 2541
+  },
+  "CUSTOMER-000061": {
+    "customer_id": "CUSTOMER-000061",
+    "expected_amount": 489.24,
+    "expected_transaction_count_10m": 1.0,
+    "tenure_days": 4859
+  },
+  "CUSTOMER-000062": {
+    "customer_id": "CUSTOMER-000062",
+    "expected_amount": 256.94,
+    "expected_transaction_count_10m": 1.0,
+    "tenure_days": 145
+  },
+  "CUSTOMER-000063": {
+    "customer_id": "CUSTOMER-000063",
+    "expected_amount": 112.66,
+    "expected_transaction_count_10m": 2.0,
+    "tenure_days": 870
+  },
+  "CUSTOMER-000064": {
+    "customer_id": "CUSTOMER-000064",
+    "expected_amount": 190.27,
+    "expected_transaction_count_10m": 2.0,
+    "tenure_days": 964
+  },
+  "CUSTOMER-000065": {
+    "customer_id": "CUSTOMER-000065",
+    "expected_amount": 533.85,
+    "expected_transaction_count_10m": 1.0,
+    "tenure_days": 727
+  },
+  "CUSTOMER-000066": {
+    "customer_id": "CUSTOMER-000066",
+    "expected_amount": 356.38,
+    "expected_transaction_count_10m": 2.0,
+    "tenure_days": 3656
+  },
+  "CUSTOMER-000067": {
+    "customer_id": "CUSTOMER-000067",
+    "expected_amount": 490.15,
+    "expected_transaction_count_10m": 1.0,
+    "tenure_days": 1758
+  },
+  "CUSTOMER-000068": {
+    "customer_id": "CUSTOMER-000068",
+    "expected_amount": 312.06,
+    "expected_transaction_count_10m": 2.0,
+    "tenure_days": 3879
+  },
+  "CUSTOMER-000069": {
+    "customer_id": "CUSTOMER-000069",
+    "expected_amount": 178.56,
+    "expected_transaction_count_10m": 1.0,
+    "tenure_days": 4861
+  },
+  "CUSTOMER-000070": {
+    "customer_id": "CUSTOMER-000070",
+    "expected_amount": 198.36,
+    "expected_transaction_count_10m": 1.0,
+    "tenure_days": 614
+  },
+  "CUSTOMER-000071": {
+    "customer_id": "CUSTOMER-000071",
+    "expected_amount": 323.25,
+    "expected_transaction_count_10m": 1.0,
+    "tenure_days": 3327
+  },
+  "CUSTOMER-000072": {
+    "customer_id": "CUSTOMER-000072",
+    "expected_amount": 486.74,
+    "expected_transaction_count_10m": 2.0,
+    "tenure_days": 2081
+  },
+  "CUSTOMER-000073": {
+    "customer_id": "CUSTOMER-000073",
+    "expected_amount": 200.75,
+    "expected_transaction_count_10m": 1.0,
+    "tenure_days": 1465
+  },
+  "CUSTOMER-000074": {
+    "customer_id": "CUSTOMER-000074",
+    "expected_amount": 630.97,
+    "expected_transaction_count_10m": 2.0,
+    "tenure_days": 2880
+  },
+  "CUSTOMER-000075": {
+    "customer_id": "CUSTOMER-000075",
+    "expected_amount": 535.34,
+    "expected_transaction_count_10m": 2.0,
+    "tenure_days": 330
+  },
+  "CUSTOMER-000076": {
+    "customer_id": "CUSTOMER-000076",
+    "expected_amount": 569.66,
+    "expected_transaction_count_10m": 2.0,
+    "tenure_days": 3415
+  },
+  "CUSTOMER-000077": {
+    "customer_id": "CUSTOMER-000077",
+    "expected_amount": 199.24,
+    "expected_transaction_count_10m": 1.0,
+    "tenure_days": 2389
+  },
+  "CUSTOMER-000078": {
+    "customer_id": "CUSTOMER-000078",
+    "expected_amount": 471.52,
+    "expected_transaction_count_10m": 1.0,
+    "tenure_days": 4542
+  },
+  "CUSTOMER-000079": {
+    "customer_id": "CUSTOMER-000079",
+    "expected_amount": 546.77,
+    "expected_transaction_count_10m": 2.0,
+    "tenure_days": 2420
+  },
+  "CUSTOMER-000080": {
+    "customer_id": "CUSTOMER-000080",
+    "expected_amount": 403.62,
+    "expected_transaction_count_10m": 3.0,
+    "tenure_days": 1148
+  },
+  "CUSTOMER-000081": {
+    "customer_id": "CUSTOMER-000081",
+    "expected_amount": 36.58,
+    "expected_transaction_count_10m": 3.0,
+    "tenure_days": 2475
+  },
+  "CUSTOMER-000082": {
+    "customer_id": "CUSTOMER-000082",
+    "expected_amount": 247.25,
+    "expected_transaction_count_10m": 2.0,
+    "tenure_days": 4481
+  },
+  "CUSTOMER-000083": {
+    "customer_id": "CUSTOMER-000083",
+    "expected_amount": 178.64,
+    "expected_transaction_count_10m": 2.0,
+    "tenure_days": 387
+  },
+  "CUSTOMER-000084": {
+    "customer_id": "CUSTOMER-000084",
+    "expected_amount": 435.99,
+    "expected_transaction_count_10m": 1.0,
+    "tenure_days": 4087
+  },
+  "CUSTOMER-000085": {
+    "customer_id": "CUSTOMER-000085",
+    "expected_amount": 305.79,
+    "expected_transaction_count_10m": 2.0,
+    "tenure_days": 3773
+  },
+  "CUSTOMER-000086": {
+    "customer_id": "CUSTOMER-000086",
+    "expected_amount": 631.06,
+    "expected_transaction_count_10m": 1.0,
+    "tenure_days": 3286
+  },
+  "CUSTOMER-000087": {
+    "customer_id": "CUSTOMER-000087",
+    "expected_amount": 420.48,
+    "expected_transaction_count_10m": 2.0,
+    "tenure_days": 4462
+  },
+  "CUSTOMER-000088": {
+    "customer_id": "CUSTOMER-000088",
+    "expected_amount": 301.89,
+    "expected_transaction_count_10m": 1.0,
+    "tenure_days": 853
+  },
+  "CUSTOMER-000089": {
+    "customer_id": "CUSTOMER-000089",
+    "expected_amount": 265.53,
+    "expected_transaction_count_10m": 1.0,
+    "tenure_days": 2030
+  },
+  "CUSTOMER-000090": {
+    "customer_id": "CUSTOMER-000090",
+    "expected_amount": 270.26,
+    "expected_transaction_count_10m": 3.0,
+    "tenure_days": 2002
+  },
+  "CUSTOMER-000091": {
+    "customer_id": "CUSTOMER-000091",
+    "expected_amount": 40.78,
+    "expected_transaction_count_10m": 2.0,
+    "tenure_days": 2386
+  },
+  "CUSTOMER-000092": {
+    "customer_id": "CUSTOMER-000092",
+    "expected_amount": 626.65,
+    "expected_transaction_count_10m": 3.0,
+    "tenure_days": 2078
+  },
+  "CUSTOMER-000093": {
+    "customer_id": "CUSTOMER-000093",
+    "expected_amount": 386.73,
+    "expected_transaction_count_10m": 2.0,
+    "tenure_days": 2453
+  },
+  "CUSTOMER-000094": {
+    "customer_id": "CUSTOMER-000094",
+    "expected_amount": 567.02,
+    "expected_transaction_count_10m": 3.0,
+    "tenure_days": 431
+  },
+  "CUSTOMER-000095": {
+    "customer_id": "CUSTOMER-000095",
+    "expected_amount": 251.68,
+    "expected_transaction_count_10m": 3.0,
+    "tenure_days": 1587
+  },
+  "CUSTOMER-000096": {
+    "customer_id": "CUSTOMER-000096",
+    "expected_amount": 590.59,
+    "expected_transaction_count_10m": 3.0,
+    "tenure_days": 352
+  },
+  "CUSTOMER-000097": {
+    "customer_id": "CUSTOMER-000097",
+    "expected_amount": 235.93,
+    "expected_transaction_count_10m": 2.0,
+    "tenure_days": 1468
+  },
+  "CUSTOMER-000098": {
+    "customer_id": "CUSTOMER-000098",
+    "expected_amount": 545.74,
+    "expected_transaction_count_10m": 1.0,
+    "tenure_days": 3977
+  },
+  "CUSTOMER-000099": {
+    "customer_id": "CUSTOMER-000099",
+    "expected_amount": 563.99,
+    "expected_transaction_count_10m": 3.0,
+    "tenure_days": 3285
+  },
+  "CUSTOMER-000100": {
+    "customer_id": "CUSTOMER-000100",
+    "expected_amount": 495.64,
+    "expected_transaction_count_10m": 1.0,
+    "tenure_days": 4818
+  },
+  "CUSTOMER-000101": {
+    "customer_id": "CUSTOMER-000101",
+    "expected_amount": 597.88,
+    "expected_transaction_count_10m": 1.0,
+    "tenure_days": 547
+  },
+  "CUSTOMER-000102": {
+    "customer_id": "CUSTOMER-000102",
+    "expected_amount": 222.18,
+    "expected_transaction_count_10m": 2.0,
+    "tenure_days": 981
+  },
+  "CUSTOMER-000103": {
+    "customer_id": "CUSTOMER-000103",
+    "expected_amount": 463.34,
+    "expected_transaction_count_10m": 2.0,
+    "tenure_days": 3463
+  },
+  "CUSTOMER-000104": {
+    "customer_id": "CUSTOMER-000104",
+    "expected_amount": 207.04,
+    "expected_transaction_count_10m": 3.0,
+    "tenure_days": 3065
+  },
+  "CUSTOMER-000105": {
+    "customer_id": "CUSTOMER-000105",
+    "expected_amount": 72.24,
+    "expected_transaction_count_10m": 1.0,
+    "tenure_days": 1584
+  },
+  "CUSTOMER-000106": {
+    "customer_id": "CUSTOMER-000106",
+    "expected_amount": 48.13,
+    "expected_transaction_count_10m": 1.0,
+    "tenure_days": 2025
+  },
+  "CUSTOMER-000107": {
+    "customer_id": "CUSTOMER-000107",
+    "expected_amount": 237.06,
+    "expected_transaction_count_10m": 1.0,
+    "tenure_days": 4912
+  },
+  "CUSTOMER-000108": {
+    "customer_id": "CUSTOMER-000108",
+    "expected_amount": 102.6,
+    "expected_transaction_count_10m": 1.0,
+    "tenure_days": 1109
+  },
+  "CUSTOMER-000109": {
+    "customer_id": "CUSTOMER-000109",
+    "expected_amount": 112.96,
+    "expected_transaction_count_10m": 2.0,
+    "tenure_days": 4339
+  },
+  "CUSTOMER-000110": {
+    "customer_id": "CUSTOMER-000110",
+    "expected_amount": 344.86,
+    "expected_transaction_count_10m": 2.0,
+    "tenure_days": 385
+  },
+  "CUSTOMER-000111": {
+    "customer_id": "CUSTOMER-000111",
+    "expected_amount": 72.41,
+    "expected_transaction_count_10m": 2.0,
+    "tenure_days": 3320
+  },
+  "CUSTOMER-000112": {
+    "customer_id": "CUSTOMER-000112",
+    "expected_amount": 126.23,
+    "expected_transaction_count_10m": 1.0,
+    "tenure_days": 2282
+  },
+  "CUSTOMER-000113": {
+    "customer_id": "CUSTOMER-000113",
+    "expected_amount": 314.03,
+    "expected_transaction_count_10m": 2.0,
+    "tenure_days": 3554
+  },
+  "CUSTOMER-000114": {
+    "customer_id": "CUSTOMER-000114",
+    "expected_amount": 167.24,
+    "expected_transaction_count_10m": 2.0,
+    "tenure_days": 1901
+  },
+  "CUSTOMER-000115": {
+    "customer_id": "CUSTOMER-000115",
+    "expected_amount": 444.04,
+    "expected_transaction_count_10m": 1.0,
+    "tenure_days": 1280
+  },
+  "CUSTOMER-000116": {
+    "customer_id": "CUSTOMER-000116",
+    "expected_amount": 489.36,
+    "expected_transaction_count_10m": 1.0,
+    "tenure_days": 4587
+  },
+  "CUSTOMER-000117": {
+    "customer_id": "CUSTOMER-000117",
+    "expected_amount": 444.18,
+    "expected_transaction_count_10m": 2.0,
+    "tenure_days": 451
+  },
+  "CUSTOMER-000118": {
+    "customer_id": "CUSTOMER-000118",
+    "expected_amount": 331.55,
+    "expected_transaction_count_10m": 1.0,
+    "tenure_days": 2898
+  },
+  "CUSTOMER-000119": {
+    "customer_id": "CUSTOMER-000119",
+    "expected_amount": 634.35,
+    "expected_transaction_count_10m": 2.0,
+    "tenure_days": 4590
+  },
+  "CUSTOMER-000120": {
+    "customer_id": "CUSTOMER-000120",
+    "expected_amount": 503.88,
+    "expected_transaction_count_10m": 1.0,
+    "tenure_days": 2905
+  },
+  "CUSTOMER-000121": {
+    "customer_id": "CUSTOMER-000121",
+    "expected_amount": 632.66,
+    "expected_transaction_count_10m": 1.0,
+    "tenure_days": 4375
+  },
+  "CUSTOMER-000122": {
+    "customer_id": "CUSTOMER-000122",
+    "expected_amount": 613.97,
+    "expected_transaction_count_10m": 2.0,
+    "tenure_days": 725
+  },
+  "CUSTOMER-000123": {
+    "customer_id": "CUSTOMER-000123",
+    "expected_amount": 442.09,
+    "expected_transaction_count_10m": 2.0,
+    "tenure_days": 3651
+  },
+  "CUSTOMER-000124": {
+    "customer_id": "CUSTOMER-000124",
+    "expected_amount": 452.27,
+    "expected_transaction_count_10m": 2.0,
+    "tenure_days": 4346
+  },
+  "CUSTOMER-000125": {
+    "customer_id": "CUSTOMER-000125",
+    "expected_amount": 616.37,
+    "expected_transaction_count_10m": 1.0,
+    "tenure_days": 2123
+  },
+  "CUSTOMER-000126": {
+    "customer_id": "CUSTOMER-000126",
+    "expected_amount": 467.76,
+    "expected_transaction_count_10m": 2.0,
+    "tenure_days": 4607
+  },
+  "CUSTOMER-000127": {
+    "customer_id": "CUSTOMER-000127",
+    "expected_amount": 227.53,
+    "expected_transaction_count_10m": 2.0,
+    "tenure_days": 4727
+  },
+  "CUSTOMER-000128": {
+    "customer_id": "CUSTOMER-000128",
+    "expected_amount": 459.11,
+    "expected_transaction_count_10m": 1.0,
+    "tenure_days": 751
+  },
+  "CUSTOMER-000129": {
+    "customer_id": "CUSTOMER-000129",
+    "expected_amount": 493.67,
+    "expected_transaction_count_10m": 1.0,
+    "tenure_days": 2758
+  },
+  "CUSTOMER-000130": {
+    "customer_id": "CUSTOMER-000130",
+    "expected_amount": 249.87,
+    "expected_transaction_count_10m": 3.0,
+    "tenure_days": 1239
+  },
+  "CUSTOMER-000131": {
+    "customer_id": "CUSTOMER-000131",
+    "expected_amount": 421.19,
+    "expected_transaction_count_10m": 2.0,
+    "tenure_days": 4648
+  },
+  "CUSTOMER-000132": {
+    "customer_id": "CUSTOMER-000132",
+    "expected_amount": 229.43,
+    "expected_transaction_count_10m": 2.0,
+    "tenure_days": 589
+  },
+  "CUSTOMER-000133": {
+    "customer_id": "CUSTOMER-000133",
+    "expected_amount": 58.13,
+    "expected_transaction_count_10m": 1.0,
+    "tenure_days": 2381
+  },
+  "CUSTOMER-000134": {
+    "customer_id": "CUSTOMER-000134",
+    "expected_amount": 489.44,
+    "expected_transaction_count_10m": 1.0,
+    "tenure_days": 3714
+  },
+  "CUSTOMER-000135": {
+    "customer_id": "CUSTOMER-000135",
+    "expected_amount": 73.05,
+    "expected_transaction_count_10m": 1.0,
+    "tenure_days": 2843
+  },
+  "CUSTOMER-000136": {
+    "customer_id": "CUSTOMER-000136",
+    "expected_amount": 305.24,
+    "expected_transaction_count_10m": 2.0,
+    "tenure_days": 1330
+  },
+  "CUSTOMER-000137": {
+    "customer_id": "CUSTOMER-000137",
+    "expected_amount": 520.37,
+    "expected_transaction_count_10m": 3.0,
+    "tenure_days": 2771
+  },
+  "CUSTOMER-000138": {
+    "customer_id": "CUSTOMER-000138",
+    "expected_amount": 628.11,
+    "expected_transaction_count_10m": 2.0,
+    "tenure_days": 1261
+  },
+  "CUSTOMER-000139": {
+    "customer_id": "CUSTOMER-000139",
+    "expected_amount": 400.95,
+    "expected_transaction_count_10m": 1.0,
+    "tenure_days": 2566
+  },
+  "CUSTOMER-000140": {
+    "customer_id": "CUSTOMER-000140",
+    "expected_amount": 257.52,
+    "expected_transaction_count_10m": 1.0,
+    "tenure_days": 2560
+  },
+  "CUSTOMER-000141": {
+    "customer_id": "CUSTOMER-000141",
+    "expected_amount": 130.29,
+    "expected_transaction_count_10m": 1.0,
+    "tenure_days": 858
+  },
+  "CUSTOMER-000142": {
+    "customer_id": "CUSTOMER-000142",
+    "expected_amount": 506.28,
+    "expected_transaction_count_10m": 1.0,
+    "tenure_days": 4922
+  },
+  "CUSTOMER-000143": {
+    "customer_id": "CUSTOMER-000143",
+    "expected_amount": 61.87,
+    "expected_transaction_count_10m": 1.0,
+    "tenure_days": 1975
+  },
+  "CUSTOMER-000144": {
+    "customer_id": "CUSTOMER-000144",
+    "expected_amount": 225.32,
+    "expected_transaction_count_10m": 2.0,
+    "tenure_days": 1619
+  },
+  "CUSTOMER-000145": {
+    "customer_id": "CUSTOMER-000145",
+    "expected_amount": 344.29,
+    "expected_transaction_count_10m": 2.0,
+    "tenure_days": 1357
+  },
+  "CUSTOMER-000146": {
+    "customer_id": "CUSTOMER-000146",
+    "expected_amount": 263.3,
+    "expected_transaction_count_10m": 1.0,
+    "tenure_days": 4256
+  },
+  "CUSTOMER-000147": {
+    "customer_id": "CUSTOMER-000147",
+    "expected_amount": 304.05,
+    "expected_transaction_count_10m": 1.0,
+    "tenure_days": 3725
+  },
+  "CUSTOMER-000148": {
+    "customer_id": "CUSTOMER-000148",
+    "expected_amount": 646.63,
+    "expected_transaction_count_10m": 1.0,
+    "tenure_days": 1869
+  },
+  "CUSTOMER-000149": {
+    "customer_id": "CUSTOMER-000149",
+    "expected_amount": 120.36,
+    "expected_transaction_count_10m": 3.0,
+    "tenure_days": 3872
+  }
+}

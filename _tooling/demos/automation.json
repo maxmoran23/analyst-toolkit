@@ -1,0 +1,43 @@
+{
+  "email-thread-structured-extraction.md": {
+    "scenario": "A six-message Harborview Financial Group thread about a vendor screening-tool renewal, with a pricing table whose quoted copy disagrees with the original.",
+    "fills": [
+      ["THREAD_MATERIAL", "Pasted thread, most recent first, forwarded chain included.\n\nFrom: Dana Okafor <d.okafor@harborviewfg.example>  Date: 2026-03-12  To: Priya Ramanathan; Marcus Bell\nSubject: RE: Sentinel screening tool - renewal terms\nAgreed on my side. Marcus, can you confirm legal review by the 20th? Also note the revised table below from the vendor:\n| Tier | Seats | Unit price / yr |\n| Core | 25 | $1,150 |\n| Analyst | 10 | $2,300 |\n| Admin | 2 | $3,100 |\n> On 2026-03-11 Priya Ramanathan wrote:\n> Pricing came back. Summary table from the call:\n> | Tier | Seats | Unit price / yr |\n> | Core | 25 | $1,150 |\n> | Analyst | 10 | $2,450 |\n> | Admin | 2 | $3,100 |\n> If we sign before March 31 they hold 2025 rates. Dana - do we have budget sign-off?\n>> On 2026-03-09 Marcus Bell wrote:\n>> Flagging that the current Sentinel contract lapses April 15. Who owns the renewal this year?\n\nFrom: Tomas Ferreira <t.ferreira@sentineldata.example>  Date: 2026-03-10  To: Priya Ramanathan\nSubject: Sentinel renewal quote FY26\nPriya - quote attached (SentinelQuote_FY26, PDF). Analyst tier moves to $2,450/seat unless the multi-year option is taken. Happy to walk through Thursday.\n\nFrom: Priya Ramanathan <p.ramanathan@harborviewfg.example>  Date: 2026-03-12  To: Dana Okafor\nSubject: RE: Sentinel screening tool - renewal terms\nOne more thing - Tomas said on the call the multi-year option locks Analyst at $2,300, which is where Dana's table came from. I still owe him a seat count. Will send by Friday 3/13.\n\nFrom: Marcus Bell <m.bell@harborviewfg.example>  Date: 2026-03-12  To: Dana Okafor; Priya Ramanathan\nSubject: RE: Sentinel screening tool - renewal terms\nLegal review by the 20th is fine. Open question from my side: does the multi-year option change the termination clause?"],
+      ["READER_CONTEXT", "Record is for the operations lead who will approve the renewal; she cares most about commitments with dates and the pricing trail."],
+      ["EXTRACTION_FOCUS", "No special focus - full extraction."],
+      ["PRIOR_RECORD", "None - first extraction of this thread; baseline."],
+      ["one line", "Sentinel screening-tool renewal, 6 messages, 2026-03-09 to 2026-03-12"]
+    ]
+  },
+  "comms-driven-report-refresh.md": {
+    "scenario": "A weekly vendor-onboarding status report at Harborview Financial Group refreshed from five new emails, with the Methodology section frozen.",
+    "fills": [
+      ["EXISTING_REPORT", "VENDOR ONBOARDING STATUS - Harborview Financial Group\nAs of: 2026-04-03\n\n1. Summary\nThree vendors in flight. One (Sentinel Data) awaiting legal review; two in due-diligence collection.\n\n2. Status table\n| Vendor | Stage | Owner | Target date | Status |\n| Sentinel Data | Legal review | M. Bell | 2026-04-20 | ON TRACK |\n| Meridian Analytics | Due diligence | P. Ramanathan | 2026-05-01 | ON TRACK |\n| Crestline Docs | Due diligence | D. Okafor | 2026-04-24 | AT RISK |\n\n3. Risks\n- Crestline Docs has not returned the security questionnaire (2 weeks outstanding).\n\n4. Methodology\nStatus definitions: ON TRACK = no blocker; AT RISK = blocker older than 10 business days; LATE = target date passed. Stages follow the standard five-stage onboarding path.\n\n5. Update log\n- 2026-04-03: initial report issued.\n- 2026-03-27: draft circulated."],
+      ["NEW_COMMUNICATIONS", "Email 1 - 2026-04-07, M. Bell to distribution: 'Legal review for Sentinel completed today, no redlines. Moving them to contracting; new target 2026-04-28.'\nEmail 2 - 2026-04-08, D. Okafor to distribution: 'Crestline finally returned the security questionnaire. Two findings, both minor; assessment underway.'\nEmail 3 - 2026-04-08, external - Crestline account manager: marketing newsletter, product webinar invite.\nEmail 4 - 2026-04-09, P. Ramanathan: 'Meridian asked to push their kickoff a week. Target moves to 2026-05-08. No concerns.'\nEmail 5 - 2026-04-09, compliance lead: 'Reminder: from Q3 the onboarding path adds a sixth stage (continuous monitoring). Applies to NEW vendors only, not the three in flight.'"],
+      ["LAST_UPDATE_MARKER", "Last refresh 2026-04-03 (see the report's own update log)."],
+      ["UPDATE_RULES", "Status-table rows and the Risks section may change. The Methodology section is frozen - flag any conflict, never edit it."],
+      ["one line", "Vendor onboarding status, 5 messages processed, 3 sections changed"]
+    ]
+  },
+  "chat-history-index.md": {
+    "scenario": "A pasted transcript of a Harborview working-group channel plus a small JSON export fragment, first run (no existing index).",
+    "fills": [
+      ["CHAT_MATERIAL", "Piece A - pasted transcript, channel #vendor-review:\n[2026-03-10 09:14] priya.r: Sentinel quote is in. Analyst tier up ~6 percent.\n[2026-03-10 09:16] dana.o: Within envelope. Multi-year option?\n[2026-03-10 09:21] priya.r: Locks current rates. I owe them a seat count Friday.\n[2026-03-10 13:02] marcus.b: Separate thing - anyone have the Crestline questionnaire status?\n[2026-03-10 13:40] dana.o: Chasing it this week.\n\nPiece B - JSON export fragment, channel ops-standup:\n[{\"ts\":\"2026-03-11T08:30:00Z\",\"user\":\"dana.o\",\"text\":\"Standup: Crestline chased, Sentinel on track.\",\"thread_ts\":null},{\"ts\":\"2026-03-11T08:32:10Z\",\"user\":\"marcus.b\",\"text\":\"Add legal review to Friday agenda?\",\"thread_ts\":\"2026-03-11T08:30:00Z\"},{\"ts\":\"2026-03-11T08:33:05Z\",\"user\":\"dana.o\",\"text\":\"Done.\",\"thread_ts\":\"2026-03-11T08:30:00Z\"}]"],
+      ["EXISTING_INDEX", "None - first run, build the archive from scratch."],
+      ["NAMING_PREFERENCES", "Folder name: comms-archive. Keep usernames as they appear; no aliasing."],
+      ["EXCLUSIONS", "Skip join/leave notices and bot messages."],
+      ["one line", "2 sources processed, conversations emitted per detected threading, mode: full"]
+    ]
+  },
+  "recurring-review-pipeline-spec.md": {
+    "scenario": "A Harborview analyst describes their informal Friday vendor-comms review and gets it manufactured into a written, repeatable pipeline spec.",
+    "fills": [
+      ["PROCESS_DESCRIPTION", "Every Friday I go through the week's vendor-related emails and our #vendor-review channel, update our vendor status tracker, and send my manager a short status note. Today I do it from memory and the tracker drifts - rows get reworded, history gets lost, and nobody can tell what changed week to week. I want the tracker maintained properly with a record of what changed and why, and the status note generated from it."],
+      ["SOURCE_SHAPE", "Each cycle: pasted email threads (5-20 messages, mixed forwarded chains) and a copy-pasted chat transcript from one channel (30-80 lines, speaker and timestamp per line). Occasionally a vendor quote table embedded in an email body."],
+      ["CADENCE", "Weekly, Friday afternoon, feeding a Monday 9am team meeting."],
+      ["DESIRED_OUTPUTS", "A maintained vendor status tracker (one row per vendor) with an update log, and a rebuilt three-bullet status note each week."],
+      ["CONSTRAINTS", "The tracker's Risk column may only change with an explicit flag in the update log. Nothing is ever sent by the assistant - I paste the note into email myself. No vendor pricing appears in the status note."],
+      ["one line", "Friday vendor-comms review, weekly, 2 artifacts maintained"]
+    ]
+  }
+}

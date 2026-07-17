@@ -35,6 +35,8 @@ The two directories cover the same kinds of work; pick the shape that matches ho
 | [action-items-extractor.md](action-items-extractor.md) | Clean accountable action-item list from any conversational source — meeting notes, email thread, transcript — with owner / action / due / dependency / source |
 | [data-to-dashboard.md](data-to-dashboard.md) | Arbitrary CSV, JSON, tables, lists, or numeric prose turned into a domain-neutral, single-file interactive dashboard with a layout inferred from the data |
 | [material-to-deck.md](material-to-deck.md) | Arbitrary source material mapped into an existing branded PowerPoint template while preserving its theme, masters, layouts, fonts, colors, and logo |
+| [mailbox-to-markdown-index.md](mailbox-to-markdown-index.md) | Any email material — pasted threads, EML source, mailbox CSV exports — normalized into per-message markdown files with deterministic IDs plus a three-view master index, extended incrementally on later runs instead of regenerated |
+| [message-drafts-to-eml.md](message-drafts-to-eml.md) | Structured draft specs (to/cc/subject/body, optional HTML and reply-threading headers) composed into ready-to-save RFC 5322 `.eml` draft files — plain+HTML multipart, batch mode from a pasted table, drafts only and never sent |
 
 ### Domain templates (financial crime / intelligence)
 | File | What it produces |

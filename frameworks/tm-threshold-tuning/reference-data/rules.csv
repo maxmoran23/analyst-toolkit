@@ -1,0 +1,13 @@
+rule_id,metric_name,current_threshold,scenario
+RULE-000,ATM withdrawals ($k),63.95,too_high
+RULE-001,high-risk-geo volume ($k),10.47,too_low
+RULE-002,dormant-then-active spike,24.99,too_low
+RULE-003,peer-group deviation (z),15.31,too_low
+RULE-004,dormant-then-active spike,58.67,optimal
+RULE-005,monthly cash deposits ($k),62.16,too_high
+RULE-006,monthly cash deposits ($k),27.13,too_low
+RULE-007,high-risk-geo volume ($k),77.71,too_high
+RULE-008,structuring proximity (count),71.36,too_high
+RULE-009,ATM withdrawals ($k),58.56,optimal
+RULE-010,cash-to-wire ratio,20.63,too_low
+RULE-011,ATM withdrawals ($k),56.85,optimal

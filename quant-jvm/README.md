@@ -33,20 +33,22 @@ Port order is deliberate: deterministic modules first (Kelly through DCF), stoch
 | Tool | Version | Install |
 |------|---------|---------|
 | JDK | OpenJDK 21 LTS | `brew install openjdk@21` |
-| Build | Gradle 8.10.2 (via wrapper) | bundled — use `./gradlew` |
+| Build | Gradle 8.10.2 | `brew install gradle` (or SDKMAN / your package manager) |
 | Language | Kotlin 2.0.21 | resolved by Gradle |
 | Test | JUnit Jupiter 5.11.3 | resolved by Gradle |
 
-JDK 21 is the audit-defensible LTS choice. To use a different JDK locally, set `JAVA_HOME` before invoking `./gradlew`; the project's Gradle toolchain declaration in `build.gradle.kts` will still pin the **build** target to 21.
+JDK 21 is the audit-defensible LTS choice. To use a different JDK locally, set `JAVA_HOME` before invoking `gradle`; the project's Gradle toolchain declaration in `build.gradle.kts` will still pin the **build** target to 21.
+
+**Why no Gradle wrapper binaries.** This repository deliberately ships no `gradle-wrapper.jar`, `gradlew`, or `gradlew.bat`. Enterprise secure-web gateways commonly block any downloadable archive that contains an executable JAR or batch script, which would make the repo's "Download ZIP" unusable on locked-down corporate machines — the primary consumption path for this toolkit. The Gradle version is still pinned in [`gradle/wrapper/gradle-wrapper.properties`](gradle/wrapper/gradle-wrapper.properties) (plain text); running `gradle wrapper` locally regenerates the wrapper from it if you want one.
 
 ## Build and test
 
 ```bash
 export JAVA_HOME=/opt/homebrew/opt/openjdk@21/libexec/openjdk.jdk/Contents/Home  # macOS Homebrew
-./gradlew build           # compile + test
-./gradlew test            # tests only
-./gradlew test --tests KellyParityTest  # specific class
-./gradlew test --tests org.maxmoran.quant.SharpeParityTest
+gradle build           # compile + test
+gradle test            # tests only
+gradle test --tests KellyParityTest  # specific class
+gradle test --tests org.maxmoran.quant.SharpeParityTest
 ```
 
 Parity tests resolve the Python interpreter from `PATH`. If `python3` is missing, parity assertions are **skipped with a logged message**, not silently passed — Kotlin-internal correctness tests (e.g. hand-math spot checks) still run and must pass.
@@ -57,19 +59,19 @@ The project ships a single `main` entrypoint that dispatches by module name, mir
 
 ```bash
 # Single bet
-./gradlew run --args="kelly --mode single --p 0.55 --odds 2.0 --fraction 0.25"
+gradle run --args="kelly --mode single --p 0.55 --odds 2.0 --fraction 0.25"
 
 # Portfolio of independent bets
-./gradlew run --args="kelly --mode portfolio --edges-json edges.json --fraction 0.25"
+gradle run --args="kelly --mode portfolio --edges-json edges.json --fraction 0.25"
 
 # Portfolio with correlation matrix
-./gradlew run --args="kelly --mode portfolio --edges-json edges.json --correlation-matrix corr.json --fraction 0.25"
+gradle run --args="kelly --mode portfolio --edges-json edges.json --correlation-matrix corr.json --fraction 0.25"
 
 # Return-series ratios from a JSON file
-./gradlew run --args="sharpe --returns-json returns.json --rf 0.05 --annualize 252"
+gradle run --args="sharpe --returns-json returns.json --rf 0.05 --annualize 252"
 
 # Or provide the same 30-or-more-period JSON array on standard input
-./gradlew run --args="sharpe --stdin --rf 0.05 --annualize 252" < returns.json
+gradle run --args="sharpe --stdin --rf 0.05 --annualize 252" < returns.json
 ```
 
 Output goes to stdout as pretty-printed JSON, matching the Python schema exactly. Errors go to stdout as `{"error": "..."}` with exit code 1.
