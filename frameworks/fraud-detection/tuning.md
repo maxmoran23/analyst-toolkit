@@ -44,6 +44,18 @@ Do not tune to synthetic headline metrics, copy the default 8% prevalence into a
 business case, or use intervention precision as a substitute for the two safety
 gates.
 
+## Adversarial hardening (roadmap, not built)
+
+The current harness plants two known failure branches and proves the dual gate
+catches both. The stronger form is property-based adversarial generation around
+every named rule boundary: for each rule, synthesize populations that sit just
+inside and just outside its threshold, include correlated legitimate mimics
+(customers whose lawful behavior imitates a typology), and drift the behavioral
+baselines over the observation window. A gate that survives generated boundary
+cases — rather than two hand-planted ones — is materially harder to pass by
+accident, and the generation itself documents where the rule boundaries are
+sensitive.
+
 **Confidence rating: MODERATE —** the procedure protects the explicit invariant,
 but its effectiveness depends on label quality, representativeness, and governance.
 

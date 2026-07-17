@@ -18,6 +18,9 @@ PowerPoint template without changing its visual system.
 
 The sample template, injected output, rendered previews, and package-level
 preservation evidence are under [`../../samples/presentations/`](../../samples/presentations/).
+The full reproduction pipeline for that sample set — fixture builder, CI-run
+preservation verifier, and preview montage builder — is documented in
+[`../../validation/README.md`](../../validation/README.md).
 
 **Confidence: HIGH — the delivered sample passed exact theme-byte comparison,
 semantic master/layout comparison, placeholder-only inspection, and independent
