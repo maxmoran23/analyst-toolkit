@@ -18,6 +18,8 @@ fun main(args: Array<String>) {
     when (module) {
         "kelly" -> runKelly(rest)
         "sharpe" -> runSharpe(rest)
+        "drawdown" -> runDrawdown(rest)
+        "vol" -> runVol(rest)
         "--help", "-h", "help" -> println(USAGE)
         else -> {
             System.err.println("unknown module: $module")
@@ -35,12 +37,16 @@ Usage: <module> [args...]
 Modules implemented:
   kelly       Kelly criterion (single + portfolio)
   sharpe      Sharpe, Sortino, Calmar, and Omega ratios
+  drawdown    Max drawdown, underwater curve, recovery episodes
+  vol         Realized, EWMA, Parkinson, Garman-Klass, simplified GARCH(1,1)
 
 Modules planned (not yet ported):
-  drawdown, vol, correlation, var, markowitz, monte_carlo, dcf
+  correlation, var, markowitz, monte_carlo, dcf
 
 Per-module help:
   kelly --mode single --p <prob> --odds <decimal_odds> [--fraction 0.25]
   kelly --mode portfolio --edges-json <path> [--fraction 0.25] [--correlation-matrix <path>]
   sharpe (--returns-json <path> | --stdin) [--rf 0.05] [--annualize 252]
+  drawdown (--equity-json <path> | --returns-json <path>) [--top-n 5]
+  vol --method realized|ewma|parkinson|garman_klass|garch (--returns-json <path> | --ohlc-json <path>) [--annualize 252] [--ewma-lambda 0.94]
 """.trimIndent()

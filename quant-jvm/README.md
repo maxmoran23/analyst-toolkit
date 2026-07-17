@@ -18,8 +18,8 @@ This is a stronger claim than "the code looks right" — it is an executable ass
 |--------|--------|---------------|-------------|-------------|
 | Kelly criterion | ported | [`../quant/kelly.py`](../quant/kelly.py) | [`Kelly.kt`](src/main/kotlin/org/maxmoran/quant/Kelly.kt) | [`KellyParityTest.kt`](src/test/kotlin/org/maxmoran/quant/KellyParityTest.kt) |
 | Sharpe / Sortino / Calmar / Omega | ported | [`../quant/sharpe.py`](../quant/sharpe.py) | [`Sharpe.kt`](src/main/kotlin/org/maxmoran/quant/Sharpe.kt) | [`SharpeParityTest.kt`](src/test/kotlin/org/maxmoran/quant/SharpeParityTest.kt) |
-| Drawdown | planned | `../quant/drawdown.py` | — | — |
-| Volatility (realized, EWMA, GARCH) | planned | `../quant/vol.py` | — | — |
+| Drawdown | ported | [`../quant/drawdown.py`](../quant/drawdown.py) | [`Drawdown.kt`](src/main/kotlin/org/maxmoran/quant/Drawdown.kt) | [`DrawdownParityTest.kt`](src/test/kotlin/org/maxmoran/quant/DrawdownParityTest.kt) |
+| Volatility (realized, EWMA, Parkinson, Garman-Klass, GARCH) | ported | [`../quant/vol.py`](../quant/vol.py) | [`Vol.kt`](src/main/kotlin/org/maxmoran/quant/Vol.kt) | [`VolParityTest.kt`](src/test/kotlin/org/maxmoran/quant/VolParityTest.kt) |
 | Correlation | planned | `../quant/correlation.py` | — | — |
 | Value at Risk | planned | `../quant/var.py` | — | — |
 | Markowitz optimization | planned | `../quant/markowitz.py` | — | — |
@@ -27,6 +27,8 @@ This is a stronger claim than "the code looks right" — it is an executable ass
 | DCF | planned | `../quant/dcf.py` | — | — |
 
 Port order is deliberate: deterministic modules first (Kelly through DCF), stochastic last (Monte Carlo). See [`docs/parity-contract.md`](docs/parity-contract.md) for why.
+
+Note on GARCH: `vol.py`'s `simple_garch` is a fixed-parameter recursion (alpha=0.10, beta=0.85, no MLE fit, no RNG), so the entire volatility module is classified as deterministic pure math under parity-contract.md §1.1 — nothing in this wave was deferred to the §1.3 stochastic regime.
 
 ## Toolchain
 
@@ -72,6 +74,15 @@ gradle run --args="sharpe --returns-json returns.json --rf 0.05 --annualize 252"
 
 # Or provide the same 30-or-more-period JSON array on standard input
 gradle run --args="sharpe --stdin --rf 0.05 --annualize 252" < returns.json
+
+# Drawdown profile from an equity curve or a return series
+gradle run --args="drawdown --equity-json equity.json --top-n 5"
+gradle run --args="drawdown --returns-json returns.json"
+
+# Volatility estimators
+gradle run --args="vol --returns-json returns.json --method ewma --annualize 365 --ewma-lambda 0.94"
+gradle run --args="vol --ohlc-json ohlc.json --method garman_klass"
+gradle run --args="vol --returns-json returns.json --method garch"
 ```
 
 Output goes to stdout as pretty-printed JSON, matching the Python schema exactly. Errors go to stdout as `{"error": "..."}` with exit code 1.
