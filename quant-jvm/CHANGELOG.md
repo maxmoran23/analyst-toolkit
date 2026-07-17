@@ -2,6 +2,25 @@
 
 All notable changes to `quant-jvm` are recorded here. This changelog tracks parity with `../quant/` (Python) — when a Python module changes, the corresponding entry here records the Kotlin re-port.
 
+## [0.5.0] — 2026-07-17
+
+Final deterministic wave — only `monte_carlo` (§1.3 stochastic/distributional) remains planned.
+
+### Added
+- `Markowitz.kt` — Kotlin port of `quant/markowitz.py`:
+  - `meanVec`, `covMatrix` (ddof=1), `cholesky` (1e-10 non-positive-pivot regularization), `solveLinear` (factor / forward / transpose / backward, replicated operation-for-operation — no library solver), `minVariancePortfolio`, `maxSharpePortfolio` (null when |normalizer| < 1e-12, key omitted like Python), `portfolioStats`, `markowitzOutput`
+  - Quirks mirrored: `zip` truncation of surplus asset names in solver weight dicts vs the equal-weight benchmark iterating every provided name; simple `rf / annualize` periodic rate; `{"error": "no numeric data found"}` on an empty/non-numeric CSV
+  - Classification: §1.4 numerical linear algebra — raw solver parity asserted at the contract's 1e-6 per-entry tolerance
+- `Dcf.kt` — Kotlin port of `quant/dcf.py` (§1.1 plain arithmetic):
+  - `dcfValuation` (explicit-fee PV + growing-perpetuity terminal, degenerate when discount <= terminal growth), `dcfJson`, scenario shifts (bear +0.05 discount / growth floored at 0.01, bull discount floored at 0.05 / growth +0.02), fixed discount-rate sensitivity grid
+  - Quirks mirrored: Python's integer `0` for `pv_of_terminal` and `terminal_weight_pct` in degenerate branches; upside/downside computed from the already-rounded fair values; truthy `--current-price` gate (explicit 0 suppresses the block); f-string sensitivity keys (`discount_0.2`, not `discount_0.20`); `--fees-yearly` as inline JSON
+- `Cli.kt` — `markowitz` and `dcf` subcommands; `monte_carlo` left as the only planned module
+- `MarkowitzParityTest.kt` — 6 tests: full-JSON value parity (named assets, surplus-name quirk), raw solver oracle at the §1.4 1e-6 tolerance, Cholesky/solve/min-variance hand checks, degenerate tangency + pivot regularization hand checks, CLI error contract
+- `DcfParityTest.kt` — 7 tests: full-JSON value parity (scenarios, sensitivity, upside block, degenerate int-zero terminal), raw oracle at relative 1e-10, growing-perpetuity hand check, sensitivity key repr check, zero-price truthiness gate, CLI error contract
+
+### Verified
+- `gradle test --no-daemon` — 51/51 tests pass (6 Kelly, 6 Sharpe, 6 Drawdown, 7 Vol, 6 Correlation, 7 VaR, 6 Markowitz, 7 DCF) with python3 present, cross-language assertions exercised
+
 ## [0.4.0] — 2026-07-17
 
 ### Added

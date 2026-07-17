@@ -22,6 +22,8 @@ fun main(args: Array<String>) {
         "vol" -> runVol(rest)
         "correlation" -> runCorrelation(rest)
         "var" -> runVar(rest)
+        "markowitz" -> runMarkowitz(rest)
+        "dcf" -> runDcf(rest)
         "--help", "-h", "help" -> println(USAGE)
         else -> {
             System.err.println("unknown module: $module")
@@ -43,9 +45,11 @@ Modules implemented:
   vol         Realized, EWMA, Parkinson, Garman-Klass, simplified GARCH(1,1)
   correlation Full-sample, crisis-only, and rolling pairwise correlation
   var         Historical and parametric (Gaussian) VaR and CVaR
+  markowitz   Min-variance, max-Sharpe, and equal-weight portfolios
+  dcf         Token fee-capture DCF with scenarios and sensitivity
 
 Modules planned (not yet ported):
-  markowitz, monte_carlo, dcf
+  monte_carlo
 
 Per-module help:
   kelly --mode single --p <prob> --odds <decimal_odds> [--fraction 0.25]
@@ -55,4 +59,6 @@ Per-module help:
   vol --method realized|ewma|parkinson|garman_klass|garch (--returns-json <path> | --ohlc-json <path>) [--annualize 252] [--ewma-lambda 0.94]
   correlation --returns-csv <path> [--asset-names a,b,c] [--window 30] [--crisis-threshold -0.05]
   var (--returns-json <path> | --stdin) [--confidence 0.95] [--method historical|parametric|both] [--portfolio-value 1.0]
+  markowitz --returns-csv <path> [--asset-names a,b,c] [--rf 0.05] [--annualize 252]
+  dcf --fees-yearly <json_array> --circulating-supply <tokens> [--discount 0.15] [--terminal-growth 0.03] [--capture-ratio 1.0] [--current-price <p>]
 """.trimIndent()

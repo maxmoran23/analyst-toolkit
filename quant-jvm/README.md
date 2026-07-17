@@ -22,13 +22,15 @@ This is a stronger claim than "the code looks right" — it is an executable ass
 | Volatility (realized, EWMA, Parkinson, Garman-Klass, GARCH) | ported | [`../quant/vol.py`](../quant/vol.py) | [`Vol.kt`](src/main/kotlin/org/maxmoran/quant/Vol.kt) | [`VolParityTest.kt`](src/test/kotlin/org/maxmoran/quant/VolParityTest.kt) |
 | Correlation | ported | [`../quant/correlation.py`](../quant/correlation.py) | [`Correlation.kt`](src/main/kotlin/org/maxmoran/quant/Correlation.kt) | [`CorrelationParityTest.kt`](src/test/kotlin/org/maxmoran/quant/CorrelationParityTest.kt) |
 | Value at Risk | ported | [`../quant/var.py`](../quant/var.py) | [`Var.kt`](src/main/kotlin/org/maxmoran/quant/Var.kt) | [`VarParityTest.kt`](src/test/kotlin/org/maxmoran/quant/VarParityTest.kt) |
-| Markowitz optimization | planned | `../quant/markowitz.py` | — | — |
-| Monte Carlo (stochastic) | planned | `../quant/monte_carlo.py` | — | — |
-| DCF | planned | `../quant/dcf.py` | — | — |
+| Markowitz optimization | ported | [`../quant/markowitz.py`](../quant/markowitz.py) | [`Markowitz.kt`](src/main/kotlin/org/maxmoran/quant/Markowitz.kt) | [`MarkowitzParityTest.kt`](src/test/kotlin/org/maxmoran/quant/MarkowitzParityTest.kt) |
+| DCF | ported | [`../quant/dcf.py`](../quant/dcf.py) | [`Dcf.kt`](src/main/kotlin/org/maxmoran/quant/Dcf.kt) | [`DcfParityTest.kt`](src/test/kotlin/org/maxmoran/quant/DcfParityTest.kt) |
+| Monte Carlo (stochastic) | planned — last remaining module, ports under the §1.3 distributional regime | `../quant/monte_carlo.py` | — | — |
 
 Port order is deliberate: deterministic modules first (Kelly through DCF), stochastic last (Monte Carlo). See [`docs/parity-contract.md`](docs/parity-contract.md) for why.
 
 Note on GARCH: `vol.py`'s `simple_garch` is a fixed-parameter recursion (alpha=0.10, beta=0.85, no MLE fit, no RNG), so the entire volatility module is classified as deterministic pure math under parity-contract.md §1.1 — nothing in this wave was deferred to the §1.3 stochastic regime.
+
+Note on Markowitz and DCF classification: `markowitz.py` genuinely falls under parity-contract.md §1.4 (numerical linear algebra) — it solves `cov * x = b` with a hand-rolled Cholesky factorization plus forward/backward substitution and a 1e-10 regularization of non-positive pivots. The Kotlin port replicates that exact arithmetic (same loops, same summation order — deliberately not a library solver), and raw solver parity is asserted at the §1.4 tolerance of 1e-6 per entry. `dcf.py` is plain §1.1 arithmetic; its raw-double oracle uses a relative 1e-10 tolerance because absolute 1e-10 is below one ulp at 1e8 dollar magnitudes. One serialization caveat for both: values >= 1e7 (and < 1e-3) print in scientific notation on the JVM where Python prints plain decimals — numerically identical, and JSON text form is non-contract per §2, so these modules' parity tests assert numeric-value equality rather than string equality on rounded fields.
 
 Note on correlation and VaR classification: parity-contract.md §1.4 lists correlation under numerical linear algebra (1e-6, pinned decomposition), but `correlation.py` performs no matrix decomposition — only pairwise Pearson sums — so the port is verified at the stronger §1.1 tolerance (1e-10). `var.py` ships only historical (sorted-quantile) and parametric (fixed z-table Gaussian) methods; there is no Monte Carlo or bootstrap VaR variant in the Python source, so nothing was deferred under §1.3. If a simulation-based VaR is ever added to `quant/var.py`, it ports under the §1.3 distributional regime, not this wave's exact-parity regime.
 
@@ -92,6 +94,12 @@ gradle run --args="correlation --returns-csv returns.csv --asset-names btc,eth,g
 # VaR / CVaR (historical + parametric)
 gradle run --args="var --returns-json returns.json --confidence 0.95 --method both --portfolio-value 100000"
 gradle run --args="var --stdin --confidence 0.99" < returns.json
+
+# Mean-variance portfolios (CSV columns = assets, rows = periodic returns)
+gradle run --args="markowitz --returns-csv returns.csv --asset-names btc,eth,gold --rf 0.05"
+
+# Token fee-capture DCF (fees passed inline as JSON, not a file path)
+gradle run --args="dcf --fees-yearly [120e6,150e6,180e6,200e6,210e6] --discount 0.15 --terminal-growth 0.04 --circulating-supply 1e9 --current-price 0.5"
 ```
 
 Output goes to stdout as pretty-printed JSON, matching the Python schema exactly. Errors go to stdout as `{"error": "..."}` with exit code 1.
