@@ -82,7 +82,7 @@ one place, in plain English. The short version:
 |------|------------------------------|------------------------|
 | **Sanctions & Screening** | A name-screening engine that clears ~92% of false-positive alerts with zero missed true matches, a PEP engine (~84% cut) that answers both "right party?" and "still material?", a watchlist knowledge base that keeps the list data deduplicated, plus ad-hoc screening prompts | It clears only alerts it can *name a reason* for; everything else goes to an analyst — and a current PEP is never auto-cleared |
 | **Transaction Monitoring** | An alert-scoring engine (~85% false-positive cut) and a rule threshold-tuning engine (above/below-the-line testing) | It never auto-closes a recognised laundering pattern, and never files a SAR |
-| **Crypto / Blockchain** | An on-chain address-risk engine (~88% false-positive cut), an OSINT evidence engine that stamps every captured fact with its source, retrieval time, and content hash, plus tracing/screening prompts | It distinguishes "near a mixer" from "six hops away through an exchange" — and it states observations, never attributions |
+| **Crypto / Blockchain** | An on-chain address-risk engine (~88% false-positive cut), an OSINT evidence engine that stamps every captured fact with its source, retrieval time, and content hash, plus tracing/screening prompts and dedicated Travel Rule readiness, counterparty VASP assessment, stablecoin reserve review, and mixer/bridge exposure-disposition prompts | It distinguishes "near a mixer" from "six hops away through an exchange" — and it states observations, never attributions |
 | **KYC / CDD / Onboarding** | A customer risk-rating engine and entity-assessment prompts | A customer with a serious red flag can *never* be rated low |
 | **Adverse-Media Screening** | An engine that sorts negative-news hits by "right party?" and "really adverse?" | A bare common-name match with no identifier is never auto-cleared — it goes to a person |
 | **Investigations & SAR** | Narrative drafting, SAR file/no-file decisioning, UBO unwinding, network link analysis, and a case-QA engine that gates files before closure | It drafts the narrative and the decision memo; the filing decision is human. A critically deficient case file can never pass QA |
@@ -95,6 +95,7 @@ one place, in plain English. The short version:
 | **ABC, Third-Party & Correspondent** | Vendor diligence, bribery/corruption exposure, correspondent and nested-access risk, and TBML red-flag screening | Third-party risk is assessed on the relationship, not just the counterparty's paperwork |
 | **Data Governance** | A data-quality engine that decides whether a customer extract is fit to screen against, plus CDE-inventory, lineage, rule-authoring, and incident-triage prompts | A feed whose screening-critical fields breach their ceiling can never pass — and nothing is ever silently repaired |
 | **New-Product Approval** | A product-risk engine that tiers and routes a proposal pre-launch, plus assessment, launch-readiness, and post-implementation-review prompts | A proposal with a serious hard attribute can never be tiered low, and a prohibited activity is referred rather than scored |
+| **Every team (communications automation)** | A domain-neutral automation lane: turn raw email or chat exports into structured, continuously-maintained markdown archives; refresh an existing report surgically from new communications; compose pre-populated `.eml` drafts; and a meta-prompt that turns any recurring review process into a configured pipeline spec | It maintains artifacts across runs — unchanged content is preserved byte-for-byte, anything unparsed is listed rather than dropped, and nothing is ever sent |
 
 ---
 
@@ -115,7 +116,11 @@ with it.
 **The frameworks are deterministic, reproducible, and validated.** Each scoring engine
 is plain, readable code — no black box. The same inputs always produce the same result.
 Each one ships a validation report whose numbers are *emitted by a script anyone can
-re-run from a fixed seed*, not typed in by hand. And each one is held to a hard safety
+re-run from a fixed seed*, not typed in by hand. Each framework folder is also
+**self-contained**: alongside its evidence pack it carries a `reference-data/` folder of
+small, seeded, synthetic sample-input files with a documented schema — so you can see
+exactly what the engine consumes without leaving the folder, and a build check fails if
+those samples ever drift from what the generators produce. And each one is held to a hard safety
 rule appropriate to compliance: **the cost of a false negative is treated as
 unacceptable.** Concretely:
 
