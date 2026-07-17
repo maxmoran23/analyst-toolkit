@@ -2,6 +2,26 @@
 
 All notable changes to `quant-jvm` are recorded here. This changelog tracks parity with `../quant/` (Python) — when a Python module changes, the corresponding entry here records the Kotlin re-port.
 
+## [0.4.0] — 2026-07-17
+
+### Added
+- `Correlation.kt` — Kotlin port of `quant/correlation.py`:
+  - `corr(x, y)` — pairwise Pearson correlation (0.0 for short series or zero variance)
+  - `parseReturnsCsv(text)` — Python-faithful CSV ingestion (blank rows skipped, any row failing float parse skipped whole, i.e. header handling)
+  - `correlationOutput(cols, names, window, crisisThreshold)` — full-sample / crisis-only (only when > 5 crisis days) / rolling-window correlation, compression computed from the already-rounded values then re-rounded, `assets` echoing the full provided name list, Python negative-slice semantics for the rolling tail
+  - Classification note: contract §1.4 lists correlation under linear algebra (1e-6), but the reference has no matrix decomposition, so parity is verified at the stronger §1.1 1e-10 regime
+- `Var.kt` — Kotlin port of `quant/var.py`:
+  - `historicalVar(returns, confidence)` — sorted-quantile VaR with floor-index clamp and worst-tail CVaR
+  - `parametricVar(returns, confidence)` — Gaussian VaR from the fixed z-table keyed by `round(confidence, 3)` with 1.645 fallback; explicit throw on the zero denominator at confidence 1.0 (Python raises ZeroDivisionError; Kotlin would silently emit Infinity)
+  - `varOutput(returns, confidence, method, portfolioValue)` — public JSON contract (per-method pct at 4 decimals, dollar at 2, stats block), 20-observation minimum enforced at the CLI boundary like Python
+  - No deferral: `var.py` contains no Monte Carlo or bootstrap variant, so the §1.3 stochastic regime does not apply
+- `Cli.kt` — `correlation` and `var` subcommands with the same flags as the Python entrypoints
+- `CorrelationParityTest.kt` — 6 tests: full-JSON parity with crisis/rolling branches on and off, raw `corr` oracle at 1e-10 (incl. zero-variance), hand-math spot checks, CSV-parsing hand check, CLI error contract
+- `VarParityTest.kt` — 7 tests: full-JSON parity (both/historical/parametric, dollar scaling, off-table confidence fallback, stdin path), raw `historical_var`/`parametric_var` oracle at 1e-10, quantile-index and z-table hand checks (incl. the `round(confidence, 3)` key quirk), CLI error contract incl. confidence-1.0 parity
+
+### Verified
+- `gradle test --no-daemon` — 38/38 tests pass (6 Kelly, 6 Sharpe, 6 Drawdown, 7 Vol, 6 Correlation, 7 VaR) with python3 present, cross-language assertions exercised
+
 ## [0.3.0] — 2026-07-17
 
 ### Added

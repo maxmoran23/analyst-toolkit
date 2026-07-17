@@ -20,8 +20,8 @@ This is a stronger claim than "the code looks right" — it is an executable ass
 | Sharpe / Sortino / Calmar / Omega | ported | [`../quant/sharpe.py`](../quant/sharpe.py) | [`Sharpe.kt`](src/main/kotlin/org/maxmoran/quant/Sharpe.kt) | [`SharpeParityTest.kt`](src/test/kotlin/org/maxmoran/quant/SharpeParityTest.kt) |
 | Drawdown | ported | [`../quant/drawdown.py`](../quant/drawdown.py) | [`Drawdown.kt`](src/main/kotlin/org/maxmoran/quant/Drawdown.kt) | [`DrawdownParityTest.kt`](src/test/kotlin/org/maxmoran/quant/DrawdownParityTest.kt) |
 | Volatility (realized, EWMA, Parkinson, Garman-Klass, GARCH) | ported | [`../quant/vol.py`](../quant/vol.py) | [`Vol.kt`](src/main/kotlin/org/maxmoran/quant/Vol.kt) | [`VolParityTest.kt`](src/test/kotlin/org/maxmoran/quant/VolParityTest.kt) |
-| Correlation | planned | `../quant/correlation.py` | — | — |
-| Value at Risk | planned | `../quant/var.py` | — | — |
+| Correlation | ported | [`../quant/correlation.py`](../quant/correlation.py) | [`Correlation.kt`](src/main/kotlin/org/maxmoran/quant/Correlation.kt) | [`CorrelationParityTest.kt`](src/test/kotlin/org/maxmoran/quant/CorrelationParityTest.kt) |
+| Value at Risk | ported | [`../quant/var.py`](../quant/var.py) | [`Var.kt`](src/main/kotlin/org/maxmoran/quant/Var.kt) | [`VarParityTest.kt`](src/test/kotlin/org/maxmoran/quant/VarParityTest.kt) |
 | Markowitz optimization | planned | `../quant/markowitz.py` | — | — |
 | Monte Carlo (stochastic) | planned | `../quant/monte_carlo.py` | — | — |
 | DCF | planned | `../quant/dcf.py` | — | — |
@@ -29,6 +29,8 @@ This is a stronger claim than "the code looks right" — it is an executable ass
 Port order is deliberate: deterministic modules first (Kelly through DCF), stochastic last (Monte Carlo). See [`docs/parity-contract.md`](docs/parity-contract.md) for why.
 
 Note on GARCH: `vol.py`'s `simple_garch` is a fixed-parameter recursion (alpha=0.10, beta=0.85, no MLE fit, no RNG), so the entire volatility module is classified as deterministic pure math under parity-contract.md §1.1 — nothing in this wave was deferred to the §1.3 stochastic regime.
+
+Note on correlation and VaR classification: parity-contract.md §1.4 lists correlation under numerical linear algebra (1e-6, pinned decomposition), but `correlation.py` performs no matrix decomposition — only pairwise Pearson sums — so the port is verified at the stronger §1.1 tolerance (1e-10). `var.py` ships only historical (sorted-quantile) and parametric (fixed z-table Gaussian) methods; there is no Monte Carlo or bootstrap VaR variant in the Python source, so nothing was deferred under §1.3. If a simulation-based VaR is ever added to `quant/var.py`, it ports under the §1.3 distributional regime, not this wave's exact-parity regime.
 
 ## Toolchain
 
@@ -83,6 +85,13 @@ gradle run --args="drawdown --returns-json returns.json"
 gradle run --args="vol --returns-json returns.json --method ewma --annualize 365 --ewma-lambda 0.94"
 gradle run --args="vol --ohlc-json ohlc.json --method garman_klass"
 gradle run --args="vol --returns-json returns.json --method garch"
+
+# Correlation matrix, crisis compression, rolling window (CSV input, benchmark = column 0)
+gradle run --args="correlation --returns-csv returns.csv --asset-names btc,eth,gold --window 30"
+
+# VaR / CVaR (historical + parametric)
+gradle run --args="var --returns-json returns.json --confidence 0.95 --method both --portfolio-value 100000"
+gradle run --args="var --stdin --confidence 0.99" < returns.json
 ```
 
 Output goes to stdout as pretty-printed JSON, matching the Python schema exactly. Errors go to stdout as `{"error": "..."}` with exit code 1.

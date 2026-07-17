@@ -20,6 +20,8 @@ fun main(args: Array<String>) {
         "sharpe" -> runSharpe(rest)
         "drawdown" -> runDrawdown(rest)
         "vol" -> runVol(rest)
+        "correlation" -> runCorrelation(rest)
+        "var" -> runVar(rest)
         "--help", "-h", "help" -> println(USAGE)
         else -> {
             System.err.println("unknown module: $module")
@@ -39,9 +41,11 @@ Modules implemented:
   sharpe      Sharpe, Sortino, Calmar, and Omega ratios
   drawdown    Max drawdown, underwater curve, recovery episodes
   vol         Realized, EWMA, Parkinson, Garman-Klass, simplified GARCH(1,1)
+  correlation Full-sample, crisis-only, and rolling pairwise correlation
+  var         Historical and parametric (Gaussian) VaR and CVaR
 
 Modules planned (not yet ported):
-  correlation, var, markowitz, monte_carlo, dcf
+  markowitz, monte_carlo, dcf
 
 Per-module help:
   kelly --mode single --p <prob> --odds <decimal_odds> [--fraction 0.25]
@@ -49,4 +53,6 @@ Per-module help:
   sharpe (--returns-json <path> | --stdin) [--rf 0.05] [--annualize 252]
   drawdown (--equity-json <path> | --returns-json <path>) [--top-n 5]
   vol --method realized|ewma|parkinson|garman_klass|garch (--returns-json <path> | --ohlc-json <path>) [--annualize 252] [--ewma-lambda 0.94]
+  correlation --returns-csv <path> [--asset-names a,b,c] [--window 30] [--crisis-threshold -0.05]
+  var (--returns-json <path> | --stdin) [--confidence 0.95] [--method historical|parametric|both] [--portfolio-value 1.0]
 """.trimIndent()
