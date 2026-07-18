@@ -330,5 +330,108 @@
         "None \u2014 first scan of Veritas Markets. No prior score to diff against; baseline."
       ]
     ]
+  },
+  "stablecoin-depeg-contagion.md": {
+    "scenario": "A periodic depeg/run stress review at Harborview Financial Group assesses an accepted settlement stablecoin's fragility and contagion channels before renewing its acceptance on the desk.",
+    "fills": [
+      [
+        "the stablecoin (ticker) and the issuing entity",
+        "USDM (Meridian Dollar) \u2014 a fiat-referenced stablecoin issued by Meridian Stable Ltd; ERC-20 on Ethereum with bridged supply on Arbitrum and Base"
+      ],
+      [
+        "why this is being run",
+        "Periodic depeg/run stress review: USDM is an accepted settlement coin on the Harborview digital-asset desk; the desk needs a documented fragility and contagion read before renewing its acceptance."
+      ],
+      [
+        "DATE",
+        "2026-02-13"
+      ],
+      [
+        "the institution's own position",
+        "The desk holds ~$40M USDM as a settlement buffer, settles ~$15M/day of client flow in USDM, and has three clients with material USDM balances; no direct issuer relationship."
+      ],
+      [
+        "paste what you hold",
+        "Reserve attestation (issuer site, 2026-01-31 agreed-upon-procedures letter): 62% short-dated T-bills, 24% overnight repo, 14% 'cash and cash equivalents at partner banks' (unnamed). Redemption: T+1 for verified primary-market participants, $250k minimum; retail redeems via secondary DEX pools only. Secondary market: two DEX pools ~$70M combined depth; USDM traded to 0.994 for ~6 hours on 2026-01-20 after a partner-bank rumor, then recovered. Collateral reuse: USDM is accepted collateral on two lending protocols (~$120M) and is wrapped into a yield token 'yUSDM'. Prior depegs: none sustained below 0.99."
+      ],
+      [
+        "paste the last analysis",
+        "None \u2014 first depeg/contagion analysis of USDM. Baseline; no prior fragility score."
+      ]
+    ]
+  },
+  "wallet-attribution-osint.md": {
+    "scenario": "An investigations analyst at Harborview Financial Group tries to attribute an unlabeled address cluster surfaced in a fraud case to a real-world entity, to resolve a disputed source-of-funds question.",
+    "fills": [
+      [
+        "the unlabeled address or cluster under review",
+        "0x7a3d9f4e2b8c1d6a5f0e9c2b4a7d8e1f3c6b0a9d and its co-spend cluster (four addresses) surfaced in a fraud investigation; no vendor label on any of them"
+      ],
+      [
+        "name the chain",
+        "ETH and ERC-20 tokens on Ethereum (mainnet); one bridged hop to Arbitrum is in scope"
+      ],
+      [
+        "what real-world entity or entity-type",
+        "Whether the cluster is a Harborview customer's self-hosted wallet, a third-party exchange deposit address, or an unaffiliated party \u2014 to resolve a source-of-funds question the customer disputes"
+      ],
+      [
+        "DATE",
+        "2026-02-13"
+      ],
+      [
+        "paste behavioral heuristic material",
+        "Co-spend clustering (Etherscan export, 2026-02-12): the four addresses share inputs in tx 0xd41a9c02e7b3f5a8d0c6e2b9f4a1c7e3d5b0a8f6. The subject deposits round-number ETH to 0x4c9a2f7e0b18d635a2f9c4b70d1e6a3c8f05b3d1 (community-tagged 'Meridian Digital Exchange: Hot Wallet 7', unconfirmed) roughly every two weeks; gas is funded from a single CEX withdrawal address; nonce and timing patterns are consistent with one operator."
+      ],
+      [
+        "paste label-source and open-source material",
+        "Public tag databases: no direct label on the subject; the deposit target carries one community tag 'Meridian Digital Exchange'. ENS: none. OSINT: a 2025 forum post by user 'harbor_trader' pasted 0x7a3d9f...0a9d claiming it as 'my cold wallet' (unverified). No sanctioned-list hit on any cluster address."
+      ],
+      [
+        "anything beyond the above",
+        "A prior block-explorer evidence annex on 0x7a3d9f...0a9d exists (attached separately); case notes record that the customer disputes ownership of the cluster."
+      ],
+      [
+        "paste the last attribution",
+        "None \u2014 first attribution of this cluster. Baseline."
+      ]
+    ]
+  },
+  "defi-exploit-fund-tracing.md": {
+    "scenario": "Harborview Financial Group's digital-asset desk holds exposure to Aureus Finance, a lending protocol just drained in a suspected oracle-manipulation exploit, and needs the incident reconstructed and the stolen funds traced before deciding what to freeze, notify, and report.",
+    "fills": [
+      [
+        "the exploited protocol or target",
+        "Aureus Finance \u2014 an over-collateralized lending protocol on Ethereum; the affected market contract is 0x9c4e2a7b1f0d6835a2e9c4b70d1e6a3c8f05b214 (per the protocol's incident notice)"
+      ],
+      [
+        "reentrancy / oracle or price manipulation",
+        "Oracle / price manipulation \u2014 a flash-loan-funded manipulation of the protocol's price oracle is the working hypothesis per an initial security-firm write-up; not yet confirmed by the protocol"
+      ],
+      [
+        "the exploit transaction hash(es)",
+        "Exploit transaction 0x3f8a1d6c04e29b7a5f0e9c2b4a7d8e1f3c6b0a9d5e2c8f14a7b93d06e2c1f8a4 drained the market to attacker address 0x6d1f4a9c0e83b275a2f9c4b70d1e6a3c8f05b921; approximately 4,120 ETH plus 6.2M USDC (~$18.4M) left the protocol on 2026-02-06"
+      ],
+      [
+        "the stolen assets and every chain in scope",
+        "ETH and USDC on Ethereum (mainnet); a portion was subsequently bridged to Arbitrum \u2014 both chains are in scope"
+      ],
+      [
+        "why this is being run and the institution's interest",
+        "Harborview Financial Group holds exposure to Aureus Finance through a client's custodied position and needs a documented reconstruction, trace, and freeze/recovery map to support a notification-and-reporting decision"
+      ],
+      [
+        "DATE",
+        "2026-02-06"
+      ],
+      [
+        "paste any incident-specific data",
+        "Exploit-tx trace (block explorer, retrieved 2026-02-06): 0x3f8a...f8a4 moved 4,120 ETH + 6.2M USDC to 0x6d1f...b921. Hop-1: 0x6d1f...b921 -> 0x8a05c3e91f7b264d0a9e5c2b4a7d8e1f3c6b0a9d (staging), 4,120 ETH, 2026-02-06 03:14, tx 0xa71c4f20. Hop-2: the staging wallet swapped 2,000 ETH to USDC on a DEX and sent 3.8M USDC to bridge deposit 0xb3c07f1a9d4e2685a2f9c4b70d1e6a3c8f05b477 (Arbitrum-bound). Hop-3: 90 ETH deposited to 0x4c9a2f7e0b18d635a2f9c4b70d1e6a3c8f05b3d1, carrying a single public tag 'Meridian Digital Exchange: Hot Wallet 7' (unconfirmed). No mixer interaction observed as of retrieval."
+      ],
+      [
+        "paste the last trace",
+        "None \u2014 first trace of the Aureus Finance incident. No prior trace to diff against; baseline."
+      ]
+    ]
   }
 }

@@ -15,7 +15,7 @@ affairs. It assumes you know your domain. It does not assume you write code.
 
 **What it gives you.** Two things, and they are different in kind:
 
-- **84 prompts.** A page of written instructions you copy and paste into an AI assistant
+- **87 prompts.** A page of written instructions you copy and paste into an AI assistant
   you already have — Microsoft 365 Copilot, GitHub Copilot, Claude, ChatGPT. Nothing to
   install. Each one turns the assistant into a specific analyst with a defined method, a
   scoring rubric, and a fixed output shape, so two people running it get comparable work.
@@ -107,7 +107,7 @@ There is never a third file. [`BASE.md`](BASE.md) is the entire 4-file methodolo
 | **[`BASE.md`](BASE.md)** | **The one companion file** — the entire methodology framework (voice + method + quality bar + renderer) consolidated into a single attachable document. Any prompt + `BASE.md` = full toolkit quality. Generated from `methodology/`; CI keeps it in sync. |
 | **[`methodology/`](methodology/)** | **The 4-file framework base** — analytical patterns, audit-defensible writing voice, quality standards per output type, and the multi-format report-templates renderer. Load all four as Copilot agent / Claude Project / ChatGPT custom GPT instructions once; every task becomes a thin prompt after that. Prefer one file? Use [`BASE.md`](BASE.md). |
 | **[`standalone/`](standalone/)** | **Single-file copy/paste prompts** — each one a complete instruction set, no cross-references, no other files needed; embeds the same renderer as `methodology/report-templates.md`. Best for one-off use or sharing one file with a teammate |
-| **[`prompts/`](prompts/)** | 84 paste-ready analytical prompt templates across 15 categories — the broader library; each file pairs a prompt block with how-to and tuning sections |
+| **[`prompts/`](prompts/)** | 87 paste-ready analytical prompt templates across 15 categories — the broader library; each file pairs a prompt block with how-to and tuning sections |
 | **[`output-templates/`](output-templates/)** | Document scaffolds — interactive dashboards, PDF reports, compliance documents, communications |
 | **[`samples/`](samples/)** | Rendered example outputs with previews — what the prompts and templates actually produce |
 | **[`reference/`](reference/)** | Domain cheat-sheets — AML typologies, blockchain entity typologies, compliance, audit, regulatory, financial analysis |
@@ -163,129 +163,29 @@ Full workflow, including the Copilot copy/paste loop and getting output into cle
 
 ## Prompt catalog
 
-84 prompts across 15 categories. The financial-crime categories cover a full analytical lifecycle — **detect** (typology mapping) → **monitor** (alert triage, sanctions and PEP screening, on-chain screening) → **investigate** (fund-flow tracing, UBO unwinding, link analysis) → **decide** (SAR file/no-file) → **quality-check** (case QA) → **report** (investigation narrative). The controls, data, and regulatory categories cover the assurance lifecycle around it — **document** (EWRA, control matrix, risk register) → **test** (testing workpaper, QA scorecard) → **govern** (model governance and validation, data quality, lineage) → **track** (issue remediation) → **report and respond** (committee pack, policy gap analysis, exam response). The `npa/` category runs the same discipline forward in time, before a product generates its first alert.
+87 prompts across 15 categories. The complete, per-prompt index — each file with a worked example and a paste-ready demo — lives in **[`prompts/`](prompts/)**; this is the category map.
 
-### Financial crime & compliance — [`prompts/compliance/`](prompts/compliance/)
-| Prompt | What it does |
-|--------|--------------|
-| [entity-risk-assessment](prompts/compliance/entity-risk-assessment.md) | 8-domain weighted risk assessment of an entity — 0-100 composite, 5-tier rating, disposition |
-| [sanctions-watchlist-screen](prompts/compliance/sanctions-watchlist-screen.md) | Screen a name, entity, or address against OFAC + EU/UN/UK lists with hit disposition |
-| [pep-screening-disposition](prompts/compliance/pep-screening-disposition.md) | Disposition a PEP alert on two axes — right party, and materially in-scope status |
-| [typology-detection-mapping](prompts/compliance/typology-detection-mapping.md) | Decompose an AML typology into red-flag indicators and transaction-monitoring rule logic |
-| [alert-triage](prompts/compliance/alert-triage.md) | Work a transaction-monitoring alert to a documented close / escalate / refer disposition |
-| [investigation-narrative](prompts/compliance/investigation-narrative.md) | Draft a chronological, evidence-sourced narrative of investigated activity |
-| [sar-decisioning](prompts/compliance/sar-decisioning.md) | Work an investigation through the elements-of-suspicion checklist to a documented file / no-file memo |
-| [case-qa-review](prompts/compliance/case-qa-review.md) | Second-line QA of a completed case file — critical checks, deficiency register, PASS / REMEDIATE / REWORK |
-| [ubo-beneficial-ownership](prompts/compliance/ubo-beneficial-ownership.md) | Unwind an ownership chain — effective-ownership math, control prongs, opacity red flags |
-| [network-link-analysis](prompts/compliance/network-link-analysis.md) | Map entity relationships into shared-attribute clusters, hubs, and flow-through patterns |
-| [periodic-review-triggers](prompts/compliance/periodic-review-triggers.md) | Triage a periodic-review backlog — event vs calendar triggers, weighted prioritization |
-| [customer-file-review](prompts/compliance/customer-file-review.md) | Review a customer risk file for completeness and risk-rating defensibility |
+The financial-crime categories run a full analytical lifecycle — **detect** → **monitor** → **investigate** → **decide** → **quality-check** → **report** — and the controls, data, and regulatory categories run the assurance lifecycle around it. The `npa/` category runs the same discipline forward in time, before a product generates its first alert. The shared severity vocabulary (CRITICAL / HIGH / MEDIUM / LOW) and confidence ratings (HIGH / MODERATE / LOW) are deliberately consistent across the library, so outputs compose.
 
-### Fraud — [`prompts/fraud/`](prompts/fraud/)
-| Prompt | What it does |
-|--------|--------------|
-| [app-fraud-triage](prompts/fraud/app-fraud-triage.md) | Classify an authorized-push-payment scam and disposition it with a liability framing |
-| [wire-fraud-disposition](prompts/fraud/wire-fraud-disposition.md) | Disposition a flagged wire — hold, release, recall, or escalate, with the verification step named |
-| [check-fraud-analysis](prompts/fraud/check-fraud-analysis.md) | Classify a check or deposit fraud case and size loss exposure against the funds-availability clock |
-| [mule-account-review](prompts/fraud/mule-account-review.md) | Assess an account for money-mule indicators, with a network-expansion list |
-| [fraud-typology-mapping](prompts/fraud/fraud-typology-mapping.md) | Translate a named fraud scheme into detection-rule logic and control mappings |
+| Category | Prompts | What it covers |
+|---|---|---|
+| **[`compliance/`](prompts/compliance/)** | 15 | Financial crime & compliance — screening, alert triage, investigation, SAR decisioning, UBO, case QA, identity resolution |
+| **[`fraud/`](prompts/fraud/)** | 5 | Fraud detection & response — APP scams, wire and check fraud, mule accounts, typology mapping |
+| **[`surveillance/`](prompts/surveillance/)** | 3 | Trade & communications surveillance — manipulation patterns, e-comms conduct, market-abuse cases |
+| **[`third-party/`](prompts/third-party/)** | 4 | ABC, vendors & correspondent banking — vendor diligence, bribery risk, nested access, TBML |
+| **[`blockchain/`](prompts/blockchain/)** | 15 | Blockchain intelligence — on-chain screening and tracing, tokens, stablecoins, tokenized assets, prediction markets, wallet attribution |
+| **[`regulatory/`](prompts/regulatory/)** | 5 | Regulatory landscape & obligations — intelligence scans, obligation extraction, policy-gap analysis, exam response |
+| **[`controls/`](prompts/controls/)** | 9 | Controls, testing & governance — control matrix, risk register, EWRA, independent testing, model validation, data quality |
+| **[`data-governance/`](prompts/data-governance/)** | 4 | Data governance for financial-crime systems — CDE inventory, lineage, DQ-rule authoring, incident triage |
+| **[`npa/`](prompts/npa/)** | 3 | New-product approval & review — pre-launch risk, launch readiness, post-implementation review |
+| **[`research/`](prompts/research/)** | 7 | Deep research & idea work — STORM research, cross-source synthesis, calibration debate, frontier/futures |
+| **[`market/`](prompts/market/)** | 5 | Market & economic analysis — sentiment, macro regime, prediction-market signal, portfolio simulation |
+| **[`briefs/`](prompts/briefs/)** | 4 | Recurring intelligence briefings — daily briefs, weekly roundups, breaking-news scans, committee packs |
+| **[`specialty/`](prompts/specialty/)** | 2 | Focused quantitative methods — expected-value / Kelly sizing, local-market analytics |
+| **[`automation/`](prompts/automation/)** | 4 | Communications automation & maintained artifacts — thread extraction, report refresh, chat indexing, pipeline specs |
+| **[`workspace/`](prompts/workspace/)** | 2 | Configure & automate your AI workspace — custom-instructions writer, Outlook/Copilot automation |
 
-### Trade & communications surveillance — [`prompts/surveillance/`](prompts/surveillance/)
-| Prompt | What it does |
-|--------|--------------|
-| [trade-surveillance-review](prompts/surveillance/trade-surveillance-review.md) | Triage a trade-surveillance alert — manipulation pattern vs legitimate-strategy alternatives |
-| [comms-surveillance-review](prompts/surveillance/comms-surveillance-review.md) | Read a flagged e-comms item in context and classify the conduct or market-integrity risk |
-| [market-abuse-case](prompts/surveillance/market-abuse-case.md) | Build an element-by-element case narrative for suspected insider dealing or manipulation |
-
-### ABC, third-party & correspondent banking — [`prompts/third-party/`](prompts/third-party/)
-| Prompt | What it does |
-|--------|--------------|
-| [vendor-due-diligence](prompts/third-party/vendor-due-diligence.md) | Onboarding or periodic vendor diligence — domain scorecard, residual tier, required mitigations |
-| [abc-risk-assessment](prompts/third-party/abc-risk-assessment.md) | Anti-bribery & corruption exposure assessment for a relationship, transaction, or intermediary |
-| [correspondent-nested-risk](prompts/third-party/correspondent-nested-risk.md) | Score a respondent relationship and its downstream / nested access risk |
-| [tbml-redflag-analysis](prompts/third-party/tbml-redflag-analysis.md) | Screen a trade-finance transaction for TBML red flags; tiered disposition memo |
-
-### Blockchain intelligence — [`prompts/blockchain/`](prompts/blockchain/)
-| Prompt | What it does |
-|--------|--------------|
-| [onchain-sanctions-monitor](prompts/blockchain/onchain-sanctions-monitor.md) | Screen blockchain addresses for sanctions, mixer, and AML-typology exposure |
-| [fund-flow-tracing](prompts/blockchain/fund-flow-tracing.md) | Trace funds hop by hop across a chain — counterparties, mixers, exchanges, attribution |
-| [block-explorer-osint](prompts/blockchain/block-explorer-osint.md) | Convert public explorer data into a provenance-stamped evidence annex with a reconciliation tie-out |
-| [defi-protocol-risk](prompts/blockchain/defi-protocol-risk.md) | Score a DeFi protocol on TVL, yield, contract, governance, and bridge risk |
-| [token-compliance-screen](prompts/blockchain/token-compliance-screen.md) | Screen a digital asset on both thesis quality and AML red flags |
-
-### Regulatory — [`prompts/regulatory/`](prompts/regulatory/)
-| Prompt | What it does |
-|--------|--------------|
-| [regulatory-intelligence-scan](prompts/regulatory/regulatory-intelligence-scan.md) | Severity-rated briefing on what changed in a regulatory landscape |
-| [geopolitical-risk-monitor](prompts/regulatory/geopolitical-risk-monitor.md) | Per-jurisdiction sanctions, conflict, and regulatory-risk scoring |
-| [obligation-extraction](prompts/regulatory/obligation-extraction.md) | Turn a regulation or filing into a structured register of obligations and deadlines |
-| [policy-gap-analysis](prompts/regulatory/policy-gap-analysis.md) | Clause-level gap analysis of an internal policy against a regulation, with traceability matrix |
-| [exam-response-pack](prompts/regulatory/exam-response-pack.md) | Parse an examination or information request into a response pack with evidence mapping and QC checklist |
-
-### Controls, testing & governance — [`prompts/controls/`](prompts/controls/)
-| Prompt | What it does |
-|--------|--------------|
-| [control-matrix-builder](prompts/controls/control-matrix-builder.md) | Build a six-domain AML/CFT control inventory — 27-control reference framework, gap register, remediation view |
-| [risk-register-builder](prompts/controls/risk-register-builder.md) | Build a compliance risk register — inherent L×I scoring, residual ratings, appetite comparison, dual heat maps |
-| [ewra-builder](prompts/controls/ewra-builder.md) | Build the enterprise-wide risk assessment — business-line inherent factors, control overlay, residual grid, board summary |
-| [independent-testing-workpaper](prompts/controls/independent-testing-workpaper.md) | Design and document a control test to audit standard — sample methodology, exceptions, effectiveness conclusion |
-| [qa-review-scorecard](prompts/controls/qa-review-scorecard.md) | Score completed work items against a weighted QA rubric — pass rate, error taxonomy, coaching themes |
-| [issue-remediation-tracker](prompts/controls/issue-remediation-tracker.md) | Normalize findings into an issue register — action-plan QC, sustainability tests, closure-evidence standards |
-| [model-governance-review](prompts/controls/model-governance-review.md) | Assess a model, rule set, or AI-assisted tool against model-risk-management expectations |
-| [model-validation-workpaper](prompts/controls/model-validation-workpaper.md) | Independent validation workpaper along the SR 11-7 pillars — findings register, documented effective challenge |
-| [data-quality-review](prompts/controls/data-quality-review.md) | Assess a dataset across six quality dimensions with source-to-use lineage and a remediation register |
-
-### Data governance — [`prompts/data-governance/`](prompts/data-governance/)
-| Prompt | What it does |
-|--------|--------------|
-| [cde-inventory](prompts/data-governance/cde-inventory.md) | Build a critical-data-element inventory from consuming-process criticality — owner, source of truth, thresholds |
-| [data-lineage-mapping](prompts/data-governance/data-lineage-mapping.md) | Map one CDE from origin to every consuming process — controlled vs uncontrolled hops, break-risk register |
-| [dq-rule-authoring](prompts/data-governance/dq-rule-authoring.md) | Translate a quality requirement into named, testable rules across five dimensions, with thresholds |
-| [data-incident-triage](prompts/data-governance/data-incident-triage.md) | Triage a data break that hit financial-crime systems — blast radius, lookback, compensating controls |
-
-### New-product approval — [`prompts/npa/`](prompts/npa/)
-| Prompt | What it does |
-|--------|--------------|
-| [npa-risk-assessment](prompts/npa/npa-risk-assessment.md) | Nine-factor financial-crime risk assessment of a proposed product — tier, raise-only floors, approval routing |
-| [product-launch-readiness](prompts/npa/product-launch-readiness.md) | Verify every approval condition against evidence — GO / GO-WITH-CONDITIONS / NO-GO |
-| [post-implementation-review](prompts/npa/post-implementation-review.md) | Projected-vs-observed review at the committed date — close, extend, remediate, or escalate |
-
-### Research — [`prompts/research/`](prompts/research/)
-| Prompt | What it does |
-|--------|--------------|
-| [deep-research-storm](prompts/research/deep-research-storm.md) | Multi-perspective deep research into a cited long-form article |
-| [cross-source-synthesis](prompts/research/cross-source-synthesis.md) | Meta-analysis across many sources — themes, contradictions, blind spots |
-| [idea-generation](prompts/research/idea-generation.md) | Cross-domain idea generation, scored on an opportunity rubric |
-| [calibration-debate](prompts/research/calibration-debate.md) | Steelman both sides of a thesis, then score its defensibility |
-| [research-translation-scan](prompts/research/research-translation-scan.md) | Filter a research stream for signal, translate to practical implications |
-| [frontier-scan](prompts/research/frontier-scan.md) | Track speculative research with strict evidence-tiering and forced counter-arguments |
-| [futures-projection](prompts/research/futures-projection.md) | Year-by-year multi-metric scenario forecast with confidence bands |
-
-### Market & economic — [`prompts/market/`](prompts/market/)
-| Prompt | What it does |
-|--------|--------------|
-| [market-sentiment-tracker](prompts/market/market-sentiment-tracker.md) | Synthesize price, sentiment, and news into a market-narrative read |
-| [macro-regime-monitor](prompts/market/macro-regime-monitor.md) | Classify the current macro regime from growth/inflation/liquidity indicators |
-| [prediction-market-signal](prompts/market/prediction-market-signal.md) | Mine prediction markets for implied probabilities and flag divergences |
-| [simulated-portfolio-manager](prompts/market/simulated-portfolio-manager.md) | A hypothetical portfolio-simulation exercise with risk rules and attribution |
-| [intelligence-dashboard-aggregator](prompts/market/intelligence-dashboard-aggregator.md) | Consolidate multiple feeds into one structured dashboard view |
-
-### Intelligence briefs — [`prompts/briefs/`](prompts/briefs/)
-| Prompt | What it does |
-|--------|--------------|
-| [intelligence-brief](prompts/briefs/intelligence-brief.md) | A prioritized, scannable briefing — morning / midday / afternoon / evening variants |
-| [weekly-roundup](prompts/briefs/weekly-roundup.md) | A weekly review with a multi-dimension performance scorecard |
-| [breaking-news-scan](prompts/briefs/breaking-news-scan.md) | A terse, relevance-filtered breaking-news headline scan |
-| [committee-reporting-pack](prompts/briefs/committee-reporting-pack.md) | Assemble a governance-committee reporting pack — KPI/KRI dashboard, escalations, prior-action tracker |
-
-### Specialty — [`prompts/specialty/`](prompts/specialty/)
-| Prompt | What it does |
-|--------|--------------|
-| [expected-value-analysis](prompts/specialty/expected-value-analysis.md) | Compute edge and expected value, size with the Kelly criterion, with risk-of-ruin context |
-| [local-market-analytics](prompts/specialty/local-market-analytics.md) | Local real-estate market analytics — tracking, transformation signals, multi-scenario projection |
-
----
+For the full list of prompts in each category and how they chain into workflows, see **[`prompts/README.md`](prompts/README.md)**.
 
 ## Design principles
 

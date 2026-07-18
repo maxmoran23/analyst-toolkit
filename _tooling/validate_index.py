@@ -147,6 +147,29 @@ def main() -> int:
                     f"filesystem has {n[key]}"
                 )
 
+    # --- Rule D: root README prompt-catalog is a complete category overview whose
+    # per-category counts match disk. The README lists categories, not individual
+    # prompts, so it cannot drift as prompts are added — only the counts can, and those
+    # are checked here against the filesystem.
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    parts = readme.split("## Prompt catalog", 1)
+    if len(parts) < 2:
+        errors.append("RULE D README.md has no '## Prompt catalog' section")
+    else:
+        region = parts[1].split("\n## ", 1)[0]
+        for category in sorted(p for p in (ROOT / "prompts").iterdir() if p.is_dir()):
+            cat = category.name
+            n_cat = len([f for f in category.glob("*.md") if f.name != "README.md"])
+            m = re.search(rf"\(prompts/{re.escape(cat)}/\)[^\n|]*\|\s*(\d+)\s*\|", region)
+            if not m:
+                errors.append(
+                    f"RULE D README.md prompt catalog does not list category {cat}/ with a count"
+                )
+            elif int(m.group(1)) != n_cat:
+                errors.append(
+                    f"RULE D README.md catalog claims {m.group(1)} for {cat}/, filesystem has {n_cat}"
+                )
+
     print(
         f"Filesystem: {n['prompts']} prompts / {n['categories']} categories · "
         f"{n['frameworks']} frameworks · {n['hubs']} team hubs"
