@@ -1,6 +1,6 @@
 # Prompts
 
-78 paste-ready analytical prompt templates across 14 categories. Each one turns an AI assistant into a specific kind of analyst — an entity risk reviewer, a sanctions or PEP screener, a transaction-monitoring analyst, a fraud investigator, a surveillance reviewer, a control tester, a data-governance analyst, a new-product risk assessor, a blockchain investigator, a regulatory monitor, a deep researcher, a communications-automation pipeline builder — with a defined method, a scoring rubric, and a structured output format.
+84 paste-ready analytical prompt templates across 15 categories. Each one turns an AI assistant into a specific kind of analyst — an entity risk reviewer, a sanctions or PEP screener, an entity-resolution analyst, a transaction-monitoring analyst, a fraud investigator, a surveillance reviewer, a control tester, a data-governance analyst, a new-product risk assessor, a blockchain investigator, a tokenized-asset reviewer, a regulatory monitor, a deep researcher, a communications-automation pipeline builder — with a defined method, a scoring rubric, and a structured output format.
 
 **The two-file rule.** Every prompt block here is fully self-contained as pasted — no other file is required at run time. The only companion that ever adds anything is [`../BASE.md`](../BASE.md) (the audit-defensible voice, the quality floor, and the Word / Excel / PDF / HTML renderer in one document). One prompt + `BASE.md` is the entire quality system; there is never a third file, and CI enforces it. Links inside these files are browse-time navigation only — each file states this in its **Run-time needs** row and its run-time contract footer.
 
@@ -31,6 +31,7 @@ The financial-crime files cover a full analytical lifecycle: **detect** → **mo
 - **[entity-risk-assessment](compliance/entity-risk-assessment.md)** — 8-domain weighted risk assessment of an entity; 0-100 composite, 5-tier rating, disposition recommendation
 - **[sanctions-watchlist-screen](compliance/sanctions-watchlist-screen.md)** — screen a name, entity, or address against OFAC + EU/UN/UK lists with hit disposition
 - **[pep-screening-disposition](compliance/pep-screening-disposition.md)** — disposition a politically-exposed-person alert on two axes: right party, and materially in-scope status (prominence tier, step-down, jurisdiction)
+- **[identity-resolution-disambiguation](compliance/identity-resolution-disambiguation.md)** — decide whether two identities are the same person, different people, or indeterminate; transliteration and name-order handling, base-rate calibration, identifier-weighted confidence, never a name-only clear
 - **[typology-detection-mapping](compliance/typology-detection-mapping.md)** — decompose an AML typology into red-flag indicators and transaction-monitoring rule logic
 - **[alert-triage](compliance/alert-triage.md)** — work a transaction-monitoring alert to a documented close / escalate / refer disposition
 - **[investigation-narrative](compliance/investigation-narrative.md)** — draft a chronological, evidence-sourced narrative of investigated activity
@@ -71,6 +72,9 @@ The financial-crime files cover a full analytical lifecycle: **detect** → **mo
 - **[vasp-counterparty-assessment](blockchain/vasp-counterparty-assessment.md)** — scored counterparty VASP/DASP risk assessment: licensing, ownership, controls signals, nested exposure, with observed-vs-claimed evidence discipline
 - **[stablecoin-reserve-review](blockchain/stablecoin-reserve-review.md)** — review a stablecoin issuer's reserve attestations: assurance grading, composition ladder, redemption terms, regime placement, depeg indicators
 - **[bridge-mixer-exposure-playbook](blockchain/bridge-mixer-exposure-playbook.md)** — disposition mixer, bridge, and privacy-protocol exposure in alerts: exposure typing, hop-and-value materiality, sanctioned-service handling, clear-vs-escalate documentation standard
+- **[chain-analytics-export-rationalization](blockchain/chain-analytics-export-rationalization.md)** — rationalize Chainalysis / TRM / Elliptic exports plus OSINT into one activity picture: observed vs vendor-attributed vs alleged tiers, direct/indirect exposure, source-and-use reconciliation, disposition
+- **[tokenized-asset-risk-assessment](blockchain/tokenized-asset-risk-assessment.md)** — assess a tokenized real-world asset / security token on structural integrity and AML red flags: wrapper, custody of the underlying, transfer controls, reserve attestation, composite score with compliance overrides
+- **[prediction-market-integrity-scan](blockchain/prediction-market-integrity-scan.md)** — scan an on-chain prediction market for market-integrity and AML risk: wash and oracle-manipulation surface, sanctioned/restricted-access, settlement-rail exposure, regulatory posture, tiered disposition
 
 ### [`regulatory/`](regulatory/) — regulatory landscape & obligations
 - **[regulatory-intelligence-scan](regulatory/regulatory-intelligence-scan.md)** — severity-rated briefing on what changed in a regulatory landscape
@@ -136,6 +140,11 @@ Backend, repeatable pipelines — these prompts build and *maintain* structured 
 ### [`specialty/`](specialty/) — focused quantitative methods
 - **[expected-value-analysis](specialty/expected-value-analysis.md)** — compute edge and expected value, size with the Kelly criterion, with risk-of-ruin context
 - **[local-market-analytics](specialty/local-market-analytics.md)** — local real-estate market analytics: tracking, transformation signals, multi-scenario projection
+
+### [`workspace/`](workspace/) — configure & automate your AI workspace
+Not analytical work — tooling that makes the assistant *you* use work better. Generic, work-boundary-safe, useful to any analyst.
+- **[custom-instructions-architect](workspace/custom-instructions-architect.md)** — deep-index your role, work, and delivery preferences, then write an optimized custom-instructions statement to paste into your assistant's settings; sized to the platform, with a rationale and gaps to fill
+- **[outlook-copilot-automation](workspace/outlook-copilot-automation.md)** — design an inbox automation: priority model, category taxonomy, native Outlook rules, and a Copilot triage block — categorize / flag / move only, never auto-delete or auto-send
 
 ## Chaining prompts
 

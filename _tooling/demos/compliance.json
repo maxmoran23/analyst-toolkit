@@ -380,7 +380,7 @@
     "fills": [
       [
         "country or territory being scored",
-        "Calderia (a mid-size cross-border jurisdiction) — scored as the domicile of a proposed correspondent-banking relationship"
+        "Calderia (a mid-size cross-border jurisdiction) \u2014 scored as the domicile of a proposed correspondent-banking relationship"
       ],
       [
         "why this is being scored",
@@ -400,11 +400,11 @@
       ],
       [
         "any prior country-risk memo",
-        "None provided — no internal geographic-risk rating scale supplied; use the prompt's default four-tier scale and flag the defaults as assumptions."
+        "None provided \u2014 no internal geographic-risk rating scale supplied; use the prompt's default four-tier scale and flag the defaults as assumptions."
       ],
       [
         "paste the last assessment of this jurisdiction",
-        "None — first assessment of Calderia; baseline, with no prior score or tier to diff against."
+        "None \u2014 first assessment of Calderia; baseline, with no prior score or tier to diff against."
       ]
     ]
   },
@@ -413,7 +413,7 @@
     "fills": [
       [
         "entity whose ownership you are tracing",
-        "Northgate Holdings Ltd — UK private company, registration number 09847721 (LEI held per the GLEIF record, extract S3 below)"
+        "Northgate Holdings Ltd \u2014 UK private company, registration number 09847721 (LEI held per the GLEIF record, extract S3 below)"
       ],
       [
         "country/state of incorporation",
@@ -437,7 +437,36 @@
       ],
       [
         "prior ownership map or EDD file",
-        "None — first ownership trace of this entity; baseline, nothing to extend."
+        "None \u2014 first ownership trace of this entity; baseline, nothing to extend."
+      ]
+    ]
+  },
+  "identity-resolution-disambiguation.md": {
+    "scenario": "A sanctions-hit adjudication at Harborview Financial Group resolves whether a customer is the same individual as an SDN candidate when the names are transliteration variants and only partial identifiers overlap.",
+    "fills": [
+      [
+        "the customer / your-side identity",
+        "Harborview customer: 'Mohammed Al-Rashid', DOB 1979-03-12, nationality UAE, account opened 2024; UAE passport on file ending 4471; address Dubai, UAE."
+      ],
+      [
+        "the other identity",
+        "OFAC SDN candidate: 'Muhammad al Rasheed', year of birth 1979, listed Syrian passport ending 8820; a.k.a. 'M. Al Rashid'."
+      ],
+      [
+        "why this is being resolved",
+        "Sanctions hit adjudication: the screening system raised the SDN candidate against the customer at 88% name similarity. The analyst must clear, escalate, or keep the alert open."
+      ],
+      [
+        "DATE",
+        "2026-02-10"
+      ],
+      [
+        "paste the raw records",
+        "Both records as above. Name A is an Arabic name transliterated in the account system; name B is the SDN list's romanization \u2014 'Mohammed/Muhammad' and 'Al-Rashid/al Rasheed' are transliteration variants of the same name. DOB A is a full date (1979-03-12); DOB B is year only (1979). Passport A (UAE, ...4471) and passport B (Syria, ...8820) are different numbers with different issuing countries. No shared address or national ID is available."
+      ],
+      [
+        "paste the last resolution",
+        "None \u2014 first resolution of this alert. Baseline."
       ]
     ]
   }

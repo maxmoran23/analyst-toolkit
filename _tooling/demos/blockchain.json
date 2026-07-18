@@ -16,11 +16,11 @@
       ],
       [
         "raw public block-explorer output",
-        "CAPTURE C1 — address summary\n  Explorer: Etherscan\n  URL: https://etherscan.io/address/0x7a3d9f4e2b8c1d6a5f0e9c2b4a7d8e1f3c6b0a9d\n  Retrieved: 2026-02-05 14:20 UTC\n  Covers: address overview page\n  ETH balance: 0.412 ETH\n  Transactions: 214\n  First txn: 2026-01-06\n  Last txn: 2026-01-31\n\nCAPTURE C2 — transaction list, page 1 of 2 (newest first)\n  Explorer: Etherscan\n  URL: https://etherscan.io/txs?a=0x7a3d9f4e2b8c1d6a5f0e9c2b4a7d8e1f3c6b0a9d&p=1\n  Retrieved: 2026-02-05 14:22 UTC\n  Covers: 2026-01-14 to 2026-01-31 (100 rows shown)\n  Representative rows (hash / time / from -> to / value ETH):\n    0xd41a...9c02  2026-01-31 09:12  0x7a3d...0a9d -> 0x51ee...77b3  38.50\n    0x8b73...1f45  2026-01-30 22:41  0x9c10...aa21 -> 0x7a3d...0a9d   4.90\n    0x2e6c...77de  2026-01-30 20:03  0x3f88...bb14 -> 0x7a3d...0a9d   5.10\n    0x77aa...0b19  2026-01-30 18:55  0xa204...cc55 -> 0x7a3d...0a9d   4.75\n    0x14fd...6a83  2026-01-29 11:20  0x7a3d...0a9d -> 0x51ee...77b3  14.20\n    0x9c02...3d71  2026-01-28 08:07  0xb631...dd70 -> 0x7a3d...0a9d   5.00\n    ... (94 further rows, same shape: many small inbound transfers from distinct senders, periodic large outbound to 0x51ee...77b3)\n\nCAPTURE C3 — transaction list, page 2 of 2 (newest first)\n  Explorer: Etherscan\n  URL: https://etherscan.io/txs?a=0x7a3d9f4e2b8c1d6a5f0e9c2b4a7d8e1f3c6b0a9d&p=2\n  Retrieved: 2026-02-05 14:24 UTC\n  Covers: 2026-01-06 to 2026-01-14 (114 rows shown)\n  Representative rows:\n    0x51bd...2c60  2026-01-13 16:40  0xc9a1...ee38 -> 0x7a3d...0a9d   4.60\n    0x6f33...9a12  2026-01-12 13:15  0x7a3d...0a9d -> 0x51ee...77b3  22.10\n    0x0d8e...44b7  2026-01-06 10:02  0xf7c2...1198 -> 0x7a3d...0a9d   5.25\n    ... (111 further rows, same fan-in / sweep-out shape)\n  NOTE: the ERC-20 token-transfer list for this address was NOT captured this session.\n  Etherscan's overview shows ~30 inbound token transfers of an unfamiliar token 'USDX-PROMO' that have not been pulled."
+        "CAPTURE C1 \u2014 address summary\n  Explorer: Etherscan\n  URL: https://etherscan.io/address/0x7a3d9f4e2b8c1d6a5f0e9c2b4a7d8e1f3c6b0a9d\n  Retrieved: 2026-02-05 14:20 UTC\n  Covers: address overview page\n  ETH balance: 0.412 ETH\n  Transactions: 214\n  First txn: 2026-01-06\n  Last txn: 2026-01-31\n\nCAPTURE C2 \u2014 transaction list, page 1 of 2 (newest first)\n  Explorer: Etherscan\n  URL: https://etherscan.io/txs?a=0x7a3d9f4e2b8c1d6a5f0e9c2b4a7d8e1f3c6b0a9d&p=1\n  Retrieved: 2026-02-05 14:22 UTC\n  Covers: 2026-01-14 to 2026-01-31 (100 rows shown)\n  Representative rows (hash / time / from -> to / value ETH):\n    0xd41a...9c02  2026-01-31 09:12  0x7a3d...0a9d -> 0x51ee...77b3  38.50\n    0x8b73...1f45  2026-01-30 22:41  0x9c10...aa21 -> 0x7a3d...0a9d   4.90\n    0x2e6c...77de  2026-01-30 20:03  0x3f88...bb14 -> 0x7a3d...0a9d   5.10\n    0x77aa...0b19  2026-01-30 18:55  0xa204...cc55 -> 0x7a3d...0a9d   4.75\n    0x14fd...6a83  2026-01-29 11:20  0x7a3d...0a9d -> 0x51ee...77b3  14.20\n    0x9c02...3d71  2026-01-28 08:07  0xb631...dd70 -> 0x7a3d...0a9d   5.00\n    ... (94 further rows, same shape: many small inbound transfers from distinct senders, periodic large outbound to 0x51ee...77b3)\n\nCAPTURE C3 \u2014 transaction list, page 2 of 2 (newest first)\n  Explorer: Etherscan\n  URL: https://etherscan.io/txs?a=0x7a3d9f4e2b8c1d6a5f0e9c2b4a7d8e1f3c6b0a9d&p=2\n  Retrieved: 2026-02-05 14:24 UTC\n  Covers: 2026-01-06 to 2026-01-14 (114 rows shown)\n  Representative rows:\n    0x51bd...2c60  2026-01-13 16:40  0xc9a1...ee38 -> 0x7a3d...0a9d   4.60\n    0x6f33...9a12  2026-01-12 13:15  0x7a3d...0a9d -> 0x51ee...77b3  22.10\n    0x0d8e...44b7  2026-01-06 10:02  0xf7c2...1198 -> 0x7a3d...0a9d   5.25\n    ... (111 further rows, same fan-in / sweep-out shape)\n  NOTE: the ERC-20 token-transfer list for this address was NOT captured this session.\n  Etherscan's overview shows ~30 inbound token transfers of an unfamiliar token 'USDX-PROMO' that have not been pulled."
       ],
       [
         "address labels",
-        "Sweep destination 0x51ee...77b3 carries a public Etherscan name-tag 'Meridian Digital Exchange: Hot Wallet 3' — single public label, not independently confirmed. No label held for any of the inbound senders. No watchlist extract available in-session."
+        "Sweep destination 0x51ee...77b3 carries a public Etherscan name-tag 'Meridian Digital Exchange: Hot Wallet 3' \u2014 single public label, not independently confirmed. No label held for any of the inbound senders. No watchlist extract available in-session."
       ],
       [
         "beyond raw explorer output",
@@ -41,11 +41,11 @@
       ],
       [
         "what fired",
-        "Monitoring rule MIX-02 fired: indirect mixer exposure detected upstream of a customer withdrawal address within the 30-day window. Customer is a retail brokerage client in good standing, 14 months tenure, no prior alerts. Generic context only — no client identifiers included here"
+        "Monitoring rule MIX-02 fired: indirect mixer exposure detected upstream of a customer withdrawal address within the 30-day window. Customer is a retail brokerage client in good standing, 14 months tenure, no prior alerts. Generic context only \u2014 no client identifiers included here"
       ],
       [
         "exposure evidence",
-        "Vendor tracing-tool export, run 2026-02-09 (screenshots transcribed):\nEXPOSURE E1 — mixer, upstream, 2 hops:\n  path: TumbleWorks mixer pool (tool label) -> 0x5b8e2d9f1a4c7e0b3d6f9a2c5e8b1d4f7a0c3e6b -> 0x2d7f4a9c1e6b8d0f3a5c7e9b2d4f6a8c0e1b3d5f -> subject 0x9e2f...6e9a\n  value at subject leg: 3.2 ETH received 2026-01-28; subject's total inflows in the 30-day window: 52.4 ETH (tool denominator)\nEXPOSURE E2 — bridge crossing, downstream, direct:\n  subject sent 5.0 ETH on 2026-02-01 to the SpanPort bridge deposit contract; tool attributes a continuation on the destination chain to address 0x7c3e9b5d1f8a2c4e6b0d9f3a5c7e1b4d8f0a2c6e via the bridge's own event log; no obfuscation-capable service identified within 3 hops of the destination-side address\nNo other mixer, bridge, or privacy-protocol contact within 3 hops in the window."
+        "Vendor tracing-tool export, run 2026-02-09 (screenshots transcribed):\nEXPOSURE E1 \u2014 mixer, upstream, 2 hops:\n  path: TumbleWorks mixer pool (tool label) -> 0x5b8e2d9f1a4c7e0b3d6f9a2c5e8b1d4f7a0c3e6b -> 0x2d7f4a9c1e6b8d0f3a5c7e9b2d4f6a8c0e1b3d5f -> subject 0x9e2f...6e9a\n  value at subject leg: 3.2 ETH received 2026-01-28; subject's total inflows in the 30-day window: 52.4 ETH (tool denominator)\nEXPOSURE E2 \u2014 bridge crossing, downstream, direct:\n  subject sent 5.0 ETH on 2026-02-01 to the SpanPort bridge deposit contract; tool attributes a continuation on the destination chain to address 0x7c3e9b5d1f8a2c4e6b0d9f3a5c7e1b4d8f0a2c6e via the bridge's own event log; no obfuscation-capable service identified within 3 hops of the destination-side address\nNo other mixer, bridge, or privacy-protocol contact within 3 hops in the window."
       ],
       [
         "designation status",
@@ -66,7 +66,7 @@
     "fills": [
       [
         "protocol name",
-        "Aureus Lend (token ticker: AUR) — a cross-margin lending market on Ethereum and Arbitrum"
+        "Aureus Lend (token ticker: AUR) \u2014 a cross-margin lending market on Ethereum and Arbitrum"
       ],
       [
         "why this is being run",
@@ -78,11 +78,11 @@
       ],
       [
         "protocol-specific data",
-        "Self-reported TVL (protocol dashboard, 2026-02-04): $842M across ETH + Arbitrum.\nAdvertised APY on USDC supply: 9.4%.\nAudits: two listed — 'Trailhead Security 2025-06' (2 medium, 0 critical, all marked resolved) and 'a community review 2025-09' (no report link).\nAdmin keys: docs disclose a 3-of-5 multisig controlling the upgrade proxy and the interest-rate parameters; signer identities not published; no timelock mentioned.\nGovernance: AUR token votes; docs note top 4 wallets hold ~61% of circulating AUR.\nIncident history: one 2025-10 oracle-lag event that briefly mispriced an illiquid collateral asset; protocol says no funds lost, covered from a reserve.\nOracle: single external price feed for most markets; a fallback is 'planned'.\nInsurance/backstop: a reserve fund reported at ~1.1% of TVL."
+        "Self-reported TVL (protocol dashboard, 2026-02-04): $842M across ETH + Arbitrum.\nAdvertised APY on USDC supply: 9.4%.\nAudits: two listed \u2014 'Trailhead Security 2025-06' (2 medium, 0 critical, all marked resolved) and 'a community review 2025-09' (no report link).\nAdmin keys: docs disclose a 3-of-5 multisig controlling the upgrade proxy and the interest-rate parameters; signer identities not published; no timelock mentioned.\nGovernance: AUR token votes; docs note top 4 wallets hold ~61% of circulating AUR.\nIncident history: one 2025-10 oracle-lag event that briefly mispriced an illiquid collateral asset; protocol says no funds lost, covered from a reserve.\nOracle: single external price feed for most markets; a fallback is 'planned'.\nInsurance/backstop: a reserve fund reported at ~1.1% of TVL."
       ],
       [
         "last assessment",
-        "None — this is the first assessment of Aureus Lend. No prior TVL figure or score to diff against; treat as a baseline."
+        "None \u2014 this is the first assessment of Aureus Lend. No prior TVL figure or score to diff against; treat as a baseline."
       ]
     ]
   },
@@ -111,7 +111,7 @@
       ],
       [
         "trace-specific data",
-        "Hop-1 export (Etherscan, retrieved 2026-02-05):\n  0x7a3d...0a9d -> 0x51ee...77b3  38.50 ETH  2026-01-31 09:12  (tx 0xd41a...9c02)\n  0x7a3d...0a9d -> 0x51ee...77b3  14.20 ETH  2026-01-29 11:20  (tx 0x14fd...6a83)\n  0x7a3d...0a9d -> 0x51ee...77b3  22.10 ETH  2026-01-12 13:15  (tx 0x6f33...9a12)\nHop-2 export for 0x51ee...77b3 (partial, 2026-02-05): high-volume address, hundreds of daily txns, many small outbound to distinct addresses — consistent with a shared hot wallet. No single onward transfer isolates the traced funds.\nLabel source for 0x51ee...77b3: one public Etherscan name-tag only; not independently confirmed."
+        "Hop-1 export (Etherscan, retrieved 2026-02-05):\n  0x7a3d...0a9d -> 0x51ee...77b3  38.50 ETH  2026-01-31 09:12  (tx 0xd41a...9c02)\n  0x7a3d...0a9d -> 0x51ee...77b3  14.20 ETH  2026-01-29 11:20  (tx 0x14fd...6a83)\n  0x7a3d...0a9d -> 0x51ee...77b3  22.10 ETH  2026-01-12 13:15  (tx 0x6f33...9a12)\nHop-2 export for 0x51ee...77b3 (partial, 2026-02-05): high-volume address, hundreds of daily txns, many small outbound to distinct addresses \u2014 consistent with a shared hot wallet. No single onward transfer isolates the traced funds.\nLabel source for 0x51ee...77b3: one public Etherscan name-tag only; not independently confirmed."
       ]
     ]
   },
@@ -145,7 +145,7 @@
     "fills": [
       [
         "stablecoin",
-        "HUSD, issued by Halcyon Digital Issuer LLC (fictional) — the coin is marketed as 'HUSD by Halcyon'"
+        "HUSD, issued by Halcyon Digital Issuer LLC (fictional) \u2014 the coin is marketed as 'HUSD by Halcyon'"
       ],
       [
         "treasury",
@@ -157,7 +157,7 @@
       ],
       [
         "attestation",
-        "Extract from Halcyon's January 2026 reserve report (published 2026-02-03, retrieved 2026-02-09):\n- 'Independent accountant's report on management's assertion' — describes agreed-upon procedures applied to reserve account balances as of 2026-01-31, 23:59 UTC. Marketing page headline: 'audited monthly'.\n- Reserve breakdown as of 2026-01-31, total USD 1,842,000,000 against 1,839,500,000 HUSD outstanding:\n  - US Treasury bills (maturity under 90 days): 61%\n  - Overnight reverse repo collateralized by US government securities: 12%\n  - Cash at two US banks (one named, one 'other depository institutions'): 16%\n  - Certificates of deposit: 4%\n  - 'Other short-term investments': 7%\n- Redemption page (retrieved 2026-02-09): direct redemption limited to 'verified institutional customers' with a USD 100,000 minimum; 0.1% redemption fee; settlement 'typically within two business days'; Halcyon 'may suspend or delay redemptions during periods of market disruption or as required by law'; redemption unavailable to persons in listed jurisdictions.\n- Regime statement on the issuer's site: 'operating in compliance with applicable US federal stablecoin requirements' — no license or registration number cited.\n- Market observation (public price aggregator, retrieved 2026-02-09): HUSD traded at 0.9931 for roughly 36 hours in November 2025 during a banking-sector headline, then recovered to peg; no other sustained deviations in the trailing year."
+        "Extract from Halcyon's January 2026 reserve report (published 2026-02-03, retrieved 2026-02-09):\n- 'Independent accountant's report on management's assertion' \u2014 describes agreed-upon procedures applied to reserve account balances as of 2026-01-31, 23:59 UTC. Marketing page headline: 'audited monthly'.\n- Reserve breakdown as of 2026-01-31, total USD 1,842,000,000 against 1,839,500,000 HUSD outstanding:\n  - US Treasury bills (maturity under 90 days): 61%\n  - Overnight reverse repo collateralized by US government securities: 12%\n  - Cash at two US banks (one named, one 'other depository institutions'): 16%\n  - Certificates of deposit: 4%\n  - 'Other short-term investments': 7%\n- Redemption page (retrieved 2026-02-09): direct redemption limited to 'verified institutional customers' with a USD 100,000 minimum; 0.1% redemption fee; settlement 'typically within two business days'; Halcyon 'may suspend or delay redemptions during periods of market disruption or as required by law'; redemption unavailable to persons in listed jurisdictions.\n- Regime statement on the issuer's site: 'operating in compliance with applicable US federal stablecoin requirements' \u2014 no license or registration number cited.\n- Market observation (public price aggregator, retrieved 2026-02-09): HUSD traded at 0.9931 for roughly 36 hours in November 2025 during a banking-sector headline, then recovered to peg; no other sustained deviations in the trailing year."
       ],
       [
         "last review",
@@ -170,7 +170,7 @@
     "fills": [
       [
         "token name / ticker",
-        "Nimbus (ticker: NMB) — ERC-20 on Ethereum, contract 0x2b7f4a9c0e13d685a2f9c4b70d1e6a3c8f05b921 (per the project site)"
+        "Nimbus (ticker: NMB) \u2014 ERC-20 on Ethereum, contract 0x2b7f4a9c0e13d685a2f9c4b70d1e6a3c8f05b921 (per the project site)"
       ],
       [
         "why this is being run",
@@ -186,7 +186,7 @@
       ],
       [
         "last screen",
-        "None — first screen of NMB. No prior score to diff against; baseline."
+        "None \u2014 first screen of NMB. No prior score to diff against; baseline."
       ]
     ]
   },
@@ -195,15 +195,15 @@
     "fills": [
       [
         "institution or VASP",
-        "Meridian Digital Exchange (counterparty under pre-onboarding review by Harborview Financial Group — not our own program)"
+        "Meridian Digital Exchange (counterparty under pre-onboarding review by Harborview Financial Group \u2014 not our own program)"
       ],
       [
         "PER-TRANSFER",
-        "BOTH — program-level readiness plus a per-transfer test of the 6-transfer pilot-corridor sample below"
+        "BOTH \u2014 program-level readiness plus a per-transfer test of the 6-transfer pilot-corridor sample below"
       ],
       [
         "jurisdictions",
-        "US (FinCEN funds-transfer rules as applied to convertible virtual currency) and the EU Transfer of Funds Regulation — Meridian claims registrations in both; verify current status of each threshold and field list as part of the review"
+        "US (FinCEN funds-transfer rules as applied to convertible virtual currency) and the EU Transfer of Funds Regulation \u2014 Meridian claims registrations in both; verify current status of each threshold and field list as part of the review"
       ],
       [
         "DATE",
@@ -211,7 +211,7 @@
       ],
       [
         "transfer records",
-        "Pilot corridor sample (Harborview -> Meridian outbound unless noted), from the pilot log retrieved 2026-02-09:\nT1 OUT 2026-01-12 0.85 ETH — originator: name J.R., wallet 0x4c1a9e7b2d5f8a0c3e6b9d1f4a7c0e2b5d8f1a3c, customer ID HV-88213, physical address transmitted. Beneficiary: name present, wallet present. Counterparty VASP: Meridian (identified via messaging protocol).\nT2 OUT 2026-01-14 2.10 ETH — originator: name M.T., wallet present, customer ID present, address transmitted. Beneficiary: name present, wallet present. Counterparty VASP identified.\nT3 OUT 2026-01-19 0.28 ETH — below-threshold transfer per Meridian's configuration; no data transmitted. Wallet-to-wallet fields only.\nT4 IN 2026-01-21 1.40 ETH — received from Meridian; beneficiary (our customer) name present; originator name field arrived as 'CUST' (truncated), originator wallet present, no address/ID field.\nT5 IN 2026-01-26 3.75 ETH — received from Meridian; originator name present; originator wallet present; no third originator field received.\nT6 OUT 2026-01-30 0.95 ETH — sent to a wallet Meridian's tool flagged as possibly non-custodial; sent anyway with standard fields; no ownership verification recorded."
+        "Pilot corridor sample (Harborview -> Meridian outbound unless noted), from the pilot log retrieved 2026-02-09:\nT1 OUT 2026-01-12 0.85 ETH \u2014 originator: name J.R., wallet 0x4c1a9e7b2d5f8a0c3e6b9d1f4a7c0e2b5d8f1a3c, customer ID HV-88213, physical address transmitted. Beneficiary: name present, wallet present. Counterparty VASP: Meridian (identified via messaging protocol).\nT2 OUT 2026-01-14 2.10 ETH \u2014 originator: name M.T., wallet present, customer ID present, address transmitted. Beneficiary: name present, wallet present. Counterparty VASP identified.\nT3 OUT 2026-01-19 0.28 ETH \u2014 below-threshold transfer per Meridian's configuration; no data transmitted. Wallet-to-wallet fields only.\nT4 IN 2026-01-21 1.40 ETH \u2014 received from Meridian; beneficiary (our customer) name present; originator name field arrived as 'CUST' (truncated), originator wallet present, no address/ID field.\nT5 IN 2026-01-26 3.75 ETH \u2014 received from Meridian; originator name present; originator wallet present; no third originator field received.\nT6 OUT 2026-01-30 0.95 ETH \u2014 sent to a wallet Meridian's tool flagged as possibly non-custodial; sent anyway with standard fields; no ownership verification recorded."
       ],
       [
         "program documentation",
@@ -249,6 +249,85 @@
       [
         "last assessment",
         ""
+      ]
+    ]
+  },
+  "chain-analytics-export-rationalization.md": {
+    "scenario": "An EDD refresh at Harborview Financial Group rationalizes a corporate customer's Chainalysis Reactor exports and public sourcing into one activity picture before the review sign-off.",
+    "fills": [
+      [
+        "entity name, and/or the addresses",
+        "Meridian Nominees Ltd (Harborview corporate customer, onboarded 2024) \u2014 disclosed treasury addresses 0x4c2a9f7e1b8d3c6a0f5e9b2d7c1a4e8b6f0d3c5a and 0x8b1d6f0a3c9e2b5d7f4a1c8e0b6d9f2a4c7e1b3d; Reactor labels these the 'Meridian-ops' cluster"
+      ],
+      [
+        "why this is being worked",
+        "EDD refresh: a periodic review flagged rising digital-asset volume on this corporate customer. Working the exports to rationalize the full scope of activity and size illicit exposure before the reviewer signs off."
+      ],
+      [
+        "DATE",
+        "2026-02-09"
+      ],
+      [
+        "which tool(s) produced the exports",
+        "Chainalysis Reactor (analyst export, retrieved 2026-02-06). The exposure summary marks the exchange counterparties 'attributed' and two intermediary clusters 'heuristic'."
+      ],
+      [
+        "paste the exports and sourcing",
+        "REACTOR EXPOSURE SUMMARY (retrieved 2026-02-06, period 2025-09-01 to 2026-01-31): total received $6.4M / sent $6.1M. Direct exposure: Meridian Digital Exchange 41% (attributed), unnamed OTC desk 12% (attributed). Indirect exposure (1-2 hops): sanctioned-service 'RiverMixer' 3.2% via cluster H-778 (heuristic), darknet-market-adjacent 1.1% (heuristic).\nREACTOR COUNTERPARTY LIST (top 5 by value): Meridian Digital Exchange (in $2.6M), OTC-desk-Alpha (out $1.9M), cluster H-778 (out $410K), self-hosted wallet 0x9d4f1a7c2e8b5d0f3a6c9e1b4d7f2a8c0e5b3d6f (out $520K), bridge 'ArchSpan' (out $300K).\nEXPLORER CAPTURE (Etherscan, 0x4c2a...3c5a, retrieved 2026-02-06): 214 txns, first 2025-09-04, last 2026-01-29, balance 3.1 ETH + USDC.\nOSINT: a 2026-01 trade-press article names Meridian Nominees as a settlement agent for a commodities broker (single source). Corporate registry: incorporated BVI 2023, one nominee director.\nPRIOR EDD (2025-03): rated MEDIUM, crypto volume then 'immaterial'."
+      ],
+      [
+        "paste the last rationalization",
+        "None \u2014 first rationalization of this cluster. Baseline; no prior exposure to diff against."
+      ]
+    ]
+  },
+  "tokenized-asset-risk-assessment.md": {
+    "scenario": "A custody-onboarding review at Harborview Financial Group assesses a tokenized US Treasury-bill token before letting a client hold and settle it.",
+    "fills": [
+      [
+        "asset name / ticker",
+        "Harbor T-Bill Token (HTBT) \u2014 tokenized US Treasury bills, ERC-20 on Ethereum, contract 0x2b7f4a9c0e13d685a2f9c4b70d1e6a3c8f05b921; issuer 'Meridian Asset Tokenization SPV'"
+      ],
+      [
+        "why this is being run",
+        "Custody/settlement onboarding: a Harborview client has requested the ability to hold and settle HTBT; the desk needs a documented structural and fincrime read before onboarding the asset."
+      ],
+      [
+        "DATE",
+        "2026-02-11"
+      ],
+      [
+        "paste any asset-specific material",
+        "Offering material (issuer site, 2026-02-10): 'each HTBT is backed 1:1 by short-dated US T-bills held by a regulated custodian'; SPV domiciled in a US state; transfer-restricted to whitelisted (KYC'd) addresses via an on-chain allowlist. Reserve attestation: a monthly agreed-upon-procedures letter from a named accounting firm (latest 2026-01-31). Redemption: T+2 to the whitelisted holder's bank on the issuer's portal, $100k minimum. Custodian of the underlying: named, but no independent segregation opinion linked. Smart contract: verified source on Etherscan; includes an owner 'freeze(address)' and 'mint'/'burn' guarded by the issuer multisig. Audit: one smart-contract audit PDF (2025-12), two medium findings marked resolved. Regulatory posture: marketed as a security offered under an exemption; no secondary trading venue named."
+      ],
+      [
+        "paste the last assessment",
+        "None \u2014 first assessment of HTBT. Baseline; no prior score to diff against."
+      ]
+    ]
+  },
+  "prediction-market-integrity-scan.md": {
+    "scenario": "A market-integrity and AML review at Harborview Financial Group screens an on-chain prediction market a managed-account client wants to settle through, before any venue-onboarding decision.",
+    "fills": [
+      [
+        "platform or market name",
+        "Veritas Markets (veritas-markets.example) \u2014 an on-chain event-market platform on Polygon; scan scoped to the market 'Will Cascade County certify Referendum 12 before 2026-03-15?', settling in USDC. Settlement contract 0x3f9c2a7e1b8d4c6a0e5f9b2d7c1a4e8b6f0d3c5a; optimistic-oracle resolver 0x8b1d6f0a3c9e2b5d7f4a1c8e0b6d9f2a4c7e1b3d (per the platform's docs)"
+      ],
+      [
+        "why this is being run",
+        "Venue/counterparty review: a Harborview managed-account client has requested the ability to fund and settle positions on Veritas Markets; the desk needs a documented market-integrity and AML read before onboarding the venue."
+      ],
+      [
+        "DATE",
+        "2026-02-12"
+      ],
+      [
+        "platform- or market-specific data",
+        "Market model (platform docs, retrieved 2026-02-11): order-book binary event market, YES/NO shares settling to USDC on Polygon; resolution via an optimistic oracle with a 72-hour dispute window and a bonded challenge.\nMarket stats (platform subgraph export, 2026-02-11): traded volume $4.7M; open interest $1.9M; average book depth within 2 cents ~$30K; 812 unique wallets.\nConcentration / wash signals: the top wallet 0x5c2e9a1f7b3d0c8e4a6f2b9d1c7e3a5f8b0d4c6e holds ~34% of outstanding YES; a cluster of six wallets first funded from a common address traded YES back and forth on 2026-02-07, ~$610K notional, with no net change in the cluster's aggregate position (self-cross pattern).\nOracle / resolution: one prior market on this platform saw a disputed resolution in 2025-11 where the initial reporter's outcome was overturned on challenge; source is a single platform forum post.\nInsider-timing signal: a single wallet 0x9d4f1a7c2e8b5d0f3a6c9e1b4d7f2a8c0e5b3d6f opened a $220K YES position ~5 hours before the county published a procedural notice widely read as certification-favorable.\nAccess controls: ToS restricts US persons and lists ~12 blocked jurisdictions; access enforced by IP geofencing only; no on-chain KYC.\nFunding trails (Etherscan, 2026-02-11): the top wallet's USDC funding traces two hops from 0x2a8f5c1e9b7d3a0f6c4e2b8d1a5f7c0e3b9d6a4c, which a single public list-tracker tags 'mixer-adjacent relayer' (one source, unconfirmed). A separate settlement outflow of $180K went to 0x51ee7c3b9d0a2f8e6b4d1c7a0e3f95b2d8c677b3, carrying a single public Etherscan tag 'Meridian Digital Exchange: Hot Wallet 3'.\nRegulatory posture: Veritas is not on the public CFTC DCM/DCO registry (checked 2026-02-11); a platform statement asserts it is 'decentralized, non-custodial, and not a gaming operator'. No enforcement action located.\nSettlement rail: USDC only; the issuer's public blocklist/freeze capability applies to the settlement token."
+      ],
+      [
+        "last scan",
+        "None \u2014 first scan of Veritas Markets. No prior score to diff against; baseline."
       ]
     ]
   }

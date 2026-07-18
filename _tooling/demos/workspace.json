@@ -1,0 +1,76 @@
+{
+  "custom-instructions-architect.md": {
+    "scenario": "A senior financial-crime analyst has the assistant write an optimized ChatGPT custom-instructions block so every future chat starts already tuned to their voice and constraints.",
+    "fills": [
+      [
+        "your role, seniority, field",
+        "Senior financial-crime compliance analyst at a large bank; I use an AI assistant daily for research, drafting memos, screening entities, and reviewing documents."
+      ],
+      [
+        "the subject areas you work in",
+        "AML/CFT, sanctions, crypto and digital-asset compliance, regulatory analysis. Assume expert level and do not explain the basics."
+      ],
+      [
+        "the handful of things",
+        "Draft audit-defensible memos, compare options in tables, summarize long documents, screen entities, and translate regulation into structured obligations."
+      ],
+      [
+        "tone, format defaults",
+        "Lead with the answer; dense and direct, no filler; tables for any comparison of three or more items; cite sources; no marketing language; never use emojis."
+      ],
+      [
+        "anything the assistant must always or never do",
+        "Never fabricate a citation; treat vendor claims as unverified until corroborated; keep outputs generic and public-source only; always flag a confidence level."
+      ],
+      [
+        "where this will live",
+        "ChatGPT custom instructions \u2014 the two boxes ('what should the assistant know about you' and 'how should it respond'), roughly a 1,500-character budget each."
+      ],
+      [
+        "paste anything that reveals your preferences",
+        "A sample I liked: a tight severity-tagged risk memo that led with the disposition. A sample I disliked: a hedge-heavy, emoji-laden summary that buried the answer."
+      ],
+      [
+        "paste your current custom-instructions block",
+        "Current block: 'Be concise and professional. Help me with compliance tasks.' \u2014 too vague; re-tune it."
+      ]
+    ]
+  },
+  "outlook-copilot-automation.md": {
+    "scenario": "A compliance analyst has the assistant design an Outlook rule/category scheme and a Copilot triage routine that surfaces client deadlines buried under alert emails, without ever deleting or sending mail.",
+    "fills": [
+      [
+        "your role and what your inbox is mostly full of",
+        "Compliance analyst. My inbox is mostly internal case threads, external client requests, automated alert emails, and vendor newsletters."
+      ],
+      [
+        "the senders, topics, and deadlines",
+        "My manager and the MLRO; anything with 'SAR', 'deadline', or 'exam' in the subject; and a named set of priority clients."
+      ],
+      [
+        "what clutters the inbox",
+        "High-volume automated alert emails and newsletters bury client deadlines, and I re-read the same long threads to find the actual ask."
+      ],
+      [
+        "folders, categories, or rules already in place",
+        "One 'Clients' folder and two color categories (Red = urgent, Blue = FYI). No rules configured yet."
+      ],
+      [
+        "anything that must hold",
+        "Records retention: nothing may be auto-deleted, regulated mail must stay in the mailbox, and no mail may be auto-forwarded externally."
+      ],
+      [
+        "what you can use",
+        "Outlook plus Microsoft 365 Copilot, on desktop and mobile."
+      ],
+      [
+        "paste a sample of real subject lines",
+        "Sample subjects/senders: 'ALERT: rule TM-14 triggered' (monitoring-system), 'Re: Q1 review deadline Friday' (manager), 'Weekly AML newsletter' (vendor), 'Client Aurora \u2014 urgent RFI' (relationship manager), 'Exam prep \u2014 evidence request' (MLRO)."
+      ],
+      [
+        "paste a previous design",
+        "None \u2014 first design. Baseline."
+      ]
+    ]
+  }
+}

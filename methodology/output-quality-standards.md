@@ -152,6 +152,44 @@ formatter and linter and apply them consistently.
 
 ---
 
+## Run footer — the one-line effort summary
+
+Every deliverable ends with a single compact line — the **run footer** — modeled on a
+search engine's "N results in M seconds": one glance tells the reader how much work sits
+behind the output. It is one line, plain text, no emoji, always the last line, and it is
+never a section and never repeated.
+
+Format:
+
+```
+— est. ~<in> in / ~<out> out tokens · <n> steps · <n> sources · confidence: <HIGH|MODERATE|LOW>
+```
+
+Rules for it:
+
+- **Tokens are an estimate, and labeled as one.** An assistant cannot count its own
+  tokens exactly, so estimate with a ~4-characters-per-token heuristic over the input and
+  the output and prefix with `est. ~`. Never present the figure as exact. Round to two
+  significant figures (`~1.2k`, `~480`).
+- **Steps** is the number of distinct analytical steps performed (gather, reconcile,
+  score, render — as applicable), not a play-by-play.
+- **Sources** is the count of distinct sources or provided materials actually used. Zero
+  is a valid, honest count — do not inflate it.
+- **Confidence** repeats the deliverable's overall HIGH / MODERATE / LOW rating. The
+  footer does not replace a fuller "Sources & Confidence" section where the output has
+  one; it is the one-line read above it.
+- **Unobtrusive by design.** The footer exists so a reader can see the effort and rough
+  cost of a response at a glance and hold it accountable — not to add ceremony. One line,
+  every time, nothing more.
+
+Example:
+
+```
+— est. ~1.3k in / ~3.8k out tokens · 5 steps · 7 sources · confidence: MODERATE
+```
+
+---
+
 ## What "done" means
 
 A deliverable is **done** when:
