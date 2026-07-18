@@ -24,11 +24,13 @@ This is a stronger claim than "the code looks right" — it is an executable ass
 | Value at Risk | ported | [`../quant/var.py`](../quant/var.py) | [`Var.kt`](src/main/kotlin/org/maxmoran/quant/Var.kt) | [`VarParityTest.kt`](src/test/kotlin/org/maxmoran/quant/VarParityTest.kt) |
 | Markowitz optimization | ported | [`../quant/markowitz.py`](../quant/markowitz.py) | [`Markowitz.kt`](src/main/kotlin/org/maxmoran/quant/Markowitz.kt) | [`MarkowitzParityTest.kt`](src/test/kotlin/org/maxmoran/quant/MarkowitzParityTest.kt) |
 | DCF | ported | [`../quant/dcf.py`](../quant/dcf.py) | [`Dcf.kt`](src/main/kotlin/org/maxmoran/quant/Dcf.kt) | [`DcfParityTest.kt`](src/test/kotlin/org/maxmoran/quant/DcfParityTest.kt) |
-| Monte Carlo (stochastic) | planned — last remaining module, ports under the §1.3 distributional regime | `../quant/monte_carlo.py` | — | — |
+| Monte Carlo (stochastic, §1.3 distributional regime) | ported | [`../quant/monte_carlo.py`](../quant/monte_carlo.py) | [`MonteCarlo.kt`](src/main/kotlin/org/maxmoran/quant/MonteCarlo.kt) | [`MonteCarloParityTest.kt`](src/test/kotlin/org/maxmoran/quant/MonteCarloParityTest.kt) |
 
-Port order is deliberate: deterministic modules first (Kelly through DCF), stochastic last (Monte Carlo). See [`docs/parity-contract.md`](docs/parity-contract.md) for why.
+**The queue is complete: all 9 modules of `quant/` are ported.** The order was deliberate — deterministic modules first (Kelly through DCF), stochastic last (Monte Carlo) — because exact parity had to be established for the shared arithmetic before the one module where exact parity is the wrong test. See [`docs/parity-contract.md`](docs/parity-contract.md) for the regime definitions.
 
 Note on GARCH: `vol.py`'s `simple_garch` is a fixed-parameter recursion (alpha=0.10, beta=0.85, no MLE fit, no RNG), so the entire volatility module is classified as deterministic pure math under parity-contract.md §1.1 — nothing in this wave was deferred to the §1.3 stochastic regime.
+
+Note on Monte Carlo classification: `monte_carlo.py` is the library's one §1.3 stochastic module. Its GBM / jump-GBM samplers are verified by distributional agreement at N=10,000 paths — each summary statistic within 6·sqrt(2) standard errors of the Python run (SE estimated from the sample; the sqrt(2) accounts for both sides being random). That is wider than the contract's illustrative 2 SE + one-retry scheme, deliberately: the 6-sigma no-retry bound has a false-failure probability of roughly 4e-8 per full test run versus ~5% flakiness at 2 SE, while real process bugs (wrong drift sign, missing the 0.5·vol^2 Ito correction, mis-scaled dt) land tens to hundreds of SE away. The deterministic skeleton inside the module — `percentile`, per-path max drawdown, and all output shaping — is still tested at exact §1.1 parity on fixed injected samples. RNG: `java.util.Random(seed)` (spec-pinned, so a given `--seed` is bit-reproducible on the JVM); seeds are **not** cross-language comparable — the same seed yields different, equally valid draws in Python and Kotlin, per the contract's explicit rejection of bit-matching Mersenne Twister.
 
 Note on Markowitz and DCF classification: `markowitz.py` genuinely falls under parity-contract.md §1.4 (numerical linear algebra) — it solves `cov * x = b` with a hand-rolled Cholesky factorization plus forward/backward substitution and a 1e-10 regularization of non-positive pivots. The Kotlin port replicates that exact arithmetic (same loops, same summation order — deliberately not a library solver), and raw solver parity is asserted at the §1.4 tolerance of 1e-6 per entry. `dcf.py` is plain §1.1 arithmetic; its raw-double oracle uses a relative 1e-10 tolerance because absolute 1e-10 is below one ulp at 1e8 dollar magnitudes. One serialization caveat for both: values >= 1e7 (and < 1e-3) print in scientific notation on the JVM where Python prints plain decimals — numerically identical, and JSON text form is non-contract per §2, so these modules' parity tests assert numeric-value equality rather than string equality on rounded fields.
 
@@ -100,6 +102,10 @@ gradle run --args="markowitz --returns-csv returns.csv --asset-names btc,eth,gol
 
 # Token fee-capture DCF (fees passed inline as JSON, not a file path)
 gradle run --args="dcf --fees-yearly [120e6,150e6,180e6,200e6,210e6] --discount 0.15 --terminal-growth 0.04 --circulating-supply 1e9 --current-price 0.5"
+
+# Monte Carlo price paths (GBM, or Merton jump-diffusion with --jumps)
+gradle run --args="monte_carlo --spot 60000 --vol 0.80 --drift 0.05 --days 30 --paths 10000"
+gradle run --args="monte_carlo --spot 3500 --vol 1.0 --days 90 --paths 5000 --jumps --seed 7"
 ```
 
 Output goes to stdout as pretty-printed JSON, matching the Python schema exactly. Errors go to stdout as `{"error": "..."}` with exit code 1.
@@ -117,7 +123,7 @@ Output goes to stdout as pretty-printed JSON, matching the Python schema exactly
 |----------|-----------|-----------|
 | Deterministic math | `\|py - kt\| < 1e-10` on raw doubles | Floating-point determinism modulo transcendental ordering |
 | Rounded output fields | Exact JSON equality (`round(x, 3)`, and `round(x, 2)` for `win_rate_pct`) | Matches Python's `round()` semantics via BigDecimal HALF_EVEN; infinity is serialized as the string `"inf"` |
-| Stochastic outputs (planned) | Within 2 standard errors at N=10,000 paths | RNG implementations differ across languages; distribution is the invariant |
+| Stochastic outputs (Monte Carlo) | Within 6 sqrt(2) estimated standard errors at N=10,000 paths, no retry | RNG implementations differ across languages; distribution is the invariant. 6-sigma keeps false failures ~4e-8/run vs ~5% flakiness at the contract's illustrative 2 SE |
 
 Full contract: [`docs/parity-contract.md`](docs/parity-contract.md).
 

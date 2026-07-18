@@ -24,6 +24,7 @@ fun main(args: Array<String>) {
         "var" -> runVar(rest)
         "markowitz" -> runMarkowitz(rest)
         "dcf" -> runDcf(rest)
+        "monte_carlo" -> runMonteCarlo(rest)
         "--help", "-h", "help" -> println(USAGE)
         else -> {
             System.err.println("unknown module: $module")
@@ -47,9 +48,9 @@ Modules implemented:
   var         Historical and parametric (Gaussian) VaR and CVaR
   markowitz   Min-variance, max-Sharpe, and equal-weight portfolios
   dcf         Token fee-capture DCF with scenarios and sensitivity
+  monte_carlo GBM / jump-diffusion price simulation (distributional parity regime)
 
-Modules planned (not yet ported):
-  monte_carlo
+All 9 modules of analyst-toolkit/quant are ported.
 
 Per-module help:
   kelly --mode single --p <prob> --odds <decimal_odds> [--fraction 0.25]
@@ -61,4 +62,5 @@ Per-module help:
   var (--returns-json <path> | --stdin) [--confidence 0.95] [--method historical|parametric|both] [--portfolio-value 1.0]
   markowitz --returns-csv <path> [--asset-names a,b,c] [--rf 0.05] [--annualize 252]
   dcf --fees-yearly <json_array> --circulating-supply <tokens> [--discount 0.15] [--terminal-growth 0.03] [--capture-ratio 1.0] [--current-price <p>]
+  monte_carlo --spot <price> --vol <annualized> [--drift 0.0] [--days 30] [--paths 10000] [--jumps] [--seed 42]
 """.trimIndent()

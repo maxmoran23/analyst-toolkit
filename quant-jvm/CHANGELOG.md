@@ -2,6 +2,24 @@
 
 All notable changes to `quant-jvm` are recorded here. This changelog tracks parity with `../quant/` (Python) — when a Python module changes, the corresponding entry here records the Kotlin re-port.
 
+## [0.6.0] — 2026-07-18
+
+QUEUE COMPLETE — all 9 modules of `analyst-toolkit/quant` are ported. This wave delivers the one §1.3 stochastic module, closing the port order that ran deterministic-first by design.
+
+### Added
+- `MonteCarlo.kt` — Kotlin port of `quant/monte_carlo.py`, split by parity regime:
+  - Deterministic skeleton (§1.1 exact parity): `percentile` (truncating index + clamp), `pathMaxDrawdown`, `monteCarloSummary` (sorting, percentile/mean rounding, vs-spot fields, halving/doubling probabilities); explicit throws where Python raises ZeroDivisionError (zero paths, zero spot) so Kotlin never silently emits NaN/Infinity
+  - Stochastic core (§1.3 distributional): `gbmPath`, `jumpGbmPath` (Poisson-approximated Merton jumps), `simulate` — RNG is `java.util.Random(seed)` (spec-pinned LCG + polar Gaussian), giving bit-reproducible Kotlin runs per seed; seeds are documented as NOT cross-language comparable, per the contract's rejection of bit-matching Python's Mersenne Twister
+- `Cli.kt` — `monte_carlo` subcommand (`--spot --vol [--drift] [--days] [--paths] [--jumps] [--seed]`); the planned-modules list is gone
+- `MonteCarloParityTest.kt` — 8 tests:
+  - Exact §1.1: `percentile` picks vs the imported Python helper on a fixed array; full output-shaping oracle on fixed injected ep/dd samples (byte-value-identical JSON)
+  - Distributional §1.3: GBM and jump-diffusion runs at N=10,000 vs the Python CLI — quantiles p05..p95, mean, and drawdown p50/p75/p95 each within 6 sqrt(2) estimated SE (quantile SE via density-inverse method). Rationale: ~2e-9 false-failure per statistic, ~4e-8 per run across 18 comparisons — under the 1e-6 flakiness budget without retries, while real process bugs sit tens-to-hundreds of SE away. dd p99 excluded (tail density estimation unreliable); the contract's 2 SE + retry scheme is documented as traded for the wider no-retry bound
+  - Kotlin-only: closed-form GBM moment checks (E[S_T] = S0 e^(mu T), median = S0 e^((mu - sigma^2/2) T)) on a fixed seed; fixed-seed reproducibility (identical output) plus reseed perturbation; skeleton hand checks (percentile truncation/clamps, known-path max drawdown, probability fields); CLI error contract
+- `README.md` — monte_carlo row ported with the §1.3 note, queue marked complete (9/9), parity-table stochastic row updated from "planned / 2 SE" to the implemented 6 sqrt(2) SE no-retry bound
+
+### Verified
+- `gradle test --no-daemon` — 59/59 tests pass (6 Kelly, 6 Sharpe, 6 Drawdown, 7 Vol, 6 Correlation, 7 VaR, 6 Markowitz, 7 DCF, 8 Monte Carlo) with python3 present; full suite run twice back-to-back to shake out statistical flakiness — both runs green
+
 ## [0.5.0] — 2026-07-17
 
 Final deterministic wave — only `monte_carlo` (§1.3 stochastic/distributional) remains planned.
