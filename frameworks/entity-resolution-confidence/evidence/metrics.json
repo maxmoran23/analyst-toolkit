@@ -1,0 +1,203 @@
+{
+  "auto_same_false_merges": 0,
+  "auto_same_recall": 0.66875,
+  "category_dispositions": {
+    "different_romanization_shared_passport": {
+      "SAME": 162
+    },
+    "distinct_clean_strong_id_conflict": {
+      "DIFFERENT": 360
+    },
+    "distinct_common_name_name_only": {
+      "REVIEW": 480
+    },
+    "distinct_exact_name_moderate_contradictions": {
+      "DIFFERENT": 360
+    },
+    "distinct_passport_conflict_sparse": {
+      "DIFFERENT": 360
+    },
+    "distinct_sparse_unrelated_review": {
+      "REVIEW": 360
+    },
+    "dob_digit_transposition_true_match": {
+      "REVIEW": 156
+    },
+    "name_order_swap_shared_tax_id": {
+      "SAME": 162
+    },
+    "partial_dob_only_true_match": {
+      "REVIEW": 162
+    },
+    "shared_national_id_address_drift": {
+      "SAME": 156
+    },
+    "shared_passport_transliteration": {
+      "SAME": 162
+    }
+  },
+  "clear_false_negative_attestation": "Observed 0 clear false negatives in 960 labelled TRUE-SAME pairs; the exact one-sided 95% Clopper-Pearson upper bound is 0.003116. This bound is a property of the validation sample size, not a claim of a zero population rate.",
+  "clear_false_negative_cp_upper_95": 0.003115690582214503,
+  "clear_false_negative_rate": 0.0,
+  "clear_false_negatives": 0,
+  "confusion": {
+    "DIFFERENT": {
+      "DIFFERENT": 1080,
+      "REVIEW": 840,
+      "SAME": 0
+    },
+    "SAME": {
+      "DIFFERENT": 0,
+      "REVIEW": 318,
+      "SAME": 642
+    }
+  },
+  "dispositions": {
+    "DIFFERENT": 1080,
+    "REVIEW": 1158,
+    "SAME": 642
+  },
+  "gates": {
+    "false_merge": {
+      "criterion": "no DIFFERENT pair may be auto-SAME; every SAME must carry a shared strong identifier",
+      "observed_all_false_merges": 0,
+      "observed_name_only_merges": 0,
+      "observed_same_without_strong_id": 0,
+      "pass": true
+    },
+    "false_negative": {
+      "criterion": "no TRUE-SAME pair may be auto-declared DIFFERENT",
+      "observed": 0,
+      "pass": true
+    }
+  },
+  "name_only_false_merges": 0,
+  "name_only_pairs": 480,
+  "pairs": 2880,
+  "review_rate": 0.40208333333333335,
+  "structural_same_without_strong_id": 0,
+  "trials": [
+    {
+      "auto_same_false_merges": 0,
+      "auto_same_recall": 0.66875,
+      "clear_false_negative_rate": 0.0,
+      "clear_false_negatives": 0,
+      "dispositions": {
+        "DIFFERENT": 180,
+        "REVIEW": 193,
+        "SAME": 107
+      },
+      "gates_pass": true,
+      "name_only_false_merges": 0,
+      "name_only_pairs": 80,
+      "pairs": 480,
+      "review_rate": 0.40208333333333335,
+      "seed": 42,
+      "structural_same_without_strong_id": 0,
+      "true_different_pairs": 320,
+      "true_same_pairs": 160
+    },
+    {
+      "auto_same_false_merges": 0,
+      "auto_same_recall": 0.66875,
+      "clear_false_negative_rate": 0.0,
+      "clear_false_negatives": 0,
+      "dispositions": {
+        "DIFFERENT": 180,
+        "REVIEW": 193,
+        "SAME": 107
+      },
+      "gates_pass": true,
+      "name_only_false_merges": 0,
+      "name_only_pairs": 80,
+      "pairs": 480,
+      "review_rate": 0.40208333333333335,
+      "seed": 43,
+      "structural_same_without_strong_id": 0,
+      "true_different_pairs": 320,
+      "true_same_pairs": 160
+    },
+    {
+      "auto_same_false_merges": 0,
+      "auto_same_recall": 0.66875,
+      "clear_false_negative_rate": 0.0,
+      "clear_false_negatives": 0,
+      "dispositions": {
+        "DIFFERENT": 180,
+        "REVIEW": 193,
+        "SAME": 107
+      },
+      "gates_pass": true,
+      "name_only_false_merges": 0,
+      "name_only_pairs": 80,
+      "pairs": 480,
+      "review_rate": 0.40208333333333335,
+      "seed": 44,
+      "structural_same_without_strong_id": 0,
+      "true_different_pairs": 320,
+      "true_same_pairs": 160
+    },
+    {
+      "auto_same_false_merges": 0,
+      "auto_same_recall": 0.66875,
+      "clear_false_negative_rate": 0.0,
+      "clear_false_negatives": 0,
+      "dispositions": {
+        "DIFFERENT": 180,
+        "REVIEW": 193,
+        "SAME": 107
+      },
+      "gates_pass": true,
+      "name_only_false_merges": 0,
+      "name_only_pairs": 80,
+      "pairs": 480,
+      "review_rate": 0.40208333333333335,
+      "seed": 45,
+      "structural_same_without_strong_id": 0,
+      "true_different_pairs": 320,
+      "true_same_pairs": 160
+    },
+    {
+      "auto_same_false_merges": 0,
+      "auto_same_recall": 0.66875,
+      "clear_false_negative_rate": 0.0,
+      "clear_false_negatives": 0,
+      "dispositions": {
+        "DIFFERENT": 180,
+        "REVIEW": 193,
+        "SAME": 107
+      },
+      "gates_pass": true,
+      "name_only_false_merges": 0,
+      "name_only_pairs": 80,
+      "pairs": 480,
+      "review_rate": 0.40208333333333335,
+      "seed": 46,
+      "structural_same_without_strong_id": 0,
+      "true_different_pairs": 320,
+      "true_same_pairs": 160
+    },
+    {
+      "auto_same_false_merges": 0,
+      "auto_same_recall": 0.66875,
+      "clear_false_negative_rate": 0.0,
+      "clear_false_negatives": 0,
+      "dispositions": {
+        "DIFFERENT": 180,
+        "REVIEW": 193,
+        "SAME": 107
+      },
+      "gates_pass": true,
+      "name_only_false_merges": 0,
+      "name_only_pairs": 80,
+      "pairs": 480,
+      "review_rate": 0.40208333333333335,
+      "seed": 47,
+      "structural_same_without_strong_id": 0,
+      "true_different_pairs": 320,
+      "true_same_pairs": 160
+    }
+  ],
+  "true_different_pairs": 1920,
+  "true_same_pairs": 960
+}

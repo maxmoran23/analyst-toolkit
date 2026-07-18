@@ -17,8 +17,10 @@ To re-derive one framework by hand, run its command from its own directory:
 | Framework | Reproduction command |
 |---|---|
 | [`adverse-media-screening/`](adverse-media-screening/) | `python3 run_validation.py --seed 42 --subjects 8000 --hits 50000` |
+| [`beneficial-ownership-resolution/`](beneficial-ownership-resolution/) | `python3 run_validation.py --seed 42 --true-owners 160 --below 240 --unresolved 80 --trials 6` |
 | [`customer-risk-rating/`](customer-risk-rating/) | `python3 run_validation.py --seed 42 --customers 50000` |
 | [`data-quality-rules/`](data-quality-rules/) | `python3 run_validation.py --seed 42 --records 50000` |
+| [`entity-resolution-confidence/`](entity-resolution-confidence/) | `python3 run_validation.py --seed 42 --same 160 --different 240 --name-only 80 --trials 6` |
 | [`fraud-detection/`](fraud-detection/) | `python3 run_validation.py --seed 42 --transactions 50000 --trials 6` |
 | [`investigations-case-qa/`](investigations-case-qa/) | `python3 run_validation.py --seed 42 --cases 50000` |
 | [`jurisdiction-risk/`](jurisdiction-risk/) | `python3 run_validation.py --seed 42 --jurisdictions 40000` |
@@ -57,8 +59,10 @@ The digest is a SHA-256 over the substantive metrics with volatile fields (times
 | Framework | Population | Seed | Wall clock | Generated at commit | Results digest |
 |---|---|---:|---:|---|---|
 | [`adverse-media-screening/`](adverse-media-screening/) | 50,000 | 42 | 1.15s | `d2f4ef1` · 2026-07-10 05:09 UTC | `c8c6d4a94091abf7` |
+| [`beneficial-ownership-resolution/`](beneficial-ownership-resolution/) | — | — | — | `—` · — | `dec97e1e79fc62a7` |
 | [`customer-risk-rating/`](customer-risk-rating/) | 50,000 | 42 | 0.55s | `d2f4ef1` · 2026-07-10 05:09 UTC | `2289abbaef5813f2` |
 | [`data-quality-rules/`](data-quality-rules/) | 50,000 | 42 | 2.86s | `d2f4ef1` · 2026-07-10 05:09 UTC | `6f6c9df784f391d9` |
+| [`entity-resolution-confidence/`](entity-resolution-confidence/) | — | — | — | `—` · — | `14d071b349d61270` |
 | [`fraud-detection/`](fraud-detection/) | — | — | — | `—` · — | `5d6be29f53f6b9a5` |
 | [`investigations-case-qa/`](investigations-case-qa/) | 50,000 | 42 | 1.13s | `d2f4ef1` · 2026-07-10 05:09 UTC | `0adfa7eb40d35f11` |
 | [`jurisdiction-risk/`](jurisdiction-risk/) | 40,000 | 42 | 0.59s | `1afa8a7` · 2026-07-10 21:18 UTC | `b309d40e9ecc163b` |

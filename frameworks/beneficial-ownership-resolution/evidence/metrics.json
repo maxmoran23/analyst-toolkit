@@ -1,0 +1,207 @@
+{
+  "candidates": 2880,
+  "category_dispositions": {
+    "below_direct_fully_resolved": {
+      "RESOLVED_BELOW_THRESHOLD": 288
+    },
+    "below_multipath_fully_resolved": {
+      "RESOLVED_BELOW_THRESHOLD": 288
+    },
+    "below_near_threshold_review": {
+      "REVIEW": 288
+    },
+    "below_nonsole_director": {
+      "RESOLVED_BELOW_THRESHOLD": 288
+    },
+    "below_zero_equity_no_control": {
+      "RESOLVED_BELOW_THRESHOLD": 288
+    },
+    "true_circular_cross_ownership": {
+      "CONFIRMED_BENEFICIAL_OWNER": 160
+    },
+    "true_concealed_majority_many_subthreshold_shells": {
+      "CONFIRMED_BENEFICIAL_OWNER": 160
+    },
+    "true_control_without_equity_sole_director": {
+      "CONFIRMED_BENEFICIAL_OWNER": 160
+    },
+    "true_direct_ownership": {
+      "CONFIRMED_BENEFICIAL_OWNER": 160
+    },
+    "true_multipath_products": {
+      "CONFIRMED_BENEFICIAL_OWNER": 160
+    },
+    "true_opaque_layer_above_threshold": {
+      "CONFIRMED_BENEFICIAL_OWNER": 160
+    },
+    "unresolved_global_target_graph_below_looking": {
+      "REVIEW": 120
+    },
+    "unresolved_incomplete_intermediary_below_looking": {
+      "REVIEW": 120
+    },
+    "unresolved_nominee_layer_below_looking": {
+      "REVIEW": 120
+    },
+    "unresolved_opaque_intermediary_below_looking": {
+      "REVIEW": 120
+    }
+  },
+  "clear_false_negative_attestation": "Observed 0 auto-clear false negatives in 960 labelled TRUE beneficial owners; the exact one-sided 95% Clopper-Pearson upper bound is 0.003116. This bound is a property of the validation sample size, not a claim of a zero population rate.",
+  "clear_false_negative_cp_upper_95": 0.003115690582214503,
+  "clear_false_negative_rate": 0.0,
+  "clear_false_negatives": 0,
+  "confirmed_false_positives": 0,
+  "confirmed_recall": 1.0,
+  "confusion": {
+    "NOT_BO": {
+      "CONFIRMED_BENEFICIAL_OWNER": 0,
+      "RESOLVED_BELOW_THRESHOLD": 1152,
+      "REVIEW": 768
+    },
+    "TRUE_BO": {
+      "CONFIRMED_BENEFICIAL_OWNER": 960,
+      "RESOLVED_BELOW_THRESHOLD": 0,
+      "REVIEW": 0
+    }
+  },
+  "dispositions": {
+    "CONFIRMED_BENEFICIAL_OWNER": 960,
+    "RESOLVED_BELOW_THRESHOLD": 1152,
+    "REVIEW": 768
+  },
+  "gates": {
+    "false_negative": {
+      "criterion": "no labelled TRUE beneficial owner may be auto-cleared",
+      "observed": 0,
+      "pass": true
+    },
+    "resolution_integrity": {
+      "criterion": "every auto-clear must be eligible and no unresolved planted chain may be auto-cleared",
+      "observed_structural_leaks": 0,
+      "observed_unresolved_plant_clears": 0,
+      "pass": true
+    }
+  },
+  "not_beneficial_owners": 1920,
+  "resolution_integrity_leaks": 0,
+  "review_rate": 0.26666666666666666,
+  "trials": [
+    {
+      "candidates": 480,
+      "clear_false_negative_rate": 0.0,
+      "clear_false_negatives": 0,
+      "confirmed_false_positives": 0,
+      "confirmed_recall": 1.0,
+      "dispositions": {
+        "CONFIRMED_BENEFICIAL_OWNER": 160,
+        "RESOLVED_BELOW_THRESHOLD": 192,
+        "REVIEW": 128
+      },
+      "gates_pass": true,
+      "not_beneficial_owners": 320,
+      "resolution_integrity_leaks": 0,
+      "review_rate": 0.26666666666666666,
+      "seed": 42,
+      "true_beneficial_owners": 160,
+      "unresolved_plant_clears": 0
+    },
+    {
+      "candidates": 480,
+      "clear_false_negative_rate": 0.0,
+      "clear_false_negatives": 0,
+      "confirmed_false_positives": 0,
+      "confirmed_recall": 1.0,
+      "dispositions": {
+        "CONFIRMED_BENEFICIAL_OWNER": 160,
+        "RESOLVED_BELOW_THRESHOLD": 192,
+        "REVIEW": 128
+      },
+      "gates_pass": true,
+      "not_beneficial_owners": 320,
+      "resolution_integrity_leaks": 0,
+      "review_rate": 0.26666666666666666,
+      "seed": 43,
+      "true_beneficial_owners": 160,
+      "unresolved_plant_clears": 0
+    },
+    {
+      "candidates": 480,
+      "clear_false_negative_rate": 0.0,
+      "clear_false_negatives": 0,
+      "confirmed_false_positives": 0,
+      "confirmed_recall": 1.0,
+      "dispositions": {
+        "CONFIRMED_BENEFICIAL_OWNER": 160,
+        "RESOLVED_BELOW_THRESHOLD": 192,
+        "REVIEW": 128
+      },
+      "gates_pass": true,
+      "not_beneficial_owners": 320,
+      "resolution_integrity_leaks": 0,
+      "review_rate": 0.26666666666666666,
+      "seed": 44,
+      "true_beneficial_owners": 160,
+      "unresolved_plant_clears": 0
+    },
+    {
+      "candidates": 480,
+      "clear_false_negative_rate": 0.0,
+      "clear_false_negatives": 0,
+      "confirmed_false_positives": 0,
+      "confirmed_recall": 1.0,
+      "dispositions": {
+        "CONFIRMED_BENEFICIAL_OWNER": 160,
+        "RESOLVED_BELOW_THRESHOLD": 192,
+        "REVIEW": 128
+      },
+      "gates_pass": true,
+      "not_beneficial_owners": 320,
+      "resolution_integrity_leaks": 0,
+      "review_rate": 0.26666666666666666,
+      "seed": 45,
+      "true_beneficial_owners": 160,
+      "unresolved_plant_clears": 0
+    },
+    {
+      "candidates": 480,
+      "clear_false_negative_rate": 0.0,
+      "clear_false_negatives": 0,
+      "confirmed_false_positives": 0,
+      "confirmed_recall": 1.0,
+      "dispositions": {
+        "CONFIRMED_BENEFICIAL_OWNER": 160,
+        "RESOLVED_BELOW_THRESHOLD": 192,
+        "REVIEW": 128
+      },
+      "gates_pass": true,
+      "not_beneficial_owners": 320,
+      "resolution_integrity_leaks": 0,
+      "review_rate": 0.26666666666666666,
+      "seed": 46,
+      "true_beneficial_owners": 160,
+      "unresolved_plant_clears": 0
+    },
+    {
+      "candidates": 480,
+      "clear_false_negative_rate": 0.0,
+      "clear_false_negatives": 0,
+      "confirmed_false_positives": 0,
+      "confirmed_recall": 1.0,
+      "dispositions": {
+        "CONFIRMED_BENEFICIAL_OWNER": 160,
+        "RESOLVED_BELOW_THRESHOLD": 192,
+        "REVIEW": 128
+      },
+      "gates_pass": true,
+      "not_beneficial_owners": 320,
+      "resolution_integrity_leaks": 0,
+      "review_rate": 0.26666666666666666,
+      "seed": 47,
+      "true_beneficial_owners": 160,
+      "unresolved_plant_clears": 0
+    }
+  ],
+  "true_beneficial_owners": 960,
+  "unresolved_plant_clears": 0
+}

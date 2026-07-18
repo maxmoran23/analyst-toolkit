@@ -63,6 +63,18 @@ REGISTRY: dict[str, dict] = {
         "args": ["--subjects", "120", "--hits", "750"],
         "files": ["subjects.csv", "hits.csv"],
     },
+    "beneficial-ownership-resolution": {
+        # Full validation sizes; the generator's --out mode writes the committed
+        # sample pack (24 cases) alongside the discarded full population.
+        "args": ["--true-owners", "160", "--below", "240", "--unresolved", "80",
+                 "--sample-size", "24"],
+        "files": ["sample-input.json"],
+    },
+    "entity-resolution-confidence": {
+        "args": ["--same", "160", "--different", "240", "--name-only", "80",
+                 "--sample-size", "40"],
+        "files": ["sample-input.json"],
+    },
     "customer-risk-rating": {
         "args": ["--customers", "800"],
         "files": ["customers.csv"],

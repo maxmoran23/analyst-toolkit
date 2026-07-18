@@ -83,7 +83,7 @@ does, for each framework:
 
 Because the engines are pure standard library, CI needs no dependencies beyond
 Python itself — consistent with the rest of the repository's validation jobs. The
-whole re-derivation of all thirteen packs takes about twenty seconds.
+whole re-derivation of all seventeen packs takes about twenty seconds.
 
 ## Reproduction is a registry, not a README paragraph
 

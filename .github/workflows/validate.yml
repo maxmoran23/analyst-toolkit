@@ -214,6 +214,16 @@ jobs:
           cd frameworks/jurisdiction-risk
           python3 run_validation.py --seed 42 --jurisdictions 40000 --no-write
 
+      - name: Entity-resolution confidence — dual false-negative / false-merge gate + stability
+        run: |
+          cd frameworks/entity-resolution-confidence
+          python3 run_validation.py --seed 42 --same 160 --different 240 --name-only 80 --trials 6
+
+      - name: Beneficial-ownership resolution — dual false-negative / resolution-integrity gate + stability
+        run: |
+          cd frameworks/beneficial-ownership-resolution
+          python3 run_validation.py --seed 42 --true-owners 160 --below 240 --unresolved 80 --trials 6
+
       - name: Fraud detection — dual miss / false-decline safety gate + stability
         run: |
           cd frameworks/fraud-detection

@@ -45,7 +45,8 @@ same domain problem at two scales.
 | New-product approval | [`npa/npa-risk-assessment`](../prompts/npa/npa-risk-assessment.md) | [`npa-product-risk`](../frameworks/npa-product-risk/) |
 | Jurisdiction risk | [`regulatory/geopolitical-risk-monitor`](../prompts/regulatory/geopolitical-risk-monitor.md) | [`jurisdiction-risk`](../frameworks/jurisdiction-risk/) |
 | Fraud | [`fraud/`](../prompts/fraud/) *(five case-level prompts)* | [`fraud-detection`](../frameworks/fraud-detection/) |
-| Beneficial ownership | [`compliance/ubo-beneficial-ownership`](../prompts/compliance/ubo-beneficial-ownership.md) — *unwind one chain* | `beneficial-ownership-resolution` *(engine in progress — resolves at volume with a false-negative gate)* |
+| Beneficial ownership | [`compliance/ubo-beneficial-ownership`](../prompts/compliance/ubo-beneficial-ownership.md) — *unwind one chain* | [`beneficial-ownership-resolution`](../frameworks/beneficial-ownership-resolution/) — *resolve a whole book, dual-gated* |
+| Identity resolution | [`compliance/identity-resolution-disambiguation`](../prompts/compliance/identity-resolution-disambiguation.md) — *one pair, with reasoning* | [`entity-resolution-confidence`](../frameworks/entity-resolution-confidence/) — *pairs at volume, never a name-only merge* |
 
 ## The mirror pairs (not cousins — the same prompt, twice)
 
@@ -82,5 +83,7 @@ prompts/controls/data-quality-review.md <-> frameworks/data-quality-rules
 prompts/blockchain/onchain-sanctions-monitor.md <-> frameworks/onchain-kyt-address-risk
 prompts/npa/npa-risk-assessment.md <-> frameworks/npa-product-risk
 prompts/regulatory/geopolitical-risk-monitor.md <-> frameworks/jurisdiction-risk
+prompts/compliance/ubo-beneficial-ownership.md <-> frameworks/beneficial-ownership-resolution
+prompts/compliance/identity-resolution-disambiguation.md <-> frameworks/entity-resolution-confidence
 ```
 <!-- /NAMING-REGISTRY:cousins -->

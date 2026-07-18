@@ -11,6 +11,16 @@
         "kind": "scoring engine"
       }
     },
+    "beneficial-ownership-resolution": {
+      "command": "python3 run_validation.py --seed 42 --true-owners 160 --below 240 --unresolved 80 --trials 6",
+      "positive_class": "labelled true beneficial owners (aggregate effective ownership at or above threshold, or a control prong)",
+      "brief": {
+        "audience": "KYC / CDD onboarding teams, beneficial-ownership analysts, and independent validators.",
+        "question": "Who ultimately owns or controls this entity, and can any candidate be cleared as below-threshold defensibly?",
+        "never": "It never files, freezes, rejects, or off-boards. It never auto-clears a candidate while any part of the ownership graph is unresolved, and control without equity is surfaced, never cleared.",
+        "kind": "ownership-graph resolution engine"
+      }
+    },
     "customer-risk-rating": {
       "command": "python3 run_validation.py --seed 42 --customers 50000",
       "brief": {
@@ -29,6 +39,16 @@
         "question": "Is this customer extract fit to screen against, or will it silently miss people?",
         "never": "It never drops, imputes, or repairs a record. A feed whose screening-critical fields breach their ceiling can never pass — it routes to a data owner with the full defect list.",
         "kind": "data-quality inspection engine"
+      }
+    },
+    "entity-resolution-confidence": {
+      "command": "python3 run_validation.py --seed 42 --same 160 --different 240 --name-only 80 --trials 6",
+      "positive_class": "labelled true same-entity pairs (including transliteration, name-order, and partial-identifier variants)",
+      "brief": {
+        "audience": "Sanctions and PEP hit adjudicators, KYC identity-resolution and customer-dedup teams.",
+        "question": "Are these two identity records the same person, different people, or genuinely indeterminate on the evidence?",
+        "never": "It never clears a hit because two names are spelled differently, and it never merges two records on a name alone — auto-SAME requires a shared strong identifier. Indeterminate routes to review, not to a clear.",
+        "kind": "identity-resolution engine"
       }
     },
     "fraud-detection": {

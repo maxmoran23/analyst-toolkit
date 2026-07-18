@@ -1,0 +1,6 @@
+decisive_moderate_threshold,clear_false_negatives,false_merges,auto_same_recall,review_rate
+0.75,0,0,0.668750,0.402083
+0.90,0,0,0.668750,0.402083
+1.00,0,0,0.668750,0.402083
+1.15,0,0,0.668750,0.402083
+1.30,0,0,0.668750,0.527083

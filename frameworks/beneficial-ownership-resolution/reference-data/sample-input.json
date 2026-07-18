@@ -1,0 +1,1025 @@
+{
+  "graphs": [
+    {
+      "candidates": [
+        "person"
+      ],
+      "control_relationships": [],
+      "graph_id": "U-420404",
+      "nodes": [
+        {
+          "id": "person",
+          "name": "Person",
+          "type": "person"
+        },
+        {
+          "id": "opaque_shell",
+          "name": "Opaque Shell",
+          "opaque": true,
+          "ownership_complete": false,
+          "resolved": false,
+          "type": "entity"
+        },
+        {
+          "id": "target",
+          "name": "Target",
+          "ownership_complete": true,
+          "resolved": true,
+          "type": "entity"
+        }
+      ],
+      "ownership_edges": [
+        {
+          "fraction": 0.14,
+          "owned": "opaque_shell",
+          "owner": "person"
+        },
+        {
+          "fraction": 1.0,
+          "owned": "target",
+          "owner": "opaque_shell"
+        }
+      ],
+      "target_entity": "target"
+    },
+    {
+      "candidates": [
+        "person"
+      ],
+      "control_relationships": [],
+      "graph_id": "T-420220",
+      "nodes": [
+        {
+          "id": "person",
+          "name": "Person",
+          "type": "person"
+        },
+        {
+          "id": "target",
+          "name": "Target",
+          "ownership_complete": true,
+          "resolved": true,
+          "type": "entity"
+        }
+      ],
+      "ownership_edges": [
+        {
+          "fraction": 0.31,
+          "owned": "target",
+          "owner": "person"
+        }
+      ],
+      "target_entity": "target"
+    },
+    {
+      "candidates": [
+        "person"
+      ],
+      "control_relationships": [],
+      "graph_id": "U-420426",
+      "nodes": [
+        {
+          "id": "person",
+          "name": "Person",
+          "type": "person"
+        },
+        {
+          "id": "nominee_holdco",
+          "name": "Nominee Holdco",
+          "nominee": true,
+          "ownership_complete": false,
+          "resolved": true,
+          "type": "entity"
+        },
+        {
+          "id": "target",
+          "name": "Target",
+          "ownership_complete": true,
+          "resolved": true,
+          "type": "entity"
+        }
+      ],
+      "ownership_edges": [
+        {
+          "fraction": 0.1,
+          "owned": "nominee_holdco",
+          "owner": "person"
+        },
+        {
+          "fraction": 1.0,
+          "owned": "target",
+          "owner": "nominee_holdco"
+        }
+      ],
+      "target_entity": "target"
+    },
+    {
+      "candidates": [
+        "person"
+      ],
+      "control_relationships": [],
+      "graph_id": "T-420221",
+      "nodes": [
+        {
+          "id": "person",
+          "name": "Person",
+          "type": "person"
+        },
+        {
+          "id": "path_a",
+          "name": "Path A",
+          "ownership_complete": true,
+          "resolved": true,
+          "type": "entity"
+        },
+        {
+          "id": "path_b",
+          "name": "Path B",
+          "ownership_complete": true,
+          "resolved": true,
+          "type": "entity"
+        },
+        {
+          "id": "target",
+          "name": "Target",
+          "ownership_complete": true,
+          "resolved": true,
+          "type": "entity"
+        }
+      ],
+      "ownership_edges": [
+        {
+          "fraction": 0.5,
+          "owned": "path_a",
+          "owner": "person"
+        },
+        {
+          "fraction": 0.3,
+          "owned": "target",
+          "owner": "path_a"
+        },
+        {
+          "fraction": 0.5,
+          "owned": "path_b",
+          "owner": "person"
+        },
+        {
+          "fraction": 0.25,
+          "owned": "target",
+          "owner": "path_b"
+        }
+      ],
+      "target_entity": "target"
+    },
+    {
+      "candidates": [
+        "person"
+      ],
+      "control_relationships": [],
+      "graph_id": "B-420304",
+      "nodes": [
+        {
+          "id": "person",
+          "name": "Person",
+          "type": "person"
+        },
+        {
+          "id": "target",
+          "name": "Target",
+          "ownership_complete": true,
+          "resolved": true,
+          "type": "entity"
+        }
+      ],
+      "ownership_edges": [
+        {
+          "fraction": 0.24,
+          "owned": "target",
+          "owner": "person"
+        }
+      ],
+      "target_entity": "target"
+    },
+    {
+      "candidates": [
+        "person"
+      ],
+      "control_relationships": [
+        {
+          "entity": "target",
+          "person": "person",
+          "prong": "director",
+          "sole_director": false
+        }
+      ],
+      "graph_id": "B-420298",
+      "nodes": [
+        {
+          "id": "person",
+          "name": "Person",
+          "type": "person"
+        },
+        {
+          "id": "target",
+          "name": "Target",
+          "ownership_complete": true,
+          "resolved": true,
+          "type": "entity"
+        }
+      ],
+      "ownership_edges": [
+        {
+          "fraction": 0.05,
+          "owned": "target",
+          "owner": "person"
+        }
+      ],
+      "target_entity": "target"
+    },
+    {
+      "candidates": [
+        "person"
+      ],
+      "control_relationships": [],
+      "graph_id": "T-420163",
+      "nodes": [
+        {
+          "id": "person",
+          "name": "Person",
+          "type": "person"
+        },
+        {
+          "id": "cross_a",
+          "name": "Cross A",
+          "ownership_complete": true,
+          "resolved": true,
+          "type": "entity"
+        },
+        {
+          "id": "cross_b",
+          "name": "Cross B",
+          "ownership_complete": true,
+          "resolved": true,
+          "type": "entity"
+        },
+        {
+          "id": "target",
+          "name": "Target",
+          "ownership_complete": true,
+          "resolved": true,
+          "type": "entity"
+        }
+      ],
+      "ownership_edges": [
+        {
+          "fraction": 0.2,
+          "owned": "cross_a",
+          "owner": "person"
+        },
+        {
+          "fraction": 1.0,
+          "owned": "target",
+          "owner": "cross_a"
+        },
+        {
+          "fraction": 0.5,
+          "owned": "cross_b",
+          "owner": "cross_a"
+        },
+        {
+          "fraction": 0.5,
+          "owned": "cross_a",
+          "owner": "cross_b"
+        }
+      ],
+      "target_entity": "target"
+    },
+    {
+      "candidates": [
+        "person"
+      ],
+      "control_relationships": [],
+      "graph_id": "T-420280",
+      "nodes": [
+        {
+          "id": "person",
+          "name": "Person",
+          "type": "person"
+        },
+        {
+          "id": "target",
+          "name": "Target",
+          "ownership_complete": true,
+          "resolved": true,
+          "type": "entity"
+        }
+      ],
+      "ownership_edges": [
+        {
+          "fraction": 0.31,
+          "owned": "target",
+          "owner": "person"
+        }
+      ],
+      "target_entity": "target"
+    },
+    {
+      "candidates": [
+        "person"
+      ],
+      "control_relationships": [],
+      "graph_id": "B-420309",
+      "nodes": [
+        {
+          "id": "person",
+          "name": "Person",
+          "type": "person"
+        },
+        {
+          "id": "target",
+          "name": "Target",
+          "ownership_complete": true,
+          "resolved": true,
+          "type": "entity"
+        }
+      ],
+      "ownership_edges": [
+        {
+          "fraction": 0.24,
+          "owned": "target",
+          "owner": "person"
+        }
+      ],
+      "target_entity": "target"
+    },
+    {
+      "candidates": [
+        "person"
+      ],
+      "control_relationships": [],
+      "graph_id": "U-420443",
+      "nodes": [
+        {
+          "id": "person",
+          "name": "Person",
+          "type": "person"
+        },
+        {
+          "id": "unrelated_opaque_owner",
+          "name": "Unrelated Opaque Owner",
+          "opaque": true,
+          "ownership_complete": false,
+          "resolved": false,
+          "type": "entity"
+        },
+        {
+          "id": "target",
+          "name": "Target",
+          "ownership_complete": true,
+          "resolved": true,
+          "type": "entity"
+        }
+      ],
+      "ownership_edges": [
+        {
+          "fraction": 0.1,
+          "owned": "target",
+          "owner": "person"
+        },
+        {
+          "fraction": 0.6,
+          "owned": "target",
+          "owner": "unrelated_opaque_owner"
+        }
+      ],
+      "target_entity": "target"
+    },
+    {
+      "candidates": [
+        "person"
+      ],
+      "control_relationships": [],
+      "graph_id": "U-420427",
+      "nodes": [
+        {
+          "id": "person",
+          "name": "Person",
+          "type": "person"
+        },
+        {
+          "id": "unrelated_opaque_owner",
+          "name": "Unrelated Opaque Owner",
+          "opaque": true,
+          "ownership_complete": false,
+          "resolved": false,
+          "type": "entity"
+        },
+        {
+          "id": "target",
+          "name": "Target",
+          "ownership_complete": true,
+          "resolved": true,
+          "type": "entity"
+        }
+      ],
+      "ownership_edges": [
+        {
+          "fraction": 0.1,
+          "owned": "target",
+          "owner": "person"
+        },
+        {
+          "fraction": 0.6,
+          "owned": "target",
+          "owner": "unrelated_opaque_owner"
+        }
+      ],
+      "target_entity": "target"
+    },
+    {
+      "candidates": [
+        "person"
+      ],
+      "control_relationships": [],
+      "graph_id": "T-420198",
+      "nodes": [
+        {
+          "id": "person",
+          "name": "Person",
+          "type": "person"
+        },
+        {
+          "id": "shell_0",
+          "name": "Shell 0",
+          "ownership_complete": true,
+          "resolved": true,
+          "type": "entity"
+        },
+        {
+          "id": "shell_1",
+          "name": "Shell 1",
+          "ownership_complete": true,
+          "resolved": true,
+          "type": "entity"
+        },
+        {
+          "id": "shell_2",
+          "name": "Shell 2",
+          "ownership_complete": true,
+          "resolved": true,
+          "type": "entity"
+        },
+        {
+          "id": "target",
+          "name": "Target",
+          "ownership_complete": true,
+          "resolved": true,
+          "type": "entity"
+        }
+      ],
+      "ownership_edges": [
+        {
+          "fraction": 1.0,
+          "owned": "shell_0",
+          "owner": "person"
+        },
+        {
+          "fraction": 0.09,
+          "owned": "target",
+          "owner": "shell_0"
+        },
+        {
+          "fraction": 1.0,
+          "owned": "shell_1",
+          "owner": "person"
+        },
+        {
+          "fraction": 0.09,
+          "owned": "target",
+          "owner": "shell_1"
+        },
+        {
+          "fraction": 1.0,
+          "owned": "shell_2",
+          "owner": "person"
+        },
+        {
+          "fraction": 0.09,
+          "owned": "target",
+          "owner": "shell_2"
+        }
+      ],
+      "target_entity": "target"
+    },
+    {
+      "candidates": [
+        "person"
+      ],
+      "control_relationships": [],
+      "graph_id": "T-420222",
+      "nodes": [
+        {
+          "id": "person",
+          "name": "Person",
+          "type": "person"
+        },
+        {
+          "id": "shell_0",
+          "name": "Shell 0",
+          "ownership_complete": true,
+          "resolved": true,
+          "type": "entity"
+        },
+        {
+          "id": "shell_1",
+          "name": "Shell 1",
+          "ownership_complete": true,
+          "resolved": true,
+          "type": "entity"
+        },
+        {
+          "id": "shell_2",
+          "name": "Shell 2",
+          "ownership_complete": true,
+          "resolved": true,
+          "type": "entity"
+        },
+        {
+          "id": "target",
+          "name": "Target",
+          "ownership_complete": true,
+          "resolved": true,
+          "type": "entity"
+        }
+      ],
+      "ownership_edges": [
+        {
+          "fraction": 1.0,
+          "owned": "shell_0",
+          "owner": "person"
+        },
+        {
+          "fraction": 0.09,
+          "owned": "target",
+          "owner": "shell_0"
+        },
+        {
+          "fraction": 1.0,
+          "owned": "shell_1",
+          "owner": "person"
+        },
+        {
+          "fraction": 0.09,
+          "owned": "target",
+          "owner": "shell_1"
+        },
+        {
+          "fraction": 1.0,
+          "owned": "shell_2",
+          "owner": "person"
+        },
+        {
+          "fraction": 0.09,
+          "owned": "target",
+          "owner": "shell_2"
+        }
+      ],
+      "target_entity": "target"
+    },
+    {
+      "candidates": [
+        "person"
+      ],
+      "control_relationships": [],
+      "graph_id": "T-420282",
+      "nodes": [
+        {
+          "id": "person",
+          "name": "Person",
+          "type": "person"
+        },
+        {
+          "id": "shell_0",
+          "name": "Shell 0",
+          "ownership_complete": true,
+          "resolved": true,
+          "type": "entity"
+        },
+        {
+          "id": "shell_1",
+          "name": "Shell 1",
+          "ownership_complete": true,
+          "resolved": true,
+          "type": "entity"
+        },
+        {
+          "id": "shell_2",
+          "name": "Shell 2",
+          "ownership_complete": true,
+          "resolved": true,
+          "type": "entity"
+        },
+        {
+          "id": "target",
+          "name": "Target",
+          "ownership_complete": true,
+          "resolved": true,
+          "type": "entity"
+        }
+      ],
+      "ownership_edges": [
+        {
+          "fraction": 1.0,
+          "owned": "shell_0",
+          "owner": "person"
+        },
+        {
+          "fraction": 0.09,
+          "owned": "target",
+          "owner": "shell_0"
+        },
+        {
+          "fraction": 1.0,
+          "owned": "shell_1",
+          "owner": "person"
+        },
+        {
+          "fraction": 0.09,
+          "owned": "target",
+          "owner": "shell_1"
+        },
+        {
+          "fraction": 1.0,
+          "owned": "shell_2",
+          "owner": "person"
+        },
+        {
+          "fraction": 0.09,
+          "owned": "target",
+          "owner": "shell_2"
+        }
+      ],
+      "target_entity": "target"
+    },
+    {
+      "candidates": [
+        "person"
+      ],
+      "control_relationships": [],
+      "graph_id": "U-420433",
+      "nodes": [
+        {
+          "id": "person",
+          "name": "Person",
+          "type": "person"
+        },
+        {
+          "id": "incomplete_holdco",
+          "name": "Incomplete Holdco",
+          "ownership_complete": false,
+          "resolved": false,
+          "type": "entity"
+        },
+        {
+          "id": "target",
+          "name": "Target",
+          "ownership_complete": true,
+          "resolved": true,
+          "type": "entity"
+        }
+      ],
+      "ownership_edges": [
+        {
+          "fraction": 0.12000000000000001,
+          "owned": "incomplete_holdco",
+          "owner": "person"
+        },
+        {
+          "fraction": 1.0,
+          "owned": "target",
+          "owner": "incomplete_holdco"
+        }
+      ],
+      "target_entity": "target"
+    },
+    {
+      "candidates": [
+        "person"
+      ],
+      "control_relationships": [],
+      "graph_id": "B-420499",
+      "nodes": [
+        {
+          "id": "person",
+          "name": "Person",
+          "type": "person"
+        },
+        {
+          "id": "target",
+          "name": "Target",
+          "ownership_complete": true,
+          "resolved": true,
+          "type": "entity"
+        }
+      ],
+      "ownership_edges": [
+        {
+          "fraction": 0.24,
+          "owned": "target",
+          "owner": "person"
+        }
+      ],
+      "target_entity": "target"
+    },
+    {
+      "candidates": [
+        "person"
+      ],
+      "control_relationships": [],
+      "graph_id": "T-420190",
+      "nodes": [
+        {
+          "id": "person",
+          "name": "Person",
+          "type": "person"
+        },
+        {
+          "id": "target",
+          "name": "Target",
+          "ownership_complete": true,
+          "resolved": true,
+          "type": "entity"
+        }
+      ],
+      "ownership_edges": [
+        {
+          "fraction": 0.31,
+          "owned": "target",
+          "owner": "person"
+        }
+      ],
+      "target_entity": "target"
+    },
+    {
+      "candidates": [
+        "person"
+      ],
+      "control_relationships": [],
+      "graph_id": "T-420278",
+      "nodes": [
+        {
+          "id": "person",
+          "name": "Person",
+          "type": "person"
+        },
+        {
+          "id": "opaque_holdco",
+          "name": "Opaque Holdco",
+          "opaque": true,
+          "ownership_complete": false,
+          "resolved": false,
+          "type": "entity"
+        },
+        {
+          "id": "target",
+          "name": "Target",
+          "ownership_complete": true,
+          "resolved": true,
+          "type": "entity"
+        }
+      ],
+      "ownership_edges": [
+        {
+          "fraction": 0.3,
+          "owned": "opaque_holdco",
+          "owner": "person"
+        },
+        {
+          "fraction": 1.0,
+          "owned": "target",
+          "owner": "opaque_holdco"
+        }
+      ],
+      "target_entity": "target"
+    },
+    {
+      "candidates": [
+        "person"
+      ],
+      "control_relationships": [],
+      "graph_id": "T-420127",
+      "nodes": [
+        {
+          "id": "person",
+          "name": "Person",
+          "type": "person"
+        },
+        {
+          "id": "cross_a",
+          "name": "Cross A",
+          "ownership_complete": true,
+          "resolved": true,
+          "type": "entity"
+        },
+        {
+          "id": "cross_b",
+          "name": "Cross B",
+          "ownership_complete": true,
+          "resolved": true,
+          "type": "entity"
+        },
+        {
+          "id": "target",
+          "name": "Target",
+          "ownership_complete": true,
+          "resolved": true,
+          "type": "entity"
+        }
+      ],
+      "ownership_edges": [
+        {
+          "fraction": 0.2,
+          "owned": "cross_a",
+          "owner": "person"
+        },
+        {
+          "fraction": 1.0,
+          "owned": "target",
+          "owner": "cross_a"
+        },
+        {
+          "fraction": 0.5,
+          "owned": "cross_b",
+          "owner": "cross_a"
+        },
+        {
+          "fraction": 0.5,
+          "owned": "cross_a",
+          "owner": "cross_b"
+        }
+      ],
+      "target_entity": "target"
+    },
+    {
+      "candidates": [
+        "person"
+      ],
+      "control_relationships": [],
+      "graph_id": "B-420439",
+      "nodes": [
+        {
+          "id": "person",
+          "name": "Person",
+          "type": "person"
+        },
+        {
+          "id": "target",
+          "name": "Target",
+          "ownership_complete": true,
+          "resolved": true,
+          "type": "entity"
+        }
+      ],
+      "ownership_edges": [
+        {
+          "fraction": 0.24,
+          "owned": "target",
+          "owner": "person"
+        }
+      ],
+      "target_entity": "target"
+    },
+    {
+      "candidates": [
+        "person"
+      ],
+      "control_relationships": [],
+      "graph_id": "U-420432",
+      "nodes": [
+        {
+          "id": "person",
+          "name": "Person",
+          "type": "person"
+        },
+        {
+          "id": "opaque_shell",
+          "name": "Opaque Shell",
+          "opaque": true,
+          "ownership_complete": false,
+          "resolved": false,
+          "type": "entity"
+        },
+        {
+          "id": "target",
+          "name": "Target",
+          "ownership_complete": true,
+          "resolved": true,
+          "type": "entity"
+        }
+      ],
+      "ownership_edges": [
+        {
+          "fraction": 0.1,
+          "owned": "opaque_shell",
+          "owner": "person"
+        },
+        {
+          "fraction": 1.0,
+          "owned": "target",
+          "owner": "opaque_shell"
+        }
+      ],
+      "target_entity": "target"
+    },
+    {
+      "candidates": [
+        "person"
+      ],
+      "control_relationships": [],
+      "graph_id": "U-420452",
+      "nodes": [
+        {
+          "id": "person",
+          "name": "Person",
+          "type": "person"
+        },
+        {
+          "id": "opaque_shell",
+          "name": "Opaque Shell",
+          "opaque": true,
+          "ownership_complete": false,
+          "resolved": false,
+          "type": "entity"
+        },
+        {
+          "id": "target",
+          "name": "Target",
+          "ownership_complete": true,
+          "resolved": true,
+          "type": "entity"
+        }
+      ],
+      "ownership_edges": [
+        {
+          "fraction": 0.14,
+          "owned": "opaque_shell",
+          "owner": "person"
+        },
+        {
+          "fraction": 1.0,
+          "owned": "target",
+          "owner": "opaque_shell"
+        }
+      ],
+      "target_entity": "target"
+    },
+    {
+      "candidates": [
+        "person"
+      ],
+      "control_relationships": [],
+      "graph_id": "B-420407",
+      "nodes": [
+        {
+          "id": "person",
+          "name": "Person",
+          "type": "person"
+        },
+        {
+          "id": "target",
+          "name": "Target",
+          "ownership_complete": true,
+          "resolved": true,
+          "type": "entity"
+        }
+      ],
+      "ownership_edges": [],
+      "target_entity": "target"
+    },
+    {
+      "candidates": [
+        "person"
+      ],
+      "control_relationships": [],
+      "graph_id": "B-420442",
+      "nodes": [
+        {
+          "id": "person",
+          "name": "Person",
+          "type": "person"
+        },
+        {
+          "id": "target",
+          "name": "Target",
+          "ownership_complete": true,
+          "resolved": true,
+          "type": "entity"
+        }
+      ],
+      "ownership_edges": [],
+      "target_entity": "target"
+    }
+  ],
+  "schema_version": "1.0",
+  "seed": 42
+}

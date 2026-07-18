@@ -19,9 +19,10 @@ affairs. It assumes you know your domain. It does not assume you write code.
   you already have — Microsoft 365 Copilot, GitHub Copilot, Claude, ChatGPT. Nothing to
   install. Each one turns the assistant into a specific analyst with a defined method, a
   scoring rubric, and a fixed output shape, so two people running it get comparable work.
-- **15 runnable engines.** Small, transparent calculators for the problems that are
+- **17 runnable engines.** Small, transparent calculators for the problems that are
   really about volume — triaging 50,000 sanctions alerts, tuning a monitoring threshold,
-  deciding whether a customer extract is fit to screen against.
+  resolving who ultimately owns an entity, deciding whether two similar names are the
+  same person, deciding whether a customer extract is fit to screen against.
 
 **Why you should believe any of it.** Because you do not have to. Every accuracy figure
 in this repository is produced by a script, not typed by a person, and an automated check
@@ -64,7 +65,7 @@ A library of reusable, paste-ready **prompt templates**, runnable **scoring engi
 
 The library is written for **every team inside a financial-crime organization** — sanctions and screening, transaction monitoring, fraud, trade and communications surveillance, investigations and SAR, crypto/blockchain intelligence, KYC/CDD onboarding, third-party and correspondent banking, risk assessment, controls and independent testing, model risk and governance, data governance, new-product approval, and regulatory affairs — as well as the research, market, and quantitative work that sits alongside them, and for any analyst outside one doing comparable work. Fifteen [team hubs](teams/) index it by function. Nothing here assumes a specific firm, vendor, or toolchain.
 
-It is **not a system to deploy**. There is nothing to install, no runtime, no scheduler, and nothing you must connect it to. You browse, copy, paste, fill in the `{{PLACEHOLDERS}}`, and run. The work product is the prompt itself — the analytical method, the scoring rubric, the output structure, and the quality bar baked into each one. The one exception is [`frameworks/`](frameworks/): fifteen small, pure-standard-library scoring engines for the problems that are genuinely about volume, each shipping reproducible evidence of how accurately it performs. Those you run offline from a fixed seed; everything else you paste. (Two of the fifteen offer an *optional* live-ingest path to a public list or block explorer — opt-in, isolated, and never exercised by a validation run. See [`frameworks/README.md`](frameworks/README.md#on-network-access).)
+It is **not a system to deploy**. There is nothing to install, no runtime, no scheduler, and nothing you must connect it to. You browse, copy, paste, fill in the `{{PLACEHOLDERS}}`, and run. The work product is the prompt itself — the analytical method, the scoring rubric, the output structure, and the quality bar baked into each one. The one exception is [`frameworks/`](frameworks/): seventeen small, pure-standard-library scoring engines for the problems that are genuinely about volume, each shipping reproducible evidence of how accurately it performs. Those you run offline from a fixed seed; everything else you paste. (Two of the seventeen offer an *optional* live-ingest path to a public list or block explorer — opt-in, isolated, and never exercised by a validation run. See [`frameworks/README.md`](frameworks/README.md#on-network-access).)
 
 Each template was extracted and generalized from a production autonomous-agent fleet, then stripped to its portable core — the part that travels to any assistant, any account, any machine.
 
@@ -113,7 +114,7 @@ There is never a third file. [`BASE.md`](BASE.md) is the entire 4-file methodolo
 | **[`reference/`](reference/)** | Domain cheat-sheets — AML typologies, blockchain entity typologies, compliance, audit, regulatory, financial analysis |
 | **[`quant/`](quant/)** | A dependency-free Python quant library — VaR, Sharpe, Kelly, Monte Carlo, DCF, drawdown |
 | **[`quant-jvm/`](quant-jvm/)** | Kotlin/JVM port of `quant/` — same math, same JSON I/O contract, verified by cross-language parity tests |
-| **[`frameworks/`](frameworks/)** | **15 runnable scoring engines with validation evidence** — pure-stdlib reference engines for measurable scoring, triage, matching, threshold, fraud, and control-testing problems, each with a seeded synthetic-data generator and a harness that emits reproducible evidence and fails the build on its named safety invariant. A different artifact class from the paste-prompts; runnable, multi-file. |
+| **[`frameworks/`](frameworks/)** | **17 runnable scoring engines with validation evidence** — pure-stdlib reference engines for measurable scoring, triage, matching, threshold, fraud, and control-testing problems, each with a seeded synthetic-data generator and a harness that emits reproducible evidence and fails the build on its named safety invariant. A different artifact class from the paste-prompts; runnable, multi-file. |
 | **[`teams/`](teams/)** | **Start here by your function** — 15 hub pages, one per team across the financial-crime organization (sanctions/screening, transaction monitoring, fraud, surveillance, crypto, KYC, investigations & SAR, third-party & correspondent, risk assessment, controls/testing, model governance, data governance, new-product approval, regulatory affairs, adverse media), each bundling the relevant prompts, frameworks, references, and templates in one place, in plain English. Pure navigation over the by-type folders. |
 | **[`docs/`](docs/)** | Usage guides — the Copilot copy/paste workflow, running on any assistant, and **[how-the-system-works.md](docs/how-the-system-works.md)**: a plain-English walkthrough of the whole library for non-technical senior reviewers. |
 

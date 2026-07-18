@@ -1,0 +1,6 @@
+ownership_threshold,near_threshold_margin,clear_false_negatives,resolution_integrity_leaks,confirmed_recall,review_rate
+0.25,0.00,0,0,1.000000,0.166667
+0.25,0.01,0,0,1.000000,0.266667
+0.25,0.02,0,0,1.000000,0.266667
+0.25,0.03,0,0,1.000000,0.266667
+0.25,0.05,0,0,1.000000,0.266667

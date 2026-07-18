@@ -1,0 +1,32 @@
+{
+  "base_seed": 42,
+  "command": "python3 run_validation.py --seed 42 --true-owners 160 --below 240 --unresolved 80 --trials 6",
+  "completed_utc": "2026-07-18T17:32:56.243618Z",
+  "engine": "production",
+  "generator_sha256": "9305438146bebec64120c4d58e9ebc25c96325537bde49284c4a9201ad66aff3",
+  "implementation": "CPython",
+  "interpreter": "/opt/homebrew/opt/python@3.14/bin/python3.14",
+  "network_used": false,
+  "ownership_engine_sha256": "adb0a73be6ae81579464dfe8acc87e42a42908e5cdc6ac8b14626f08639818c7",
+  "platform": "macOS-27.0-arm64-arm-64bit-Mach-O",
+  "python": "3.14.5",
+  "schema_version": "1.0",
+  "sizes_per_trial": {
+    "below": 240,
+    "total": 480,
+    "true_owners": 160,
+    "unresolved": 80
+  },
+  "started_utc": "2026-07-18T17:32:56.077712Z",
+  "trial_seeds": [
+    42,
+    43,
+    44,
+    45,
+    46,
+    47
+  ],
+  "trials": 6,
+  "unit_tests_run": 11,
+  "wall_clock_seconds": 0.162325
+}

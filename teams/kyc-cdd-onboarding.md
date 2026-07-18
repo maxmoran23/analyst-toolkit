@@ -19,6 +19,8 @@ This team decides how much money-laundering and sanctions risk each customer, en
 | Need | Tool | Type | Where |
 | --- | --- | --- | --- |
 | Rate a customer / book at scale with floors | customer-risk-rating | framework (runnable, monotonic, floor-safe) | [../frameworks/customer-risk-rating/](../frameworks/customer-risk-rating/) |
+| Resolve who ultimately owns or controls an entity — concealed-majority and control-prong aware | beneficial-ownership-resolution | framework (runnable, dual-gated: 0 true owners cleared, 0 unresolved-chain clears) | [../frameworks/beneficial-ownership-resolution/](../frameworks/beneficial-ownership-resolution/) |
+| Decide whether two customer records are the same person (dedup, hit adjudication) | entity-resolution-confidence | framework (runnable, dual-gated: never a name-only merge) | [../frameworks/entity-resolution-confidence/](../frameworks/entity-resolution-confidence/) |
 | Review a KYC file for completeness & defensibility | customer-file-review | prompt | [../prompts/compliance/customer-file-review.md](../prompts/compliance/customer-file-review.md) |
 | Assess an entity / counterparty (8-domain) | entity-risk-assessment | prompt | [../prompts/compliance/entity-risk-assessment.md](../prompts/compliance/entity-risk-assessment.md) |
 | One-file entity risk assessment (no setup) | entity-risk-assessment (standalone) | standalone | [../standalone/entity-risk-assessment.md](../standalone/entity-risk-assessment.md) |
