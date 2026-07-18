@@ -75,6 +75,7 @@ CLAIMS = [
     ("docs/how-the-system-works.md", r"There are (\d+) of them across (\d+) categories", ["prompts", "categories"]),
     ("docs/how-the-system-works.md", r"There are (\d+) of them\.", ["frameworks"]),
     ("docs/how-the-system-works.md", r"all (\d+) frameworks'", ["frameworks"]),
+    ("docs/README.md", r"holds (\w+)\s+runnable scoring engines", ["frameworks"]),
     ("teams/README.md", r"(\d+) worked evidence packs", ["frameworks"]),
     ("teams/model-risk-governance.md", r"(\w+) worked, reproducible validation evidence packs", ["frameworks"]),
     ("teams/model-risk-governance.md", r"So do the other (\w+) —", ["frameworks_minus_one"]),
