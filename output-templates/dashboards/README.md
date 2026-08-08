@@ -1,8 +1,10 @@
 # Dashboard Templates
 
-Three self-contained, interactive HTML dashboard templates for analytical work.
-All three open directly in a browser, need no build step, and are designed to be
-populated with your own data — by hand or, faster, by an AI assistant.
+Three self-contained, interactive HTML dashboard templates for analytical work,
+plus an add-on AI analyst component that drops into any of them (or any other
+single-file dashboard). All open directly in a browser, need no build step, and
+are designed to be populated with your own data — by hand or, faster, by an AI
+assistant.
 
 | File                          | What it is                                          |
 |-------------------------------|-----------------------------------------------------|
@@ -11,6 +13,9 @@ populated with your own data — by hand or, faster, by an AI assistant.
 | `deep-dive-dashboard.html`    | Lightweight, three-tab, single-topic dashboard      |
 | `deep-dive-guide.md`          | Full usage guide for `deep-dive-dashboard.html`     |
 | `adaptive-dashboard.html`     | Domain-neutral shell whose cards, charts, lists, and searchable tables are derived from arbitrary supplied data |
+| `ai-assistant.html`           | Add-on component, not a dashboard: an in-dashboard AI analyst sidebar (deterministic query + insight engine, honest refusals, handoff packs). Opens standalone as a working self-demo; the marked block inside it pastes into any host dashboard |
+| `ai-assistant-demo.html`      | Full worked integration of the component into a synthetic case escalation tracker — the reference for what a finished integration looks like |
+| `ai-assistant-guide.md`       | Full architecture, adapter reference, behavior contract, and integration guide for the component |
 
 ## Previews
 
@@ -65,6 +70,36 @@ cannot safely normalize to an explicit Unparsed material section.
 
 When in doubt, start with the deep-dive. It is far cheaper to produce, and you
 can always escalate to the heavyweight template if the topic grows.
+
+## The AI analyst component (`ai-assistant.html`)
+
+Unlike the three templates above, `ai-assistant.html` is not a dashboard — it is
+a component you add to one. It installs a sidebar assistant that answers
+questions about the data already loaded in the host dashboard: counts, rankings,
+breakdowns, aggregates, entity lookups, comparisons, trends, and an insight pass
+("summarize this dashboard", "what's most important") computed by a
+deterministic statistical engine — no model, no network calls, works from
+`file://` on a locked-down machine.
+
+Its defining behavior is that it does not guess. Ambiguous questions get a
+clarification with concrete options; questions outside the loaded data get an
+honest refusal that names what is missing; questions needing real reasoning
+(prediction, causation, judgment) get a one-click **handoff pack** — a
+copy-ready markdown block with the data census, the relevant slice, and a
+grounding contract — for any full AI assistant. Every answer is labeled with its
+method and row count.
+
+Three ways in:
+
+1. **Try it** — open `ai-assistant.html` directly; it boots a synthetic
+   36-record self-demo.
+2. **See a real integration** — open `ai-assistant-demo.html`, a full synthetic
+   case-escalation dashboard with the component installed, section-level "Ask"
+   chips, and domain watch rules.
+3. **Integrate it** — follow `ai-assistant-guide.md`, or hand the work to an AI
+   assistant with the companion prompt in
+   [`standalone/dashboard-ai-assistant.md`](../../standalone/dashboard-ai-assistant.md)
+   plus this component file and your existing dashboard.
 
 ## How to use these templates with an AI assistant
 

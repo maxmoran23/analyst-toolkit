@@ -1,0 +1,3177 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI Analyst Component - self-demo</title>
+<style>
+/* Host-page styles only. The component carries its own styles inside the marked block. */
+:root { color-scheme: dark light; }
+body {
+  margin: 0; padding: 32px 20px 120px;
+  background: #0a0a0f; color: #f5f5f7;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  font-size: 14px; line-height: 1.55;
+}
+.host-wrap { max-width: 860px; margin: 0 auto; }
+.host-card {
+  background: rgba(255,255,255,.045); border: 1px solid rgba(255,255,255,.09);
+  border-radius: 14px; padding: 22px 24px; margin-bottom: 20px;
+}
+.host-card h1 { margin: 0 0 10px; font-size: 22px; letter-spacing: -.3px; }
+.host-card h2 { margin: 0 0 10px; font-size: 15px; }
+.host-card p { margin: 8px 0; color: #a1a1a6; }
+.host-card code {
+  font-family: "SF Mono", Menlo, Consolas, monospace; font-size: 12px;
+  background: rgba(255,255,255,.07); border-radius: 5px; padding: 2px 5px;
+  overflow-wrap: anywhere;
+}
+.host-banner {
+  display: inline-block; margin-bottom: 14px; padding: 4px 10px; border-radius: 999px;
+  border: 1px solid rgba(245,158,11,.5); color: #f59e0b;
+  font-size: 11px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase;
+}
+.host-table-wrap { max-width: 100%; overflow-x: auto; }
+table.host-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+.host-table th {
+  text-align: left; padding: 7px 9px; border-bottom: 1px solid rgba(255,255,255,.14);
+  color: #a1a1a6; font-size: 10px; letter-spacing: 1.2px; text-transform: uppercase;
+}
+.host-table td { padding: 6px 9px; border-bottom: 1px solid rgba(255,255,255,.06); }
+.host-table td.num { text-align: right; font-variant-numeric: tabular-nums; }
+@media (prefers-color-scheme: light) {
+  body { background: #faf8f6; color: #1d1d1f; }
+  .host-card { background: rgba(0,0,0,.035); border-color: rgba(0,0,0,.09); }
+  .host-card p { color: #5f5f67; }
+  .host-card code { background: rgba(0,0,0,.06); }
+  .host-table th { color: #5f5f67; border-bottom-color: rgba(0,0,0,.16); }
+  .host-table td { border-bottom-color: rgba(0,0,0,.07); }
+}
+</style>
+</head>
+<body>
+
+<!-- ================================================================== -->
+<!-- SELF-DEMO HOST (delete when integrating; keep only the component   -->
+<!-- block below). Everything from here to the BEGIN marker exists only -->
+<!-- so this file can be opened directly in a browser and tried.        -->
+<!-- ================================================================== -->
+<div class="host-wrap">
+  <div class="host-card">
+    <span class="host-banner">Synthetic demonstration data.</span>
+    <h1>AI Analyst Component - self-demo</h1>
+    <p>This file carries a generic, self-contained, in-dashboard AI analyst sidebar:
+       a deterministic intent parser, query engine, and insight engine that answer
+       questions about data already loaded in a dashboard. No network calls, no
+       dependencies, works from file://. Click the round button at the bottom right
+       to open the panel and ask about the sample records below.</p>
+    <h2>How to extract the component</h2>
+    <p>Copy everything between these two exact marker lines into the host dashboard,
+       just before its closing <code>&lt;/body&gt;</code> tag:</p>
+    <p><code>&lt;!-- ===== BEGIN AI ANALYST COMPONENT v1.0 (self-contained: style + markup + script) ===== --&gt;</code></p>
+    <p><code>&lt;!-- ===== END AI ANALYST COMPONENT ===== --&gt;</code></p>
+    <p>Then replace the demo <code>window.AIA_CONFIG</code> script block below with one
+       describing the host dashboard's own data, and delete this self-demo host section.
+       The component reads only <code>window.AIA_CONFIG</code>; nothing else in this file
+       is required.</p>
+  </div>
+  <div class="host-card" id="demo-records">
+    <h2>Sample records (36 rows, synthetic review queue)</h2>
+    <div class="host-table-wrap">
+      <table class="host-table" id="demo-records-table">
+        <thead><tr>
+          <th>Record ID</th><th>Category</th><th>Priority</th><th>Value (USD)</th>
+          <th>Opened</th><th>Owner</th><th>Status</th>
+        </tr></thead>
+        <tbody id="demo-records-body"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+/* SELF-DEMO CONFIG (delete when integrating; write your own AIA_CONFIG). */
+window.AIA_CONFIG = {
+  title: "Review Queue Demo",
+  accent: "#6366f1",
+  assistantName: "Analyst",
+  datasets: {
+    records: {
+      label: "records",
+      rows: [
+        {record_id:"REC-001",category:"Payments",priority:"High",value_usd:27500,opened:"2026-03-03",owner:"Chen",status:"Open"},
+        {record_id:"REC-002",category:"Onboarding",priority:"Low",value_usd:3200,opened:"2026-03-10",owner:"Alvarez",status:"Closed"},
+        {record_id:"REC-003",category:"Sanctions",priority:"Medium",value_usd:12400,opened:"2026-03-17",owner:"Okafor",status:"Closed"},
+        {record_id:"REC-004",category:"Payments",priority:"Medium",value_usd:8900,opened:"2026-03-24",owner:"Whitfield",status:"Closed"},
+        {record_id:"REC-005",category:"Fraud",priority:"High",value_usd:98500,opened:"2026-04-02",owner:"Chen",status:"Open"},
+        {record_id:"REC-006",category:"Payments",priority:"Low",value_usd:1500,opened:"2026-04-06",owner:"Alvarez",status:"Closed"},
+        {record_id:"REC-007",category:"Payments",priority:"Medium",value_usd:11200,opened:"2026-04-09",owner:"Chen",status:"Closed"},
+        {record_id:"REC-008",category:"Onboarding",priority:"Medium",value_usd:6700,opened:"2026-04-14",owner:"Okafor",status:"Closed"},
+        {record_id:"REC-009",category:"Sanctions",priority:"High",value_usd:31000,opened:"2026-04-20",owner:"Whitfield",status:"In review"},
+        {record_id:"REC-010",category:"Payments",priority:"Low",value_usd:null,opened:"2026-04-27",owner:"Alvarez",status:"Closed"},
+        {record_id:"REC-011",category:"Payments",priority:"Medium",value_usd:14800,opened:"2026-05-04",owner:"Chen",status:"Open"},
+        {record_id:"REC-012",category:"Fraud",priority:"Medium",value_usd:22300,opened:"2026-05-06",owner:"Okafor",status:"In review"},
+        {record_id:"REC-013",category:"Onboarding",priority:"Low",value_usd:2100,opened:"2026-05-11",owner:"Alvarez",status:"Closed"},
+        {record_id:"REC-014",category:"Payments",priority:"High",value_usd:26400,opened:"2026-05-13",owner:"Whitfield",status:"Open"},
+        {record_id:"REC-015",category:"Sanctions",priority:"Low",value_usd:4400,opened:"2026-05-18",owner:"Okafor",status:"Closed"},
+        {record_id:"REC-016",category:"Payments",priority:"Medium",value_usd:9800,opened:"2026-05-21",owner:"Chen",status:"Closed"},
+        {record_id:"REC-017",category:"Fraud",priority:"Low",value_usd:null,opened:"2026-05-27",owner:"Alvarez",status:"In review"},
+        {record_id:"REC-018",category:"Payments",priority:"Medium",value_usd:17600,opened:"2026-06-01",owner:"Chen",status:"Open"},
+        {record_id:"REC-019",category:"Onboarding",priority:"Medium",value_usd:7300,opened:"2026-06-03",owner:"Okafor",status:"In review"},
+        {record_id:"REC-020",category:"Payments",priority:"High",value_usd:41200,opened:"2026-06-05",owner:"Whitfield",status:"Open"},
+        {record_id:"REC-021",category:"Sanctions",priority:"Medium",value_usd:13500,opened:"2026-06-09",owner:"Chen",status:"Open"},
+        {record_id:"REC-022",category:"Payments",priority:"Low",value_usd:2800,opened:"2026-06-12",owner:"Alvarez",status:"Closed"},
+        {record_id:"REC-023",category:"Fraud",priority:"High",value_usd:24900,opened:"2026-06-16",owner:"Okafor",status:"In review"},
+        {record_id:"REC-024",category:"Payments",priority:"Medium",value_usd:10400,opened:"2026-06-19",owner:"Chen",status:"Closed"},
+        {record_id:"REC-025",category:"Onboarding",priority:"Low",value_usd:1900,opened:"2026-06-23",owner:"Whitfield",status:"Open"},
+        {record_id:"REC-026",category:"Payments",priority:"Medium",value_usd:15700,opened:"2026-06-26",owner:"Alvarez",status:"Open"},
+        {record_id:"REC-027",category:"Payments",priority:"High",value_usd:52800,opened:"2026-07-01",owner:"Chen",status:"Open"},
+        {record_id:"REC-028",category:"Sanctions",priority:"Medium",value_usd:12900,opened:"2026-07-03",owner:"Okafor",status:"Open"},
+        {record_id:"REC-029",category:"Payments",priority:"Low",value_usd:3600,opened:"2026-07-07",owner:"Alvarez",status:"In review"},
+        {record_id:"REC-030",category:"Fraud",priority:"Medium",value_usd:19400,opened:"2026-07-09",owner:"Chen",status:"Open"},
+        {record_id:"REC-031",category:"Onboarding",priority:"Medium",value_usd:8200,opened:"2026-07-13",owner:"Whitfield",status:"Open"},
+        {record_id:"REC-032",category:"Payments",priority:"Medium",value_usd:16300,opened:"2026-07-16",owner:"Okafor",status:"Open"},
+        {record_id:"REC-033",category:"Payments",priority:"High",value_usd:28700,opened:"2026-07-20",owner:"Chen",status:"In review"},
+        {record_id:"REC-034",category:"Sanctions",priority:"Low",value_usd:5100,opened:"2026-07-22",owner:"Alvarez",status:"Open"},
+        {record_id:"REC-035",category:"Payments",priority:"Medium",value_usd:13800,opened:"2026-07-24",owner:"Whitfield",status:"Open"},
+        {record_id:"REC-036",category:"Fraud",priority:"Medium",value_usd:21600,opened:"2026-07-28",owner:"Chen",status:"Open"}
+      ],
+      fields: {
+        record_id: { label: "record ID", type: "id" },
+        category:  { label: "category", type: "category", aliases: ["area", "domain"] },
+        priority:  { label: "priority", type: "category", order: ["Low", "Medium", "High"] },
+        value_usd: { label: "value", type: "number", unit: "USD", aliases: ["amount", "exposure"] },
+        opened:    { label: "opened date", type: "date", aliases: ["created", "raised"] },
+        owner:     { label: "owner", type: "category", aliases: ["assignee", "analyst"] },
+        status:    { label: "status", type: "category", aliases: ["state", "stage"] }
+      },
+      entityField: "record_id",
+      dateField: "opened",
+      measures: ["value_usd"],
+      dimensions: ["category", "priority", "owner", "status"]
+    }
+  },
+  glossary: {
+    "review queue": "the set of records awaiting analyst disposition",
+    "aging": "days elapsed since a record was opened"
+  },
+  watchRules: [
+    { label: "High-priority records above 25,000 USD",
+      dataset: "records", severity: "high",
+      where: { field: "priority", op: "eq", value: "High" },
+      test:  { field: "value_usd", op: "gt", value: 25000 } },
+    { label: "Open records above 40,000 USD",
+      dataset: "records", severity: "medium",
+      where: { field: "status", op: "eq", value: "Open" },
+      test:  { field: "value_usd", op: "gt", value: 40000 } }
+  ],
+  suggestedQuestions: [
+    "how many open records are there",
+    "top 5 records by value",
+    "breakdown by category",
+    "summarize this dashboard"
+  ],
+  sectionAsks: {
+    "demo-records": "Which records carry the highest value, and who owns them?"
+  }
+};
+
+/* Demo table renderer - host-page code, not part of the component. */
+(function () {
+  'use strict';
+  var body = document.getElementById('demo-records-body');
+  var rows = window.AIA_CONFIG.datasets.records.rows;
+  rows.forEach(function (r) {
+    var tr = document.createElement('tr');
+    ['record_id', 'category', 'priority', 'value_usd', 'opened', 'owner', 'status'].forEach(function (k) {
+      var td = document.createElement('td');
+      if (k === 'value_usd') {
+        td.className = 'num';
+        td.textContent = r[k] == null ? '-' : '$' + Number(r[k]).toLocaleString('en-US');
+      } else {
+        td.textContent = r[k] == null ? '-' : String(r[k]);
+      }
+      tr.appendChild(td);
+    });
+    body.appendChild(tr);
+  });
+})();
+</script>
+<!-- ================================================================== -->
+<!-- END SELF-DEMO HOST                                                 -->
+<!-- ================================================================== -->
+
+<!-- ===== BEGIN AI ANALYST COMPONENT v1.0 (self-contained: style + markup + script) ===== -->
+<style>
+/* AI Analyst component styles. Every class is aia- prefixed and every color routes
+   through an --aia-* custom property so a host dashboard can retheme on :root. */
+:root {
+  --aia-accent: #6366f1;
+  --aia-bg: rgba(16, 15, 24, .94);
+  --aia-card: rgba(255, 255, 255, .045);
+  --aia-card-border: rgba(255, 255, 255, .09);
+  --aia-border: rgba(255, 255, 255, .12);
+  --aia-text: #f5f5f7;
+  --aia-text-dim: #a2a2ab;
+  --aia-text-faint: #74747e;
+  --aia-user-bg: rgba(255, 255, 255, .08);
+  --aia-input-bg: rgba(255, 255, 255, .06);
+  --aia-chip-bg: rgba(255, 255, 255, .06);
+  --aia-ok: #4ade80;
+  --aia-warn: #f59e0b;
+  --aia-err: #ef4444;
+  --aia-shadow: 0 8px 32px rgba(0, 0, 0, .4);
+}
+@media (prefers-color-scheme: light) {
+  :root {
+    --aia-bg: rgba(250, 249, 247, .96);
+    --aia-card: rgba(0, 0, 0, .035);
+    --aia-card-border: rgba(0, 0, 0, .1);
+    --aia-border: rgba(0, 0, 0, .14);
+    --aia-text: #1d1d1f;
+    --aia-text-dim: #55555e;
+    --aia-text-faint: #83838c;
+    --aia-user-bg: rgba(0, 0, 0, .06);
+    --aia-input-bg: rgba(0, 0, 0, .045);
+    --aia-chip-bg: rgba(0, 0, 0, .05);
+    --aia-shadow: 0 8px 32px rgba(30, 30, 40, .16);
+  }
+}
+.aia-fab {
+  position: fixed; right: 18px; bottom: 18px; z-index: 9990;
+  width: 54px; height: 54px; border-radius: 50%; border: none; cursor: pointer;
+  background: linear-gradient(135deg, var(--aia-accent), rgba(0, 0, 0, .28)) var(--aia-accent);
+  color: #fff; display: flex; align-items: center; justify-content: center;
+  box-shadow: var(--aia-shadow); transition: transform .18s ease;
+}
+.aia-fab:hover { transform: scale(1.07); }
+.aia-fab svg { width: 24px; height: 24px; fill: currentColor; }
+.aia-panel {
+  position: fixed; top: 0; right: 0; height: 100%; width: min(440px, 100vw);
+  z-index: 9991; display: flex; flex-direction: column;
+  background: var(--aia-bg);
+  backdrop-filter: blur(22px); -webkit-backdrop-filter: blur(22px);
+  border-left: 1px solid var(--aia-card-border);
+  color: var(--aia-text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  font-size: 14px; line-height: 1.5;
+  /* visibility keeps the closed panel's controls out of the tab order and the
+     accessibility tree; the 0s/.26s delay hides it only after the slide-out. */
+  transform: translateX(105%); visibility: hidden;
+  transition: transform .26s ease, visibility 0s linear .26s;
+}
+.aia-panel.aia-open { transform: translateX(0); visibility: visible; transition: transform .26s ease; }
+.aia-head {
+  display: flex; align-items: center; gap: 8px; padding: 13px 14px;
+  border-bottom: 1px solid var(--aia-card-border);
+}
+.aia-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--aia-ok); flex: none; }
+.aia-dot.aia-warn { background: var(--aia-warn); }
+.aia-dot.aia-err { background: var(--aia-err); }
+.aia-name { font-weight: 700; font-size: 15px; letter-spacing: .2px; }
+.aia-census-chip {
+  font-size: 11px; color: var(--aia-text-dim); border: 1px solid var(--aia-border);
+  border-radius: 999px; padding: 2px 9px; white-space: nowrap;
+}
+.aia-provider-pill {
+  font-size: 11px; color: var(--aia-accent); border: 1px solid var(--aia-accent);
+  border-radius: 999px; padding: 2px 9px; white-space: nowrap;
+}
+.aia-spacer { flex: 1; }
+.aia-pill {
+  font-size: 11px; padding: 4px 11px; border-radius: 999px; cursor: pointer;
+  border: 1px solid var(--aia-border); background: transparent; color: var(--aia-text-dim);
+  font-family: inherit;
+}
+.aia-pill:hover { color: var(--aia-text); border-color: var(--aia-text-dim); }
+.aia-thread {
+  flex: 1; overflow-y: auto; padding: 14px;
+  display: flex; flex-direction: column; gap: 11px;
+}
+.aia-user {
+  align-self: flex-end; max-width: 90%;
+  background: var(--aia-user-bg); border: 1px solid var(--aia-card-border);
+  border-radius: 13px 13px 4px 13px; padding: 8px 12px; font-size: 13.5px;
+  overflow-wrap: anywhere;
+}
+.aia-bot { align-self: flex-start; width: 100%; }
+.aia-card {
+  background: var(--aia-card); border: 1px solid var(--aia-card-border);
+  border-radius: 13px; padding: 12px 14px;
+}
+.aia-headline { font-weight: 650; font-size: 14px; margin-bottom: 5px; overflow-wrap: anywhere; }
+.aia-card ul { margin: 4px 0 4px 18px; padding: 0; }
+.aia-card li { margin: 3px 0; color: var(--aia-text-dim); font-size: 13px; overflow-wrap: anywhere; }
+.aia-tablewrap {
+  max-height: 260px; overflow: auto; margin: 8px 0 4px;
+  border: 1px solid var(--aia-card-border); border-radius: 8px;
+}
+.aia-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.aia-table th {
+  position: sticky; top: 0; text-align: left; padding: 6px 9px;
+  background: var(--aia-bg); color: var(--aia-text-dim);
+  font-size: 10px; letter-spacing: 1px; text-transform: uppercase;
+  border-bottom: 1px solid var(--aia-border); white-space: nowrap;
+}
+.aia-table td {
+  padding: 5px 9px; border-bottom: 1px solid var(--aia-card-border);
+  color: var(--aia-text); overflow-wrap: anywhere;
+}
+.aia-table td.aia-num, .aia-table th.aia-num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.aia-trace, .aia-method {
+  font-size: 11px; color: var(--aia-text-faint); margin-top: 6px; overflow-wrap: anywhere;
+}
+.aia-actions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.aia-btn {
+  font-size: 11.5px; padding: 5px 11px; border-radius: 8px; cursor: pointer;
+  border: 1px solid var(--aia-border); background: var(--aia-chip-bg);
+  color: var(--aia-text); font-family: inherit;
+}
+.aia-btn:hover { border-color: var(--aia-accent); }
+.aia-btn:disabled { opacity: .55; cursor: default; }
+.aia-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.aia-chip {
+  font-size: 11.5px; padding: 4px 10px; border-radius: 999px; cursor: pointer;
+  border: 1px dashed var(--aia-border); background: transparent;
+  color: var(--aia-text-dim); font-family: inherit; text-align: left;
+}
+.aia-chip:hover { color: var(--aia-text); border-color: var(--aia-accent); }
+.aia-flag {
+  display: inline-block; font-size: 10px; padding: 1px 7px; border-radius: 999px;
+  border: 1px solid var(--aia-warn); color: var(--aia-warn); margin-left: 6px;
+  vertical-align: middle;
+}
+.aia-inputrow {
+  display: flex; gap: 8px; padding: 11px 12px;
+  border-top: 1px solid var(--aia-card-border);
+}
+.aia-inputrow textarea {
+  flex: 1; resize: none; height: 44px; padding: 10px 12px;
+  background: var(--aia-input-bg); border: 1px solid var(--aia-border);
+  border-radius: 11px; color: var(--aia-text); font-family: inherit; font-size: 13.5px;
+}
+.aia-inputrow textarea:focus { outline: none; border-color: var(--aia-accent); }
+.aia-send {
+  width: 44px; height: 44px; border-radius: 11px; border: none; cursor: pointer;
+  background: var(--aia-accent); color: #fff; display: flex;
+  align-items: center; justify-content: center; flex: none;
+}
+.aia-send:disabled { opacity: .55; cursor: default; }
+.aia-send svg { width: 18px; height: 18px; fill: currentColor; }
+.aia-think { display: flex; align-items: center; gap: 6px; padding: 4px 2px; }
+.aia-think span {
+  width: 6px; height: 6px; border-radius: 50%; background: var(--aia-accent);
+  animation: aiaPulse 1s infinite;
+}
+.aia-think span:nth-child(2) { animation-delay: .2s; }
+.aia-think span:nth-child(3) { animation-delay: .4s; }
+@keyframes aiaPulse {
+  0%, 100% { opacity: .25; transform: scale(.85); }
+  50% { opacity: 1; transform: scale(1.1); }
+}
+.aia-ask-chip {
+  font-size: 11px; padding: 2px 9px; border-radius: 999px; cursor: pointer;
+  border: 1px solid var(--aia-accent); background: transparent; color: var(--aia-accent);
+  font-family: inherit; margin-left: 8px; vertical-align: middle;
+}
+.aia-ask-chip:hover { background: var(--aia-chip-bg); }
+@media (max-width: 700px) {
+  .aia-panel { width: 100vw; border-left: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .aia-panel, .aia-fab { transition: none; }
+  .aia-think span { animation: none; opacity: .8; }
+}
+</style>
+<button class="aia-fab" id="aia-fab" type="button" aria-label="Open the analyst panel">
+  <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+    <path d="M12 1.8l2.3 7.9 7.9 2.3-7.9 2.3-2.3 7.9-2.3-7.9-7.9-2.3 7.9-2.3z"></path>
+  </svg>
+</button>
+<section class="aia-panel" id="aia-panel" role="dialog" aria-label="AI analyst panel" aria-hidden="true">
+  <div class="aia-head">
+    <span class="aia-dot" id="aia-dot"></span>
+    <span class="aia-name" id="aia-name">Analyst</span>
+    <span class="aia-census-chip" id="aia-census-chip"></span>
+    <span class="aia-provider-pill" id="aia-provider-pill" hidden></span>
+    <span class="aia-spacer"></span>
+    <button class="aia-pill" id="aia-clear" type="button" title="Clear the conversation">Clear</button>
+    <button class="aia-pill" id="aia-close" type="button" aria-label="Close the analyst panel">Close</button>
+  </div>
+  <div class="aia-thread" id="aia-thread"></div>
+  <div class="aia-inputrow">
+    <textarea id="aia-input" aria-label="Ask the analyst a question" placeholder="Ask about the data on this dashboard"></textarea>
+    <button class="aia-send" id="aia-send" type="button" aria-label="Send question">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M3 11l17-8-6.5 17-2.8-6.9z"></path>
+      </svg>
+    </button>
+  </div>
+</section>
+<script>
+(function () {
+'use strict';
+/* AI Analyst v1.0 - deterministic in-dashboard analyst.
+   Lane 1: intent parser + query engine. Lane 2: insight engine.
+   Lane 3: handoff pack + optional registered provider. Zero network calls. */
+
+var VERSION = '1.0';
+var STORAGE_PREFIX = 'aia_state_v1::';
+var LIST_CAP = 50;
+var SLICE_CAP = 200;
+var THREAD_CAP = 40;
+var PROVIDER_TIMEOUT_MS = 60000;
+
+/* ---- Phrasebook -------------------------------------------------------
+   WHY: every user-facing string lives here so all deployments speak in the
+   same senior-analyst register and copy edits happen in one place. */
+var PHRASE = {
+  emptyHeadline: '{name} - deterministic Q&A over this dashboard',
+  cap1: 'Counts, totals, averages, rankings and breakdowns over the loaded data',
+  cap2: 'Filters by category, value range, date range and quoted text',
+  cap3: 'Ranked insights on demand - ask to summarize this dashboard',
+  cap4: 'Handoff packs that carry the data and your question to a full AI assistant',
+  censusLine: 'Loaded: {census}',
+  tryOne: 'Suggested questions:',
+  clarifyTwoWays: 'I can answer this two ways - pick one:',
+  clarifyHeadline: 'I did not want to guess.',
+  clarifyUnderstood: 'Here is what I understood: {trace}.',
+  clarifyNothing: 'I could not map that question to the loaded data.',
+  clarifyUnplaced: 'What I could not place: "{token}".',
+  unknownTerm: 'I do not see anything called "{token}" in the data on this dashboard.',
+  fieldsAvailable: 'Available fields: {fields}.',
+  refuseOutOfData: 'That is not in the data on this dashboard. Loaded here: {census}. If you want, I can package the relevant data and your question for a full AI assistant - use "Copy handoff pack".',
+  refuseJudgment: 'That calls for reasoning beyond the loaded data, and I do not fake that. I can give you the deterministic read ({offer}), or package a handoff pack for a full model.',
+  refuseOffer: 'try "summarize this dashboard"',
+  assumePrefix: 'Assuming {assumption} - say "no" or pick an alternative below if that is wrong.',
+  emptyResult: 'No rows match ({trace}). Nearest non-empty cut: {suggestion}.',
+  emptyResultNone: 'No rows match ({trace}).',
+  bootError: 'The assistant is installed but its data adapter has problems: {errors}',
+  bootWarning: 'Adapter warnings: {warnings}',
+  disambigHeadline: 'More than one match - pick one:',
+  narrowDown: 'That matches {n} entries. Narrow it with more of the identifier.',
+  noEntity: 'No entry matches "{ref}" on {field}.',
+  whichDataset: 'Which dataset do you mean?',
+  methodEngine: 'deterministic engine',
+  methodProvider: 'provider: {label}',
+  methodProviderTimeout: 'provider timeout - deterministic engine answered',
+  methodProviderError: 'provider error - deterministic engine answered',
+  methodScanned: 'scanned {n} rows',
+  methodMatched: 'matched {n}',
+  nullNote: '{field}: {n} null of {total} scanned',
+  understood: 'understood: {trace}',
+  inherited: '(inherited from previous question)',
+  actCsv: 'Download CSV',
+  actMd: 'Copy as markdown',
+  actHandoff: 'Copy handoff pack',
+  copied: 'Copied.',
+  copyFailed: 'Copy failed - clipboard is unavailable in this browser context.',
+  listCapNote: 'Showing {shown} of {total} matching rows. Download the CSV for the full set.',
+  countHeadline: '{n} {label}',
+  countFilteredHeadline: '{n} {label} match',
+  aggHeadline: '{fn} {measure}: {value}',
+  rankHeadline: '{dir} {n} {label} by {measure}',
+  rankByCountHeadline: '{dir} {n} {dim} groups by count',
+  distHeadline: '{label} by {dim}',
+  listHeadline: '{n} matching {label}',
+  detailHeadline: '{id}',
+  compareHeadline: '{a} vs {b}',
+  trendHeadline: '{label} over time ({unit} buckets)',
+  trendRising: 'Direction: rising - last-third mean {b} vs first-third mean {a} ({delta}).',
+  trendFalling: 'Direction: falling - last-third mean {b} vs first-third mean {a} ({delta}).',
+  trendFlat: 'Direction: flat - last-third mean {b} vs first-third mean {a} (change under 15% threshold).',
+  trendShort: 'Not enough buckets for a direction verdict (need 6 or more).',
+  noProjection: 'No projection - deterministic engine reports observed change only.',
+  recencyHeadline: '{dir} {n} {label} by {field}',
+  summarizeHeadline: 'Dashboard read: {census}',
+  importantHeadline: 'Most important right now',
+  anomaliesHeadline: 'Anomalies and outliers',
+  alsoNotable: 'Also notable',
+  caveatsTitle: 'Data-quality caveats',
+  noInsights: 'Nothing crosses the salience bar on the loaded data.',
+  helpHeadline: 'What I can do',
+  helpData: 'Data loaded: {census}',
+  exportNothing: 'Nothing to export yet - ask a data question first.',
+  unverified: 'unverified',
+  watchRuleHit: '{label}: {n} of {total} rows hit',
+  noDateField: 'No date field is declared for {label}, so time-based questions are unavailable there.',
+  noMeasure: 'No numeric measure is declared for {label}, so aggregation is unavailable there.',
+  packContext: 'This pack was generated inside the dashboard "{title}" by the AI Analyst component v{version}, a deterministic in-dashboard assistant. It contains the dataset census, the question as asked, and the relevant data slice so a full AI assistant can answer with grounding.',
+  packContract1: 'Ground every number you state in the data slice or census above; cite the rows you used.',
+  packContract2: 'Distinguish computed fact from interpretation, and state every assumption explicitly.',
+  packContract3: 'Do not fabricate values, rows, or trends that are not present in the slice.',
+  packContract4: 'The slice may be partial - a row cap of {cap} applies and truncation is stated where it occurred.',
+  packContract5: 'Answer in the register of a senior analyst: direct, dense, no filler, no emojis.',
+  chipTrend: 'trend over time',
+  chipBreakdown: 'breakdown by {dim}',
+  chipDetail: 'details on {id}',
+  chipSummarize: 'summarize this dashboard',
+  thinking: 'working',
+  internalError: 'Internal error while answering: {msg}. Nothing was computed.',
+  anchorNow: 'window anchored to the current date ({date})',
+  anchorData: 'window anchored to the newest data row ({date})',
+  nDefaulted: 'n defaulted to {n}',
+  aggComputedOver: 'Computed over {n} non-null values of {measure} across {rows} matching rows.',
+  aggSpread: 'Median {median}; range {min} to {max}.',
+  aggAllNull: 'All {n} matching rows are null on {measure} - there is nothing to aggregate.',
+  distLeads: '{group} leads with {share} of matching rows.',
+  colCount: 'count',
+  colShare: 'share',
+  colField: 'field',
+  colValue: 'value',
+  colMetric: 'metric',
+  colBar: 'bar',
+  colAvgOf: 'avg {measure}',
+  rowTotalOf: 'total {measure}',
+  dirTop: 'Top',
+  dirBottom: 'Bottom',
+  dirOldest: 'Oldest',
+  dirNewest: 'Newest',
+  rowSingular: 'row',
+  rowPlural: 'rows',
+  nearestCutFilter: 'drop the {field} filter ({rows})',
+  nearestCutTime: 'drop the time window ({rows})',
+  censusRowsChip: '{n} rows',
+  askChip: 'Ask',
+  askChipAria: 'Ask the analyst: {q}',
+  glossTerm: '{term}: {def}',
+  trendZeroBaseRising: 'Direction: rising from a zero baseline - first-third mean 0, last-third mean {b} (absolute change +{b}).',
+  trendZeroBaseFlat: 'Direction: flat at zero - first-third and last-third means are both 0.',
+  trendNullThird: 'No direction verdict - a comparison third has no non-null values.',
+  compareNeedsTwo: 'Compare needs two named values from the same field, e.g. "compare {a} vs {b}".',
+  aggCategorical: '{field} is a category, not a numeric measure, so I will not aggregate it unasked. Pick one:',
+  competingReadings: 'That question reads more than one way, and I do not pick silently. Pick one:',
+  undeclaredField: 'The rows carry a field named "{token}", but it is not declared to the assistant, so I cannot query it. Declare it in AIA_CONFIG fields to enable it.',
+  dateParseNote: 'dates parse as YYYY-MM-DD or M/D/YYYY (UTC)',
+  watchEvidenceShare: '{share} of {label} hit this rule{ids}',
+  watchEvidenceIds: '; e.g. {ids}',
+  watchEvidenceRule: 'rule: {rule}',
+  watchMethod: 'adapter watch rule ({sev} severity)',
+  concHeadline: '{group} accounts for {share} of {label} by {dim}',
+  concEvidence: 'top 3 {dim} groups hold {share} of {total} rows ({k} groups)',
+  concMethod: 'top-1 share vs uniform share across {k} groups',
+  concMeasureHeadline: '{group} holds {share} of total {measure} in {label} by {dim}',
+  concMeasureEvidence: 'top 3 {dim} groups hold {share} of the {total} total {measure}',
+  concMeasureMethod: 'top-1 {measure} share vs uniform share across {k} groups',
+  imbHeadline: '{group} is nearly absent in {label} by {dim}',
+  imbEvidence: '{n} rows ({actual}) vs {expected} expected if uniform',
+  imbMethod: 'actual share under 20% of uniform expectation',
+  imbEmptyHeadline: 'No {label} in the {extreme} bucket of {dim}',
+  imbEmptyEvidence: 'declared order: {order}; the {extreme} extreme is empty',
+  imbEmptyMethod: 'empty extreme bucket on a declared ordinal',
+  outlierHeadline: '{n} {word} on {measure} in {label}',
+  outlierOne: 'outlier',
+  outlierMany: 'outliers',
+  outlierItemZ: '{id} at {value} (z={z})',
+  outlierItem: '{id} at {value}',
+  outlierRowWord: 'row',
+  outlierZMethod: 'z-score vs mean {mu}, sd {sd}, n={n}',
+  outlierIqrMethod: 'IQR fence (1.5xIQR), n={n} (small sample)',
+  trendInsightHeadline: '{label} intake is {dir} ({delta} across the span)',
+  trendMeasureInsightHeadline: 'average {measure} in {label} is {dir} ({delta} across the span)',
+  trendInsightEvidence: 'mean {a} per {unit} in the first third vs {b} in the last third',
+  trendInsightMethod: 'last-third vs first-third bucket means, {n} {unit} buckets',
+  recencyInsightHeadline: 'Newest {label} entry is {age} days old',
+  recencyInsightEvidence: 'span {span}; {n} rows sit in the oldest decile (before {date})',
+  recencyInsightMethod: 'newest-row age vs today plus date-span deciles',
+  nullRateHeadline: '{field} is null on {rate} of {label}',
+  nullRateEvidence: '{n} of {total} rows carry no {field}; aggregates on this field exclude them',
+  nullRateMethod: 'null-rate census',
+  dupHeadline: '{n} duplicate {field} values in {label}',
+  dupEvidence: 'e.g. {ids}; entity lookups may be ambiguous',
+  dupMethod: 'entity-id uniqueness check',
+  mixedTypeHeadline: '{field} carries {n} values that do not parse as {type} in {label}',
+  mixedTypeEvidence: '{n} of {nonNull} non-null values fail to parse as {type}; computations on this field exclude them',
+  mixedTypeMethod: 'type-conformance census on declared number and date fields',
+  nullAnnotate: 'caveat: {measure} is null on {rate} of rows; this reading excludes them',
+  insightFormat: '{headline} - {evidence} [{method}; salience {sal}]'
+};
+function ph(key, vars) {
+  var s = PHRASE[key] != null ? PHRASE[key] : key;
+  if (vars) {
+    Object.keys(vars).forEach(function (k) {
+      s = s.split('{' + k + '}').join(String(vars[k]));
+    });
+  }
+  return s;
+}
+
+/* ---- Small utilities --------------------------------------------------- */
+function el(tag, cls, text) {
+  var n = document.createElement(tag);
+  if (cls) n.className = cls;
+  if (text != null) n.textContent = text;
+  return n;
+}
+function byId(id) { return document.getElementById(id); }
+function isObj(v) { return v !== null && typeof v === 'object' && !Array.isArray(v); }
+function fmtInt(n) { return Number(n).toLocaleString('en-US'); }
+function fmtNum(v) {
+  if (v == null || isNaN(v)) return '-';
+  var n = Number(v);
+  if (Math.abs(n - Math.round(n)) < 1e-9) return fmtInt(Math.round(n));
+  return n.toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 2 });
+}
+function fmtPct(share) { return (share * 100).toFixed(1) + '%'; }
+function rowsText(n) { return fmtInt(n) + ' ' + ph(n === 1 ? 'rowSingular' : 'rowPlural'); }
+function sharePcts(counts) {
+  /* Largest-remainder rounding in tenths of a percent so a displayed share
+     column sums to exactly 100.0 (acceptance bound: 100.0 +/- 0.1). */
+  var total = counts.reduce(function (a, b) { return a + b; }, 0);
+  if (!total) return counts.map(function () { return 0; });
+  var raw = counts.map(function (c) { return c / total * 1000; });
+  var tenths = raw.map(function (v) { return Math.floor(v); });
+  var used = tenths.reduce(function (a, b) { return a + b; }, 0);
+  var order = raw.map(function (v, i) { return { i: i, frac: v - Math.floor(v) }; })
+    .sort(function (a, b) { return (b.frac - a.frac) || (a.i - b.i); });
+  for (var j = 0; j < 1000 - used; j++) tenths[order[j % order.length].i]++;
+  return tenths.map(function (t) { return t / 10; });
+}
+var MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+function pad2(n) { return (n < 10 ? '0' : '') + n; }
+function fmtDateISO(ms) {
+  var d = new Date(ms);
+  return d.getUTCFullYear() + '-' + pad2(d.getUTCMonth() + 1) + '-' + pad2(d.getUTCDate());
+}
+function fmtDateProse(ms) {
+  var d = new Date(ms);
+  return MONTHS[d.getUTCMonth()] + ' ' + pad2(d.getUTCDate()) + ', ' + d.getUTCFullYear();
+}
+function parseDateVal(v) {
+  /* Only two explicit formats, both parsed as UTC: ISO YYYY-MM-DD and M/D/YYYY.
+     No Date.parse fallback - it is engine- and timezone-dependent, which would
+     break "same data -> same output". Anything else counts as a date null. */
+  if (v == null || v === '') return null;
+  if (typeof v === 'number') return isFinite(v) ? v : null;
+  var s = String(v).trim();
+  var m = s.match(/^(\d{4})-(\d{2})-(\d{2})/);
+  if (m) return Date.UTC(+m[1], +m[2] - 1, +m[3]);
+  m = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+  if (m) return Date.UTC(+m[3], +m[1] - 1, +m[2]);
+  return null;
+}
+function mean(a) { return a.length ? a.reduce(function (x, y) { return x + y; }, 0) / a.length : null; }
+function median(a) {
+  if (!a.length) return null;
+  var s = a.slice().sort(function (x, y) { return x - y; });
+  var mid = Math.floor(s.length / 2);
+  return s.length % 2 ? s[mid] : (s[mid - 1] + s[mid]) / 2;
+}
+function quantile(sorted, q) {
+  if (!sorted.length) return null;
+  var pos = (sorted.length - 1) * q;
+  var lo = Math.floor(pos), hi = Math.ceil(pos);
+  return sorted[lo] + (sorted[hi] - sorted[lo]) * (pos - lo);
+}
+function stdev(a, m) {
+  if (a.length < 2) return 0;
+  var v = a.reduce(function (acc, x) { return acc + (x - m) * (x - m); }, 0) / (a.length - 1);
+  return Math.sqrt(v);
+}
+function csvCell(v) {
+  var s = v == null ? '' : String(v);
+  if (/[",\n\r]/.test(s)) s = '"' + s.split('"').join('""') + '"';
+  return s;
+}
+function downloadText(name, text, mime) {
+  var blob = new Blob([text], { type: mime || 'text/plain;charset=utf-8' });
+  var url = URL.createObjectURL(blob);
+  var a = el('a');
+  a.href = url;
+  a.download = name;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(function () { URL.revokeObjectURL(url); }, 2000);
+}
+function copyText(text) {
+  if (navigator.clipboard && navigator.clipboard.writeText && window.isSecureContext) {
+    return navigator.clipboard.writeText(text).then(function () { return true; }, function () { return copyLegacy(text); });
+  }
+  return Promise.resolve(copyLegacy(text));
+}
+function copyLegacy(text) {
+  var ta = el('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed';
+  ta.style.left = '-9999px';
+  document.body.appendChild(ta);
+  ta.select();
+  var ok = false;
+  try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+  document.body.removeChild(ta);
+  return ok;
+}
+
+/* ---- Schema inference + config validation ------------------------------
+   WHY: integrations fail quietly without a boot-time contract check; errors
+   surface in the panel so a broken adapter is never mistaken for a dumb bot. */
+function inferSchema(rows) {
+  var fields = {};
+  if (!Array.isArray(rows) || !rows.length) return fields;
+  var keys = {};
+  rows.forEach(function (r) { if (isObj(r)) Object.keys(r).forEach(function (k) { keys[k] = true; }); });
+  Object.keys(keys).forEach(function (k) {
+    var vals = [], nonNull = 0;
+    rows.forEach(function (r) {
+      var v = isObj(r) ? r[k] : null;
+      if (v != null && v !== '') { vals.push(v); nonNull++; }
+    });
+    var label = k.replace(/[_-]+/g, ' ').toLowerCase();
+    if (!nonNull) { fields[k] = { label: label, type: 'text' }; return; }
+    var nums = 0, dates = 0, bools = 0, distinct = {}, idish = 0;
+    vals.forEach(function (v) {
+      if (typeof v === 'boolean') bools++;
+      else if (typeof v === 'number' || (/^-?\d+(\.\d+)?$/.test(String(v)))) nums++;
+      else if (parseDateVal(v) !== null && /\d{4}/.test(String(v))) dates++;
+      if (typeof v === 'string' && /^[A-Za-z]{2,6}[-_]?\d{2,}$/.test(v)) idish++;
+      distinct[String(v)] = true;
+    });
+    var dCount = Object.keys(distinct).length;
+    var type;
+    if (bools === vals.length) type = 'boolean';
+    else if (dates === vals.length) type = 'date';
+    else if (nums === vals.length) type = 'number';
+    else if (dCount <= 20 || dCount <= Math.max(2, Math.round(rows.length * 0.3))) type = 'category';
+    else if (idish > vals.length * 0.8 || (dCount === vals.length && String(vals[0]).length <= 24)) type = 'id';
+    else type = 'text';
+    fields[k] = { label: label, type: type };
+  });
+  return fields;
+}
+
+function validateConfig() {
+  var errors = [], warnings = [];
+  var cfg = window.AIA_CONFIG;
+  if (!isObj(cfg)) return { ok: false, errors: ['window.AIA_CONFIG is missing or not an object'], warnings: [] };
+  if (!cfg.title || typeof cfg.title !== 'string') errors.push('title is required');
+  if (!isObj(cfg.datasets) || !Object.keys(cfg.datasets).length) {
+    errors.push('datasets is required and must contain at least one dataset');
+    return { ok: false, errors: errors, warnings: warnings };
+  }
+  Object.keys(cfg.datasets).forEach(function (key) {
+    var ds = cfg.datasets[key];
+    var tag = 'dataset "' + key + '": ';
+    if (!isObj(ds)) { errors.push(tag + 'must be an object'); return; }
+    if (!Array.isArray(ds.rows) || !ds.rows.length) { errors.push(tag + 'rows must be a non-empty array'); return; }
+    if (!ds.rows.every(isObj)) { errors.push(tag + 'rows must be an array of plain objects'); return; }
+    if (!isObj(ds.fields) || !Object.keys(ds.fields).length) { errors.push(tag + 'fields map is required'); return; }
+    var rowKeys = {};
+    ds.rows.forEach(function (r) { Object.keys(r).forEach(function (k) { rowKeys[k] = true; }); });
+    var aliasSeen = {};
+    Object.keys(ds.fields).forEach(function (f) {
+      var spec = ds.fields[f] || {};
+      var present = 0;
+      ds.rows.forEach(function (r) { if (Object.prototype.hasOwnProperty.call(r, f)) present++; });
+      if (present < ds.rows.length * 0.2) errors.push(tag + 'declared field "' + f + '" is absent from more than 80% of rows');
+      var names = [f, spec.label].concat(spec.aliases || []);
+      names.forEach(function (nm) {
+        if (!nm) return;
+        var low = String(nm).toLowerCase();
+        if (aliasSeen[low] && aliasSeen[low] !== f) errors.push(tag + 'alias "' + nm + '" is claimed by both "' + aliasSeen[low] + '" and "' + f + '"');
+        aliasSeen[low] = f;
+      });
+    });
+    (ds.measures || []).forEach(function (m) {
+      if (!ds.fields[m]) errors.push(tag + 'measure "' + m + '" is not a declared field');
+    });
+    (ds.dimensions || []).forEach(function (d) {
+      if (!ds.fields[d]) errors.push(tag + 'dimension "' + d + '" is not a declared field');
+    });
+    if (ds.entityField && !ds.fields[ds.entityField]) errors.push(tag + 'entityField "' + ds.entityField + '" is not a declared field');
+    if (ds.dateField && !ds.fields[ds.dateField]) errors.push(tag + 'dateField "' + ds.dateField + '" is not a declared field');
+    if (!ds.entityField) warnings.push(tag + 'no entityField - entity detail lookups are disabled');
+    if (!ds.dateField) warnings.push(tag + 'no dateField - trends and recency are disabled');
+    var undeclared = Object.keys(rowKeys).filter(function (k) { return !ds.fields[k]; });
+    if (undeclared.length) warnings.push(tag + 'fields present in rows but undeclared: ' + undeclared.join(', '));
+  });
+  (Array.isArray(cfg.watchRules) ? cfg.watchRules : []).forEach(function (r, i) {
+    if (!isObj(r) || !r.label || !r.dataset || !cfg.datasets[r.dataset] || !isObj(r.test)) {
+      warnings.push('watchRules[' + i + '] is malformed or references a missing dataset - it will be skipped');
+    }
+  });
+  if (!Array.isArray(cfg.suggestedQuestions) || !cfg.suggestedQuestions.length) warnings.push('no suggestedQuestions - the empty state will show capabilities only');
+  return { ok: !errors.length, errors: errors, warnings: warnings };
+}
+/* ---- Runtime state ------------------------------------------------------ */
+var CFG = null;
+var VAL = { ok: false, errors: [], warnings: [] };
+var VOCAB = null;
+var PROVIDER = null;
+var S = { open: false, busy: false, entries: [], lastParse: null, lastResult: null, lastQuestion: null, storageKey: null, booted: false };
+
+function dsKeys() { return Object.keys(CFG.datasets); }
+function ds(key) { return CFG.datasets[key]; }
+function fieldSpec(dsKey, f) { return (ds(dsKey).fields || {})[f] || {}; }
+function fieldLabel(dsKey, f) { return fieldSpec(dsKey, f).label || f; }
+
+/* Per-dataset derived metadata, computed once per boot. */
+var META = {};
+function buildMeta() {
+  META = {};
+  dsKeys().forEach(function (k) {
+    var d = ds(k);
+    var m = { values: {}, nums: {}, dates: [], nulls: {}, entityVals: [], undeclared: [] };
+    var rowKeys = {};
+    d.rows.forEach(function (r) { Object.keys(r).forEach(function (kk) { rowKeys[kk] = true; }); });
+    m.undeclared = Object.keys(rowKeys).filter(function (kk) { return !d.fields[kk]; });
+    Object.keys(d.fields).forEach(function (f) {
+      var t = d.fields[f].type;
+      var nulls = 0;
+      if (t === 'category' || t === 'boolean') {
+        var seen = {};
+        d.rows.forEach(function (r) {
+          if (r[f] == null || r[f] === '') { nulls++; return; }
+          seen[String(r[f])] = true;
+        });
+        m.values[f] = Object.keys(seen);
+      } else if (t === 'number') {
+        var arr = [];
+        d.rows.forEach(function (r) {
+          if (r[f] == null || r[f] === '' || isNaN(Number(r[f]))) { nulls++; return; }
+          arr.push(Number(r[f]));
+        });
+        m.nums[f] = arr;
+      } else {
+        d.rows.forEach(function (r) { if (r[f] == null || r[f] === '') nulls++; });
+      }
+      m.nulls[f] = nulls;
+    });
+    if (d.dateField) {
+      d.rows.forEach(function (r) {
+        var t = parseDateVal(r[d.dateField]);
+        if (t !== null) m.dates.push(t);
+      });
+      m.dates.sort(function (a, b) { return a - b; });
+    }
+    if (d.entityField) {
+      d.rows.forEach(function (r) { if (r[d.entityField] != null) m.entityVals.push(String(r[d.entityField])); });
+    }
+    META[k] = m;
+  });
+}
+function dsSpan(k) {
+  var m = META[k];
+  if (!m || !m.dates.length) return '';
+  return fmtDateProse(m.dates[0]) + ' - ' + fmtDateProse(m.dates[m.dates.length - 1]);
+}
+function censusText() {
+  return dsKeys().map(function (k) {
+    var d = ds(k);
+    var span = dsSpan(k);
+    return fmtInt(d.rows.length) + ' ' + (d.label || k) + (span ? ' (' + span + ')' : '');
+  }).join('; ');
+}
+function totalRows() {
+  return dsKeys().reduce(function (n, k) { return n + ds(k).rows.length; }, 0);
+}
+
+/* ---- Vocabularies -------------------------------------------------------
+   WHY: the parser is lexicon + schema driven; everything it can recognize is
+   enumerated here so unmatched tokens can be reported by name, never guessed. */
+var STOPWORDS = {};
+('a an the of in on at to for from with and or are is was were be been do does did done ' +
+ 'i me my we our you your it its this that these those there here has have had ' +
+ 'what who whom when how many much can could would will shall should may might ' +
+ 'tell give show me us out about all any some right now currently please ok okay ' +
+ 'get got make made take look see across between among into onto than then s t re ' +
+ 'as if so but not no yes just really very more up down again same each other ' +
+ 'dashboard rows row items item entries entry ones only stuff')
+  .split(' ').forEach(function (w) { STOPWORDS[w] = true; });
+
+var OP_DEFS = [
+  ['how many', 'count'], ['number of', 'count'], ['count of', 'count'], ['count', 'count'],
+  ['total', 'aggregate', 'sum'], ['sum of', 'aggregate', 'sum'], ['sum', 'aggregate', 'sum'],
+  ['average', 'aggregate', 'avg'], ['avg', 'aggregate', 'avg'], ['mean', 'aggregate', 'avg'],
+  ['median', 'aggregate', 'median'],
+  ['minimum', 'aggregate', 'min'], ['min', 'aggregate', 'min'],
+  ['maximum', 'aggregate', 'max'], ['max', 'aggregate', 'max'],
+  ['top', 'rank', 'top'], ['highest', 'rank', 'top'], ['most', 'rank', 'top'], ['largest', 'rank', 'top'],
+  ['biggest', 'rank', 'top'], ['best', 'rank', 'top'],
+  ['bottom', 'rank', 'bottom'], ['lowest', 'rank', 'bottom'], ['least', 'rank', 'bottom'],
+  ['smallest', 'rank', 'bottom'], ['worst', 'rank', 'bottom'],
+  ['longest', 'rank', 'top'], ['shortest', 'rank', 'bottom'],
+  ['breakdown', 'distribution'], ['distribution', 'distribution'], ['split', 'distribution'],
+  ['group', 'distribution'], ['grouped', 'distribution'], ['per', 'by'], ['by', 'by'],
+  ['share', 'distribution'], ['percent', 'distribution'], ['percentage', 'distribution'],
+  ['proportion', 'distribution'], ['mix', 'distribution'],
+  ['list', 'list'], ['show me', 'list'], ['show', 'list'], ['which', 'list'], ['what are', 'list'],
+  ['find', 'list'], ['filter', 'list'], ['give me', 'list'],
+  ['details on', 'detail'], ['detail on', 'detail'], ['details', 'detail'], ['tell me about', 'detail'],
+  ['info on', 'detail'], ['lookup', 'detail'], ['look up', 'detail'], ['what is', 'detail'],
+  ['compare', 'compare'], ['vs', 'compare'], ['versus', 'compare'], ['difference between', 'compare'],
+  ['compared to', 'compare'],
+  ['trend', 'trend'], ['over time', 'trend'], ['by month', 'trend', 'month'], ['by week', 'trend', 'week'],
+  ['by day', 'trend', 'day'], ['getting worse', 'trend'], ['getting better', 'trend'],
+  ['increasing', 'trend'], ['decreasing', 'trend'], ['trajectory', 'trend'],
+  ['most recent', 'recency', 'new'], ['recent', 'recency', 'new'], ['latest', 'recency', 'new'],
+  ['newest', 'recency', 'new'], ['oldest', 'recency', 'old'], ['stale', 'recency', 'old'],
+  ['summarize', 'insight', 'summary'], ['summary', 'insight', 'summary'], ['overview', 'insight', 'summary'],
+  ['most important', 'insight', 'important'], ['matters most', 'insight', 'important'],
+  ['what matters', 'insight', 'important'], ['key takeaway', 'insight', 'important'],
+  ['key takeaways', 'insight', 'important'], ['headline', 'insight', 'important'],
+  ['what should i look at', 'insight', 'important'],
+  ['notable', 'insight', 'anomalies'], ['anomalies', 'insight', 'anomalies'], ['anomaly', 'insight', 'anomalies'],
+  ['outliers', 'insight', 'anomalies'], ['outlier', 'insight', 'anomalies'], ['stand out', 'insight', 'anomalies'],
+  ['stands out', 'insight', 'anomalies'], ['insights', 'insight', 'summary'],
+  ['what can you do', 'meta'], ['help', 'meta'], ['what data do you have', 'meta'], ['capabilities', 'meta'],
+  ['export', 'export'], ['csv', 'export', 'csv'], ['download', 'export', 'csv'],
+  ['handoff', 'export', 'handoff'], ['take this to', 'export', 'handoff'], ['markdown', 'export', 'md'],
+  ['last', 'time-last'], ['this month', 'time', 'month'], ['this week', 'time', 'week'],
+  ['this year', 'time', 'year'], ['today', 'time', 'day'],
+  ['last month', 'time', 'lastmonth'], ['last week', 'time', 'lastweek'], ['last year', 'time', 'lastyear'],
+  ['over', 'cmp', 'gt'], ['above', 'cmp', 'gt'], ['more than', 'cmp', 'gt'], ['greater than', 'cmp', 'gt'],
+  ['at least', 'cmp', 'gte'], ['under', 'cmp', 'lt'], ['below', 'cmp', 'lt'], ['less than', 'cmp', 'lt'],
+  ['at most', 'cmp', 'lte'], ['since', 'cmp', 'since'], ['before', 'cmp', 'before'],
+  ['containing', 'contains'], ['contains', 'contains']
+];
+
+function buildVocab() {
+  var entries = [];
+  OP_DEFS.forEach(function (d) {
+    entries.push({ phrase: d[0], kind: 'op', op: d[1], sub: d[2] || null });
+  });
+  dsKeys().forEach(function (k) {
+    var d = ds(k);
+    var names = {};
+    names[k.toLowerCase().replace(/[_-]+/g, ' ')] = true;
+    if (d.label) names[String(d.label).toLowerCase()] = true;
+    Object.keys(names).forEach(function (nm) {
+      entries.push({ phrase: nm, kind: 'dataset', ds: k });
+    });
+    Object.keys(d.fields).forEach(function (f) {
+      var spec = d.fields[f];
+      var phrases = {};
+      phrases[f.toLowerCase().replace(/[_-]+/g, ' ')] = true;
+      if (spec.label) phrases[String(spec.label).toLowerCase()] = true;
+      (spec.aliases || []).forEach(function (a) { phrases[String(a).toLowerCase()] = true; });
+      if (spec.unit) phrases[String(spec.unit).toLowerCase()] = true;
+      Object.keys(phrases).forEach(function (p) {
+        entries.push({ phrase: p, kind: 'field', ds: k, field: f });
+      });
+      if (spec.type === 'category') {
+        (META[k].values[f] || []).forEach(function (v) {
+          entries.push({ phrase: String(v).toLowerCase(), kind: 'value', ds: k, field: f, value: v });
+        });
+      }
+    });
+  });
+  Object.keys(CFG.glossary || {}).forEach(function (term) {
+    entries.push({ phrase: term.toLowerCase(), kind: 'gloss', term: term, def: CFG.glossary[term] });
+  });
+  entries.forEach(function (e) { e.toks = e.phrase.split(/\s+/); });
+  entries.sort(function (a, b) {
+    return (b.toks.length - a.toks.length) || (b.phrase.length - a.phrase.length);
+  });
+  VOCAB = entries;
+}
+
+/* ---- Intent parser ------------------------------------------------------
+   WHY: the anti-guess mechanic lives here. Everything recognized lands in
+   trace[]; anything significant left unrecognized drags confidence to LOW,
+   which never renders an answer. */
+function normalizeQuestion(q) {
+  var quoted = [];
+  var raw = String(q || '');
+  /* Thousands separators collapse first so "20,000" stays one number. */
+  raw = raw.replace(/(\d),(?=\d{3}\b)/g, '$1');
+  /* Quotes count only when they wrap a whitespace-bounded phrase, so
+     possessives like "Chen's" never pair up into a phantom quotation. */
+  raw = raw.replace(/(^|[\s(])"([^"]*)"(?=[\s).,;:?!]|$)|(^|[\s(])'([^']*)'(?=[\s).,;:?!]|$)/g, function (mm, p1, a, p3, b) {
+    quoted.push(((a != null ? a : b) || '').trim());
+    return (p1 || p3 || '') + ' qqq' + (quoted.length - 1) + 'qqq ';
+  });
+  var low = raw.toLowerCase()
+    .replace(/[^a-z0-9\/\- ]+/g, ' ')
+    .replace(/\s+/g, ' ').trim();
+  return { tokens: low ? low.split(' ') : [], quoted: quoted };
+}
+
+/* Anaphoric cues: light words count only when leading; strongly referential
+   phrases (what about, those, them, that one) count anywhere. */
+var FOLLOW_RE = /^\s*(what about|how about|same but|same for|same\b|and\b|also\b|only\b|now\b|just\b|instead\b|again\b)/i;
+var FOLLOW_ANY_RE = /(^|[\s,])(what about|how about|that one|this one|those|them|instead|again)\b/i;
+var LANE3_RE = /\b(why|predict|prediction|forecast|projection|should (we|i|they)|caused?|because|recommend|recommendation|expect(ed)?|outlook|going to|will (it|this|that|the|we|they)|opinion|do you think|explain)\b/i;
+
+function matchTokens(tokens) {
+  var tags = tokens.map(function () { return null; });
+  var hits = [];
+  VOCAB.forEach(function (e) {
+    for (var i = 0; i + e.toks.length <= tokens.length; i++) {
+      var ok = true;
+      for (var j = 0; j < e.toks.length; j++) {
+        if (tokens[i + j] !== e.toks[j] || tags[i + j]) { ok = false; break; }
+      }
+      if (ok) {
+        var hit = { entry: e, at: i, len: e.toks.length };
+        for (var j2 = 0; j2 < e.toks.length; j2++) tags[i + j2] = hit;
+        hits.push(hit);
+      }
+    }
+  });
+  /* Prefix pass for category values: "crit" matches "Critical". */
+  for (var i2 = 0; i2 < tokens.length; i2++) {
+    if (tags[i2] || tokens[i2].length < 4 || /\d/.test(tokens[i2])) continue;
+    for (var v = 0; v < VOCAB.length; v++) {
+      var e2 = VOCAB[v];
+      if (e2.kind !== 'value' || e2.toks.length !== 1) continue;
+      if (e2.phrase.indexOf(tokens[i2]) === 0) {
+        var h2 = { entry: e2, at: i2, len: 1, prefix: true };
+        tags[i2] = h2;
+        hits.push(h2);
+        break;
+      }
+    }
+  }
+  return { tags: tags, hits: hits };
+}
+
+function findEntityRef(tokens, tags) {
+  for (var i = 0; i < tokens.length; i++) {
+    if (tags[i]) continue;
+    var tok = tokens[i];
+    if (!/\d/.test(tok) || tok.length < 3 || /^(19|20)\d{2}$/.test(tok)) continue;
+    for (var k = 0; k < dsKeys().length; k++) {
+      var key = dsKeys()[k];
+      var vals = META[key].entityVals;
+      var matches = [];
+      for (var v = 0; v < vals.length; v++) {
+        if (vals[v].toLowerCase().indexOf(tok) !== -1) matches.push(vals[v]);
+      }
+      if (matches.length) {
+        tags[i] = { entry: { kind: 'entity', ds: key }, at: i, len: 1 };
+        return { ds: key, ref: tok, matches: matches };
+      }
+    }
+  }
+  return null;
+}
+
+function parseQuestion(raw) {
+  var t0 = Date.now();
+  var norm = normalizeQuestion(raw);
+  var tokens = norm.tokens;
+  var matched = matchTokens(tokens);
+  var tags = matched.tags, hits = matched.hits;
+  var P = {
+    raw: raw, op: null, sub: null, fn: null, dir: null, dataset: null,
+    measure: null, dimension: null, filters: [], n: null, entityRef: null,
+    entityMatches: null, timeframe: null, compareVals: [], glossary: [],
+    trace: [], assumptions: [], alternatives: [], unknown: [],
+    coverage: 1, confidence: 'HIGH', lane3: LANE3_RE.test(raw || ''),
+    quoted: norm.quoted, inherited: false, parseMs: 0,
+    opsList: [], measureCandidates: [], datasetNamed: false,
+    quotedUsed: norm.quoted.map(function () { return false; }), entityFromQuote: -1
+  };
+
+  var opHits = [], byHits = [], cmpHits = [], timeLast = [], timeHits = [], containsHits = [];
+  var fieldHits = [], valueHits = [], dsHits = [];
+  hits.forEach(function (h) {
+    var e = h.entry;
+    if (e.kind === 'op') {
+      if (e.op === 'by') byHits.push(h);
+      else if (e.op === 'cmp') cmpHits.push(h);
+      else if (e.op === 'time-last') timeLast.push(h);
+      else if (e.op === 'time') timeHits.push(h);
+      else if (e.op === 'contains') containsHits.push(h);
+      else opHits.push(h);
+    } else if (e.kind === 'field') fieldHits.push(h);
+    else if (e.kind === 'value') valueHits.push(h);
+    else if (e.kind === 'dataset') dsHits.push(h);
+    else if (e.kind === 'gloss') P.glossary.push(e);
+  });
+  /* Field and value hits follow utterance order, not vocabulary order, so
+     compare terms and measure candidates read back as the user said them. */
+  function byAt(x, y) { return x.at - y.at; }
+  fieldHits.sort(byAt);
+  valueHits.sort(byAt);
+  P.datasetNamed = dsHits.length > 0;
+
+  var entity = findEntityRef(tokens, tags);
+  if (entity) { P.entityRef = entity.ref; P.entityMatches = entity.matches; }
+
+  /* Dataset resolution: explicit mention wins; otherwise field/value votes;
+     single-dataset configs resolve automatically; ties are never broken silently. */
+  var keys = dsKeys();
+  if (keys.length === 1) P.dataset = keys[0];
+  else if (dsHits.length) P.dataset = dsHits[0].entry.ds;
+  else {
+    var votes = {};
+    fieldHits.concat(valueHits).forEach(function (h) { votes[h.entry.ds] = (votes[h.entry.ds] || 0) + 1; });
+    if (entity) votes[entity.ds] = (votes[entity.ds] || 0) + 2;
+    var ranked = Object.keys(votes).sort(function (a, b) { return votes[b] - votes[a]; });
+    if (ranked.length === 1 || (ranked.length > 1 && votes[ranked[0]] > votes[ranked[1]])) P.dataset = ranked[0];
+    else if (ranked.length > 1) P.datasetAmbiguous = true;
+    else P.datasetAmbiguous = true;
+  }
+  if (P.dataset) {
+    fieldHits = fieldHits.filter(function (h) { return h.entry.ds === P.dataset; });
+    valueHits = valueHits.filter(function (h) { return h.entry.ds === P.dataset; });
+  }
+
+  /* Numbers: n for rank ("top 5"), timeframes ("last 90 days"), range filters
+     ("over 30000", "over 60 days"), bare years. */
+  var UNIT_MULT = { day: 1, days: 1, week: 7, weeks: 7, month: 30, months: 30, year: 365, years: 365 };
+  for (var i = 0; i < tokens.length; i++) {
+    if (tags[i]) continue;
+    var tok = tokens[i];
+    if (!/^\d+(\.\d+)?$/.test(tok)) continue;
+    var num = Number(tok);
+    var prev = i > 0 ? tags[i - 1] : null;
+    var next = i + 1 < tokens.length ? tokens[i + 1] : null;
+    if (/^(19|20)\d{2}$/.test(tok) && num >= 1950 && num <= 2049) {
+      /* "since 2024" / "before 2024" are date-range filters, not year
+         equality - the cmp word directly before the year decides. */
+      if (prev && prev.entry.kind === 'op' && prev.entry.op === 'cmp' && (prev.entry.sub === 'since' || prev.entry.sub === 'before')) {
+        P.filters.push({ kind: 'range-date', op: prev.entry.sub === 'since' ? 'gte' : 'lt', ms: Date.UTC(num, 0, 1) });
+        P.trace.push(prev.entry.sub + ' ' + num);
+      } else {
+        P.filters.push({ kind: 'year', year: num });
+        P.trace.push('year ' + num);
+      }
+      tags[i] = { entry: { kind: 'num' }, at: i, len: 1 };
+      continue;
+    }
+    if (prev && prev.entry.kind === 'op' && prev.entry.op === 'time-last' && next && UNIT_MULT[next]) {
+      P.timeframe = { days: num * UNIT_MULT[next] };
+      tags[i] = { entry: { kind: 'num' }, at: i, len: 1 };
+      tags[i + 1] = tags[i];
+      P.trace.push('last ' + num + ' ' + next);
+      continue;
+    }
+    if (prev && prev.entry.kind === 'op' && prev.entry.op === 'cmp') {
+      var cmpOp = prev.entry.sub === 'gt' ? 'gt' : prev.entry.sub === 'gte' ? 'gte' : prev.entry.sub === 'lte' ? 'lte' : 'lt';
+      var unitField = null;
+      if (next && UNIT_MULT[next]) {
+        /* "over 60 days": bind to the number field whose unit mentions this word. */
+        var dsk = P.dataset || keys[0];
+        Object.keys(ds(dsk).fields).forEach(function (f) {
+          var u = String(ds(dsk).fields[f].unit || '').toLowerCase();
+          if (u && next.indexOf(u.replace(/s$/, '')) === 0) unitField = f;
+        });
+        tags[i + 1] = { entry: { kind: 'num' }, at: i + 1, len: 1 };
+      }
+      var nextTag = i + 1 < tokens.length ? tags[i + 1] : null;
+      if (!unitField && nextTag && nextTag.entry.kind === 'field') unitField = nextTag.entry.field;
+      P.filters.push({ kind: 'range', field: unitField, op: cmpOp, value: num });
+      tags[i] = { entry: { kind: 'num' }, at: i, len: 1 };
+      continue;
+    }
+    if (prev && prev.entry.kind === 'op' && (prev.entry.op === 'rank' || prev.entry.op === 'recency' || prev.entry.op === 'list')) {
+      P.n = Math.max(1, Math.min(100, Math.round(num)));
+      tags[i] = { entry: { kind: 'num' }, at: i, len: 1 };
+      P.trace.push('n=' + P.n);
+      continue;
+    }
+    /* A bare number directly after another number is separator debris - it
+       must never become n through the fallback. */
+    if (!(prev && prev.entry.kind === 'num')) P.n = P.n || Math.max(1, Math.min(100, Math.round(num)));
+    tags[i] = { entry: { kind: 'num' }, at: i, len: 1 };
+  }
+  /* Month names combine with since/before into date-range filters, pinned to
+     the most recent matching year in the data. */
+  var MONTH_WORDS = { january: 0, jan: 0, february: 1, feb: 1, march: 2, mar: 2, april: 3, apr: 3, may: 4, june: 5, jun: 5, july: 6, jul: 6, august: 7, aug: 7, september: 8, sept: 8, sep: 8, october: 9, oct: 9, november: 10, nov: 10, december: 11, dec: 11 };
+  for (var mi = 0; mi < tokens.length; mi++) {
+    if (tags[mi] || !Object.prototype.hasOwnProperty.call(MONTH_WORDS, tokens[mi])) continue;
+    var mPrev = mi > 0 ? tags[mi - 1] : null;
+    if (!(mPrev && mPrev.entry.kind === 'op' && mPrev.entry.op === 'cmp' && (mPrev.entry.sub === 'since' || mPrev.entry.sub === 'before'))) continue;
+    var mon = MONTH_WORDS[tokens[mi]];
+    var mDates = META[P.dataset || keys[0]].dates;
+    var newestMs = mDates.length ? mDates[mDates.length - 1] : Date.now();
+    var startMs = Date.UTC(new Date(newestMs).getUTCFullYear(), mon, 1);
+    if (startMs > newestMs) startMs = Date.UTC(new Date(newestMs).getUTCFullYear() - 1, mon, 1);
+    P.filters.push({ kind: 'range-date', op: mPrev.entry.sub === 'since' ? 'gte' : 'lt', ms: startMs });
+    tags[mi] = { entry: { kind: 'num' }, at: mi, len: 1 };
+    P.trace.push(mPrev.entry.sub + ' ' + fmtDateProse(startMs));
+  }
+  timeHits.forEach(function (h) {
+    /* Calendar words anchor to the wall clock; only "last N days" stays
+       anchored to the newest data row. Either anchor lands in the trace. */
+    var now = new Date();
+    var todayUtc = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
+    if (h.entry.sub === 'month') P.timeframe = { monthOf: Date.UTC(now.getFullYear(), now.getMonth(), 1) };
+    else if (h.entry.sub === 'lastmonth') P.timeframe = { monthOf: Date.UTC(now.getFullYear(), now.getMonth() - 1, 1) };
+    else if (h.entry.sub === 'week') P.timeframe = { sinceMs: todayUtc - 6 * 86400000 };
+    else if (h.entry.sub === 'lastweek') {
+      var ws = todayUtc - ((new Date(todayUtc).getUTCDay() + 6) % 7) * 86400000;
+      P.timeframe = { sinceMs: ws - 7 * 86400000, beforeMs: ws };
+    } else if (h.entry.sub === 'year') P.timeframe = { yearOf: now.getFullYear() };
+    else if (h.entry.sub === 'lastyear') P.timeframe = { yearOf: now.getFullYear() - 1 };
+    else P.timeframe = { dayOf: todayUtc };
+    P.trace.push(h.entry.phrase);
+  });
+  if (P.timeframe) {
+    var anchorDates = META[P.dataset || keys[0]].dates;
+    if (P.timeframe.days != null && anchorDates.length) {
+      P.trace.push(ph('anchorData', { date: fmtDateProse(anchorDates[anchorDates.length - 1]) }));
+    } else {
+      P.trace.push(ph('anchorNow', { date: fmtDateProse(Date.now()) }));
+    }
+  }
+
+  /* Fields into roles: number fields are measure candidates; category fields
+     become the dimension (preferring one that follows "by"/"per"). */
+  var dsk2 = P.dataset;
+  fieldHits.forEach(function (h) {
+    var f = h.entry.field, t = fieldSpec(h.entry.ds, f).type;
+    if (t === 'number') {
+      if (P.measureCandidates.indexOf(f) === -1) P.measureCandidates.push(f);
+      if (!P.measure) {
+        P.measure = f;
+        P.trace.push('measure=' + fieldLabel(h.entry.ds, f));
+      }
+    } else if ((t === 'category' || t === 'boolean') && !P.dimension) {
+      var afterBy = byHits.some(function (b) { return b.at + b.len === h.at; });
+      P.dimension = f;
+      P.dimensionByMarker = afterBy;
+      P.trace.push('dimension=' + fieldLabel(h.entry.ds, f));
+    } else if (t === 'date' && !P.dateFieldHit) {
+      P.dateFieldHit = f;
+    }
+  });
+  /* A "by <category>" with no other distribution word still means group-by. */
+  if (!P.dimension) {
+    byHits.forEach(function (b) {
+      var after = tags[b.at + b.len];
+      if (after && after.entry.kind === 'field') {
+        var f2 = after.entry.field;
+        if (fieldSpec(after.entry.ds, f2).type === 'category') { P.dimension = f2; P.dimensionByMarker = true; }
+      }
+    });
+  }
+
+  /* Category values become eq/in filters; two values joined by "vs" become compare. */
+  var compareMode = opHits.some(function (h) { return h.entry.op === 'compare'; });
+  var valByField = {};
+  valueHits.forEach(function (h) {
+    var f = h.entry.field;
+    (valByField[f] = valByField[f] || []).push(h.entry.value);
+  });
+  Object.keys(valByField).forEach(function (f) {
+    var vals = valByField[f].filter(function (v, idx, arr) { return arr.indexOf(v) === idx; });
+    if (compareMode && vals.length >= 2) {
+      P.compareVals = [{ field: f, value: vals[0] }, { field: f, value: vals[1] }];
+      P.trace.push('compare ' + vals[0] + ' vs ' + vals[1]);
+    } else if (vals.length === 1) {
+      P.filters.push({ kind: 'cat', field: f, op: 'eq', value: vals[0] });
+      P.trace.push('filter ' + fieldLabel(P.dataset || keys[0], f) + '=' + vals[0]);
+    } else {
+      P.filters.push({ kind: 'cat', field: f, op: 'in', value: vals });
+      P.trace.push('filter ' + fieldLabel(P.dataset || keys[0], f) + ' in [' + vals.join(', ') + ']');
+    }
+  });
+  if (compareMode && !P.compareVals.length && valueHits.length >= 2) {
+    P.compareVals = valueHits.slice(0, 2).map(function (h) { return { field: h.entry.field, value: h.entry.value }; });
+  }
+
+  /* Quoted strings: contains-filter on a text field, per the text-search rule. */
+  norm.quoted.forEach(function (qstr, qi) {
+    if (!qstr) { P.quotedUsed[qi] = true; return; }
+    var dsk3 = P.dataset || keys[0];
+    var textField = null;
+    Object.keys(ds(dsk3).fields).forEach(function (f) {
+      if (!textField && fieldSpec(dsk3, f).type === 'text') textField = f;
+    });
+    if (textField) {
+      P.filters.push({ kind: 'text', field: textField, op: 'contains', value: qstr });
+      P.trace.push('text contains "' + qstr + '"');
+      P.quotedUsed[qi] = true;
+    } else if (!P.entityRef) {
+      /* No text field to search, so the quote is usable only as an entity
+         lookup. Whether the chosen op consumes it is settled in the
+         coverage census below - it is never silently dropped. */
+      P.entityRef = qstr;
+      P.entityFromQuote = qi;
+    }
+  });
+  containsHits.forEach(function (h) {
+    /* "containing X" without quotes: take the next untagged token as the needle. */
+    var idx = h.at + h.len;
+    if (idx < tokens.length && !tags[idx]) {
+      var dsk4 = P.dataset || keys[0];
+      var tf = null;
+      Object.keys(ds(dsk4).fields).forEach(function (f) {
+        if (!tf && fieldSpec(dsk4, f).type === 'text') tf = f;
+      });
+      if (tf) {
+        P.filters.push({ kind: 'text', field: tf, op: 'contains', value: tokens[idx] });
+        tags[idx] = { entry: { kind: 'num' }, at: idx, len: 1 };
+        P.trace.push('text contains "' + tokens[idx] + '"');
+      }
+    }
+  });
+
+  /* Operation resolution, priority-ordered; ties become assumptions, not guesses. */
+  var opsSeen = {};
+  opHits.forEach(function (h) { opsSeen[h.entry.op] = opsSeen[h.entry.op] || h.entry; });
+  var order = ['insight', 'meta', 'export', 'compare', 'trend', 'detail', 'rank', 'recency', 'aggregate', 'count', 'list'];
+  for (var o = 0; o < order.length; o++) {
+    if (opsSeen[order[o]]) { P.op = order[o]; P.sub = opsSeen[order[o]].sub || null; break; }
+  }
+  if (P.op === 'aggregate') P.fn = P.sub;
+  if (P.op === 'rank') P.dir = P.sub || 'top';
+  if (P.op === 'recency') P.dir = P.sub === 'old' ? 'old' : 'new';
+  /* "top 5 oldest" reads as recency, not a measure rank. */
+  if (P.op === 'rank' && opsSeen.recency) { P.op = 'recency'; P.dir = opsSeen.recency.sub === 'old' ? 'old' : 'new'; }
+  /* "how many ... by X" stays count; a bare dimension with "by" becomes distribution. */
+  if (!P.op && P.dimension && P.dimensionByMarker) P.op = 'distribution';
+  if (P.op === 'list' && P.dimension && P.dimensionByMarker) P.op = 'distribution';
+  if (P.op === 'detail' && !P.entityRef && P.glossary.length) P.op = 'glossary';
+  if (!P.op && P.entityRef) P.op = 'detail';
+  if (!P.op && P.glossary.length) P.op = 'glossary';
+  if (P.op === 'rank' && !P.measure && P.dimension) P.rankByCount = true;
+  if (P.op) P.trace.unshift('op=' + P.op + (P.fn ? ':' + P.fn : ''));
+  P.opsList = Object.keys(opsSeen);
+
+  /* Coverage + unknown-token census over significant tokens. */
+  var sig = 0, cov = 0;
+  for (var u = 0; u < tokens.length; u++) {
+    var tk = tokens[u];
+    if (STOPWORDS[tk] || tk.length < 2) continue;
+    var qm = tk.match(/^qqq(\d+)qqq$/);
+    if (qm) {
+      /* A quoted phrase counts as covered only when it was consumed (text
+         filter, or entity lookup under a detail op). An unconsumed quote is
+         a load-bearing unknown and drags confidence to LOW by name. */
+      var qi2 = +qm[1];
+      sig++;
+      if (P.quotedUsed[qi2] || (P.entityFromQuote === qi2 && P.op === 'detail')) cov++;
+      else if (norm.quoted[qi2]) P.unknown.push(norm.quoted[qi2]);
+      continue;
+    }
+    sig++;
+    if (tags[u]) cov++;
+    else if (tk.length >= 4 && !/^\d/.test(tk)) P.unknown.push(tk);
+  }
+  P.coverage = sig ? cov / sig : 1;
+  P.parseMs = Date.now() - t0;
+  return P;
+}
+
+/* Confidence scoring + follow-up inheritance live outside parseQuestion so an
+   inherited parse can be re-scored after patching. */
+function fillSlots(P) {
+  /* Slot filling + precondition gates, shared by fresh AND inherited parses
+     so a follow-up can never bypass validation. A defaulted slot is a stated
+     assumption; a missing precondition is LOW, never a silent guess. */
+  var dsk = P.dataset || dsKeys()[0];
+  var d = ds(dsk);
+  if (P.op === 'aggregate' && !P.measure && P.dimension && !P.dimensionByMarker) {
+    /* The user named a categorical field as the aggregation target
+       ("average status"): clarify, never substitute an unnamed measure. */
+    P.confidence = 'LOW';
+    P.lowReason = 'agg-categorical';
+    P.aggCatField = P.dimension;
+    P.alternatives = [{ label: ph('chipBreakdown', { dim: fieldLabel(dsk, P.dimension) }) }];
+    if ((d.measures || []).length) {
+      P.alternatives.push({ label: fnWord(P.fn) + ' ' + fieldLabel(dsk, d.measures[0]) });
+    }
+    return P;
+  }
+  if ((P.op === 'aggregate' || (P.op === 'rank' && !P.rankByCount)) && !P.measure) {
+    if ((d.measures || []).length) {
+      P.measure = d.measures[0];
+      P.assumptions.push('you mean ' + (P.fn || 'ranking by') + ' ' + fieldLabel(dsk, P.measure));
+      (d.measures || []).slice(1, 4).forEach(function (m) {
+        P.alternatives.push({ label: fieldLabel(dsk, m), patch: { measure: m } });
+      });
+    } else { P.confidence = 'LOW'; P.lowReason = 'no-measure'; return P; }
+  }
+  if (P.op === 'distribution' && !P.dimension) {
+    if ((d.dimensions || []).length) {
+      P.dimension = d.dimensions[0];
+      P.assumptions.push('you mean a breakdown by ' + fieldLabel(dsk, P.dimension));
+      (d.dimensions || []).slice(1, 4).forEach(function (dim) {
+        P.alternatives.push({ label: 'by ' + fieldLabel(dsk, dim), patch: { dimension: dim } });
+      });
+    } else { P.confidence = 'LOW'; P.lowReason = 'no-dimension'; return P; }
+  }
+  if ((P.op === 'trend' || P.op === 'recency') && !d.dateField) { P.confidence = 'LOW'; P.lowReason = 'no-datefield'; return P; }
+  /* A timeframe or date-shaped filter without a declared date field must not
+     evaporate into an unfiltered answer: the question is unanswerable there. */
+  var needsDate = !!P.timeframe || P.filters.some(function (f) { return f.kind === 'year' || f.kind === 'range-date'; });
+  if (needsDate && !d.dateField) { P.confidence = 'LOW'; P.lowReason = 'no-datefield'; return P; }
+  if (P.op === 'compare' && P.compareVals.length < 2) { P.confidence = 'LOW'; P.lowReason = 'compare-terms'; return P; }
+  /* Range filters that never bound to a field default to the primary measure;
+     with no measure to bind to, the filter is unanswerable, not droppable. */
+  var unbound = false;
+  P.filters.forEach(function (f) {
+    if (f.kind === 'range' && !f.field) {
+      if (P.measure) f.field = P.measure;
+      else if ((d.measures || []).length) f.field = d.measures[0];
+      if (f.field) {
+        P.assumptions.push('the ' + f.op + ' ' + fmtNum(f.value) + ' filter applies to ' + fieldLabel(dsk, f.field));
+        P.trace.push('filter ' + fieldLabel(dsk, f.field) + ' ' + f.op + ' ' + fmtNum(f.value));
+      } else unbound = true;
+    } else if (f.kind === 'range' && f.field) {
+      P.trace.push('filter ' + fieldLabel(dsk, f.field) + ' ' + f.op + ' ' + fmtNum(f.value));
+    }
+  });
+  if (unbound) { P.confidence = 'LOW'; P.lowReason = 'no-measure'; return P; }
+  return P;
+}
+function fnWord(fn) {
+  return fn === 'sum' ? 'total' : fn === 'median' ? 'median' : fn === 'min' ? 'min' : fn === 'max' ? 'max' : 'average';
+}
+var TIE_OPS = { aggregate: 1, rank: 1, distribution: 1, trend: 1, compare: 1, recency: 1, detail: 1 };
+function readingChip(op, P, dsk) {
+  /* A one-line re-ask that parses unambiguously to the given reading. */
+  var d = ds(dsk), label = d.label || dsk;
+  if (op === 'distribution') {
+    var dim = P.dimension || (d.dimensions || [])[0];
+    return dim ? ph('chipBreakdown', { dim: fieldLabel(dsk, dim) }) : null;
+  }
+  if (op === 'rank') {
+    if (P.rankByCount && P.dimension) return 'top ' + (P.n || 5) + ' by ' + fieldLabel(dsk, P.dimension);
+    var m = P.measure || (d.measures || [])[0];
+    return m ? 'top ' + (P.n || 5) + ' ' + label + ' by ' + fieldLabel(dsk, m) : null;
+  }
+  if (op === 'aggregate') {
+    var m2 = P.measure || (d.measures || [])[0];
+    return m2 ? fnWord(P.fn) + ' ' + fieldLabel(dsk, m2) : null;
+  }
+  if (op === 'trend') return P.measure ? 'trend of ' + fieldLabel(dsk, P.measure) : ph('chipTrend');
+  if (op === 'compare') {
+    return P.compareVals.length >= 2 ? 'compare ' + P.compareVals[0].value + ' vs ' + P.compareVals[1].value : null;
+  }
+  if (op === 'recency') return (P.dir === 'old' ? 'oldest ' : 'newest ') + (P.n || 5) + ' ' + label;
+  if (op === 'detail') return P.entityRef ? ph('chipDetail', { id: P.entityRef }) : null;
+  return null;
+}
+function competingReadings(P) {
+  /* Bounded competing-interpretation census (spec section 4.5). Alternate
+     readings reuse the same matched tokens, so their coverage equals the
+     chosen parse's - always inside the 0.15 band, so a hit means LOW.
+     Three families: op ties, rank-vs-distribution flips, measure role flips. */
+  if (P.inherited || !P.op || !TIE_OPS[P.op]) return [];
+  var dsk = P.dataset || dsKeys()[0];
+  var chosen = readingChip(P.op, P, dsk);
+  var readings = [];
+  (P.opsList || []).forEach(function (op) {
+    if (op === P.op || !TIE_OPS[op]) return;
+    if (P.op === 'recency' && op === 'rank') return; /* deliberate collapse: "top 5 oldest" */
+    var alt = readingChip(op, P, dsk);
+    if (alt && alt !== chosen) readings.push(alt);
+  });
+  if (P.op === 'rank' && P.rankByCount && P.dimension && !P.n) {
+    var alt2 = readingChip('distribution', P, dsk);
+    if (alt2 && alt2 !== chosen) readings.push(alt2);
+  }
+  if ((P.op === 'aggregate' || (P.op === 'rank' && !P.rankByCount)) && (P.measureCandidates || []).length >= 2) {
+    var flipped = {};
+    Object.keys(P).forEach(function (k) { flipped[k] = P[k]; });
+    flipped.measure = P.measureCandidates[1];
+    var alt3 = readingChip(P.op, flipped, dsk);
+    if (alt3 && alt3 !== chosen) readings.push(alt3);
+  }
+  if (!readings.length) return [];
+  var out = chosen ? [chosen] : [];
+  readings.forEach(function (r) { if (out.indexOf(r) === -1) out.push(r); });
+  return out;
+}
+function scoreConfidence(P) {
+  /* Unknown load-bearing tokens outrank every other clarification - the spec
+     requires naming them verbatim even when the dataset is also ambiguous. */
+  if (P.unknown.length) { P.confidence = 'LOW'; P.lowReason = 'unknown'; return P; }
+  if (P.datasetAmbiguous && dsKeys().length > 1) { P.confidence = 'LOW'; P.lowReason = 'dataset'; return P; }
+  /* A standalone "noun + constraint" question ("cases since 2024") defaults
+     to listing the matching rows - disclosed as an assumption, never silent. */
+  if (!P.op && P.datasetNamed && (P.filters.length || P.timeframe)) {
+    P.op = 'list';
+    P.assumptions.push('you want the matching ' + (ds(P.dataset || dsKeys()[0]).label || 'rows') + ' listed');
+    P.trace.unshift('op=list');
+  }
+  if (!P.op) { P.confidence = 'LOW'; P.lowReason = 'no-op'; return P; }
+  fillSlots(P);
+  if (P.confidence === 'LOW') return P;
+  var readings = competingReadings(P);
+  if (readings.length) {
+    P.confidence = 'LOW';
+    P.lowReason = 'competing';
+    P.alternatives = readings.slice(0, 4).map(function (r) { return { label: r }; });
+    return P;
+  }
+  if (P.assumptions.length) { P.confidence = 'MEDIUM'; return P; }
+  if (P.coverage >= 0.75) P.confidence = 'HIGH';
+  else if (P.coverage >= 0.5) { P.confidence = 'MEDIUM'; P.assumptions.push('I read this as ' + P.trace.join(', ')); }
+  else { P.confidence = 'LOW'; P.lowReason = 'coverage'; }
+  return P;
+}
+
+function inheritFollowUp(P) {
+  var prev = S.lastParse;
+  if (!prev) return P;
+  /* Inherit only when the follow-up actually contributes something recognized
+     AND reads as elliptical: an explicit anaphoric cue, or a bare fragment
+     with no op and no dataset noun of its own. A question that names the
+     dataset and carries its own op or constraint always parses fresh -
+     "cases since 2024" is a new question, not a patch. A vague "what about
+     the big ones" still clarifies, never silently re-runs. */
+  var hasNew = !!(P.op || P.filters.length || P.dimension || P.measure || P.n || P.timeframe || P.entityRef);
+  var cue = FOLLOW_RE.test(P.raw) || FOLLOW_ANY_RE.test(P.raw);
+  var bareFragment = !P.op && !P.datasetNamed;
+  var standalone = P.datasetNamed && !!(P.op || P.filters.length || P.timeframe || P.entityRef);
+  var elliptical = hasNew && !standalone && (cue || bareFragment);
+  if (!elliptical) return P;
+  var merged = {};
+  Object.keys(prev).forEach(function (k) { merged[k] = prev[k]; });
+  merged.raw = P.raw;
+  merged.inherited = true;
+  merged.filters = prev.filters.slice();
+  P.filters.forEach(function (f) {
+    merged.filters = merged.filters.filter(function (pf) { return pf.field !== f.field; });
+    merged.filters.push(f);
+  });
+  if (P.op) { merged.op = P.op; merged.sub = P.sub; merged.fn = P.fn; merged.dir = P.dir; merged.rankByCount = P.rankByCount; }
+  /* A category hit in a follow-up is a filter patch, not a regroup: the
+     dimension rebinds only on an explicit "by <field>" phrase, or when the
+     previous parse had no dimension to keep. */
+  var rebindDim = !!(P.dimension && (P.dimensionByMarker || !prev.dimension));
+  if (rebindDim) {
+    merged.dimension = P.dimension;
+    merged.dimensionByMarker = P.dimensionByMarker;
+  }
+  if (P.measure) merged.measure = P.measure;
+  if (P.n) merged.n = P.n;
+  if (P.timeframe) merged.timeframe = P.timeframe;
+  if (P.entityRef) { merged.entityRef = P.entityRef; merged.entityMatches = P.entityMatches; }
+  /* The new turn's compare terms always replace the previous parse's; a bare
+     "now compare" with no terms must clarify, not reuse stale ones. */
+  if (P.compareVals.length) merged.compareVals = P.compareVals;
+  else if (P.op === 'compare') merged.compareVals = [];
+  /* The trace must never claim a dimension the merged parse did not keep. */
+  var newTrace = P.trace;
+  if (P.dimension && !rebindDim) newTrace = newTrace.filter(function (t) { return t.indexOf('dimension=') !== 0; });
+  merged.trace = newTrace.concat([ph('inherited')]);
+  /* Standing assumptions from the previous turn stay disclosed, not baked in. */
+  merged.assumptions = (prev.assumptions || []).slice();
+  merged.alternatives = [];
+  merged.unknown = P.unknown;
+  merged.coverage = Math.max(P.coverage, 0.8);
+  merged.lane3 = P.lane3;
+  merged.glossary = P.glossary;
+  merged.quoted = P.quoted;
+  merged.lowReason = null;
+  if (merged.unknown.length) { merged.confidence = 'LOW'; merged.lowReason = 'unknown'; return merged; }
+  /* Inherited parses run the SAME slot filling and precondition gates as
+     fresh ones - a follow-up can never skip validation. */
+  merged.confidence = 'HIGH';
+  fillSlots(merged);
+  if (merged.confidence !== 'LOW' && merged.assumptions.length) merged.confidence = 'MEDIUM';
+  return merged;
+}
+/* ---- Query engine -------------------------------------------------------
+   WHY: pure functions over adapter rows; every result carries rowsScanned,
+   rowsMatched, per-field null disclosure and latency so answers stay auditable. */
+function testCmp(val, op, target) {
+  if (op === 'eq') return String(val).toLowerCase() === String(target).toLowerCase();
+  if (op === 'ne') return String(val).toLowerCase() !== String(target).toLowerCase();
+  if (op === 'in') return target.some(function (t) { return String(val).toLowerCase() === String(t).toLowerCase(); });
+  if (op === 'contains') return String(val).toLowerCase().indexOf(String(target).toLowerCase()) !== -1;
+  var n = Number(val), t2 = Number(target);
+  if (isNaN(n) || isNaN(t2)) return false;
+  if (op === 'gt') return n > t2;
+  if (op === 'gte') return n >= t2;
+  if (op === 'lt') return n < t2;
+  if (op === 'lte') return n <= t2;
+  return false;
+}
+
+function applyFilters(dsk, filters, timeframe) {
+  var d = ds(dsk);
+  var nulls = {};
+  var anchor = META[dsk].dates.length ? META[dsk].dates[META[dsk].dates.length - 1] : Date.now();
+  var rows = d.rows.filter(function (r) {
+    for (var i = 0; i < filters.length; i++) {
+      var f = filters[i];
+      if (f.kind === 'year' || f.kind === 'range-date') {
+        if (!d.dateField) return false;
+        var tm = parseDateVal(r[d.dateField]);
+        if (tm === null) { nulls[d.dateField] = (nulls[d.dateField] || 0) + 1; return false; }
+        if (f.kind === 'year' && new Date(tm).getUTCFullYear() !== f.year) return false;
+        if (f.kind === 'range-date') {
+          if (f.op === 'gte' && tm < f.ms) return false;
+          if (f.op === 'lt' && tm >= f.ms) return false;
+        }
+      } else {
+        var v = r[f.field];
+        if (v == null || v === '') { nulls[f.field] = (nulls[f.field] || 0) + 1; return false; }
+        if (!testCmp(v, f.op, f.value)) return false;
+      }
+    }
+    if (timeframe && d.dateField) {
+      var t = parseDateVal(r[d.dateField]);
+      if (t === null) { nulls[d.dateField] = (nulls[d.dateField] || 0) + 1; return false; }
+      if (timeframe.days != null && t < anchor - timeframe.days * 86400000) return false;
+      if (timeframe.sinceMs != null && t < timeframe.sinceMs) return false;
+      if (timeframe.beforeMs != null && t >= timeframe.beforeMs) return false;
+      if (timeframe.dayOf != null && (t < timeframe.dayOf || t >= timeframe.dayOf + 86400000)) return false;
+      if (timeframe.yearOf != null && new Date(t).getUTCFullYear() !== timeframe.yearOf) return false;
+      if (timeframe.monthOf != null) {
+        var a = new Date(timeframe.monthOf), b = new Date(t);
+        if (a.getUTCFullYear() !== b.getUTCFullYear() || a.getUTCMonth() !== b.getUTCMonth()) return false;
+      }
+    }
+    return true;
+  });
+  return { rows: rows, nulls: nulls, scanned: d.rows.length };
+}
+
+function measureVals(dsk, rows, f) {
+  var vals = [], nulls = 0;
+  rows.forEach(function (r) {
+    var v = r[f];
+    if (v == null || v === '' || isNaN(Number(v))) nulls++;
+    else vals.push(Number(v));
+  });
+  return { vals: vals, nulls: nulls };
+}
+function unitSuffix(dsk, f) {
+  var u = fieldSpec(dsk, f).unit;
+  return u ? ' ' + u : '';
+}
+function nearestCut(dsk, P) {
+  /* Drop the most recently added filter and report the count that unlocks. */
+  if (!P.filters.length && !P.timeframe) return null;
+  var f2 = P.filters.slice(0, -1);
+  var alt = applyFilters(dsk, f2, P.filters.length ? P.timeframe : null);
+  if (!alt.rows.length) return null;
+  var dropped = P.filters.length ? P.filters[P.filters.length - 1] : null;
+  return dropped
+    ? ph('nearestCutFilter', { field: fieldLabel(dsk, dropped.field || ds(dsk).dateField || ''), rows: rowsText(alt.rows.length) })
+    : ph('nearestCutTime', { rows: rowsText(alt.rows.length) });
+}
+function projectCols(dsk, withMeasure) {
+  var d = ds(dsk), cols = [];
+  if (d.entityField) cols.push(d.entityField);
+  (d.dimensions || []).slice(0, 3).forEach(function (f) { if (cols.indexOf(f) === -1) cols.push(f); });
+  (withMeasure ? [withMeasure] : (d.measures || []).slice(0, 2)).forEach(function (f) { if (f && cols.indexOf(f) === -1) cols.push(f); });
+  if (d.dateField && cols.indexOf(d.dateField) === -1) cols.push(d.dateField);
+  return cols;
+}
+function cellText(dsk, f, v) {
+  if (v == null || v === '') return '-';
+  var t = fieldSpec(dsk, f).type;
+  if (t === 'number') return fmtNum(v);
+  if (t === 'date') { var ms = parseDateVal(v); return ms === null ? String(v) : fmtDateISO(ms); }
+  return String(v);
+}
+function makeTable(dsk, cols, rows) {
+  return {
+    cols: cols.map(function (f) {
+      return { label: fieldLabel(dsk, f), align: fieldSpec(dsk, f).type === 'number' ? 'num' : 'left' };
+    }),
+    rows: rows.map(function (r) { return cols.map(function (f) { return cellText(dsk, f, r[f]); }); })
+  };
+}
+function groupBy(rows, f) {
+  var g = {};
+  rows.forEach(function (r) {
+    var v = r[f] == null || r[f] === '' ? '(blank)' : String(r[f]);
+    (g[v] = g[v] || []).push(r);
+  });
+  return g;
+}
+function bucketTrend(pairs, hasMeasure) {
+  /* pairs: [{t, v?}] sorted by t. Unit chosen by span; verdict compares the
+     mean of the last third of buckets vs the first third (>=6 buckets, >=15%).
+     Empty periods are zero-filled so a collapse to nothing still moves the
+     verdict; measure buckets with no non-null values stay null - a bucket
+     never silently substitutes its row count into a measure series. */
+  if (pairs.length < 2) return null;
+  pairs.sort(function (a, b) { return a.t - b.t; });
+  var spanDays = (pairs[pairs.length - 1].t - pairs[0].t) / 86400000;
+  var unit = spanDays <= 42 ? 'day' : spanDays <= 270 ? 'week' : 'month';
+  function periodOf(t) {
+    var d = new Date(t);
+    if (unit === 'day') return Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate());
+    if (unit === 'week') {
+      var wd = (d.getUTCDay() + 6) % 7;
+      return Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate() - wd);
+    }
+    return Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), 1);
+  }
+  function keyOf(ms) { return unit === 'month' ? fmtDateISO(ms).slice(0, 7) : fmtDateISO(ms); }
+  function nextPeriod(ms) {
+    if (unit === 'day') return ms + 86400000;
+    if (unit === 'week') return ms + 7 * 86400000;
+    var d = new Date(ms);
+    return Date.UTC(d.getUTCFullYear(), d.getUTCMonth() + 1, 1);
+  }
+  var map = {};
+  var measureNulls = 0;
+  pairs.forEach(function (p) {
+    var ms = periodOf(p.t), key = keyOf(ms);
+    if (!map[key]) map[key] = { label: key, ms: ms, count: 0, sum: 0, vn: 0 };
+    map[key].count++;
+    if (p.v != null) { map[key].sum += p.v; map[key].vn++; }
+    else if (hasMeasure) measureNulls++;
+  });
+  /* Zero-fill every period between the first and last populated buckets. */
+  var msList = Object.keys(map).map(function (k) { return map[k].ms; }).sort(function (a, b) { return a - b; });
+  for (var cur = msList[0]; cur < msList[msList.length - 1]; cur = nextPeriod(cur)) {
+    var kk = keyOf(cur);
+    if (!map[kk]) map[kk] = { label: kk, ms: cur, count: 0, sum: 0, vn: 0 };
+  }
+  var buckets = Object.keys(map).map(function (k) { return map[k]; })
+    .sort(function (a, b) { return a.ms - b.ms; });
+  var series = buckets.map(function (b) {
+    return hasMeasure ? (b.vn ? b.sum / b.vn : null) : b.count;
+  });
+  var verdict = null;
+  var nullThird = false;
+  if (buckets.length >= 6) {
+    var third = Math.max(1, Math.floor(buckets.length / 3));
+    var firstVals = series.slice(0, third).filter(function (x) { return x != null; });
+    var lastVals = series.slice(series.length - third).filter(function (x) { return x != null; });
+    if (!firstVals.length || !lastVals.length) nullThird = true;
+    else {
+      var first = mean(firstVals);
+      var last = mean(lastVals);
+      if (first === 0) {
+        /* Zero baseline: a percent delta is undefined; report absolute change. */
+        verdict = { dir: last > 0 ? 'rising' : 'flat', firstMean: first, lastMean: last, deltaPct: null, zeroBase: true };
+      } else {
+        var deltaPct = (last - first) / Math.abs(first) * 100;
+        verdict = {
+          dir: Math.abs(deltaPct) >= 15 ? (deltaPct > 0 ? 'rising' : 'falling') : 'flat',
+          firstMean: first, lastMean: last, deltaPct: deltaPct
+        };
+      }
+    }
+  }
+  return { unit: unit, buckets: buckets, series: series, verdict: verdict, nullThird: nullThird, measureNulls: measureNulls };
+}
+
+function execOp(P) {
+  var t0 = Date.now();
+  var dsk = P.dataset || dsKeys()[0];
+  var d = ds(dsk);
+  var label = d.label || dsk;
+  /* A defaulted n is disclosed in the trace, never silent. */
+  if ((P.op === 'rank' || P.op === 'recency') && !P.n && P.trace.indexOf(ph('nDefaulted', { n: 5 })) === -1) {
+    P.trace.push(ph('nDefaulted', { n: 5 }));
+  }
+  var filtered = applyFilters(dsk, P.filters, P.timeframe);
+  var rows = filtered.rows;
+  var R = {
+    kind: 'answer', headline: '', bullets: [], table: null, chips: [], followups: [],
+    csv: null, flags: [],
+    stats: { scanned: filtered.scanned, matched: rows.length, nulls: filtered.nulls, latencyMs: 0 },
+    traceText: P.trace.length ? ph('understood', { trace: P.trace.join(' | ') }) : ''
+  };
+  function finish() {
+    R.stats.latencyMs = Date.now() - t0;
+    return R;
+  }
+  function emptyOut() {
+    var cut = nearestCut(dsk, P);
+    R.headline = cut
+      ? ph('emptyResult', { trace: P.trace.join(', '), suggestion: cut })
+      : ph('emptyResultNone', { trace: P.trace.join(', ') });
+    return finish();
+  }
+  function addFollowups(extra) {
+    var f = extra || [];
+    if (P.op !== 'distribution' && (d.dimensions || []).length) {
+      var dim = (d.dimensions || []).filter(function (x) { return x !== P.dimension; })[0] || (d.dimensions || [])[0];
+      if (dim) f.push(ph('chipBreakdown', { dim: fieldLabel(dsk, dim) }));
+    }
+    if (P.op !== 'trend' && d.dateField) f.push(ph('chipTrend'));
+    if (P.op !== 'insight') f.push(ph('chipSummarize'));
+    R.followups = f.slice(0, 3);
+  }
+
+  if (P.op === 'count') {
+    R.headline = ph(P.filters.length || P.timeframe ? 'countFilteredHeadline' : 'countHeadline', { n: fmtInt(rows.length), label: label });
+    if (P.dimension && rows.length) {
+      var g = groupBy(rows, P.dimension);
+      var keys2 = Object.keys(g).sort(function (a, b) { return g[b].length - g[a].length; });
+      var shares2 = sharePcts(keys2.map(function (k) { return g[k].length; }));
+      R.table = {
+        cols: [{ label: fieldLabel(dsk, P.dimension), align: 'left' }, { label: ph('colCount'), align: 'num' }, { label: ph('colShare'), align: 'num' }],
+        rows: keys2.map(function (k, i) { return [k, fmtInt(g[k].length), shares2[i].toFixed(1) + '%']; })
+      };
+      R.csv = { name: 'count', cols: [fieldLabel(dsk, P.dimension), 'count', 'share_pct'], rows: keys2.map(function (k, i) { return [k, g[k].length, shares2[i].toFixed(1)]; }) };
+    }
+    if (!rows.length && (P.filters.length || P.timeframe)) return emptyOut();
+    addFollowups([]);
+    return finish();
+  }
+
+  if (P.op === 'aggregate') {
+    if (!P.measure) { R.headline = ph('noMeasure', { label: label }); return finish(); }
+    if (!rows.length) return emptyOut();
+    var mv = measureVals(dsk, rows, P.measure);
+    if (mv.nulls) R.stats.nulls[P.measure] = (R.stats.nulls[P.measure] || 0) + mv.nulls;
+    if (!mv.vals.length) {
+      /* Every matching row is null on the measure: min/max/sum would print
+         Infinity or a fabricated 0. Refuse to compute instead. */
+      R.headline = ph('aggAllNull', { n: fmtInt(rows.length), measure: fieldLabel(dsk, P.measure) });
+      return finish();
+    }
+    var fn = P.fn || 'avg';
+    var val = fn === 'sum' ? mv.vals.reduce(function (a, b) { return a + b; }, 0)
+      : fn === 'median' ? median(mv.vals)
+      : fn === 'min' ? Math.min.apply(null, mv.vals)
+      : fn === 'max' ? Math.max.apply(null, mv.vals)
+      : mean(mv.vals);
+    R.headline = ph('aggHeadline', { fn: fn === 'avg' ? 'average' : fn, measure: fieldLabel(dsk, P.measure), value: fmtNum(val) + unitSuffix(dsk, P.measure) });
+    R.bullets.push(ph('aggComputedOver', { n: fmtInt(mv.vals.length), measure: fieldLabel(dsk, P.measure), rows: fmtInt(rows.length) }));
+    if (fn === 'avg' && mv.vals.length > 1) {
+      R.bullets.push(ph('aggSpread', {
+        median: fmtNum(median(mv.vals)) + unitSuffix(dsk, P.measure),
+        min: fmtNum(Math.min.apply(null, mv.vals)),
+        max: fmtNum(Math.max.apply(null, mv.vals))
+      }));
+    }
+    addFollowups([]);
+    return finish();
+  }
+
+  if (P.op === 'rank') {
+    var n = P.n || 5;
+    if (!rows.length) return emptyOut();
+    if (P.rankByCount && P.dimension) {
+      var g2 = groupBy(rows, P.dimension);
+      var ks = Object.keys(g2).sort(function (a, b) { return g2[b].length - g2[a].length; });
+      if (P.dir === 'bottom') ks.reverse();
+      ks = ks.slice(0, n);
+      R.headline = ph('rankByCountHeadline', { dir: P.dir === 'bottom' ? ph('dirBottom') : ph('dirTop'), n: ks.length, dim: fieldLabel(dsk, P.dimension) });
+      R.table = {
+        cols: [{ label: fieldLabel(dsk, P.dimension), align: 'left' }, { label: ph('colCount'), align: 'num' }],
+        rows: ks.map(function (k) { return [k, fmtInt(g2[k].length)]; })
+      };
+      R.csv = { name: 'rank', cols: [fieldLabel(dsk, P.dimension), 'count'], rows: ks.map(function (k) { return [k, g2[k].length]; }) };
+    } else {
+      var meas = P.measure;
+      var withVal = rows.filter(function (r) { return r[meas] != null && r[meas] !== '' && !isNaN(Number(r[meas])); });
+      var skipped = rows.length - withVal.length;
+      if (skipped) R.stats.nulls[meas] = (R.stats.nulls[meas] || 0) + skipped;
+      withVal.sort(function (a, b) { return P.dir === 'bottom' ? Number(a[meas]) - Number(b[meas]) : Number(b[meas]) - Number(a[meas]); });
+      var top = withVal.slice(0, n);
+      var cols = projectCols(dsk, meas);
+      R.headline = ph('rankHeadline', { dir: P.dir === 'bottom' ? ph('dirBottom') : ph('dirTop'), n: top.length, label: label, measure: fieldLabel(dsk, meas) });
+      R.table = makeTable(dsk, cols, top);
+      R.csv = { name: 'rank', cols: cols.map(function (f) { return fieldLabel(dsk, f); }), rows: top.map(function (r) { return cols.map(function (f) { return r[f]; }); }) };
+      if (top.length && d.entityField) R.followups.push(ph('chipDetail', { id: top[0][d.entityField] }));
+    }
+    addFollowups(R.followups);
+    return finish();
+  }
+
+  if (P.op === 'distribution') {
+    if (!rows.length) return emptyOut();
+    var g3 = groupBy(rows, P.dimension);
+    var ks3 = Object.keys(g3).sort(function (a, b) { return g3[b].length - g3[a].length; });
+    var shares3 = sharePcts(ks3.map(function (k) { return g3[k].length; }));
+    var cols3 = [{ label: fieldLabel(dsk, P.dimension), align: 'left' }, { label: ph('colCount'), align: 'num' }, { label: ph('colShare'), align: 'num' }];
+    var hasM = !!P.measure;
+    if (hasM) cols3.push({ label: ph('colAvgOf', { measure: fieldLabel(dsk, P.measure) }), align: 'num' });
+    R.headline = ph('distHeadline', { label: fmtInt(rows.length) + ' ' + label, dim: fieldLabel(dsk, P.dimension) });
+    R.table = {
+      cols: cols3,
+      rows: ks3.map(function (k, i) {
+        var row = [k, fmtInt(g3[k].length), shares3[i].toFixed(1) + '%'];
+        if (hasM) {
+          var mv3 = measureVals(dsk, g3[k], P.measure);
+          if (mv3.nulls) R.stats.nulls[P.measure] = (R.stats.nulls[P.measure] || 0) + mv3.nulls;
+          row.push(mv3.vals.length ? fmtNum(mean(mv3.vals)) : '-');
+        }
+        return row;
+      })
+    };
+    R.csv = {
+      name: 'distribution',
+      cols: [fieldLabel(dsk, P.dimension), 'count', 'share_pct'].concat(hasM ? ['avg_' + P.measure] : []),
+      rows: ks3.map(function (k, i) {
+        var mv4 = hasM ? measureVals(dsk, g3[k], P.measure) : null;
+        return [k, g3[k].length, shares3[i].toFixed(1)].concat(hasM ? [mv4.vals.length ? mean(mv4.vals) : ''] : []);
+      })
+    };
+    if (ks3.length) R.bullets.push(ph('distLeads', { group: ks3[0], share: shares3[0].toFixed(1) + '%' }));
+    addFollowups([]);
+    return finish();
+  }
+
+  if (P.op === 'list') {
+    if (!rows.length) return emptyOut();
+    var cols5 = projectCols(dsk, P.measure);
+    var shown = rows.slice(0, LIST_CAP);
+    R.headline = ph('listHeadline', { n: fmtInt(rows.length), label: label });
+    R.table = makeTable(dsk, cols5, shown);
+    if (rows.length > LIST_CAP) R.bullets.push(ph('listCapNote', { shown: LIST_CAP, total: fmtInt(rows.length) }));
+    R.csv = { name: 'list', cols: cols5.map(function (f) { return fieldLabel(dsk, f); }), rows: rows.map(function (r) { return cols5.map(function (f) { return r[f]; }); }) };
+    addFollowups([]);
+    return finish();
+  }
+
+  if (P.op === 'detail') {
+    var ef = d.entityField;
+    if (!ef || !P.entityRef) { R.headline = ph('noEntity', { ref: P.entityRef || '', field: ef ? fieldLabel(dsk, ef) : 'an entity field' }); return finish(); }
+    var needle = String(P.entityRef).toLowerCase();
+    var matches = d.rows.filter(function (r) { return String(r[ef] || '').toLowerCase().indexOf(needle) !== -1; });
+    if (!matches.length) {
+      /* Text-search fallback across text fields before giving up. */
+      var textFields = Object.keys(d.fields).filter(function (f) { return d.fields[f].type === 'text'; });
+      matches = d.rows.filter(function (r) {
+        return textFields.some(function (f) { return String(r[f] || '').toLowerCase().indexOf(needle) !== -1; });
+      });
+    }
+    R.stats.matched = matches.length;
+    if (!matches.length) { R.headline = ph('noEntity', { ref: P.entityRef, field: fieldLabel(dsk, ef) }); return finish(); }
+    if (matches.length > 8) { R.headline = ph('narrowDown', { n: fmtInt(matches.length) }); return finish(); }
+    if (matches.length > 1) {
+      R.headline = ph('disambigHeadline');
+      R.chips = matches.map(function (r) { return { label: String(r[ef]), ask: 'details on ' + r[ef] }; });
+      return finish();
+    }
+    var row = matches[0];
+    R.headline = ph('detailHeadline', { id: String(row[ef]) });
+    R.table = {
+      cols: [{ label: ph('colField'), align: 'left' }, { label: ph('colValue'), align: 'left' }],
+      rows: Object.keys(d.fields).map(function (f) { return [fieldLabel(dsk, f), cellText(dsk, f, row[f])]; })
+    };
+    R.csv = { name: 'detail', cols: ['field', 'value'], rows: Object.keys(d.fields).map(function (f) { return [fieldLabel(dsk, f), row[f]]; }) };
+    addFollowups([]);
+    return finish();
+  }
+
+  if (P.op === 'compare') {
+    var a = P.compareVals[0], b = P.compareVals[1];
+    var fa = applyFilters(dsk, P.filters.concat([{ kind: 'cat', field: a.field, op: 'eq', value: a.value }]), P.timeframe);
+    var fb = applyFilters(dsk, P.filters.concat([{ kind: 'cat', field: b.field, op: 'eq', value: b.value }]), P.timeframe);
+    R.headline = ph('compareHeadline', { a: a.value, b: b.value });
+    var rows6 = [[ph('colCount'), fmtInt(fa.rows.length), fmtInt(fb.rows.length)]];
+    var csvRows = [['count', fa.rows.length, fb.rows.length]];
+    (d.measures || []).forEach(function (m) {
+      var va = measureVals(dsk, fa.rows, m), vb = measureVals(dsk, fb.rows, m);
+      rows6.push([ph('colAvgOf', { measure: fieldLabel(dsk, m) }), va.vals.length ? fmtNum(mean(va.vals)) : '-', vb.vals.length ? fmtNum(mean(vb.vals)) : '-']);
+      rows6.push([ph('rowTotalOf', { measure: fieldLabel(dsk, m) }), va.vals.length ? fmtNum(va.vals.reduce(function (x, y) { return x + y; }, 0)) : '-', vb.vals.length ? fmtNum(vb.vals.reduce(function (x, y) { return x + y; }, 0)) : '-']);
+      csvRows.push(['avg_' + m, va.vals.length ? mean(va.vals) : '', vb.vals.length ? mean(vb.vals) : '']);
+      if (va.nulls + vb.nulls) R.stats.nulls[m] = (R.stats.nulls[m] || 0) + va.nulls + vb.nulls;
+    });
+    R.table = { cols: [{ label: ph('colMetric'), align: 'left' }, { label: a.value, align: 'num' }, { label: b.value, align: 'num' }], rows: rows6 };
+    R.csv = { name: 'compare', cols: ['metric', String(a.value), String(b.value)], rows: csvRows };
+    R.stats.matched = fa.rows.length + fb.rows.length;
+    addFollowups([]);
+    return finish();
+  }
+
+  if (P.op === 'trend') {
+    if (!d.dateField) { R.headline = ph('noDateField', { label: label }); return finish(); }
+    if (!rows.length) return emptyOut();
+    var pairs = [];
+    var tNulls = 0;
+    rows.forEach(function (r) {
+      var t = parseDateVal(r[d.dateField]);
+      if (t === null) { tNulls++; return; }
+      var v = null;
+      if (P.measure && r[P.measure] != null && !isNaN(Number(r[P.measure]))) v = Number(r[P.measure]);
+      pairs.push({ t: t, v: P.measure ? v : null });
+    });
+    if (tNulls) R.stats.nulls[d.dateField] = (R.stats.nulls[d.dateField] || 0) + tNulls;
+    var tr = bucketTrend(pairs, !!P.measure);
+    if (!tr) { R.headline = ph('trendShort'); return finish(); }
+    if (P.measure && tr.measureNulls) R.stats.nulls[P.measure] = (R.stats.nulls[P.measure] || 0) + tr.measureNulls;
+    var nnSeries = tr.series.filter(function (x) { return x != null; });
+    var maxV = nnSeries.length ? Math.max.apply(null, nnSeries) : 0;
+    R.headline = ph('trendHeadline', { label: fmtInt(rows.length) + ' ' + label + (P.measure ? ' (avg ' + fieldLabel(dsk, P.measure) + ')' : ''), unit: tr.unit });
+    R.table = {
+      cols: [{ label: tr.unit, align: 'left' }, { label: P.measure ? ph('colAvgOf', { measure: fieldLabel(dsk, P.measure) }) : ph('colCount'), align: 'num' }, { label: ph('colBar'), align: 'left' }],
+      rows: tr.buckets.map(function (bk, i) {
+        var v = tr.series[i];
+        var barLen = v != null && v > 0 && maxV > 0 ? Math.max(1, Math.round(v / maxV * 20)) : 0;
+        return [bk.label, fmtNum(v), barLen ? new Array(barLen + 1).join('#') : ''];
+      })
+    };
+    R.csv = { name: 'trend', cols: [tr.unit, P.measure ? 'avg_' + P.measure : 'count'], rows: tr.buckets.map(function (bk, i) { return [bk.label, tr.series[i]]; }) };
+    if (tr.verdict) {
+      var vv = tr.verdict;
+      if (vv.zeroBase) {
+        R.bullets.push(vv.dir === 'rising' ? ph('trendZeroBaseRising', { b: fmtNum(vv.lastMean) }) : ph('trendZeroBaseFlat'));
+      } else {
+        var key = vv.dir === 'rising' ? 'trendRising' : vv.dir === 'falling' ? 'trendFalling' : 'trendFlat';
+        R.bullets.push(ph(key, { a: fmtNum(vv.firstMean), b: fmtNum(vv.lastMean), delta: (vv.deltaPct >= 0 ? '+' : '') + vv.deltaPct.toFixed(1) + '%' }));
+      }
+      R.bullets.push(ph('noProjection'));
+    } else {
+      R.bullets.push(tr.nullThird ? ph('trendNullThird') : ph('trendShort'));
+    }
+    addFollowups([]);
+    return finish();
+  }
+
+  if (P.op === 'recency') {
+    if (!d.dateField) { R.headline = ph('noDateField', { label: label }); return finish(); }
+    if (!rows.length) return emptyOut();
+    var n7 = P.n || 5;
+    var dated = rows.map(function (r) { return { r: r, t: parseDateVal(r[d.dateField]) }; })
+      .filter(function (x) { return x.t !== null; });
+    var dNulls = rows.length - dated.length;
+    if (dNulls) R.stats.nulls[d.dateField] = (R.stats.nulls[d.dateField] || 0) + dNulls;
+    dated.sort(function (x, y) { return P.dir === 'old' ? x.t - y.t : y.t - x.t; });
+    var picked = dated.slice(0, n7).map(function (x) { return x.r; });
+    var cols7 = projectCols(dsk, P.measure);
+    R.headline = ph('recencyHeadline', { dir: P.dir === 'old' ? ph('dirOldest') : ph('dirNewest'), n: picked.length, label: label, field: fieldLabel(dsk, d.dateField) });
+    R.table = makeTable(dsk, cols7, picked);
+    R.csv = { name: 'recency', cols: cols7.map(function (f) { return fieldLabel(dsk, f); }), rows: picked.map(function (r) { return cols7.map(function (f) { return r[f]; }); }) };
+    if (picked.length && d.entityField) R.followups.push(ph('chipDetail', { id: picked[0][d.entityField] }));
+    addFollowups(R.followups);
+    return finish();
+  }
+
+  if (P.op === 'glossary') {
+    var g5 = P.glossary[0];
+    R.headline = g5.term;
+    R.bullets.push(g5.def);
+    addFollowups([]);
+    return finish();
+  }
+
+  if (P.op === 'meta') {
+    R.headline = ph('helpHeadline');
+    R.bullets = [ph('cap1'), ph('cap2'), ph('cap3'), ph('cap4'), ph('helpData', { census: censusText() })];
+    dsKeys().forEach(function (k) {
+      var dd = ds(k);
+      R.bullets.push((dd.label || k) + ' fields: ' + Object.keys(dd.fields).map(function (f) { return fieldLabel(k, f); }).join(', '));
+    });
+    addFollowups([]);
+    return finish();
+  }
+
+  R.headline = ph('clarifyNothing');
+  return finish();
+}
+
+/* ---- Insight engine -----------------------------------------------------
+   WHY: "summarize" must be evidence-backed and deterministic - fixed salience
+   formulas, no RNG, watch rules (domain thresholds) always outrank statistics. */
+function ruleTest(row, t) {
+  var v = row[t.field];
+  if (v == null || v === '') return false;
+  return testCmp(v, t.op, t.value);
+}
+function watchRuleInsights() {
+  var out = [];
+  (Array.isArray(CFG.watchRules) ? CFG.watchRules : []).forEach(function (r) {
+    if (!isObj(r) || !r.dataset || !CFG.datasets[r.dataset] || !isObj(r.test)) return;
+    var d = ds(r.dataset);
+    var base = isObj(r.where) ? d.rows.filter(function (row) { return ruleTest(row, r.where); }) : d.rows;
+    var hitRows = base.filter(function (row) { return ruleTest(row, r.test); });
+    if (!hitRows.length) return;
+    var sev = String(r.severity || 'medium').toLowerCase();
+    var sal = sev === 'high' ? 90 : sev === 'low' ? 60 : 75;
+    var share = hitRows.length / d.rows.length;
+    if (share > 0.1) sal += 5;
+    var ids = d.entityField ? hitRows.slice(0, 3).map(function (row) { return String(row[d.entityField]); }) : [];
+    out.push({
+      type: 'watch', salience: sal,
+      headline: ph('watchRuleHit', { label: r.label, n: fmtInt(hitRows.length), total: fmtInt(d.rows.length) }),
+      evidence: [
+        ph('watchEvidenceShare', { share: fmtPct(share), label: d.label || r.dataset, ids: ids.length ? ph('watchEvidenceIds', { ids: ids.join(', ') }) : '' }),
+        ph('watchEvidenceRule', { rule: fieldLabel(r.dataset, r.test.field) + ' ' + r.test.op + ' ' + fmtNum(r.test.value) + (isObj(r.where) ? ' where ' + fieldLabel(r.dataset, r.where.field) + ' ' + r.where.op + ' ' + r.where.value : '') })
+      ],
+      method: ph('watchMethod', { sev: sev })
+    });
+  });
+  return out;
+}
+function statInsights() {
+  var out = [];
+  dsKeys().forEach(function (k) {
+    var d = ds(k), m = META[k], label = d.label || k, total = d.rows.length;
+    /* Concentration: top-1 share vs uniform, scaled 40-100, needs 3+ groups.
+       Computed by row count AND by each measure's group sums (spec 6.2), so
+       "team X holds 60% of total value" is reachable, not just headcounts. */
+    (d.dimensions || []).forEach(function (dim) {
+      var g = groupBy(d.rows, dim);
+      var ks = Object.keys(g).sort(function (a, b) { return g[b].length - g[a].length; });
+      var kn = ks.length;
+      if (kn < 3) return;
+      var top1 = g[ks[0]].length / total;
+      var uniform = 1 / kn;
+      var sal = 40 + 60 * Math.max(0, (top1 - uniform)) / (1 - uniform);
+      var top3 = ks.slice(0, 3).reduce(function (acc, kk) { return acc + g[kk].length; }, 0) / total;
+      if (sal >= 45) {
+        out.push({
+          type: 'concentration', salience: Math.round(sal), dsk: k,
+          headline: ph('concHeadline', { group: ks[0], share: fmtPct(top1), label: label, dim: fieldLabel(k, dim) }),
+          evidence: [ph('concEvidence', { dim: fieldLabel(k, dim), share: fmtPct(top3), total: fmtInt(total), k: kn })],
+          method: ph('concMethod', { k: kn })
+        });
+      }
+      (d.measures || []).forEach(function (meas) {
+        var sums = {}, grand = 0;
+        Object.keys(g).forEach(function (kk) {
+          var mvC = measureVals(k, g[kk], meas);
+          sums[kk] = mvC.vals.reduce(function (x, y) { return x + y; }, 0);
+          grand += sums[kk];
+        });
+        if (grand <= 0) return;
+        var ksM = Object.keys(sums).sort(function (a, b) { return sums[b] - sums[a]; });
+        var top1M = sums[ksM[0]] / grand;
+        var salM = 40 + 60 * Math.max(0, (top1M - uniform)) / (1 - uniform);
+        if (salM < 45) return;
+        var top3M = ksM.slice(0, 3).reduce(function (acc, kk) { return acc + sums[kk]; }, 0) / grand;
+        out.push({
+          type: 'concentration', salience: Math.round(salM), dsk: k, measure: meas,
+          headline: ph('concMeasureHeadline', { group: ksM[0], share: fmtPct(top1M), measure: fieldLabel(k, meas), label: label, dim: fieldLabel(k, dim) }),
+          evidence: [ph('concMeasureEvidence', { dim: fieldLabel(k, dim), share: fmtPct(top3M), total: fmtNum(grand) + unitSuffix(k, meas), measure: fieldLabel(k, meas) })],
+          method: ph('concMeasureMethod', { measure: fieldLabel(k, meas), k: kn })
+        });
+      });
+      /* Imbalance/absence: a group far below its uniform expectation, or an
+         empty extreme bucket on a declared ordinal. */
+      var smallest = ks[kn - 1];
+      var actual = g[smallest].length / total;
+      if (actual < 0.2 * uniform) {
+        var sal2 = Math.round(35 + 20 * (1 - actual / (0.2 * uniform)));
+        out.push({
+          type: 'imbalance', salience: Math.min(55, sal2), dsk: k,
+          headline: ph('imbHeadline', { group: smallest, label: label, dim: fieldLabel(k, dim) }),
+          evidence: [ph('imbEvidence', { n: fmtInt(g[smallest].length), actual: fmtPct(actual), expected: fmtPct(uniform) })],
+          method: ph('imbMethod')
+        });
+      }
+      var order = fieldSpec(k, dim).order;
+      if (Array.isArray(order) && order.length >= 2) {
+        [order[0], order[order.length - 1]].forEach(function (extreme) {
+          if (!g[extreme]) {
+            out.push({
+              type: 'imbalance', salience: 45, dsk: k,
+              headline: ph('imbEmptyHeadline', { label: label, extreme: extreme, dim: fieldLabel(k, dim) }),
+              evidence: [ph('imbEmptyEvidence', { order: order.join(' to '), extreme: extreme })],
+              method: ph('imbEmptyMethod')
+            });
+          }
+        });
+      }
+    });
+    /* Outliers: z-score at n>=12, IQR fence at 5<=n<12; rows named. */
+    (d.measures || []).forEach(function (meas) {
+      var vals = m.nums[meas] || [];
+      var n = vals.length;
+      if (n < 5) return;
+      var items = [], sal3 = 0, methodTxt = '';
+      if (n >= 12) {
+        var mu = mean(vals), sd = stdev(vals, mu);
+        if (!sd) return;
+        var maxZ = 0;
+        d.rows.forEach(function (r) {
+          var v = r[meas];
+          if (v == null || v === '' || isNaN(Number(v))) return;
+          var z = (Number(v) - mu) / sd;
+          if (Math.abs(z) >= 2.5) {
+            maxZ = Math.max(maxZ, Math.abs(z));
+            items.push(ph('outlierItemZ', { id: d.entityField ? String(r[d.entityField]) : ph('outlierRowWord'), value: fmtNum(v) + unitSuffix(k, meas), z: z.toFixed(1) }));
+          }
+        });
+        sal3 = Math.min(85, 45 + 10 * (maxZ - 2.5));
+        methodTxt = ph('outlierZMethod', { mu: fmtNum(mu), sd: fmtNum(sd), n: n });
+      } else {
+        var sorted = vals.slice().sort(function (a, b) { return a - b; });
+        var q1 = quantile(sorted, 0.25), q3 = quantile(sorted, 0.75), iqr = q3 - q1;
+        if (!iqr) return;
+        var maxExcess = 0;
+        d.rows.forEach(function (r) {
+          var v = r[meas];
+          if (v == null || v === '' || isNaN(Number(v))) return;
+          var x = Number(v);
+          if (x > q3 + 1.5 * iqr || x < q1 - 1.5 * iqr) {
+            maxExcess = Math.max(maxExcess, Math.abs(x > q3 ? x - (q3 + 1.5 * iqr) : (q1 - 1.5 * iqr) - x) / iqr);
+            items.push(ph('outlierItem', { id: d.entityField ? String(r[d.entityField]) : ph('outlierRowWord'), value: fmtNum(x) + unitSuffix(k, meas) }));
+          }
+        });
+        sal3 = Math.min(85, 45 + 10 * maxExcess);
+        methodTxt = ph('outlierIqrMethod', { n: n });
+      }
+      if (items.length) {
+        out.push({
+          type: 'outlier', salience: Math.round(sal3), dsk: k, measure: meas,
+          headline: ph('outlierHeadline', { n: fmtInt(items.length), word: ph(items.length > 1 ? 'outlierMany' : 'outlierOne'), measure: fieldLabel(k, meas), label: label }),
+          evidence: [items.slice(0, 4).join('; ')],
+          method: methodTxt
+        });
+      }
+    });
+    /* Trend on row counts AND on each measure's mean when a date field exists
+       (spec 6.4), so "average value is rising" is a reachable finding. */
+    if (d.dateField && m.dates.length >= 6) {
+      var pairs = m.dates.map(function (t) { return { t: t, v: null }; });
+      var tr = bucketTrend(pairs, false);
+      if (tr && tr.verdict && tr.verdict.dir !== 'flat') {
+        var vp = tr.verdict;
+        var deltaTxt = vp.deltaPct == null ? '+' + fmtNum(vp.lastMean) : (vp.deltaPct >= 0 ? '+' : '') + vp.deltaPct.toFixed(1) + '%';
+        out.push({
+          type: 'trend', salience: Math.round(40 + (vp.deltaPct == null ? 45 : Math.min(45, Math.abs(vp.deltaPct) / 2))), dsk: k,
+          headline: ph('trendInsightHeadline', { label: label, dir: vp.dir, delta: deltaTxt }),
+          evidence: [ph('trendInsightEvidence', { a: fmtNum(vp.firstMean), unit: tr.unit, b: fmtNum(vp.lastMean) }), ph('noProjection')],
+          method: ph('trendInsightMethod', { n: tr.buckets.length, unit: tr.unit })
+        });
+      }
+      (d.measures || []).forEach(function (meas) {
+        var mPairs = [];
+        d.rows.forEach(function (r) {
+          var t = parseDateVal(r[d.dateField]);
+          if (t === null) return;
+          var v = (r[meas] == null || r[meas] === '' || isNaN(Number(r[meas]))) ? null : Number(r[meas]);
+          mPairs.push({ t: t, v: v });
+        });
+        var trM = bucketTrend(mPairs, true);
+        if (!trM || !trM.verdict || trM.verdict.dir === 'flat') return;
+        var vm = trM.verdict;
+        var deltaM = vm.deltaPct == null ? '+' + fmtNum(vm.lastMean) : (vm.deltaPct >= 0 ? '+' : '') + vm.deltaPct.toFixed(1) + '%';
+        out.push({
+          type: 'trend', salience: Math.round(40 + (vm.deltaPct == null ? 45 : Math.min(45, Math.abs(vm.deltaPct) / 2))), dsk: k, measure: meas,
+          headline: ph('trendMeasureInsightHeadline', { measure: fieldLabel(k, meas), label: label, dir: vm.dir, delta: deltaM }),
+          evidence: [ph('trendInsightEvidence', { a: fmtNum(vm.firstMean), unit: trM.unit, b: fmtNum(vm.lastMean) }), ph('noProjection')],
+          method: ph('trendInsightMethod', { n: trM.buckets.length, unit: trM.unit })
+        });
+      });
+      /* Recency/staleness read against today. */
+      var newest = m.dates[m.dates.length - 1];
+      var ageDays = Math.max(0, Math.round((Date.now() - newest) / 86400000));
+      var p90 = quantile(m.dates.slice(), 0.1);
+      var older = m.dates.filter(function (t) { return t < p90; }).length;
+      out.push({
+        type: 'recency', salience: Math.min(50, 30 + Math.min(20, Math.round(ageDays / 7))), dsk: k,
+        headline: ph('recencyInsightHeadline', { label: label.replace(/s$/, ''), age: fmtInt(ageDays) }),
+        evidence: [ph('recencyInsightEvidence', { span: dsSpan(k), n: fmtInt(older), date: fmtDateProse(p90) })],
+        method: ph('recencyInsightMethod')
+      });
+    }
+    /* Data-quality caveats: null rates over 5%, type-conformance failures
+       over 2% on declared number/date fields, and duplicate entity ids. */
+    Object.keys(d.fields).forEach(function (f) {
+      var nulls = m.nulls[f] || 0;
+      var rate = nulls / total;
+      if (rate > 0.05) {
+        out.push({
+          type: 'quality', salience: Math.round(25 + rate * 100), dsk: k,
+          headline: ph('nullRateHeadline', { field: fieldLabel(k, f), rate: fmtPct(rate), label: label }),
+          evidence: [ph('nullRateEvidence', { n: fmtInt(nulls), total: fmtInt(total), field: fieldLabel(k, f) })],
+          method: ph('nullRateMethod')
+        });
+      }
+      var ftype = d.fields[f].type;
+      if (ftype === 'number' || ftype === 'date') {
+        var bad = 0, nonNull = 0;
+        d.rows.forEach(function (r) {
+          var v = r[f];
+          if (v == null || v === '') return;
+          nonNull++;
+          if (ftype === 'number' ? isNaN(Number(v)) : parseDateVal(v) === null) bad++;
+        });
+        if (nonNull && bad / nonNull > 0.02) {
+          out.push({
+            type: 'quality', salience: Math.round(25 + (bad / nonNull) * 100), dsk: k,
+            headline: ph('mixedTypeHeadline', { field: fieldLabel(k, f), n: fmtInt(bad), type: ftype, label: label }),
+            evidence: [ph('mixedTypeEvidence', { n: fmtInt(bad), nonNull: fmtInt(nonNull), type: ftype })],
+            method: ph('mixedTypeMethod')
+          });
+        }
+      }
+    });
+    if (d.entityField) {
+      var seen = {}, dups = [];
+      m.entityVals.forEach(function (v) {
+        if (seen[v]) dups.push(v); else seen[v] = true;
+      });
+      if (dups.length) {
+        out.push({
+          type: 'quality', salience: 30, dsk: k,
+          headline: ph('dupHeadline', { n: fmtInt(dups.length), field: fieldLabel(k, d.entityField), label: label }),
+          evidence: [ph('dupEvidence', { ids: dups.slice(0, 3).join(', ') })],
+          method: ph('dupMethod')
+        });
+      }
+    }
+  });
+  return out;
+}
+function allInsights() {
+  var watch = watchRuleInsights();
+  var stats = statInsights();
+  var caveats = stats.filter(function (i) { return i.type === 'quality'; });
+  var rest = stats.filter(function (i) { return i.type !== 'quality'; });
+  function bySal(a, b) { return (b.salience - a.salience) || (a.headline < b.headline ? -1 : 1); }
+  watch.sort(bySal); rest.sort(bySal); caveats.sort(bySal);
+  /* A measure with >25% nulls also annotates every insight that leaned on it
+     (spec 6.7) - the caveat travels with the reading, not just the tail. */
+  rest.forEach(function (i) {
+    if (!i.measure || !i.dsk) return;
+    var tot = ds(i.dsk).rows.length;
+    var rate = tot ? (META[i.dsk].nulls[i.measure] || 0) / tot : 0;
+    if (rate > 0.25) i.evidence.push(ph('nullAnnotate', { measure: fieldLabel(i.dsk, i.measure), rate: fmtPct(rate) }));
+  });
+  /* Heavy null caveats (>25 pts of rate) escalate out of the caveat tail. */
+  var promoted = caveats.filter(function (c) { return c.salience >= 50; });
+  var tail = caveats.filter(function (c) { return c.salience < 50; });
+  return { watch: watch, rest: promoted.concat(rest).sort(bySal), caveats: tail };
+}
+function insightBullet(i) {
+  return ph('insightFormat', { headline: i.headline, evidence: i.evidence.join('; '), method: i.method, sal: i.salience });
+}
+function execInsight(P) {
+  var t0 = Date.now();
+  var sub = P.sub || 'summary';
+  var g = allInsights();
+  var ordered = g.watch.concat(g.rest);
+  var R = {
+    kind: 'answer', headline: '', bullets: [], table: null, chips: [], followups: [], csv: null, flags: [],
+    stats: { scanned: totalRows(), matched: totalRows(), nulls: {}, latencyMs: 0 },
+    traceText: ph('understood', { trace: 'op=insight:' + sub })
+  };
+  if (sub === 'important') {
+    R.headline = ph('importantHeadline');
+    if (!ordered.length) R.bullets.push(ph('noInsights'));
+    else {
+      R.bullets.push(insightBullet(ordered[0]));
+      ordered.slice(1, 3).forEach(function (i, idx) {
+        R.bullets.push((idx === 0 ? ph('alsoNotable') + ': ' : '') + insightBullet(i));
+      });
+    }
+  } else if (sub === 'anomalies') {
+    R.headline = ph('anomaliesHeadline');
+    var an = ordered.filter(function (i) { return i.type === 'outlier' || i.type === 'watch' || i.type === 'imbalance'; });
+    if (!an.length) R.bullets.push(ph('noInsights'));
+    else an.slice(0, 6).forEach(function (i) { R.bullets.push(insightBullet(i)); });
+  } else {
+    R.headline = ph('summarizeHeadline', { census: censusText() });
+    if (!ordered.length && !g.caveats.length) R.bullets.push(ph('noInsights'));
+    ordered.slice(0, 6).forEach(function (i) { R.bullets.push(insightBullet(i)); });
+    if (g.caveats.length) {
+      R.bullets.push(ph('caveatsTitle') + ':');
+      g.caveats.slice(0, 3).forEach(function (i) { R.bullets.push(insightBullet(i)); });
+    }
+  }
+  R.followups = [ph('chipSummarize') === R.headline ? 'anomalies' : (sub === 'summary' ? 'what matters most' : ph('chipSummarize'))];
+  if (dsKeys().some(function (k) { return ds(k).dateField; })) R.followups.push(ph('chipTrend'));
+  R.followups = R.followups.slice(0, 3);
+  R.stats.latencyMs = Date.now() - t0;
+  return R;
+}
+/* ---- Exports: CSV, markdown, handoff pack -------------------------------
+   WHY: the handoff pack is the honest path for questions this engine refuses;
+   it must carry census, slice and a grounding contract so the receiving model
+   cannot plausibly fabricate. */
+function slugify(s) {
+  return String(s || 'dashboard').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+}
+function stampYmd() {
+  var d = new Date();
+  return '' + d.getFullYear() + pad2(d.getMonth() + 1) + pad2(d.getDate());
+}
+function csvFromResult(model) {
+  if (!model.csv) return null;
+  var lines = [model.csv.cols.map(csvCell).join(',')];
+  model.csv.rows.forEach(function (r) { lines.push(r.map(csvCell).join(',')); });
+  return lines.join('\r\n');
+}
+function downloadResultCsv(model) {
+  var text = csvFromResult(model);
+  if (text == null) return false;
+  downloadText(slugify(CFG.title) + '-' + (model.csv.name || 'result') + '-' + stampYmd() + '.csv', text, 'text/csv;charset=utf-8');
+  return true;
+}
+function markdownFromResult(model) {
+  var out = [];
+  if (model.headline) out.push('### ' + model.headline);
+  if (model.assumption) out.push('', '_' + model.assumption + '_');
+  (model.bullets || []).forEach(function (b) { out.push('- ' + b); });
+  if (model.table) {
+    out.push('');
+    out.push('| ' + model.table.cols.map(function (c) { return c.label; }).join(' | ') + ' |');
+    out.push('|' + model.table.cols.map(function (c) { return c.align === 'num' ? ' ---: |' : ' --- |'; }).join(''));
+    model.table.rows.forEach(function (r) { out.push('| ' + r.join(' | ') + ' |'); });
+  }
+  if (model.traceText) out.push('', model.traceText);
+  if (model.methodText) out.push(model.methodText);
+  return out.join('\n');
+}
+function schemaLines() {
+  var out = [];
+  dsKeys().forEach(function (k) {
+    var d = ds(k);
+    out.push('');
+    out.push('Dataset "' + (d.label || k) + '" (' + fmtInt(d.rows.length) + ' rows' + (dsSpan(k) ? ', ' + dsSpan(k) : '') + '):');
+    out.push('');
+    out.push('| field | type | notes |');
+    out.push('| --- | --- | --- |');
+    Object.keys(d.fields).forEach(function (f) {
+      var sp = d.fields[f];
+      var notes = [];
+      if (sp.label && sp.label !== f) notes.push('label: ' + sp.label);
+      if (sp.unit) notes.push('unit: ' + sp.unit);
+      if (sp.aliases && sp.aliases.length) notes.push('aliases: ' + sp.aliases.join(', '));
+      if (sp.order) notes.push('order: ' + sp.order.join(' to '));
+      if (f === d.entityField) notes.push('entity field');
+      if (f === d.dateField) notes.push('date field');
+      if (sp.type === 'date') notes.push(ph('dateParseNote'));
+      out.push('| ' + f + ' | ' + (sp.type || 'text') + ' | ' + (notes.join('; ') || '-') + ' |');
+    });
+  });
+  return out;
+}
+function sliceCsv(dsk, rows) {
+  var d = ds(dsk);
+  var cols = Object.keys(d.fields);
+  var lines = [cols.join(',')];
+  rows.slice(0, SLICE_CAP).forEach(function (r) {
+    lines.push(cols.map(function (f) { return csvCell(r[f]); }).join(','));
+  });
+  return lines.join('\n');
+}
+function buildHandoffPack(question, parse) {
+  var out = [];
+  out.push('# Analyst handoff pack - ' + CFG.title + ' (' + fmtDateProse(Date.now()) + ')');
+  out.push('');
+  out.push(ph('packContext', { title: CFG.title, version: VERSION }));
+  out.push('');
+  out.push('## Question');
+  out.push('');
+  out.push(question || '(no question captured)');
+  var turns = S.entries.slice(-8).filter(function (e) { return e.role === 'user' || (e.role === 'card' && e.model && e.model.headline); }).slice(-4);
+  if (turns.length) {
+    out.push('');
+    out.push('Recent thread context (last ' + turns.length + ' turns):');
+    turns.forEach(function (e) {
+      out.push('- ' + (e.role === 'user' ? 'user: ' + e.text : 'analyst: ' + e.model.headline));
+    });
+  }
+  out.push('');
+  out.push('## Data census');
+  out.push('');
+  out.push(censusText());
+  schemaLines().forEach(function (l) { out.push(l); });
+  var gl = Object.keys(CFG.glossary || {});
+  if (gl.length) {
+    out.push('');
+    out.push('Glossary:');
+    gl.forEach(function (t) { out.push('- ' + t + ': ' + CFG.glossary[t]); });
+  }
+  out.push('');
+  out.push('## Relevant data slice');
+  /* The slice follows the question being packed: the current parse's filters
+     win (even for a refused or LOW question - the pack's primary use case),
+     then the last executed data parse, then whole-dataset distributions. */
+  var P = (parse && ((parse.filters || []).length || parse.timeframe)) ? parse : S.lastParse;
+  if (P && ((P.filters || []).length || P.timeframe)) {
+    var dsk = P.dataset || dsKeys()[0];
+    var res = applyFilters(dsk, P.filters, P.timeframe);
+    out.push('');
+    out.push('Rows matching the last parsed filters (' + P.trace.join(', ') + '): ' + fmtInt(res.rows.length) + ' rows' + (res.rows.length > SLICE_CAP ? ', truncated to the first ' + SLICE_CAP : '') + '.');
+    out.push('');
+    out.push('```csv');
+    out.push(sliceCsv(dsk, res.rows));
+    out.push('```');
+  } else {
+    dsKeys().forEach(function (k) {
+      var d = ds(k);
+      (d.dimensions || []).forEach(function (dim) {
+        var g = groupBy(d.rows, dim);
+        out.push('');
+        out.push('Distribution of ' + (d.label || k) + ' by ' + fieldLabel(k, dim) + ':');
+        Object.keys(g).sort(function (a, b) { return g[b].length - g[a].length; }).forEach(function (kk) {
+          out.push('- ' + kk + ': ' + fmtInt(g[kk].length) + ' (' + fmtPct(g[kk].length / d.rows.length) + ')');
+        });
+      });
+      if (d.rows.length <= SLICE_CAP) {
+        out.push('');
+        out.push('Full rows for "' + (d.label || k) + '" (' + fmtInt(d.rows.length) + ' rows, within the ' + SLICE_CAP + '-row cap):');
+        out.push('');
+        out.push('```csv');
+        out.push(sliceCsv(k, d.rows));
+        out.push('```');
+      }
+    });
+  }
+  out.push('');
+  out.push('## Response contract');
+  out.push('');
+  out.push('- ' + ph('packContract1'));
+  out.push('- ' + ph('packContract2'));
+  out.push('- ' + ph('packContract3'));
+  out.push('- ' + ph('packContract4', { cap: SLICE_CAP }));
+  out.push('- ' + ph('packContract5'));
+  return out.join('\n');
+}
+
+/* ---- Provider extension point (Lane 3, OFF by default) ------------------
+   WHY: environments with a live model endpoint can register one; the component
+   still enforces grounding, a two-pass cap and a deterministic timeout fallback
+   so a provider can never quietly fabricate numbers. */
+function registerProvider(p) {
+  if (!isObj(p) || typeof p.ask !== 'function' || !p.label) {
+    throw new Error('AIA.registerProvider expects {label, ask: function(payload)}');
+  }
+  PROVIDER = p;
+  var pill = byId('aia-provider-pill');
+  if (pill) { pill.textContent = String(p.label); pill.hidden = false; }
+}
+function execQueryObject(q) {
+  /* Provider-issued queries run through the SAME deterministic engine. */
+  q = isObj(q) ? q : {};
+  var P = {
+    raw: '(provider query)', op: q.op || 'count', sub: null, fn: q.fn || null,
+    dir: q.dir || 'top', dataset: q.dataset && CFG.datasets[q.dataset] ? q.dataset : dsKeys()[0],
+    measure: q.measure || null, dimension: q.dimension || null,
+    filters: [], n: q.n || null, entityRef: q.entityRef || null, entityMatches: null,
+    timeframe: q.timeframe || null, compareVals: q.compareVals || [], glossary: [],
+    trace: ['provider query: ' + (q.op || 'count')], assumptions: [], alternatives: [],
+    unknown: [], coverage: 1, confidence: 'HIGH', lane3: false, quoted: [], rankByCount: !!q.rankByCount
+  };
+  (Array.isArray(q.filters) ? q.filters : []).forEach(function (f) {
+    if (!isObj(f) || !f.field) return;
+    var t = fieldSpec(P.dataset, f.field).type;
+    P.filters.push({
+      kind: t === 'number' ? 'range' : t === 'text' ? 'text' : 'cat',
+      field: f.field, op: f.op || 'eq', value: f.value
+    });
+  });
+  var R = execOp(P);
+  return {
+    headline: R.headline, bullets: R.bullets,
+    table: R.table ? { cols: R.table.cols.map(function (c) { return c.label; }), rows: R.table.rows } : null,
+    rowsScanned: R.stats.scanned, rowsMatched: R.stats.matched, nulls: R.stats.nulls
+  };
+}
+function extractNumbers(text) {
+  var out = [];
+  String(text || '').replace(/\d[\d,]*(\.\d+)?/g, function (m) { out.push(m); return m; });
+  return out;
+}
+function groundingCheck(answer, corpusText) {
+  /* A number is verified when its formatted or raw form appears in the corpus. */
+  var nums = [];
+  nums = nums.concat(extractNumbers(answer.headline));
+  (answer.bullets || []).forEach(function (b) { nums = nums.concat(extractNumbers(b)); });
+  var bad = nums.filter(function (n) {
+    var raw = n.split(',').join('');
+    return corpusText.indexOf(n) === -1 && corpusText.indexOf(raw) === -1;
+  });
+  return bad.length === 0;
+}
+function providerCorpus(queryResults) {
+  var parts = [censusText()];
+  (queryResults || []).forEach(function (r) { parts.push(JSON.stringify(r)); });
+  /* Include both raw and comma-formatted variants of every corpus number. */
+  var joined = parts.join(' ');
+  var extra = [];
+  joined.replace(/\d+(\.\d+)?/g, function (m) {
+    var n = Number(m);
+    if (isFinite(n) && Math.abs(n) >= 1000) extra.push(Math.round(n).toLocaleString('en-US'));
+    return m;
+  });
+  return joined + ' ' + extra.join(' ');
+}
+function providerAsk(question, done) {
+  var history = S.entries.slice(-8).map(function (e) {
+    return e.role === 'user' ? { role: 'user', content: e.text } : { role: 'assistant', content: (e.model && e.model.headline) || '' };
+  });
+  var payload = {
+    question: question, history: history, census: censusText(),
+    schema: schemaLines().join('\n'), queryEngine: execQueryObject
+  };
+  var settled = false;
+  var timer = setTimeout(function () {
+    if (settled) return;
+    settled = true;
+    done({ timeout: true });
+  }, PROVIDER_TIMEOUT_MS);
+  function finish(result) {
+    if (settled) return;
+    settled = true;
+    clearTimeout(timer);
+    done(result);
+  }
+  var queryResults = null;
+  function handle(resp, pass) {
+    if (!isObj(resp) || !resp.action) return finish({ error: 'malformed provider response' });
+    if (resp.action === 'query' && pass < 2) {
+      var qs = (Array.isArray(resp.queries) ? resp.queries : []).slice(0, 4);
+      queryResults = qs.map(execQueryObject);
+      payload.queryResults = queryResults;
+      Promise.resolve().then(function () { return PROVIDER.ask(payload); })
+        .then(function (r2) { handle(r2, pass + 1); }, function (e) { finish({ error: String(e && e.message || e) }); });
+      return;
+    }
+    if (resp.action === 'answer') {
+      var grounded = groundingCheck(resp, providerCorpus(queryResults));
+      return finish({ answer: resp, grounded: grounded, queryResults: queryResults });
+    }
+    if (resp.action === 'clarify') return finish({ clarify: resp });
+    if (resp.action === 'refuse') return finish({ refuse: resp });
+    return finish({ error: 'unsupported provider action "' + resp.action + '"' });
+  }
+  Promise.resolve().then(function () { return PROVIDER.ask(payload); })
+    .then(function (r) { handle(r, 1); }, function (e) { finish({ error: String(e && e.message || e) }); });
+}
+/* Late phrasebook entries kept with the table's discipline: every user-facing
+   string routes through PHRASE. */
+PHRASE.exportCsvDone = 'CSV download started.';
+PHRASE.exportMdDone = 'Answer copied as markdown.';
+PHRASE.exportHandoffDone = 'Handoff pack copied. Paste it into a full AI assistant.';
+PHRASE.pickOne = 'Pick one:';
+PHRASE.providerSources = 'Sources: {list}';
+
+/* ---- UI shell ------------------------------------------------------------ */
+function threadEl() { return byId('aia-thread'); }
+function scrollThread() { var t = threadEl(); if (t) t.scrollTop = t.scrollHeight; }
+function methodTextOf(stats, engineNote) {
+  var parts = [engineNote || ph('methodEngine'),
+    ph('methodScanned', { n: fmtInt(stats.scanned) }),
+    ph('methodMatched', { n: fmtInt(stats.matched) }),
+    stats.latencyMs + ' ms'];
+  var s = parts.join(' | ');
+  var nf = Object.keys(stats.nulls || {}).filter(function (f) { return stats.nulls[f] > 0; });
+  if (nf.length) {
+    s += ' | ' + nf.map(function (f) {
+      return ph('nullNote', { field: f, n: fmtInt(stats.nulls[f]), total: fmtInt(stats.scanned) });
+    }).join('; ');
+  }
+  return s;
+}
+function renderUser(text) {
+  var d = el('div', 'aia-user', text);
+  threadEl().appendChild(d);
+  scrollThread();
+}
+function renderThinking() {
+  var wrap = el('div', 'aia-bot');
+  var t = el('div', 'aia-think');
+  t.setAttribute('aria-label', ph('thinking'));
+  t.appendChild(el('span'));
+  t.appendChild(el('span'));
+  t.appendChild(el('span'));
+  wrap.appendChild(t);
+  threadEl().appendChild(wrap);
+  scrollThread();
+  return wrap;
+}
+function flashButton(btn, text) {
+  var old = btn.textContent;
+  btn.textContent = text;
+  btn.disabled = true;
+  setTimeout(function () { btn.textContent = old; btn.disabled = false; }, 1600);
+}
+function renderCard(model) {
+  var wrap = el('div', 'aia-bot');
+  var card = el('div', 'aia-card');
+  if (model.headline) {
+    var h = el('div', 'aia-headline', model.headline);
+    (model.flags || []).forEach(function (f) { h.appendChild(el('span', 'aia-flag', f)); });
+    card.appendChild(h);
+  }
+  if (model.assumption) card.appendChild(el('div', 'aia-trace', model.assumption));
+  if (model.bullets && model.bullets.length) {
+    var ul = el('ul');
+    model.bullets.forEach(function (b) { ul.appendChild(el('li', null, b)); });
+    card.appendChild(ul);
+  }
+  if (model.table && model.table.rows.length) {
+    var tw = el('div', 'aia-tablewrap');
+    var tb = el('table', 'aia-table');
+    var thead = el('thead'), trh = el('tr');
+    model.table.cols.forEach(function (c) {
+      trh.appendChild(el('th', c.align === 'num' ? 'aia-num' : null, c.label));
+    });
+    thead.appendChild(trh);
+    tb.appendChild(thead);
+    var tbody = el('tbody');
+    model.table.rows.forEach(function (r) {
+      var tr = el('tr');
+      r.forEach(function (cell, i) {
+        tr.appendChild(el('td', model.table.cols[i] && model.table.cols[i].align === 'num' ? 'aia-num' : null, cell));
+      });
+      tbody.appendChild(tr);
+    });
+    tb.appendChild(tbody);
+    tw.appendChild(tb);
+    card.appendChild(tw);
+  }
+  if (model.chips && model.chips.length) {
+    var chips = el('div', 'aia-chips');
+    model.chips.forEach(function (c) {
+      var b = el('button', 'aia-chip', c.label);
+      b.type = 'button';
+      b.addEventListener('click', function () { ask(c.ask || c.label); });
+      chips.appendChild(b);
+    });
+    card.appendChild(chips);
+  }
+  if (model.traceText) card.appendChild(el('div', 'aia-trace', model.traceText));
+  if (model.methodText) card.appendChild(el('div', 'aia-method', model.methodText));
+  if (model.showActions !== false) {
+    var actions = el('div', 'aia-actions');
+    if (model.csv) {
+      var bCsv = el('button', 'aia-btn', ph('actCsv'));
+      bCsv.type = 'button';
+      bCsv.addEventListener('click', function () {
+        if (downloadResultCsv(model)) flashButton(bCsv, ph('exportCsvDone'));
+      });
+      actions.appendChild(bCsv);
+    }
+    var bMd = el('button', 'aia-btn', ph('actMd'));
+    bMd.type = 'button';
+    bMd.addEventListener('click', function () {
+      Promise.resolve(copyText(markdownFromResult(model))).then(function (ok) {
+        flashButton(bMd, ok ? ph('copied') : ph('copyFailed'));
+      });
+    });
+    actions.appendChild(bMd);
+    var bHo = el('button', 'aia-btn', ph('actHandoff'));
+    bHo.type = 'button';
+    bHo.addEventListener('click', function () {
+      Promise.resolve(copyText(buildHandoffPack(model.question || '', model.parse || null))).then(function (ok) {
+        flashButton(bHo, ok ? ph('copied') : ph('copyFailed'));
+      });
+    });
+    actions.appendChild(bHo);
+    card.appendChild(actions);
+  }
+  if (model.followups && model.followups.length) {
+    var fu = el('div', 'aia-chips');
+    model.followups.slice(0, 3).forEach(function (q) {
+      var b2 = el('button', 'aia-chip', q);
+      b2.type = 'button';
+      b2.addEventListener('click', function () { ask(q); });
+      fu.appendChild(b2);
+    });
+    card.appendChild(fu);
+  }
+  wrap.appendChild(card);
+  threadEl().appendChild(wrap);
+  scrollThread();
+  return wrap;
+}
+
+/* ---- Persistence --------------------------------------------------------- */
+function persist() {
+  if (!S.storageKey) return;
+  try {
+    localStorage.setItem(S.storageKey, JSON.stringify({
+      open: S.open,
+      entries: S.entries.slice(-THREAD_CAP)
+    }));
+  } catch (e) { /* private mode or quota: persistence is best-effort */ }
+}
+function restore() {
+  if (!S.storageKey) return false;
+  var saved = null;
+  try { saved = JSON.parse(localStorage.getItem(S.storageKey) || 'null'); } catch (e) { saved = null; }
+  if (!saved || !Array.isArray(saved.entries) || !saved.entries.length) return false;
+  S.entries = saved.entries.slice(-THREAD_CAP);
+  S.entries.forEach(function (e) {
+    if (e.role === 'user') renderUser(e.text);
+    else if (e.role === 'card' && e.model) renderCard(e.model);
+  });
+  if (saved.open) openPanel(true, true);
+  return true;
+}
+function addEntry(e) {
+  S.entries.push(e);
+  if (S.entries.length > THREAD_CAP) S.entries = S.entries.slice(-THREAD_CAP);
+}
+
+/* ---- Boot/empty/clarify/refusal cards ------------------------------------ */
+function emptyStateCard() {
+  var model = {
+    headline: ph('emptyHeadline', { name: CFG.assistantName || 'Analyst' }),
+    bullets: [ph('cap1'), ph('cap2'), ph('cap3'), ph('cap4'), ph('censusLine', { census: censusText() })],
+    followups: (CFG.suggestedQuestions || []).slice(0, 5),
+    showActions: false
+  };
+  renderCard(model);
+}
+function bootProblemCard() {
+  var model = { showActions: false, bullets: [] };
+  if (VAL.errors.length) {
+    model.headline = ph('bootError', { errors: '' });
+    VAL.errors.forEach(function (e) { model.bullets.push(e); });
+  } else {
+    model.headline = ph('bootWarning', { warnings: '' });
+    VAL.warnings.forEach(function (w) { model.bullets.push(w); });
+  }
+  renderCard(model);
+}
+function defaultChips() {
+  var chips = [];
+  (CFG.suggestedQuestions || []).slice(0, 3).forEach(function (q) { chips.push({ label: q, ask: q }); });
+  chips.push({ label: ph('chipSummarize'), ask: ph('chipSummarize') });
+  return chips.slice(0, 4);
+}
+function clarifyModel(P, q) {
+  var bullets = [];
+  var dsk = P.dataset || dsKeys()[0];
+  var d = ds(dsk);
+  if (P.trace.length) bullets.push(ph('clarifyUnderstood', { trace: P.trace.join(' | ') }));
+  else bullets.push(ph('clarifyNothing'));
+  var chips = [];
+  if (P.lowReason === 'unknown' && P.unknown.length) {
+    bullets.push(ph('clarifyUnplaced', { token: P.unknown.join('", "') }));
+    /* A token naming an undeclared row field earns the honest variant: it IS
+       in the rows, just not declared to the assistant. */
+    var undeclared = ((META[dsk] && META[dsk].undeclared) || []).map(function (u) { return u.toLowerCase().replace(/[_-]+/g, ' '); });
+    if (undeclared.indexOf(String(P.unknown[0]).toLowerCase().replace(/[_-]+/g, ' ')) !== -1) {
+      bullets.push(ph('undeclaredField', { token: P.unknown[0] }));
+    } else {
+      bullets.push(ph('unknownTerm', { token: P.unknown[0] }));
+    }
+    /* With an unresolved dataset, list every dataset's fields - the unknown
+       term is named first, the dataset choice rides along. */
+    var fieldsTxt;
+    if (!P.dataset && dsKeys().length > 1) {
+      fieldsTxt = dsKeys().map(function (k2) {
+        return (ds(k2).label || k2) + ': ' + Object.keys(ds(k2).fields).map(function (f) { return fieldLabel(k2, f); }).join(', ');
+      }).join('; ');
+    } else {
+      fieldsTxt = Object.keys(d.fields).map(function (f) { return fieldLabel(dsk, f); }).join(', ');
+    }
+    bullets.push(ph('fieldsAvailable', { fields: fieldsTxt }));
+    chips = defaultChips();
+  } else if (P.lowReason === 'dataset') {
+    bullets.push(ph('whichDataset'));
+    chips = dsKeys().map(function (k) {
+      return { label: ds(k).label || k, ask: q + ' in ' + (ds(k).label || k) };
+    });
+  } else if (P.lowReason === 'no-datefield') {
+    bullets.push(ph('noDateField', { label: d.label || dsk }));
+    chips = defaultChips();
+  } else if (P.lowReason === 'no-measure') {
+    bullets.push(ph('noMeasure', { label: d.label || dsk }));
+    chips = defaultChips();
+  } else if (P.lowReason === 'compare-terms') {
+    var exVals = [];
+    if ((d.dimensions || []).length && META[dsk]) exVals = (META[dsk].values[(d.dimensions || [])[0]] || []).slice(0, 2);
+    bullets.push(ph('compareNeedsTwo', { a: exVals[0] || 'A', b: exVals[1] || 'B' }));
+    if (exVals.length === 2) chips.push({ label: 'compare ' + exVals[0] + ' vs ' + exVals[1] });
+    chips = chips.concat(defaultChips());
+  } else if (P.lowReason === 'agg-categorical') {
+    bullets.push(ph('aggCategorical', { field: fieldLabel(dsk, P.aggCatField || P.dimension) }));
+    chips = P.alternatives.slice(0, 4).map(function (a) { return { label: a.label, ask: a.label }; });
+  } else if (P.lowReason === 'competing') {
+    bullets.push(ph('competingReadings'));
+    chips = P.alternatives.slice(0, 4).map(function (a) { return { label: a.label, ask: a.label }; });
+  } else {
+    bullets.push(ph('clarifyTwoWays'));
+    if (P.alternatives.length) {
+      chips = P.alternatives.slice(0, 4).map(function (a) {
+        return { label: a.label, ask: a.label };
+      });
+    } else chips = defaultChips();
+  }
+  return {
+    headline: ph('clarifyHeadline'), bullets: bullets, chips: chips.slice(0, 4),
+    question: q, parse: P, showActions: false
+  };
+}
+function refuseJudgmentModel(q, note, P) {
+  return {
+    headline: ph('refuseJudgment', { offer: ph('refuseOffer') }),
+    bullets: [],
+    followups: [ph('chipSummarize')],
+    traceText: '',
+    methodText: note || ph('methodEngine'),
+    question: q,
+    parse: P || null
+  };
+}
+function refuseOutOfDataModel(q, note, P) {
+  return {
+    headline: ph('refuseOutOfData', { census: censusText() }),
+    bullets: [],
+    followups: [ph('chipSummarize')],
+    methodText: note || ph('methodEngine'),
+    question: q,
+    parse: P || null
+  };
+}
+function toModel(R, P, q, engineNote) {
+  var model = {
+    headline: R.headline, bullets: R.bullets, table: R.table, chips: R.chips,
+    followups: R.followups, csv: R.csv, flags: R.flags,
+    traceText: R.traceText,
+    methodText: methodTextOf(R.stats, engineNote),
+    question: q,
+    parse: P || null
+  };
+  /* Matched glossary terms surface their definitions in the answer (spec 4.2d). */
+  if (P && P.glossary && P.glossary.length && P.op !== 'glossary' && model.bullets) {
+    P.glossary.slice(0, 2).forEach(function (g) {
+      model.bullets.push(ph('glossTerm', { term: g.term, def: g.def }));
+    });
+  }
+  if (P && P.confidence === 'MEDIUM' && P.assumptions.length) {
+    model.assumption = ph('assumePrefix', { assumption: P.assumptions.join('; ') });
+    if (P.alternatives.length && (!model.chips || !model.chips.length)) {
+      model.chips = P.alternatives.slice(0, 3).map(function (a) { return { label: a.label, ask: a.label }; });
+    }
+  }
+  return model;
+}
+
+/* ---- Question pipeline ----------------------------------------------------
+   WHY: the confidence gate lives here - LOW never reaches execOp, judgment
+   questions never reach a fabricated answer, and every deterministic answer
+   records what was parsed. */
+var DATA_OPS = { count: 1, aggregate: 1, rank: 1, distribution: 1, list: 1, detail: 1, compare: 1, trend: 1, recency: 1 };
+function processQuestion(q, done) {
+  if (VAL.errors.length) {
+    done([{ headline: ph('bootError', { errors: VAL.errors.join('; ') }), showActions: false }]);
+    return;
+  }
+  var P0 = parseQuestion(q);
+  var P = inheritFollowUp(P0);
+  if (!P.inherited) P = scoreConfidence(P);
+  if (P.op === 'export') {
+    var last = S.lastResult;
+    if (!last) { done([{ headline: ph('exportNothing'), showActions: false }]); return; }
+    if (P.sub === 'csv' && last.csv) {
+      downloadResultCsv(last);
+      done([{ headline: ph('exportCsvDone'), showActions: false }]);
+    } else if (P.sub === 'md') {
+      Promise.resolve(copyText(markdownFromResult(last))).then(function (ok) {
+        done([{ headline: ok ? ph('exportMdDone') : ph('copyFailed'), showActions: false }]);
+      });
+    } else {
+      /* The pack's Question section carries the last real data question, not
+         the export command itself. */
+      Promise.resolve(copyText(buildHandoffPack(S.lastQuestion || q, S.lastParse))).then(function (ok) {
+        done([{ headline: ok ? ph('exportHandoffDone') : ph('copyFailed'), showActions: false }]);
+      });
+    }
+    return;
+  }
+  var lane3 = P.lane3 && P.op !== 'insight' && P.op !== 'meta' && P.op !== 'glossary';
+  var outOfData = P.confidence === 'LOW' && P.lowReason === 'unknown';
+  if ((lane3 || outOfData) && PROVIDER) {
+    providerAsk(q, function (res) {
+      if (res.timeout || res.error) {
+        var note = res.timeout ? ph('methodProviderTimeout') : ph('methodProviderError');
+        done([lane3 ? refuseJudgmentModel(q, note, P) : clarifyModel(P, q)]);
+        return;
+      }
+      if (res.answer) {
+        var a = res.answer;
+        var model = {
+          headline: String(a.headline || ''),
+          bullets: (a.bullets || []).map(String),
+          followups: (a.followups || []).slice(0, 3).map(String),
+          flags: res.grounded ? [] : [ph('unverified')],
+          traceText: (a.sources && a.sources.length) ? ph('providerSources', { list: a.sources.slice(0, 5).join(' | ') }) : '',
+          methodText: ph('methodProvider', { label: PROVIDER.label }) + (res.queryResults ? ' | ' + res.queryResults.length + (res.queryResults.length === 1 ? ' engine query' : ' engine queries') : ''),
+          question: q
+        };
+        done([model]);
+        return;
+      }
+      if (res.clarify) {
+        done([{
+          headline: String(res.clarify.question || ph('clarifyHeadline')),
+          bullets: [ph('pickOne')],
+          chips: (res.clarify.options || []).slice(0, 4).map(function (o) { return { label: String(o), ask: String(o) }; }),
+          showActions: false, question: q
+        }]);
+        return;
+      }
+      done([{
+        headline: ph('refuseOutOfData', { census: censusText() }),
+        bullets: res.refuse && res.refuse.reason ? [String(res.refuse.reason)] : [],
+        methodText: ph('methodProvider', { label: PROVIDER.label }),
+        question: q
+      }]);
+    });
+    return;
+  }
+  if (lane3) { done([refuseJudgmentModel(q, null, P)]); return; }
+  if (P.confidence === 'LOW') {
+    if (P.lowReason === 'unknown') {
+      var m2 = clarifyModel(P, q);
+      /* Out-of-data terms also earn the honest refusal plus handoff offer. */
+      m2.bullets.push(ph('refuseOutOfData', { census: censusText() }));
+      m2.showActions = true;
+      done([m2]);
+      return;
+    }
+    done([clarifyModel(P, q)]);
+    return;
+  }
+  var models = [];
+  if (P.op === 'insight') {
+    var Ri = execInsight(P);
+    models.push(toModel(Ri, P, q));
+  } else {
+    var R = execOp(P);
+    var model3 = toModel(R, P, q);
+    models.push(model3);
+    if (DATA_OPS[P.op]) {
+      S.lastParse = P;
+      S.lastResult = model3;
+      S.lastQuestion = q;
+    }
+  }
+  done(models);
+}
+
+function ask(q) {
+  q = String(q == null ? '' : q).trim();
+  if (!q || S.busy) return;
+  openPanel(true);
+  addEntry({ role: 'user', text: q });
+  renderUser(q);
+  S.busy = true;
+  var sendBtn = byId('aia-send');
+  if (sendBtn) sendBtn.disabled = true;
+  var think = renderThinking();
+  setTimeout(function () {
+    /* Resilience guarantee: no exception may strand the busy state. The
+       thinking dots always clear and an error card renders instead. */
+    function recover(err) {
+      if (think.parentNode) think.parentNode.removeChild(think);
+      var m = { headline: ph('internalError', { msg: String((err && err.message) || err) }), showActions: false };
+      addEntry({ role: 'card', model: m });
+      try { renderCard(m); } catch (e2) { /* the error card itself must not re-throw */ }
+      S.busy = false;
+      if (sendBtn) sendBtn.disabled = false;
+      persist();
+    }
+    try {
+      processQuestion(q, function (models) {
+        try {
+          if (think.parentNode) think.parentNode.removeChild(think);
+          models.forEach(function (m) {
+            addEntry({ role: 'card', model: m });
+            renderCard(m);
+          });
+          S.busy = false;
+          if (sendBtn) sendBtn.disabled = false;
+          persist();
+        } catch (e) { recover(e); }
+      });
+    } catch (e) { recover(e); }
+  }, 30);
+}
+
+/* ---- Panel open/close, wiring, ask-chip injection ------------------------ */
+function openPanel(open, skipPersist) {
+  var panel = byId('aia-panel');
+  var fab = byId('aia-fab');
+  if (!panel) return;
+  S.open = open === undefined ? !S.open : !!open;
+  panel.classList.toggle('aia-open', S.open);
+  panel.setAttribute('aria-hidden', S.open ? 'false' : 'true');
+  if (S.open) {
+    if (!threadEl().childElementCount) {
+      if (!VAL.ok || VAL.warnings.length) bootProblemCard();
+      if (VAL.ok) emptyStateCard();
+    }
+    var input = byId('aia-input');
+    if (input) input.focus();
+  } else if (fab) fab.focus();
+  if (!skipPersist) persist();
+}
+function clearThread() {
+  S.entries = [];
+  S.lastParse = null;
+  S.lastResult = null;
+  S.lastQuestion = null;
+  threadEl().textContent = '';
+  persist();
+  if (!VAL.ok || VAL.warnings.length) bootProblemCard();
+  if (VAL.ok) emptyStateCard();
+}
+function injectAsks() {
+  var map = CFG && CFG.sectionAsks;
+  if (!isObj(map)) return;
+  Object.keys(map).forEach(function (id) {
+    var host = document.getElementById(id);
+    if (!host || host.getAttribute('data-aia-ask') === '1') return;
+    host.setAttribute('data-aia-ask', '1');
+    var b = el('button', 'aia-ask-chip', ph('askChip'));
+    b.type = 'button';
+    b.setAttribute('aria-label', ph('askChipAria', { q: map[id] }));
+    b.addEventListener('click', function () {
+      openPanel(true);
+      ask(map[id]);
+    });
+    var slot = host.querySelector('h1, h2, h3, .section-title') || host;
+    slot.appendChild(b);
+  });
+}
+
+/* ---- Boot ----------------------------------------------------------------- */
+function init() {
+  if (S.booted) return;
+  S.booted = true;
+  CFG = window.AIA_CONFIG;
+  VAL = validateConfig();
+  var dot = byId('aia-dot');
+  if (dot) dot.className = 'aia-dot' + (VAL.errors.length ? ' aia-err' : VAL.warnings.length ? ' aia-warn' : '');
+  /* Shell wiring happens BEFORE the config check so a missing AIA_CONFIG
+     still yields a working FAB and a visible boot-error card - a broken
+     integration must never present as a dead button. */
+  var fab = byId('aia-fab');
+  if (fab) fab.addEventListener('click', function () { openPanel(); });
+  var close = byId('aia-close');
+  if (close) close.addEventListener('click', function () { openPanel(false); });
+  var clear = byId('aia-clear');
+  if (clear) clear.addEventListener('click', clearThread);
+  var send = byId('aia-send');
+  var input = byId('aia-input');
+  function submit() {
+    if (!input) return;
+    var v = input.value;
+    input.value = '';
+    ask(v);
+  }
+  if (send) send.addEventListener('click', submit);
+  if (input) {
+    input.addEventListener('keydown', function (ev) {
+      if (ev.key === 'Enter' && !ev.shiftKey) { ev.preventDefault(); submit(); }
+    });
+  }
+  document.addEventListener('keydown', function (ev) {
+    if (ev.key === 'Escape' && S.open) openPanel(false);
+  });
+  if (!isObj(CFG)) return;
+  var name = byId('aia-name');
+  if (name) name.textContent = CFG.assistantName || 'Analyst';
+  if (CFG.accent) document.documentElement.style.setProperty('--aia-accent', String(CFG.accent));
+  S.storageKey = STORAGE_PREFIX + (CFG.title || 'dashboard');
+  if (VAL.ok || !VAL.errors.length) {
+    try { buildMeta(); buildVocab(); } catch (e) {
+      VAL.errors.push('boot failure: ' + String(e && e.message || e));
+      if (dot) dot.className = 'aia-dot aia-err';
+    }
+  } else {
+    try { buildMeta(); buildVocab(); } catch (e2) { /* engine stays dark on a broken adapter */ }
+  }
+  var chip = byId('aia-census-chip');
+  if (chip) {
+    try { chip.textContent = ph('censusRowsChip', { n: fmtInt(totalRows()) }); } catch (e3) { chip.textContent = ''; }
+  }
+  injectAsks();
+  restore();
+}
+if (document.readyState === 'complete' || document.readyState === 'interactive') setTimeout(init, 0);
+else document.addEventListener('DOMContentLoaded', init);
+
+/* ---- Public API ----------------------------------------------------------- */
+window.AIA = {
+  version: VERSION,
+  init: init,
+  ask: ask,
+  open: openPanel,
+  injectAsks: injectAsks,
+  validateConfig: validateConfig,
+  inferSchema: inferSchema,
+  registerProvider: registerProvider
+};
+})();
+</script>
+<!-- ===== END AI ANALYST COMPONENT ===== -->
+
+</body>
+</html>
