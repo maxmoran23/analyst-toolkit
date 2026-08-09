@@ -42,7 +42,8 @@ ROOT = Path(_POSITIONAL[0] if _POSITIONAL else ".").resolve()
 
 WORD_NUMBERS = {
     "twelve": 12, "thirteen": 13, "fourteen": 14, "fifteen": 15, "sixteen": 16,
-    "seventeen": 17, "eighteen": 18,
+    "seventeen": 17, "eighteen": 18, "nineteen": 19, "twenty": 20,
+    "twenty-one": 21, "twenty-two": 22, "twenty-three": 23, "twenty-four": 24,
 }
 
 
