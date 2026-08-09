@@ -142,6 +142,16 @@
         "kind": "scoring engine"
       }
     },
+    "sanctions-ownership-aggregation": {
+      "command": "python3 run_validation.py --seed 42 --true-blocked 160 --below 240 --unresolved 80 --trials 6",
+      "positive_class": "labelled true blocked-by-ownership candidates (aggregate sanctioned effective ownership at or above 50%)",
+      "brief": {
+        "audience": "Sanctions screening and list-management teams applying the ownership rule, and their independent validators.",
+        "question": "Is this entity blocked by ownership — owned 50% or more, individually or in the aggregate, directly or indirectly, by sanctioned parties — even though no list names it?",
+        "never": "It never blocks, freezes, or rejects. It never auto-clears a candidate while any path from a sanctioned party is unresolved, and sanctioned control without qualifying equity routes to review, never to a clear. Thresholds are modeled on public guidance and are not legal advice.",
+        "kind": "ownership-aggregation engine"
+      }
+    },
     "tm-threshold-tuning": {
       "command": "python3 run_validation.py --seed 42 --rules 12 --population 40000",
       "brief": {

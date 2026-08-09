@@ -1,0 +1,210 @@
+{
+  "blocked_false_positives": 0,
+  "blocked_recall": 1.0,
+  "candidates": 2880,
+  "category_dispositions": {
+    "below_aggregate_23_resolved": {
+      "NOT_BLOCKED_BY_OWNERSHIP": 240
+    },
+    "below_direct_resolved": {
+      "NOT_BLOCKED_BY_OWNERSHIP": 240
+    },
+    "below_near_threshold_49": {
+      "REVIEW": 240
+    },
+    "below_review_band_30": {
+      "REVIEW": 240
+    },
+    "below_sanctioned_control_without_equity": {
+      "REVIEW": 240
+    },
+    "below_zero_ownership": {
+      "NOT_BLOCKED_BY_OWNERSHIP": 240
+    },
+    "true_aggregation_30_plus_25": {
+      "BLOCKED_BY_OWNERSHIP": 160
+    },
+    "true_aggregation_three_subthreshold_owners": {
+      "BLOCKED_BY_OWNERSHIP": 160
+    },
+    "true_circular_cross_ownership": {
+      "BLOCKED_BY_OWNERSHIP": 160
+    },
+    "true_concealed_majority_shell_slices": {
+      "BLOCKED_BY_OWNERSHIP": 160
+    },
+    "true_indirect_multiowner_aggregation": {
+      "BLOCKED_BY_OWNERSHIP": 160
+    },
+    "true_sanctioned_party_behind_clean_intermediary": {
+      "BLOCKED_BY_OWNERSHIP": 160
+    },
+    "unresolved_incomplete_intermediary_below_looking": {
+      "REVIEW": 120
+    },
+    "unresolved_nominee_intermediary_below_looking": {
+      "REVIEW": 120
+    },
+    "unresolved_opaque_intermediary_below_looking": {
+      "REVIEW": 120
+    },
+    "unresolved_parallel_opaque_path_below_looking": {
+      "REVIEW": 120
+    }
+  },
+  "clear_false_negative_attestation": "Observed 0 auto-clear false negatives in 960 labelled TRUE blocked-by-ownership candidates; the exact one-sided 95% Clopper-Pearson upper bound is 0.003116. This bound is a property of the validation sample size, not a claim of a zero population rate.",
+  "clear_false_negative_cp_upper_95": 0.003115690582214503,
+  "clear_false_negative_rate": 0.0,
+  "clear_false_negatives": 0,
+  "confusion": {
+    "NOT_BLOCKED": {
+      "BLOCKED_BY_OWNERSHIP": 0,
+      "NOT_BLOCKED_BY_OWNERSHIP": 720,
+      "REVIEW": 1200
+    },
+    "TRUE_BLOCKED": {
+      "BLOCKED_BY_OWNERSHIP": 960,
+      "NOT_BLOCKED_BY_OWNERSHIP": 0,
+      "REVIEW": 0
+    }
+  },
+  "dispositions": {
+    "BLOCKED_BY_OWNERSHIP": 960,
+    "NOT_BLOCKED_BY_OWNERSHIP": 720,
+    "REVIEW": 1200
+  },
+  "gates": {
+    "false_negative": {
+      "criterion": "no labelled TRUE blocked-by-ownership candidate may be auto-cleared",
+      "observed": 0,
+      "pass": true
+    },
+    "resolution_integrity": {
+      "criterion": "every auto-clear must be eligible and no unresolved sanctioned path may be auto-cleared",
+      "observed_structural_leaks": 0,
+      "observed_unresolved_plant_clears": 0,
+      "pass": true
+    }
+  },
+  "not_blocked_candidates": 1920,
+  "resolution_integrity_leaks": 0,
+  "review_rate": 0.4166666666666667,
+  "trials": [
+    {
+      "blocked_false_positives": 0,
+      "blocked_recall": 1.0,
+      "candidates": 480,
+      "clear_false_negative_rate": 0.0,
+      "clear_false_negatives": 0,
+      "dispositions": {
+        "BLOCKED_BY_OWNERSHIP": 160,
+        "NOT_BLOCKED_BY_OWNERSHIP": 120,
+        "REVIEW": 200
+      },
+      "gates_pass": true,
+      "not_blocked_candidates": 320,
+      "resolution_integrity_leaks": 0,
+      "review_rate": 0.4166666666666667,
+      "seed": 42,
+      "true_blocked_candidates": 160,
+      "unresolved_plant_clears": 0
+    },
+    {
+      "blocked_false_positives": 0,
+      "blocked_recall": 1.0,
+      "candidates": 480,
+      "clear_false_negative_rate": 0.0,
+      "clear_false_negatives": 0,
+      "dispositions": {
+        "BLOCKED_BY_OWNERSHIP": 160,
+        "NOT_BLOCKED_BY_OWNERSHIP": 120,
+        "REVIEW": 200
+      },
+      "gates_pass": true,
+      "not_blocked_candidates": 320,
+      "resolution_integrity_leaks": 0,
+      "review_rate": 0.4166666666666667,
+      "seed": 43,
+      "true_blocked_candidates": 160,
+      "unresolved_plant_clears": 0
+    },
+    {
+      "blocked_false_positives": 0,
+      "blocked_recall": 1.0,
+      "candidates": 480,
+      "clear_false_negative_rate": 0.0,
+      "clear_false_negatives": 0,
+      "dispositions": {
+        "BLOCKED_BY_OWNERSHIP": 160,
+        "NOT_BLOCKED_BY_OWNERSHIP": 120,
+        "REVIEW": 200
+      },
+      "gates_pass": true,
+      "not_blocked_candidates": 320,
+      "resolution_integrity_leaks": 0,
+      "review_rate": 0.4166666666666667,
+      "seed": 44,
+      "true_blocked_candidates": 160,
+      "unresolved_plant_clears": 0
+    },
+    {
+      "blocked_false_positives": 0,
+      "blocked_recall": 1.0,
+      "candidates": 480,
+      "clear_false_negative_rate": 0.0,
+      "clear_false_negatives": 0,
+      "dispositions": {
+        "BLOCKED_BY_OWNERSHIP": 160,
+        "NOT_BLOCKED_BY_OWNERSHIP": 120,
+        "REVIEW": 200
+      },
+      "gates_pass": true,
+      "not_blocked_candidates": 320,
+      "resolution_integrity_leaks": 0,
+      "review_rate": 0.4166666666666667,
+      "seed": 45,
+      "true_blocked_candidates": 160,
+      "unresolved_plant_clears": 0
+    },
+    {
+      "blocked_false_positives": 0,
+      "blocked_recall": 1.0,
+      "candidates": 480,
+      "clear_false_negative_rate": 0.0,
+      "clear_false_negatives": 0,
+      "dispositions": {
+        "BLOCKED_BY_OWNERSHIP": 160,
+        "NOT_BLOCKED_BY_OWNERSHIP": 120,
+        "REVIEW": 200
+      },
+      "gates_pass": true,
+      "not_blocked_candidates": 320,
+      "resolution_integrity_leaks": 0,
+      "review_rate": 0.4166666666666667,
+      "seed": 46,
+      "true_blocked_candidates": 160,
+      "unresolved_plant_clears": 0
+    },
+    {
+      "blocked_false_positives": 0,
+      "blocked_recall": 1.0,
+      "candidates": 480,
+      "clear_false_negative_rate": 0.0,
+      "clear_false_negatives": 0,
+      "dispositions": {
+        "BLOCKED_BY_OWNERSHIP": 160,
+        "NOT_BLOCKED_BY_OWNERSHIP": 120,
+        "REVIEW": 200
+      },
+      "gates_pass": true,
+      "not_blocked_candidates": 320,
+      "resolution_integrity_leaks": 0,
+      "review_rate": 0.4166666666666667,
+      "seed": 47,
+      "true_blocked_candidates": 160,
+      "unresolved_plant_clears": 0
+    }
+  ],
+  "true_blocked_candidates": 960,
+  "unresolved_plant_clears": 0
+}

@@ -1,0 +1,1090 @@
+{
+  "graphs": [
+    {
+      "candidates": [
+        "target"
+      ],
+      "control_relationships": [],
+      "graph_id": "U-421580",
+      "nodes": [
+        {
+          "id": "s1",
+          "name": "S1",
+          "type": "person"
+        },
+        {
+          "id": "opaque_shell",
+          "name": "Opaque Shell",
+          "opaque": true,
+          "ownership_complete": false,
+          "resolved": false,
+          "type": "entity"
+        },
+        {
+          "id": "target",
+          "name": "Target",
+          "ownership_complete": true,
+          "resolved": true,
+          "type": "entity"
+        }
+      ],
+      "ownership_edges": [
+        {
+          "fraction": 1.0,
+          "owned": "opaque_shell",
+          "owner": "s1"
+        },
+        {
+          "fraction": 0.16,
+          "owned": "target",
+          "owner": "opaque_shell"
+        }
+      ],
+      "sanctioned_parties": [
+        "s1"
+      ]
+    },
+    {
+      "candidates": [
+        "target"
+      ],
+      "control_relationships": [],
+      "graph_id": "T-420388",
+      "nodes": [
+        {
+          "id": "s1",
+          "name": "S1",
+          "type": "person"
+        },
+        {
+          "id": "clean_intermediary",
+          "name": "Clean Intermediary",
+          "ownership_complete": true,
+          "resolved": true,
+          "type": "entity"
+        },
+        {
+          "id": "target",
+          "name": "Target",
+          "ownership_complete": true,
+          "resolved": true,
+          "type": "entity"
+        }
+      ],
+      "ownership_edges": [
+        {
+          "fraction": 1.0,
+          "owned": "clean_intermediary",
+          "owner": "s1"
+        },
+        {
+          "fraction": 0.55,
+          "owned": "target",
+          "owner": "clean_intermediary"
+        }
+      ],
+      "sanctioned_parties": [
+        "s1"
+      ]
+    },
+    {
+      "candidates": [
+        "target"
+      ],
+      "control_relationships": [],
+      "graph_id": "U-421602",
+      "nodes": [
+        {
+          "id": "s1",
+          "name": "S1",
+          "type": "person"
+        },
+        {
+          "id": "nominee_holdco",
+          "name": "Nominee Holdco",
+          "nominee": true,
+          "ownership_complete": false,
+          "resolved": true,
+          "type": "entity"
+        },
+        {
+          "id": "target",
+          "name": "Target",
+          "ownership_complete": true,
+          "resolved": true,
+          "type": "entity"
+        }
+      ],
+      "ownership_edges": [
+        {
+          "fraction": 1.0,
+          "owned": "nominee_holdco",
+          "owner": "s1"
+        },
+        {
+          "fraction": 0.1,
+          "owned": "target",
+          "owner": "nominee_holdco"
+        }
+      ],
+      "sanctioned_parties": [
+        "s1"
+      ]
+    },
+    {
+      "candidates": [
+        "target"
+      ],
+      "control_relationships": [],
+      "graph_id": "T-420389",
+      "nodes": [
+        {
+          "id": "s1",
+          "name": "S1",
+          "type": "person"
+        },
+        {
+          "id": "s2",
+          "name": "S2",
+          "type": "person"
+        },
+        {
+          "id": "holdco_a",
+          "name": "Holdco A",
+          "ownership_complete": true,
+          "resolved": true,
+          "type": "entity"
+        },
+        {
+          "id": "holdco_b",
+          "name": "Holdco B",
+          "ownership_complete": true,
+          "resolved": true,
+          "type": "entity"
+        },
+        {
+          "id": "target",
+          "name": "Target",
+          "ownership_complete": true,
+          "resolved": true,
+          "type": "entity"
+        }
+      ],
+      "ownership_edges": [
+        {
+          "fraction": 1.0,
+          "owned": "holdco_a",
+          "owner": "s1"
+        },
+        {
+          "fraction": 0.28,
+          "owned": "target",
+          "owner": "holdco_a"
+        },
+        {
+          "fraction": 1.0,
+          "owned": "holdco_b",
+          "owner": "s2"
+        },
+        {
+          "fraction": 0.24,
+          "owned": "target",
+          "owner": "holdco_b"
+        }
+      ],
+      "sanctioned_parties": [
+        "s1",
+        "s2"
+      ]
+    },
+    {
+      "candidates": [
+        "target"
+      ],
+      "control_relationships": [],
+      "graph_id": "B-420388",
+      "nodes": [
+        {
+          "id": "s1",
+          "name": "S1",
+          "type": "person"
+        },
+        {
+          "id": "target",
+          "name": "Target",
+          "ownership_complete": true,
+          "resolved": true,
+          "type": "entity"
+        }
+      ],
+      "ownership_edges": [
+        {
+          "fraction": 0.49,
+          "owned": "target",
+          "owner": "s1"
+        }
+      ],
+      "sanctioned_parties": [
+        "s1"
+      ]
+    },
+    {
+      "candidates": [
+        "target"
+      ],
+      "control_relationships": [],
+      "graph_id": "B-420382",
+      "nodes": [
+        {
+          "id": "s1",
+          "name": "S1",
+          "type": "person"
+        },
+        {
+          "id": "target",
+          "name": "Target",
+          "ownership_complete": true,
+          "resolved": true,
+          "type": "entity"
+        }
+      ],
+      "ownership_edges": [
+        {
+          "fraction": 0.49,
+          "owned": "target",
+          "owner": "s1"
+        }
+      ],
+      "sanctioned_parties": [
+        "s1"
+      ]
+    },
+    {
+      "candidates": [
+        "target"
+      ],
+      "control_relationships": [],
+      "graph_id": "T-420331",
+      "nodes": [
+        {
+          "id": "s1",
+          "name": "S1",
+          "type": "person"
+        },
+        {
+          "id": "s2",
+          "name": "S2",
+          "type": "person"
+        },
+        {
+          "id": "s3",
+          "name": "S3",
+          "type": "person"
+        },
+        {
+          "id": "target",
+          "name": "Target",
+          "ownership_complete": true,
+          "resolved": true,
+          "type": "entity"
+        }
+      ],
+      "ownership_edges": [
+        {
+          "fraction": 0.18,
+          "owned": "target",
+          "owner": "s1"
+        },
+        {
+          "fraction": 0.17,
+          "owned": "target",
+          "owner": "s2"
+        },
+        {
+          "fraction": 0.16,
+          "owned": "target",
+          "owner": "s3"
+        }
+      ],
+      "sanctioned_parties": [
+        "s1",
+        "s2",
+        "s3"
+      ]
+    },
+    {
+      "candidates": [
+        "target"
+      ],
+      "control_relationships": [],
+      "graph_id": "T-420448",
+      "nodes": [
+        {
+          "id": "s1",
+          "name": "S1",
+          "type": "person"
+        },
+        {
+          "id": "clean_intermediary",
+          "name": "Clean Intermediary",
+          "ownership_complete": true,
+          "resolved": true,
+          "type": "entity"
+        },
+        {
+          "id": "target",
+          "name": "Target",
+          "ownership_complete": true,
+          "resolved": true,
+          "type": "entity"
+        }
+      ],
+      "ownership_edges": [
+        {
+          "fraction": 1.0,
+          "owned": "clean_intermediary",
+          "owner": "s1"
+        },
+        {
+          "fraction": 0.55,
+          "owned": "target",
+          "owner": "clean_intermediary"
+        }
+      ],
+      "sanctioned_parties": [
+        "s1"
+      ]
+    },
+    {
+      "candidates": [
+        "target"
+      ],
+      "control_relationships": [],
+      "graph_id": "B-420393",
+      "nodes": [
+        {
+          "id": "s1",
+          "name": "S1",
+          "type": "person"
+        },
+        {
+          "id": "target",
+          "name": "Target",
+          "ownership_complete": true,
+          "resolved": true,
+          "type": "entity"
+        }
+      ],
+      "ownership_edges": [
+        {
+          "fraction": 0.3,
+          "owned": "target",
+          "owner": "s1"
+        }
+      ],
+      "sanctioned_parties": [
+        "s1"
+      ]
+    },
+    {
+      "candidates": [
+        "target"
+      ],
+      "control_relationships": [],
+      "graph_id": "U-421619",
+      "nodes": [
+        {
+          "id": "s1",
+          "name": "S1",
+          "type": "person"
+        },
+        {
+          "id": "clean_path",
+          "name": "Clean Path",
+          "ownership_complete": true,
+          "resolved": true,
+          "type": "entity"
+        },
+        {
+          "id": "opaque_path",
+          "name": "Opaque Path",
+          "opaque": true,
+          "ownership_complete": false,
+          "resolved": false,
+          "type": "entity"
+        },
+        {
+          "id": "target",
+          "name": "Target",
+          "ownership_complete": true,
+          "resolved": true,
+          "type": "entity"
+        }
+      ],
+      "ownership_edges": [
+        {
+          "fraction": 1.0,
+          "owned": "clean_path",
+          "owner": "s1"
+        },
+        {
+          "fraction": 0.05,
+          "owned": "target",
+          "owner": "clean_path"
+        },
+        {
+          "fraction": 1.0,
+          "owned": "opaque_path",
+          "owner": "s1"
+        },
+        {
+          "fraction": 0.05,
+          "owned": "target",
+          "owner": "opaque_path"
+        }
+      ],
+      "sanctioned_parties": [
+        "s1"
+      ]
+    },
+    {
+      "candidates": [
+        "target"
+      ],
+      "control_relationships": [],
+      "graph_id": "U-421603",
+      "nodes": [
+        {
+          "id": "s1",
+          "name": "S1",
+          "type": "person"
+        },
+        {
+          "id": "clean_path",
+          "name": "Clean Path",
+          "ownership_complete": true,
+          "resolved": true,
+          "type": "entity"
+        },
+        {
+          "id": "opaque_path",
+          "name": "Opaque Path",
+          "opaque": true,
+          "ownership_complete": false,
+          "resolved": false,
+          "type": "entity"
+        },
+        {
+          "id": "target",
+          "name": "Target",
+          "ownership_complete": true,
+          "resolved": true,
+          "type": "entity"
+        }
+      ],
+      "ownership_edges": [
+        {
+          "fraction": 1.0,
+          "owned": "clean_path",
+          "owner": "s1"
+        },
+        {
+          "fraction": 0.05,
+          "owned": "target",
+          "owner": "clean_path"
+        },
+        {
+          "fraction": 1.0,
+          "owned": "opaque_path",
+          "owner": "s1"
+        },
+        {
+          "fraction": 0.05,
+          "owned": "target",
+          "owner": "opaque_path"
+        }
+      ],
+      "sanctioned_parties": [
+        "s1"
+      ]
+    },
+    {
+      "candidates": [
+        "target"
+      ],
+      "control_relationships": [],
+      "graph_id": "T-420366",
+      "nodes": [
+        {
+          "id": "s1",
+          "name": "S1",
+          "type": "person"
+        },
+        {
+          "id": "s2",
+          "name": "S2",
+          "type": "person"
+        },
+        {
+          "id": "target",
+          "name": "Target",
+          "ownership_complete": true,
+          "resolved": true,
+          "type": "entity"
+        }
+      ],
+      "ownership_edges": [
+        {
+          "fraction": 0.3,
+          "owned": "target",
+          "owner": "s1"
+        },
+        {
+          "fraction": 0.25,
+          "owned": "target",
+          "owner": "s2"
+        }
+      ],
+      "sanctioned_parties": [
+        "s1",
+        "s2"
+      ]
+    },
+    {
+      "candidates": [
+        "target"
+      ],
+      "control_relationships": [],
+      "graph_id": "T-420390",
+      "nodes": [
+        {
+          "id": "s1",
+          "name": "S1",
+          "type": "person"
+        },
+        {
+          "id": "s2",
+          "name": "S2",
+          "type": "person"
+        },
+        {
+          "id": "target",
+          "name": "Target",
+          "ownership_complete": true,
+          "resolved": true,
+          "type": "entity"
+        }
+      ],
+      "ownership_edges": [
+        {
+          "fraction": 0.3,
+          "owned": "target",
+          "owner": "s1"
+        },
+        {
+          "fraction": 0.25,
+          "owned": "target",
+          "owner": "s2"
+        }
+      ],
+      "sanctioned_parties": [
+        "s1",
+        "s2"
+      ]
+    },
+    {
+      "candidates": [
+        "target"
+      ],
+      "control_relationships": [],
+      "graph_id": "T-420450",
+      "nodes": [
+        {
+          "id": "s1",
+          "name": "S1",
+          "type": "person"
+        },
+        {
+          "id": "s2",
+          "name": "S2",
+          "type": "person"
+        },
+        {
+          "id": "target",
+          "name": "Target",
+          "ownership_complete": true,
+          "resolved": true,
+          "type": "entity"
+        }
+      ],
+      "ownership_edges": [
+        {
+          "fraction": 0.3,
+          "owned": "target",
+          "owner": "s1"
+        },
+        {
+          "fraction": 0.25,
+          "owned": "target",
+          "owner": "s2"
+        }
+      ],
+      "sanctioned_parties": [
+        "s1",
+        "s2"
+      ]
+    },
+    {
+      "candidates": [
+        "target"
+      ],
+      "control_relationships": [],
+      "graph_id": "U-421609",
+      "nodes": [
+        {
+          "id": "s1",
+          "name": "S1",
+          "type": "person"
+        },
+        {
+          "id": "incomplete_holdco",
+          "name": "Incomplete Holdco",
+          "ownership_complete": false,
+          "resolved": false,
+          "type": "entity"
+        },
+        {
+          "id": "target",
+          "name": "Target",
+          "ownership_complete": true,
+          "resolved": true,
+          "type": "entity"
+        }
+      ],
+      "ownership_edges": [
+        {
+          "fraction": 1.0,
+          "owned": "incomplete_holdco",
+          "owner": "s1"
+        },
+        {
+          "fraction": 0.13,
+          "owned": "target",
+          "owner": "incomplete_holdco"
+        }
+      ],
+      "sanctioned_parties": [
+        "s1"
+      ]
+    },
+    {
+      "candidates": [
+        "target"
+      ],
+      "control_relationships": [],
+      "graph_id": "B-420583",
+      "nodes": [
+        {
+          "id": "s1",
+          "name": "S1",
+          "type": "person"
+        },
+        {
+          "id": "s2",
+          "name": "S2",
+          "type": "person"
+        },
+        {
+          "id": "target",
+          "name": "Target",
+          "ownership_complete": true,
+          "resolved": true,
+          "type": "entity"
+        }
+      ],
+      "ownership_edges": [
+        {
+          "fraction": 0.12,
+          "owned": "target",
+          "owner": "s1"
+        },
+        {
+          "fraction": 0.11,
+          "owned": "target",
+          "owner": "s2"
+        }
+      ],
+      "sanctioned_parties": [
+        "s1",
+        "s2"
+      ]
+    },
+    {
+      "candidates": [
+        "target"
+      ],
+      "control_relationships": [],
+      "graph_id": "T-420358",
+      "nodes": [
+        {
+          "id": "s1",
+          "name": "S1",
+          "type": "person"
+        },
+        {
+          "id": "clean_intermediary",
+          "name": "Clean Intermediary",
+          "ownership_complete": true,
+          "resolved": true,
+          "type": "entity"
+        },
+        {
+          "id": "target",
+          "name": "Target",
+          "ownership_complete": true,
+          "resolved": true,
+          "type": "entity"
+        }
+      ],
+      "ownership_edges": [
+        {
+          "fraction": 1.0,
+          "owned": "clean_intermediary",
+          "owner": "s1"
+        },
+        {
+          "fraction": 0.55,
+          "owned": "target",
+          "owner": "clean_intermediary"
+        }
+      ],
+      "sanctioned_parties": [
+        "s1"
+      ]
+    },
+    {
+      "candidates": [
+        "target"
+      ],
+      "control_relationships": [],
+      "graph_id": "T-420446",
+      "nodes": [
+        {
+          "id": "s1",
+          "name": "S1",
+          "type": "person"
+        },
+        {
+          "id": "shell_0",
+          "name": "Shell 0",
+          "ownership_complete": true,
+          "resolved": true,
+          "type": "entity"
+        },
+        {
+          "id": "shell_1",
+          "name": "Shell 1",
+          "ownership_complete": true,
+          "resolved": true,
+          "type": "entity"
+        },
+        {
+          "id": "shell_2",
+          "name": "Shell 2",
+          "ownership_complete": true,
+          "resolved": true,
+          "type": "entity"
+        },
+        {
+          "id": "target",
+          "name": "Target",
+          "ownership_complete": true,
+          "resolved": true,
+          "type": "entity"
+        }
+      ],
+      "ownership_edges": [
+        {
+          "fraction": 1.0,
+          "owned": "shell_0",
+          "owner": "s1"
+        },
+        {
+          "fraction": 0.18,
+          "owned": "target",
+          "owner": "shell_0"
+        },
+        {
+          "fraction": 1.0,
+          "owned": "shell_1",
+          "owner": "s1"
+        },
+        {
+          "fraction": 0.18,
+          "owned": "target",
+          "owner": "shell_1"
+        },
+        {
+          "fraction": 1.0,
+          "owned": "shell_2",
+          "owner": "s1"
+        },
+        {
+          "fraction": 0.18,
+          "owned": "target",
+          "owner": "shell_2"
+        }
+      ],
+      "sanctioned_parties": [
+        "s1"
+      ]
+    },
+    {
+      "candidates": [
+        "target"
+      ],
+      "control_relationships": [],
+      "graph_id": "T-420295",
+      "nodes": [
+        {
+          "id": "s1",
+          "name": "S1",
+          "type": "person"
+        },
+        {
+          "id": "s2",
+          "name": "S2",
+          "type": "person"
+        },
+        {
+          "id": "s3",
+          "name": "S3",
+          "type": "person"
+        },
+        {
+          "id": "target",
+          "name": "Target",
+          "ownership_complete": true,
+          "resolved": true,
+          "type": "entity"
+        }
+      ],
+      "ownership_edges": [
+        {
+          "fraction": 0.18,
+          "owned": "target",
+          "owner": "s1"
+        },
+        {
+          "fraction": 0.17,
+          "owned": "target",
+          "owner": "s2"
+        },
+        {
+          "fraction": 0.16,
+          "owned": "target",
+          "owner": "s3"
+        }
+      ],
+      "sanctioned_parties": [
+        "s1",
+        "s2",
+        "s3"
+      ]
+    },
+    {
+      "candidates": [
+        "target"
+      ],
+      "control_relationships": [],
+      "graph_id": "B-420523",
+      "nodes": [
+        {
+          "id": "s1",
+          "name": "S1",
+          "type": "person"
+        },
+        {
+          "id": "s2",
+          "name": "S2",
+          "type": "person"
+        },
+        {
+          "id": "target",
+          "name": "Target",
+          "ownership_complete": true,
+          "resolved": true,
+          "type": "entity"
+        }
+      ],
+      "ownership_edges": [
+        {
+          "fraction": 0.12,
+          "owned": "target",
+          "owner": "s1"
+        },
+        {
+          "fraction": 0.11,
+          "owned": "target",
+          "owner": "s2"
+        }
+      ],
+      "sanctioned_parties": [
+        "s1",
+        "s2"
+      ]
+    },
+    {
+      "candidates": [
+        "target"
+      ],
+      "control_relationships": [],
+      "graph_id": "U-421608",
+      "nodes": [
+        {
+          "id": "s1",
+          "name": "S1",
+          "type": "person"
+        },
+        {
+          "id": "opaque_shell",
+          "name": "Opaque Shell",
+          "opaque": true,
+          "ownership_complete": false,
+          "resolved": false,
+          "type": "entity"
+        },
+        {
+          "id": "target",
+          "name": "Target",
+          "ownership_complete": true,
+          "resolved": true,
+          "type": "entity"
+        }
+      ],
+      "ownership_edges": [
+        {
+          "fraction": 1.0,
+          "owned": "opaque_shell",
+          "owner": "s1"
+        },
+        {
+          "fraction": 0.1,
+          "owned": "target",
+          "owner": "opaque_shell"
+        }
+      ],
+      "sanctioned_parties": [
+        "s1"
+      ]
+    },
+    {
+      "candidates": [
+        "target"
+      ],
+      "control_relationships": [],
+      "graph_id": "U-421628",
+      "nodes": [
+        {
+          "id": "s1",
+          "name": "S1",
+          "type": "person"
+        },
+        {
+          "id": "opaque_shell",
+          "name": "Opaque Shell",
+          "opaque": true,
+          "ownership_complete": false,
+          "resolved": false,
+          "type": "entity"
+        },
+        {
+          "id": "target",
+          "name": "Target",
+          "ownership_complete": true,
+          "resolved": true,
+          "type": "entity"
+        }
+      ],
+      "ownership_edges": [
+        {
+          "fraction": 1.0,
+          "owned": "opaque_shell",
+          "owner": "s1"
+        },
+        {
+          "fraction": 0.16,
+          "owned": "target",
+          "owner": "opaque_shell"
+        }
+      ],
+      "sanctioned_parties": [
+        "s1"
+      ]
+    },
+    {
+      "candidates": [
+        "target"
+      ],
+      "control_relationships": [
+        {
+          "entity": "target",
+          "person": "s1",
+          "prong": "sole_director"
+        }
+      ],
+      "graph_id": "B-420491",
+      "nodes": [
+        {
+          "id": "s1",
+          "name": "S1",
+          "type": "person"
+        },
+        {
+          "id": "target",
+          "name": "Target",
+          "ownership_complete": true,
+          "resolved": true,
+          "type": "entity"
+        }
+      ],
+      "ownership_edges": [],
+      "sanctioned_parties": [
+        "s1"
+      ]
+    },
+    {
+      "candidates": [
+        "target"
+      ],
+      "control_relationships": [],
+      "graph_id": "B-420526",
+      "nodes": [
+        {
+          "id": "s1",
+          "name": "S1",
+          "type": "person"
+        },
+        {
+          "id": "target",
+          "name": "Target",
+          "ownership_complete": true,
+          "resolved": true,
+          "type": "entity"
+        }
+      ],
+      "ownership_edges": [
+        {
+          "fraction": 0.49,
+          "owned": "target",
+          "owner": "s1"
+        }
+      ],
+      "sanctioned_parties": [
+        "s1"
+      ]
+    }
+  ],
+  "schema_version": "1.0",
+  "seed": 42
+}

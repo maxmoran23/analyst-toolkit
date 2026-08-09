@@ -30,6 +30,7 @@ To re-derive one framework by hand, run its command from its own directory:
 | [`pep-screening/`](pep-screening/) | `python3 run_validation.py --seed 42 --peps 8000 --alerts 50000` |
 | [`qa-sampling/`](qa-sampling/) | `python3 run_validation.py --seed 42 --controls 12 --population 40000` |
 | [`sanctions-name-screening/`](sanctions-name-screening/) | `python3 run_validation.py --seed 42 --watchlist 4000 --alerts 50000` |
+| [`sanctions-ownership-aggregation/`](sanctions-ownership-aggregation/) | `python3 run_validation.py --seed 42 --true-blocked 160 --below 240 --unresolved 80 --trials 6` |
 | [`tm-threshold-tuning/`](tm-threshold-tuning/) | `python3 run_validation.py --seed 42 --rules 12 --population 40000` |
 | [`transaction-monitoring/`](transaction-monitoring/) | `python3 run_validation.py --seed 42 --customers 5000 --alerts 50000` |
 | [`watchlist-knowledge-base/`](watchlist-knowledge-base/) | `python3 run_validation.py --seed 42 --entities 3000` |
@@ -72,6 +73,7 @@ The digest is a SHA-256 over the substantive metrics with volatile fields (times
 | [`pep-screening/`](pep-screening/) | 50,000 | 42 | 1.47s | `d2f4ef1` · 2026-07-10 05:09 UTC | `ed1e0a4129cfe2b2` |
 | [`qa-sampling/`](qa-sampling/) | — | 42 | 0.47s | `531971e` · 2026-07-10 05:15 UTC | `ffe79786d6a40587` |
 | [`sanctions-name-screening/`](sanctions-name-screening/) | 50,000 | 42 | 2.49s | `d2f4ef1` · 2026-07-10 05:09 UTC | `94abc04ba1d4c354` |
+| [`sanctions-ownership-aggregation/`](sanctions-ownership-aggregation/) | — | — | — | `—` · — | `35a7ac528033ba65` |
 | [`tm-threshold-tuning/`](tm-threshold-tuning/) | — | 42 | 1.27s | `d2f4ef1` · 2026-07-10 05:10 UTC | `288b273adb50c058` |
 | [`transaction-monitoring/`](transaction-monitoring/) | 50,000 | 42 | 0.65s | `d2f4ef1` · 2026-07-10 05:10 UTC | `72260f724af88900` |
 | [`watchlist-knowledge-base/`](watchlist-knowledge-base/) | 3,000 | 42 | 0.31s | `d2f4ef1` · 2026-07-10 05:10 UTC | `a6357027fa3d0ea7` |

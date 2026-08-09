@@ -27,6 +27,7 @@ This team is the institution's checkpoint against doing business with sanctioned
 | Screen a blockchain address against sanctions | onchain-sanctions-monitor | prompt | [../prompts/blockchain/onchain-sanctions-monitor.md](../prompts/blockchain/onchain-sanctions-monitor.md) |
 | Keep the underlying list data deduplicated and current | watchlist-knowledge-base | framework (runnable, 0 false merges) | [../frameworks/watchlist-knowledge-base/](../frameworks/watchlist-knowledge-base/) |
 | Resolve whether a hit and a customer are the same person — at volume, never on a name alone | entity-resolution-confidence | framework (runnable, dual-gated: 0 true-same clears, 0 name-only merges) | [../frameworks/entity-resolution-confidence/](../frameworks/entity-resolution-confidence/) |
+| Apply the 50-percent ownership rule — blocked by ownership in the aggregate, even when no list names the entity | sanctions-ownership-aggregation | framework (runnable, dual-gated: 0 aggregation misses, 0 unresolved-path clears) | [../frameworks/sanctions-ownership-aggregation/](../frameworks/sanctions-ownership-aggregation/) |
 | Look up evasion typologies and the regulatory map | aml-typologies | reference | [../reference/aml-typologies.md](../reference/aml-typologies.md) |
 | Render any output as Word/Excel/PDF/HTML | BASE.md | companion | [../BASE.md](../BASE.md) |
 

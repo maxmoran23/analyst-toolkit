@@ -120,6 +120,11 @@ REGISTRY: dict[str, dict] = {
         "args": ["--controls", "12", "--population", "250"],
         "files": ["controls.csv", "items.csv"],
     },
+    "sanctions-ownership-aggregation": {
+        "args": ["--true-blocked", "160", "--below", "240", "--unresolved", "80",
+                 "--sample-size", "24"],
+        "files": ["sample-input.json"],
+    },
     "sanctions-name-screening": {
         "args": ["--watchlist", "120", "--alerts", "800"],
         "files": ["watchlist.csv", "alerts.csv"],

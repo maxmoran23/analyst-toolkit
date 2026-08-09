@@ -224,6 +224,11 @@ jobs:
           cd frameworks/beneficial-ownership-resolution
           python3 run_validation.py --seed 42 --true-owners 160 --below 240 --unresolved 80 --trials 6
 
+      - name: Sanctions ownership aggregation (50-percent rule) — dual false-negative / resolution-integrity gate + stability
+        run: |
+          cd frameworks/sanctions-ownership-aggregation
+          python3 run_validation.py --seed 42 --true-blocked 160 --below 240 --unresolved 80 --trials 6
+
       - name: Fraud detection — dual miss / false-decline safety gate + stability
         run: |
           cd frameworks/fraud-detection

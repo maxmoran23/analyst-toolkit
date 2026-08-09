@@ -1,0 +1,6 @@
+blocked_threshold,review_floor,clear_false_negatives,resolution_integrity_leaks,blocked_recall,review_rate
+0.50,0.10,0,0,1.000000,0.583333
+0.50,0.20,0,0,1.000000,0.500000
+0.50,0.25,0,0,1.000000,0.416667
+0.50,0.30,0,0,1.000000,0.416667
+0.50,0.40,0,0,1.000000,0.333333
