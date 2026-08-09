@@ -32,3 +32,7 @@ frameworks/*/data/
 # Same rule at the repo root: a generator that writes ./data/ instead of its own
 # framework data/ dir must not smuggle regenerable fixtures into the repo.
 /data/
+
+# Codex silo — working material, reviewed and promoted deliberately, never published.
+# Standard: ~/Desktop/Agents/_skills-library/codex-silo/SILO-STANDARD.md
+codex/
