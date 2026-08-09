@@ -29,3 +29,6 @@ quant-jvm/.gradle/
 # frameworks/ synthetic data — regenerated from seed, never committed.
 # The evidence DERIVED from it (evidence/) IS committed; the raw data is not.
 frameworks/*/data/
+# Same rule at the repo root: a generator that writes ./data/ instead of its own
+# framework data/ dir must not smuggle regenerable fixtures into the repo.
+/data/
