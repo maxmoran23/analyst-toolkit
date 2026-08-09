@@ -8,6 +8,39 @@ A deterministic, standard-library-only Python 3.12 engine for identifying candid
 
 The engine resolves and documents. It never blocks, freezes, rejects, files, or off-boards.
 
+<!-- STANDALONE-BRIEF -->
+> **This page is written to be read on its own.** You do not need to browse the rest of
+> the repository to judge what is here. Links out are optional background, never a
+> prerequisite.
+
+|  |  |
+|---|---|
+| **Who this is for** | Sanctions screening and list-management teams applying the ownership rule, and their independent validators. |
+| **The question it answers** | Is this entity blocked by ownership — owned 50% or more, individually or in the aggregate, directly or indirectly, by sanctioned parties — even though no list names it? |
+| **What it is** | A small, transparent, runnable ownership-aggregation engine. Every rule, weight, and threshold is written out in [`METHODOLOGY.md`](METHODOLOGY.md) — there is no black box. It is a reference implementation chosen for auditability, **not a production control**. |
+| **What it never does** | It never blocks, freezes, or rejects. It never auto-clears a candidate while any path from a sanctioned party is unresolved, and sanctioned control without qualifying equity routes to review, never to a clear. Thresholds are modeled on public guidance and are not legal advice. |
+| **The data** | 100% synthetic. Every person, entity, and account is fictional — the recurring institution is "Harborview Financial Group". No real customer, list entry, or transaction appears anywhere in this repository. |
+| **Who decides** | A qualified human, always. Nothing here clears, blocks, freezes, files, designates, or approves on its own. |
+
+### Do not take the numbers on faith — re-derive them
+
+```bash
+cd frameworks/sanctions-ownership-aggregation
+python3 run_validation.py --seed 42 --true-blocked 160 --below 240 --unresolved 80 --trials 6
+```
+
+Pure Python standard library: nothing to install, no network access, a few seconds. It prints
+the same figures published on this page. A continuous-integration job re-runs it on every
+change, on a machine the author does not control — the
+[workflow](../../.github/workflows/validate.yml) is public, and every claim across the
+pillar is indexed in [`../EVIDENCE.md`](../EVIDENCE.md).
+
+### How to read the result on this page
+
+
+
+<!-- /STANDALONE-BRIEF -->
+
 ## Safety invariants
 
 - Sanctioned interests are aggregated across owners; a 30% + 25% structure cannot be cleared because neither owner individually reaches 50%.
