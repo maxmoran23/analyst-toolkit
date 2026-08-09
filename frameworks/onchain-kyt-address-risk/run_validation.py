@@ -238,6 +238,41 @@ def run_once(n, seed, config):
     return operating_point(records), threshold_sweep(records), records
 
 
+def absent_distance_gate(config):
+    """Absent hop distance must never auto-clear material, unbroken illicit exposure.
+
+    This population never produces such a row — an address with no traceable path is
+    already cleared by the severity guard — so the branch is unreachable from the
+    generator and a population-level metric cannot verify it. It becomes reachable the
+    moment a caller maps real vendor material, where exposure exports commonly publish
+    only a binary direct/indirect flag and no numeric depth. An unexercised safety
+    branch is not a verified one, so construct the case directly and assert on it.
+
+    Returns a list of failure strings; empty means the gate passed.
+    """
+    failures = []
+    probe = S.AddressAlert(
+        address="0xPROBE", top_category="mixer", exposure=0.90, hops=None,
+        amount_fraction=0.85, via_breaker=False, direction="outbound",
+    )
+    d = S.score_address(probe, config)
+    if d.decision == "AUTO_CLEAR":
+        failures.append(
+            "material unbroken mixer exposure with unpublished hop distance was "
+            f"AUTO_CLEARed — reason: {d.reason}")
+
+    # The converse must still hold: a genuinely remote source is still clearable.
+    remote = S.AddressAlert(
+        address="0xREMOTE", top_category="mixer", exposure=0.02,
+        hops=config.max_actionable_hops + 2, amount_fraction=0.85,
+        via_breaker=False, direction="outbound",
+    )
+    if S.score_address(remote, config).decision != "AUTO_CLEAR":
+        failures.append("a provably remote source stopped being clearable — the "
+                        "de-remoteness clear cause regressed")
+    return failures
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--addresses", type=int, default=50000)
@@ -263,6 +298,14 @@ def main():
             o, _, _ = run_once(args.addresses, s, config)
             print(f"  trial seed {s}: recall {o['confusion']['recall']:.4f} FN {o['fn_count']} "
                   f"FP-red {o['confusion']['specificity']:.4f}")
+
+    distance_failures = absent_distance_gate(config)
+    if distance_failures:
+        print("\nABSENT-DISTANCE GATE FAILED:")
+        for f in distance_failures:
+            print("   ", f)
+        return 1
+    print("absent-distance gate: PASSED (unpublished hop distance does not auto-clear)")
 
     if op["fn_count"] > 0 or c["recall"] < FN_RECALL_FLOOR:
         print(f"\nFN-SAFETY GATE FAILED: recall {c['recall']:.4f} < {FN_RECALL_FLOOR} "

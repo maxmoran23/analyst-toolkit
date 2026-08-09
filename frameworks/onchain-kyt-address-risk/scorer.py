@@ -103,11 +103,28 @@ def score_address(a: AddressAlert, config: Config = Config()) -> Disposition:
         return Disposition("AUTO_CLEAR", "", risk,
                            f"De-minimis traceable value ({a.amount_fraction:.1%} of "
                            "volume); below materiality.", components)
-    if a.hops is None or a.hops > config.max_actionable_hops or a.exposure < config.dilution_floor:
-        h = "no traceable path" if a.hops is None else f"{a.hops} hops, exposure {a.exposure:.3f}"
+    # Absent distance is NOT proven remoteness. Reaching this line means the exposure is to
+    # an illicit category, is material, and is not broken by an intermediary — so a null
+    # `hops` here can only mean the source did not publish a distance, never that no path
+    # exists (an unexposed address is already cleared by the severity guard above).
+    #
+    # This matters at the integration boundary rather than in this package's own population:
+    # vendor exposure material commonly carries only a binary direct/indirect flag with no
+    # numeric depth, so a bridge mapping such a file would set hops=None on every indirect
+    # exposure. Clearing on that would auto-clear real exposure through a harness that
+    # advertises a false-negative safety gate. The de-remoteness clear cause requires a
+    # distance; without one the alert stays open.
+    if a.hops is None:
+        return Disposition("ANALYST_REVIEW", "MEDIUM", risk,
+                           f"Exposure to {a.top_category} is material and unbroken, but the "
+                           "source data model does not publish hop distance — remoteness "
+                           "cannot be proven, so the de-remoteness clear cause is "
+                           "unavailable. Manual review.", components)
+    if a.hops > config.max_actionable_hops or a.exposure < config.dilution_floor:
         return Disposition("AUTO_CLEAR", "", risk,
-                           f"Illicit source too remote ({h}); exposure decayed below an "
-                           "actionable level.", components)
+                           f"Illicit source too remote ({a.hops} hops, exposure "
+                           f"{a.exposure:.3f}); exposure decayed below an actionable level.",
+                           components)
 
     # material, proximate, unbroken exposure -> keep open
     if a.exposure >= config.escalate_floor:

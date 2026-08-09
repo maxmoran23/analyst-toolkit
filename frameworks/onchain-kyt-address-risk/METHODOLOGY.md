@@ -57,14 +57,43 @@ Named clear causes first; the risk score only ranks what survives.
    address only through a commingling service; attribution is broken downstream.
 3. **AUTO_CLEAR — de_minimis.** `amount_fraction < deminimis_fraction` (0.02) — the
    traceable value share is below materiality.
-4. **AUTO_CLEAR — diluted_distant.** No path, or `hops > max_actionable_hops` (4), or
-   `exposure < dilution_floor` (0.04) — the illicit source is too remote.
-5. **ESCALATE.** `exposure ≥ escalate_floor` (0.30) — material, proximate, unbroken
+4. **ANALYST_REVIEW — distance_not_published.** `hops is None` at this point in the
+   firing order. An address with no traceable path at all is already cleared by rule 1,
+   so a null distance here can only mean *the source did not publish one* — which is not
+   evidence of remoteness. See §3a.
+5. **AUTO_CLEAR — diluted_distant.** `hops > max_actionable_hops` (4) or
+   `exposure < dilution_floor` (0.04) — the illicit source is provably too remote.
+6. **ESCALATE.** `exposure ≥ escalate_floor` (0.30) — material, proximate, unbroken
    exposure to a serious category; routed for investigation / a SAR or freeze
    decision.
-6. **ANALYST_REVIEW** — everything else, priority by risk (HIGH ≥ 0.12, MEDIUM ≥
+7. **ANALYST_REVIEW** — everything else, priority by risk (HIGH ≥ 0.12, MEDIUM ≥
    0.05, else LOW). Includes the mid-severity ambiguous residual that is neither
    clearable nor escalatable.
+
+## 3a. Hop availability by source — why absent distance is not remoteness
+
+The de-remoteness clear cause requires a distance. Not every source publishes one.
+
+| Source of the exposure features | Hop distance available? |
+|---|---|
+| This package's `_lib/graph` taint propagation | Yes — an integer, by construction |
+| A chain-analytics **exposure/screening export** | Commonly **no** — such material typically carries a binary direct/indirect flag with no numeric depth, and indirect exposure is unbounded in depth by definition |
+| A vendor field that explicitly states a minimum hop count | Yes, but it is a *minimum*, and minimums from different vendors are not comparable |
+
+So a caller mapping real vendor material into `AddressAlert` will legitimately produce
+`hops = None` on exposures that are real, material, and unbroken. Treating that as
+"too remote" would auto-clear genuine exposure — through a package that advertises a
+false-negative safety gate. Rule 4 therefore routes absent distance to review rather
+than to a clear, and **a caller must never substitute a fabricated hop count** (for
+example mapping "indirect" to 2) to obtain a disposition.
+
+This branch is unreachable from this package's own synthetic population, so no
+population metric can verify it. `run_validation.py` therefore constructs the case
+directly and gates on it (`absent_distance_gate`), asserting both that absent distance
+does not clear and that a *provable* remote source still does. That gate fails the
+build while every population metric stays green — which is precisely the point: the
+generator cannot express this failure mode, so coverage of the metric was never
+coverage of the risk.
 
 ### Why false-negative safety is structural
 
