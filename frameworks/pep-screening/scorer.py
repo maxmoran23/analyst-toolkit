@@ -36,6 +36,7 @@ import sys
 from dataclasses import dataclass, field
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from _lib.validation import validate_numeric_fields
 from _lib.match import compare_names, NameMatch  # noqa: E402
 from _lib.text_normalize import TokenStats  # noqa: E402
 
@@ -221,6 +222,7 @@ def _identifier_check(customer: Customer, entry: PepEntry):
 def score_alert(customer: Customer, entry: PepEntry, stats: TokenStats,
                 config: Config = Config()) -> Disposition:
     """Disposition one alert (customer x PEP-list entry). See module docstring."""
+    validate_numeric_fields(customer, entry, config)
     nm = _best_name_match(customer.name, entry, stats, config.generic_max_share)
     name_score = nm.weighted_overlap * (0.4 + 0.6 * nm.coverage)
     corroboration, dob_mismatch, nationality_mismatch = _identifier_check(customer, entry)

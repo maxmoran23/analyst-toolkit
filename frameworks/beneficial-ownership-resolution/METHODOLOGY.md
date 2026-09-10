@@ -27,7 +27,7 @@ The engine computes all graph nodes that can reach the target. The target graph 
 - `resolved: false`
 - `opaque: true`
 - `nominee: true`
-- an entity with `ownership_complete: false`
+- an entity whose `ownership_complete` is absent or not the boolean `true`
 
 Equivalent flags on the candidate also block auto-clearance. Resolution is global to the relevant target graph: an opaque target-ownership branch blocks clearance even when the candidate's own visible chain appears complete. The engine does not infer completeness from fractions summing to 100%; upstream systems must explicitly attest `ownership_complete` where needed.
 

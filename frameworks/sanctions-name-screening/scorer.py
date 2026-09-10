@@ -29,6 +29,7 @@ import sys
 from dataclasses import dataclass, field, asdict
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from _lib.validation import validate_numeric_fields
 from _lib.match import compare_names, NameMatch  # noqa: E402
 from _lib.text_normalize import TokenStats  # noqa: E402
 
@@ -162,6 +163,7 @@ def _identifier_assessment(party: Party, entry: WatchlistEntry):
 def score_candidate(party: Party, entry: WatchlistEntry, stats: TokenStats,
                     config: Config = Config()) -> Disposition:
     """Disposition one alert (party x entry). See module docstring for posture."""
+    validate_numeric_fields(party, entry, config)
     nm = _best_name_match(party.name, entry, stats, config.generic_max_share)
     type_score = _type_concordance(party.entity_type, entry.entity_type)
     corroboration, discriminator = _identifier_assessment(party, entry)

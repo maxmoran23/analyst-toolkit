@@ -13,19 +13,19 @@ import re
 import sys
 from html.parser import HTMLParser
 from pathlib import Path
+from markdown_blocks import fenced_blocks
 
 class Strict(HTMLParser):
     def __init__(self): super().__init__(); self.errors = []
     def error(self, msg): self.errors.append(msg)
 
 def extract_blocks(text):
-    pattern = r"```(\w+)\n(.*?)```"
-    return [(lang, body) for lang, body in re.findall(pattern, text, flags=re.DOTALL)]
+    return [(block.language, block.body) for block in fenced_blocks(text)]
 
 def validate(path):
     text = Path(path).read_text()
     blocks = extract_blocks(text)
-    errors = []
+    errors = [f"UNCLOSED FENCE in {path}:{block.start_line}" for block in fenced_blocks(text) if not block.closed]
     counts = {"python": 0, "html": 0, "bash": 0, "text": 0, "other": 0}
     for lang, body in blocks:
         counts[lang] = counts.get(lang, 0) + 1
@@ -46,6 +46,9 @@ def validate(path):
 
 def main():
     standalone = Path(sys.argv[1] if len(sys.argv) > 1 else "standalone")
+    if not standalone.is_dir():
+        print(f"Missing input directory: {standalone}", file=sys.stderr)
+        return 1
     total = {"python": 0, "html": 0, "bash": 0, "text": 0, "other": 0}
     all_errors = []
     for f in sorted(standalone.glob("*.md")):

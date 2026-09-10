@@ -1,10 +1,11 @@
 # Guides — how to use this library, and how to judge it
 
-These guides. The first is the one to read if you only read one.
+Start with the first guide for orientation; use the others for a specific workflow.
 
 | Guide | Who it's for | What it answers |
 |---|---|---|
 | **[How the system works](how-the-system-works.md)** | Senior reviewers, examiners, anyone being asked to trust this | What is this, what can it and can it not do, and why should its results be believed? Written in plain English, no code, no prompts. |
+| [Find and export a prompt](toolkit-cli.md) | Anyone using the local checkout | How to search the catalog, inspect a fictional demo, export an attachment, and reproduce its checks. |
 | [Using with Copilot](using-with-copilot.md) | Anyone on a locked-down work machine | The copy/paste loop end to end — how to get a prompt into Copilot and a clean Word/Excel/PDF file back out. |
 | [Running on any assistant](running-on-any-assistant.md) | Claude, ChatGPT, or Copilot users | Why every prompt is assistant-agnostic, and how it degrades gracefully when a capability is missing. |
 | [Methodology as base](methodology-as-base.md) | Anyone setting the library up once, then using thin prompts forever | How to load the methodology as your assistant's standing instructions so every later task is a one-line request. |

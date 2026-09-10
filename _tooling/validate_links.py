@@ -24,6 +24,7 @@ from __future__ import annotations
 import re
 import sys
 from pathlib import Path
+from repository_files import public_files
 
 ROOT = Path(sys.argv[1] if len(sys.argv) > 1 else ".").resolve()
 
@@ -41,7 +42,9 @@ def main() -> int:
     checked = 0
     files = 0
 
-    for md in sorted(ROOT.rglob("*.md")):
+    for md in public_files(ROOT):
+        if md.suffix != ".md":
+            continue
         if is_ignored(md.relative_to(ROOT)):
             continue
         files += 1

@@ -35,6 +35,7 @@ from __future__ import annotations
 import re
 import sys
 from pathlib import Path
+from repository_files import public_files
 
 ROOT = Path(sys.argv[1] if len(sys.argv) > 1 else ".").resolve()
 MAP_REL = "docs/prompt-vs-engine-map.md"
@@ -66,16 +67,9 @@ def artifact_class(path: Path) -> str:
 
 
 def markdown_files() -> list[Path]:
-    out: list[Path] = []
-    for top in list(CLASS_BY_TOP) + ["."]:
-        base = ROOT / top
-        if not base.exists():
-            continue
-        for f in base.rglob("*.md") if top != "." else base.glob("*.md"):
-            if ".git" in f.parts or "__pycache__" in f.parts:
-                continue
-            out.append(f)
-    return out
+    return [path for path in public_files(ROOT) if path.suffix == ".md"
+            and (len(path.relative_to(ROOT).parts) == 1
+                 or path.relative_to(ROOT).parts[0] in CLASS_BY_TOP)]
 
 
 def load_cousins() -> list[tuple[str, str]]:

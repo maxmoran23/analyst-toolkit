@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Assumptions.assumeTrue
+import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Test
 import java.io.File
 import kotlin.math.abs
@@ -35,21 +36,20 @@ class MarkowitzParityTest {
     }
 
     @Test
-    fun `full JSON parity — surplus name quirk (zip truncation vs equal-weight all names)`() {
+    fun `surplus and duplicate asset names are rejected by both languages`() {
         requirePython()
-        // Four names for three assets: solver weight dicts truncate via zip, but the
-        // equal-weight benchmark iterates every provided name.
-        val csv = returnsCsv()
-        val args = arrayOf("--asset-names", "a,b,c,ghost")
-        val python = pythonMarkowitz(csv, *args)
-        val kotlin = kotlinMarkowitz(csv, *args)
-        assertJsonValueEquals(python, kotlin, "$")
-
-        val minVarWeights = kotlin.jsonObject["min_variance_portfolio"]!!.jsonObject["weights"]!!.jsonObject
-        val equalWeights = kotlin.jsonObject["equal_weight_benchmark"]!!.jsonObject["weights"]!!.jsonObject
-        assertEquals(3, minVarWeights.size)
-        assertEquals(4, equalWeights.size)
-        assertTrue(equalWeights.containsKey("ghost"))
+        val file = File.createTempFile("mkw-names-", ".csv")
+        file.writeText(returnsCsv())
+        try {
+            for (names in listOf("a,b,c,ghost", "a,a,c", "a,b")) {
+                val args = arrayOf("--returns-csv", file.absolutePath, "--asset-names", names)
+                assertTrue(evaluateMarkowitz(args).exitCode != 0)
+                val process = ProcessBuilder("python3", pythonReference().absolutePath, *args)
+                    .redirectErrorStream(true).start()
+                process.inputStream.bufferedReader().readText()
+                assertTrue(process.waitFor() != 0)
+            }
+        } finally { file.delete() }
     }
 
     @Test
@@ -109,13 +109,14 @@ class MarkowitzParityTest {
     }
 
     @Test
-    fun `degenerate tangency and pivot regularization hand checks`() {
+    fun `undefined tangency and nonpositive pivots are rejected`() {
         // Symmetric excess over an identity covariance sums to zero: tangency is undefined.
         assertNull(maxSharpePortfolio(listOf(listOf(1.0, 0.0), listOf(0.0, 1.0)), listOf(0.01, -0.01)))
 
-        // Non-positive pivot regularizes to 1e-10, matching the Python guard.
-        assertEquals(sqrt(1e-10), cholesky(listOf(listOf(0.0)))[0][0], 0.0)
-        assertEquals(sqrt(1e-10), cholesky(listOf(listOf(-3.0)))[0][0], 0.0)
+        assertThrows(IllegalArgumentException::class.java) { cholesky(listOf(listOf(0.0))) }
+        assertThrows(IllegalArgumentException::class.java) { cholesky(listOf(listOf(-3.0))) }
+        assertThrows(IllegalArgumentException::class.java) { cholesky(listOf(listOf(1.0, 2.0), listOf(2.0, 1.0))) }
+        assertNull(maxSharpePortfolio(listOf(listOf(1.0, 0.0), listOf(0.0, 1.0)), listOf(-0.1, -0.2)))
     }
 
     @Test

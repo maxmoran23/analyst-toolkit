@@ -36,6 +36,7 @@ from __future__ import annotations
 import re
 import sys
 from pathlib import Path
+from repository_files import public_files
 
 ROOT = Path(sys.argv[1] if len(sys.argv) > 1 else ".").resolve()
 
@@ -86,7 +87,7 @@ def main() -> int:
     scanned = 0
     exempted: list[str] = []
 
-    for path in sorted(ROOT.rglob("*")):
+    for path in public_files(ROOT):
         if not path.is_file() or path.suffix not in TEXT_SUFFIXES:
             continue
         rel = path.relative_to(ROOT)
@@ -104,7 +105,7 @@ def main() -> int:
         for pattern, label in LEAK_PATTERNS:
             for match in re.finditer(pattern, text):
                 line = text[: match.start()].count("\n") + 1
-                errors.append(f"RULE A {rel}:{line} {label}: {match.group()!r}")
+                errors.append(f"RULE A {rel}:{line} {label}: [REDACTED]")
 
         if path.suffix in EMOJI_SUFFIXES:
             found = sorted({c for c in EMOJI_RE.findall(text)})

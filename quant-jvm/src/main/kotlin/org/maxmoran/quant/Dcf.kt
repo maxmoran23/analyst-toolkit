@@ -19,7 +19,7 @@ private val PRETTY_JSON = Json { prettyPrint = true }
  * non-contract per parity-contract.md §2.
  */
 
-/** Unrounded valuation state; [degenerateTerminal] marks discount <= terminal growth. */
+/** Unrounded valuation state; degenerateTerminal remains false for valid inputs. */
 data class DcfResult(
     val pvFees: Double,
     val pvTerminal: Double,
@@ -36,20 +36,20 @@ fun dcfValuation(
     circulatingSupply: Double,
     captureRatio: Double = 1.0,
 ): DcfResult {
+    require(feesYearly.isNotEmpty() && feesYearly.all { it.isFinite() && it >= 0.0 }) { "fees must be non-empty, finite and nonnegative" }
+    require(discount.isFinite() && terminalGrowth.isFinite() && discount > terminalGrowth && terminalGrowth > -1.0 && circulatingSupply.isFinite() && circulatingSupply > 0.0) { "require discount > terminal_growth > -1 and positive circulating supply" }
+    require(captureRatio.isFinite() && captureRatio in 0.0..1.0) { "capture ratio must be in [0, 1]" }
     val years = feesYearly.size
     var pvFees = 0.0
     for (t in 1..years) {
         pvFees += (feesYearly[t - 1] * captureRatio) / (1.0 + discount).pow(t)
     }
     val terminalFee = feesYearly.last() * (1.0 + terminalGrowth) * captureRatio
-    val degenerate = !(discount > terminalGrowth)
-    val pvTerminal = if (degenerate) {
-        0.0
-    } else {
-        val tv = terminalFee / (discount - terminalGrowth)
-        tv / (1.0 + discount).pow(years)
-    }
+    val degenerate = false
+    val tv = terminalFee / (discount - terminalGrowth)
+    val pvTerminal = tv / (1.0 + discount).pow(years)
     val enterpriseValue = pvFees + pvTerminal
+    require(enterpriseValue.isFinite() && (enterpriseValue / circulatingSupply).isFinite()) { "valuation exceeds finite numeric range" }
     return DcfResult(
         pvFees = pvFees,
         pvTerminal = pvTerminal,
@@ -132,14 +132,18 @@ fun evaluateDcf(args: Array<String>): DcfCliResult {
         val supply = circulatingSupply ?: throw IllegalArgumentException("need --circulating-supply")
 
         val base = dcfValuation(fees, discount, terminalGrowth, supply, captureRatio)
-        val bear = dcfValuation(
+        fun scenario(fees: List<Double>, d: Double, g: Double, s: Double, c: Double): DcfResult? =
+            try { dcfValuation(fees, d, g, s, c) } catch (_: IllegalArgumentException) { null }
+        fun scenarioJson(value: DcfResult?): JsonObject = value?.let { dcfJson(it) }
+            ?: buildJsonObject { put("unavailable", JsonPrimitive("require discount > terminal_growth > -1 and positive circulating supply")) }
+        val bear = scenario(
             fees.map { it * 0.6 },
             discount + 0.05,
             max(0.01, terminalGrowth - 0.02),
             supply,
             captureRatio,
         )
-        val bull = dcfValuation(
+        val bull = scenario(
             fees.map { it * 1.4 },
             max(0.05, discount - 0.03),
             terminalGrowth + 0.02,
@@ -156,27 +160,24 @@ fun evaluateDcf(args: Array<String>): DcfCliResult {
                 put("capture_ratio", JsonPrimitive(captureRatio))
             })
             put("base_case", dcfJson(base))
-            put("bear_case", dcfJson(bear))
-            put("bull_case", dcfJson(bull))
+            put("bear_case", scenarioJson(bear))
+            put("bull_case", scenarioJson(bull))
             put("sensitivity_per_token", buildJsonObject {
                 for (d in SENSITIVITY_DISCOUNTS) {
                     // Key mirrors Python's f"discount_{d}" repr (0.20 prints as 0.2).
-                    put(
-                        "discount_$d",
-                        JsonPrimitive(round4(round4(
-                            dcfValuation(fees, d, terminalGrowth, supply, captureRatio).fairValuePerToken
-                        ))),
-                    )
+                    val value = scenario(fees, d, terminalGrowth, supply, captureRatio)
+                    put("discount_$d", value?.let { JsonPrimitive(round4(it.fairValuePerToken)) } ?: scenarioJson(null))
                 }
             })
-            // Python gates on truthiness, so an explicit 0 price suppresses the block.
-            if (currentPrice != null && currentPrice != 0.0) {
+            // A supplied price must support a defined percentage comparison.
+            if (currentPrice != null) {
                 val price = currentPrice
+                require(price.isFinite() && price > 0.0) { "current_price must be positive" }
                 put("current_price", JsonPrimitive(price))
                 // Upside uses the already-rounded fair values, exactly like the reference.
                 put("upside_base_pct", upsidePct(round4(base.fairValuePerToken), price))
-                put("upside_bull_pct", upsidePct(round4(bull.fairValuePerToken), price))
-                put("downside_bear_pct", upsidePct(round4(bear.fairValuePerToken), price))
+                if (bull != null) put("upside_bull_pct", upsidePct(round4(bull.fairValuePerToken), price))
+                if (bear != null) put("downside_bear_pct", upsidePct(round4(bear.fairValuePerToken), price))
             }
         }
         DcfCliResult(

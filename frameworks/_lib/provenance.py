@@ -30,6 +30,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+from datetime import datetime, timedelta
 from collections import Counter
 from dataclasses import dataclass, field
 
@@ -58,7 +59,7 @@ def sha256_text(text: str) -> str:
 def canonical_json(obj) -> str:
     """One canonical serialization (sorted keys, compact separators) so the same
     value always hashes and renders identically."""
-    return json.dumps(obj, sort_keys=True, separators=(",", ":"), ensure_ascii=True)
+    return json.dumps(obj, sort_keys=True, separators=(",", ":"), ensure_ascii=True, allow_nan=False)
 
 
 def sha256_json(obj) -> str:
@@ -114,6 +115,13 @@ class EvidenceFact:
             h = self.content_sha256.lower()
             if len(h) != _SHA256_HEX_LEN or not set(h) <= _HEX_DIGITS:
                 missing.append("content_sha256")
+        if "retrieved_at_utc" not in missing:
+            try:
+                stamp = datetime.fromisoformat(self.retrieved_at_utc.replace("Z", "+00:00"))
+                if stamp.utcoffset() != timedelta(0):
+                    missing.append("retrieved_at_utc")
+            except ValueError:
+                missing.append("retrieved_at_utc")
         return missing
 
     def is_complete(self) -> bool:

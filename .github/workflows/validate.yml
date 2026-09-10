@@ -14,81 +14,37 @@ permissions:
   contents: read
 
 jobs:
-  validate:
+  quality:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.12", "3.14"]
     steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-python@v6
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
         with:
-          python-version: "3.12"
-
-      - name: Embedded code blocks parse (standalone)
-        run: python3 _tooling/validate_embedded.py standalone
-
-      - name: Embedded code blocks parse (methodology)
-        run: python3 _tooling/validate_embedded.py methodology
-
-      - name: BASE.md in sync with methodology sources
-        run: python3 _tooling/build_base.py --check
-
-      - name: Two-file rule — self-containment and pairing budget
-        run: python3 _tooling/validate_self_containment.py
-
-  navigation:
-    # The framework harnesses guard the engines; these guard the prose about them.
-    # Every defect they catch has shipped to main at least once.
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-python@v6
-        with:
-          python-version: "3.12"
-
-      - name: Relative links resolve
-        run: python3 _tooling/validate_links.py
-
-      - name: Indexes complete and declared counts match disk
-        run: python3 _tooling/validate_index.py
-
-      - name: Content hygiene — leak shapes and emoji
-        run: python3 _tooling/validate_hygiene.py
-
-      # No filename means one thing in one folder and another elsewhere, and the
-      # prompt-vs-engine cousin map cannot advertise a pairing that has been removed.
-      - name: Filenames unambiguous and cousin map current
-        run: python3 _tooling/validate_naming.py
-
-      # Every entry page must stand on its own: a reader sent a direct link to one
-      # engine or one prompt category must learn who it is for, what it refuses to do,
-      # and how to check its numbers, without navigating anywhere else.
-      - name: Standalone briefs current with the registries
-        run: python3 _tooling/build_briefs.py --check
-
-      # Every prompt ships a paste-ready "Try it now" demo — the prompt block with
-      # fictional inputs already filled — so it can be evaluated with zero manual input.
-      # The demo is generated from the prompt block, so it cannot drift from the method;
-      # this proves the committed demo is what the current registry + prompt produce.
-      - name: Try-it-now demos current with the prompt blocks
-        run: python3 _tooling/build_demos.py --check
-
-      - name: Adaptive dashboard samples are current, lossless, and DOM-safe
-        run: python3 _tooling/validate_adaptive_dashboard.py
+          python-version: ${{ matrix.python-version }}
+      - name: Content, navigation, generation, boundary, and quant regressions
+        run: python3 _tooling/check.py
 
   quant-jvm:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-python@v6
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
         with:
           python-version: "3.12"
-      - uses: actions/setup-java@v5
+      - uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6
         with:
           distribution: temurin
           java-version: "21"
       # The repo deliberately ships no gradle-wrapper.jar/gradlew/gradlew.bat —
       # executable archive members trip enterprise download gateways (see
       # quant-jvm/README.md). CI provisions the pinned Gradle version instead.
-      - uses: gradle/actions/setup-gradle@v4
+      - uses: gradle/actions/setup-gradle@4733eaac7c1b0da527e4206b7671e0061de1ce37 # v6
         with:
           gradle-version: "8.10.2"
       - name: Kotlin / Python parity suite
@@ -97,9 +53,10 @@ jobs:
 
   presentation-preservation:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-python@v6
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
         with:
           python-version: "3.12"
       - name: Install the injector's declared runtime
@@ -118,12 +75,13 @@ jobs:
     # this job proves the COMMITTED evidence is what the current code produces.
     # Without it a VALIDATION-REPORT could drift from the engine it describes and no
     # build would notice — "numbers are emitted, never authored" would be an honour
-    # system. Every commit to main re-derives all 15 packs from seed on a machine the
-    # author does not control; that public run history IS the attestation.
+    # system. Every commit to main re-derives all registered packs from seed in GitHub-hosted CI;
+    # that public run history records the reproduction checks.
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-python@v6
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
         with:
           python-version: "3.12"
 
@@ -135,9 +93,10 @@ jobs:
 
   frameworks:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-python@v6
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
         with:
           python-version: "3.12"
 
@@ -240,9 +199,10 @@ jobs:
     # generator produces at the registered small sizes. A pack that no longer
     # reproduces byte-identically fails the build, naming the file that drifted.
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-python@v6
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
         with:
           python-version: "3.12"
 

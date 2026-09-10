@@ -10,6 +10,7 @@ from functools import lru_cache
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.dirname(HERE))
 
+from _lib.validation import validate_numeric_fields
 from _lib import aggregations
 from _lib.rules import Rule, RuleResult, RuleSet
 
@@ -221,6 +222,9 @@ def score_event(
 ) -> ScoreResult:
     """Score one event and return a routing recommendation, never an executed action."""
     config = config or Config()
+    validate_numeric_fields(event, baseline, config)
+    if event.customer_id != baseline.customer_id:
+        raise ValueError("event and baseline customer_id must match")
     features = _features(event, baseline)
     rule_results = _rule_set(config).evaluate(features)
     fired = tuple(RuleSet.fired(rule_results))

@@ -1,6 +1,29 @@
 # `_tooling/` — maintenance scripts and CI gates
 
-Two kinds of script live here: **builders** that maintain generated files (`standalone/`, `BASE.md`, the run-time contract), and **validators** that fail the build when something drifts. End users need neither — `standalone/*.md` and `BASE.md` are already fully populated.
+Use `toolkit.py` to search and export instructions, `check.py` to run the Python
+quality gates, builders to regenerate derived content, and validators to detect drift.
+Direct copy/paste users need none of these tools.
+
+## User and maintainer entry points
+
+| Command | Purpose |
+|---|---|
+| `python3 _tooling/toolkit.py list sanctions --kind prompt` | Search the live catalog by query, kind, and category. |
+| `python3 _tooling/toolkit.py show prompts/compliance/entity-risk-assessment --demo` | Emit the registered fictional example without running a model. |
+| `python3 _tooling/toolkit.py assemble prompts/compliance/entity-risk-assessment --with-base --json` | Export canonical payload plus source hashes, exact byte/character sizes, and an estimated token cost. |
+| `python3 _tooling/check.py` | Run the standard-library content and regression gates with an aggregate failure result. |
+| `python3 _tooling/check.py --full` | Also reproduce registered engine evidence and reference data. |
+
+The [CLI guide](../docs/toolkit-cli.md) explains size limits, no-overwrite exports,
+and verification boundaries. Kotlin parity and presentation preservation run in their
+own CI jobs. Regression tests live in `tests/`, with synthetic negative controls for
+fence parsing, attachment counts, public file scope, export integrity, and CLI errors.
+
+In a Git checkout, hygiene and navigation inspect tracked files plus untracked files
+that Git does not ignore. This includes new proposed public files, and includes tracked
+files even when an ignore pattern matches. Local ignored scratch material is outside
+the publication surface. An extracted archive uses the filesystem fallback; inspect
+the final archive separately before distribution.
 
 ## What's here
 
@@ -20,22 +43,17 @@ Two kinds of script live here: **builders** that maintain generated files (`stan
 | `validate_embedded.py` | the templates | Sanity-checks every fenced code block in a directory: Python blocks parse with `ast`, HTML blocks parse with `html.parser`. Catches syntax drift in the embedded templates. Run against `standalone/` or `methodology/`. |
 | `validate_self_containment.py` | the two-file rule | No repo-file references inside any paste payload, the run-time contract present in every prompt file, standalone files reference nothing, and no file instructs attaching a companion other than `BASE.md`. Prints the per-feature pairing budget (must be ≤ 2 everywhere). |
 | `validate_links.py` | navigation | Every relative markdown link in the repository resolves to a real path. The `teams/` hubs and prompt catalogs are pure navigation; a renamed target breaks them silently, because markdown still renders a dead link. |
-| `validate_index.py` | the indexes and the counts | Every prompt, hub, and framework is linked from its index; every framework package ships the fixed file set; and every registered numeric claim in the docs (`68 prompts`, `13 categories`, `13 engines`, `15 hubs`) matches the count derived from disk. Claims are registered explicitly, so rewording a sentence fails the gate rather than silently un-checking its number. |
+| `validate_index.py` | the indexes and the counts | Every prompt, hub, and framework is linked from its index; every framework package ships the fixed file set; and every registered numeric claim in the docs (prompt, category, engine, and hub counts) matches the count derived from disk. Claims are registered explicitly, so rewording a sentence fails the gate rather than silently un-checking its number. |
 | `validate_hygiene.py` | the public surface | No leak shapes anywhere (Slack workspace IDs, home-directory paths, private-fleet paths, credential shapes) and no emoji on the portable text surface. Rendered sample dashboards are exempt from the emoji rule for a documented reason, reported on every run rather than hidden. |
 
 ### Why the validators exist
 
 The framework harnesses under `frameworks/*/run_validation.py` guard the *engines* — they fail the build if a scoring engine ever auto-clears a true positive. Nothing guarded the *prose about* the engines. Every defect the three navigation validators catch has shipped to `main` at least once: a README advertising 39 prompts after 68 existed, a team hub promising a capability that had already shipped, an engine no index linked to. They apply the harness philosophy to documentation — derive the truth from the filesystem, then fail when a document disagrees.
 
-Run them all locally before a push:
+Run all Python gates locally before a push:
 
 ```bash
-python3 _tooling/validate_self_containment.py
-python3 _tooling/validate_links.py
-python3 _tooling/validate_index.py
-python3 _tooling/validate_hygiene.py
-python3 _tooling/build_base.py --check
-python3 _tooling/build_demos.py --check
+python3 _tooling/check.py --full
 ```
 
 The renderer content itself **lives in `methodology/report-templates.md`** (the 4th methodology file), not here. That file is the single source of truth — the script extracts its body between the sentinels and embeds that body into every standalone file.
@@ -48,7 +66,7 @@ The renderer content itself **lives in `methodology/report-templates.md`** (the 
 
 ## Why the script approach instead of hand-editing each standalone file
 
-The universal appendix is ~700 lines and identical across 9 files. Hand-editing it 9 times invites drift — a small change to a Python skeleton or a hex color in one file but not the others, and the library becomes inconsistent. The script keeps the universal block authoritative in one place; each standalone file is the universal block + a small per-file customization at the end. Re-running the script after any change keeps everything in sync.
+The universal appendix is shared across the standalone payloads. Hand-editing every copy invites drift — a small change to a Python skeleton or a hex color in one file but not the others, and the library becomes inconsistent. The script keeps the universal block authoritative in one place; each standalone file is the universal block + a small per-file customization at the end. Re-running the script after any change keeps everything in sync.
 
 ## Optional install for testing the generated artifacts
 

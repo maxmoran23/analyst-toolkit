@@ -30,6 +30,7 @@ import sys
 from dataclasses import dataclass, field
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from _lib.validation import validate_numeric_fields
 from _lib.match import compare_names  # noqa: E402
 from _lib.relevance import (relevance_score, category_severity, is_non_adverse,  # noqa: E402
                             is_low_role)
@@ -111,6 +112,7 @@ def _identifier_check(subject_ids, article_ids):
 
 
 def score_hit(subject: Subject, hit: MediaHit, stats, config: Config = Config()) -> Disposition:
+    validate_numeric_fields(subject, hit, config)
     nm = compare_names(subject.name, hit.article_name, stats, config.generic_max_share)
     name_score = nm.weighted_overlap * (0.4 + 0.6 * nm.coverage)
     corroborated, strong_disc, weak_disc = _identifier_check(subject.ids, hit.article_ids)

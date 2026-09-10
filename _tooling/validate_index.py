@@ -47,15 +47,18 @@ WORD_NUMBERS = {
 }
 
 
+def content_directories(parent: Path) -> list[Path]:
+    return sorted(path for path in parent.iterdir()
+                  if path.is_dir() and not path.name.startswith(("_", ".")))
+
+
 def counts() -> dict[str, int]:
     prompts_dir = ROOT / "prompts"
-    categories = sorted(p for p in prompts_dir.iterdir() if p.is_dir())
+    categories = content_directories(prompts_dir)
     prompt_files = [
         f for c in categories for f in sorted(c.glob("*.md")) if f.name != "README.md"
     ]
-    frameworks = sorted(
-        p for p in (ROOT / "frameworks").iterdir() if p.is_dir() and p.name != "_lib"
-    )
+    frameworks = content_directories(ROOT / "frameworks")
     hubs = [f for f in sorted((ROOT / "teams").glob("*.md")) if f.name != "README.md"]
     return {
         "prompts": len(prompt_files),
@@ -138,7 +141,7 @@ def main() -> int:
 
     # --- Rule A: index completeness
     prompts_index = (ROOT / "prompts" / "README.md").read_text(encoding="utf-8")
-    for category in sorted(p for p in (ROOT / "prompts").iterdir() if p.is_dir()):
+    for category in content_directories(ROOT / "prompts"):
         if f"{category.name}/" not in prompts_index:
             errors.append(f"RULE A prompts/README.md does not link category {category.name}/")
         for prompt in sorted(category.glob("*.md")):
@@ -154,7 +157,7 @@ def main() -> int:
             errors.append(f"RULE A teams/README.md does not link {hub.name}")
 
     frameworks_index = (ROOT / "frameworks" / "README.md").read_text(encoding="utf-8")
-    for pkg in sorted(p for p in (ROOT / "frameworks").iterdir() if p.is_dir() and p.name != "_lib"):
+    for pkg in content_directories(ROOT / "frameworks"):
         if f"{pkg.name}/" not in frameworks_index:
             errors.append(f"RULE A frameworks/README.md does not link {pkg.name}/")
 
@@ -199,7 +202,7 @@ def main() -> int:
         errors.append("RULE D README.md has no '## Prompt catalog' section")
     else:
         region = parts[1].split("\n## ", 1)[0]
-        for category in sorted(p for p in (ROOT / "prompts").iterdir() if p.is_dir()):
+        for category in content_directories(ROOT / "prompts"):
             cat = category.name
             n_cat = len([f for f in category.glob("*.md") if f.name != "README.md"])
             m = re.search(rf"\(prompts/{re.escape(cat)}/\)[^\n|]*\|\s*(\d+)\s*\|", region)

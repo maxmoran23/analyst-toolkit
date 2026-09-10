@@ -10,6 +10,7 @@ import kotlinx.serialization.json.jsonPrimitive
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Assumptions.assumeTrue
+import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Test
 import java.io.File
 import kotlin.math.abs
@@ -38,27 +39,24 @@ class DcfParityTest {
     }
 
     @Test
-    fun `full JSON parity — degenerate terminal emits Python's integer zero`() {
+    fun `invalid terminal growth is rejected by Python and Kotlin`() {
         requirePython()
-        // terminal growth above the discount rate zeroes the terminal in base and bull.
-        val args = arrayOf(
-            "--fees-yearly", "[50e6,60e6]",
-            "--discount", "0.15", "--terminal-growth", "0.2",
-            "--circulating-supply", "5e8",
-        )
-        val python = pythonDcf(*args)
-        val kotlin = kotlinDcf(*args)
-        assertJsonValueEquals(python, kotlin, "$")
+        val args = arrayOf("--fees-yearly", "[50e6,60e6]", "--discount", "0.15",
+            "--terminal-growth", "0.2", "--circulating-supply", "5e8")
+        assertTrue(evaluateDcf(args).exitCode != 0)
+        val process = ProcessBuilder("python3", pythonReference().absolutePath, *args)
+            .redirectErrorStream(true).start()
+        process.inputStream.bufferedReader().readText()
+        assertTrue(process.waitFor() != 0)
+    }
 
-        for (case in listOf("base_case", "bull_case")) {
-            val pv = kotlin.jsonObject[case]!!.jsonObject["pv_of_terminal"]!!.jsonPrimitive
-            assertEquals("0", pv.content, "$case pv_of_terminal must be the bare int 0")
-        }
-        // Bear raises discount to 0.20 and floors terminal growth at 0.18 < 0.20: not degenerate.
-        assertTrue(
-            kotlin.jsonObject["bear_case"]!!.jsonObject["pv_of_terminal"]!!
-                .jsonPrimitive.content.toDouble() > 0.0
-        )
+    @Test
+    fun `valid base keeps undefined optional scenarios explicit`() {
+        requirePython()
+        val args = arrayOf("--fees-yearly", "[50e6,60e6]", "--discount", "0.15",
+            "--terminal-growth", "0.13", "--circulating-supply", "5e8")
+        assertJsonValueEquals(pythonDcf(*args), kotlinDcf(*args), "$")
+        assertTrue("unavailable" in kotlinDcf(*args)["bull_case"]!!.jsonObject)
     }
 
     @Test
@@ -116,10 +114,9 @@ class DcfParityTest {
         assertEquals("10.0", json["fair_value_per_token"]?.jsonPrimitive?.content)
         assertEquals("90.91", json["terminal_weight_pct"]?.jsonPrimitive?.content)
 
-        // Degenerate branch: bare int 0 terminal, weight still a float.
-        val degenerate = dcfJson(dcfValuation(listOf(100.0), 0.05, 0.05, 100.0))
-        assertEquals("0", degenerate["pv_of_terminal"]?.jsonPrimitive?.content)
-        assertEquals("0.0", degenerate["terminal_weight_pct"]?.jsonPrimitive?.content)
+        assertThrows(IllegalArgumentException::class.java) {
+            dcfValuation(listOf(100.0), 0.05, 0.05, 100.0)
+        }
     }
 
     @Test
@@ -142,15 +139,12 @@ class DcfParityTest {
     }
 
     @Test
-    fun `zero current price is falsy and suppresses the upside block, like Python`() {
+    fun `zero current price is rejected while valid price emits upside`() {
         val base = arrayOf(
             "--fees-yearly", "[10e6,12e6]", "--circulating-supply", "1e8",
         )
         val withZero = evaluateDcf(base + arrayOf("--current-price", "0"))
-        assertEquals(0, withZero.exitCode, withZero.output)
-        val output = Json.parseToJsonElement(withZero.output).jsonObject
-        assertTrue("current_price" !in output.keys)
-        assertTrue("upside_base_pct" !in output.keys)
+        assertTrue(withZero.exitCode != 0)
 
         val withPrice = evaluateDcf(base + arrayOf("--current-price", "0.25"))
         val priced = Json.parseToJsonElement(withPrice.output).jsonObject

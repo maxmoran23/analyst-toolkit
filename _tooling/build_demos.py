@@ -46,6 +46,7 @@ import json
 import re
 import sys
 from pathlib import Path
+from markdown_blocks import fenced_blocks
 
 ROOT = Path(__file__).resolve().parent.parent
 PROMPTS = ROOT / "prompts"
@@ -78,13 +79,17 @@ def prompt_files() -> list[Path]:
 
 def extract_prompt_block(text: str, rel: str) -> tuple[str, str]:
     """Return (fence_lang, inner) for the single ```<lang>``` block under `## The prompt`."""
-    idx = text.find("## The prompt")
-    if idx == -1:
+    heading = re.search(r"^## The prompt\s*$", text, re.MULTILINE)
+    if heading is None:
         raise SystemExit(f"{rel}: no '## The prompt' section")
-    m = re.search(r"^```(\w+)\n(.*?)^```", text[idx:], re.DOTALL | re.MULTILINE)
-    if not m:
+    section = text[heading.end():]
+    blocks = fenced_blocks(section)
+    if not blocks or not blocks[0].closed:
         raise SystemExit(f"{rel}: no fenced block under '## The prompt'")
-    return m.group(1), m.group(2)
+    before_block = "\n".join(section.splitlines()[:blocks[0].start_line - 1])
+    if re.search(r"^#{1,2} ", before_block, re.MULTILINE):
+        raise SystemExit(f"{rel}: '## The prompt' has no fenced payload")
+    return blocks[0].language, blocks[0].body
 
 
 def build_block(rel: str, prompt_inner: str, entry: dict) -> str:

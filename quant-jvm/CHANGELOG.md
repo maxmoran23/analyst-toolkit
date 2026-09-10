@@ -2,6 +2,26 @@
 
 All notable changes to `quant-jvm` are recorded here. This changelog tracks parity with `../quant/` (Python) — when a Python module changes, the corresponding entry here records the Kotlin re-port.
 
+## [Unreleased] — 2026-09-10
+
+### Changed
+
+- Gaussian VaR uses the requested inverse-normal quantile; invalid probabilities and
+  nonfinite return inputs are rejected instead of taking a 95% fallback.
+- Kelly validates inputs, limits correlation to a stake reduction, and enforces the
+  50% aggregate exposure ceiling after display rounding.
+- DCF rejects invalid base perpetuities and nonpositive supplied prices; optional
+  invalid scenarios and sensitivity points are reported as unavailable.
+- Markowitz rejects singular/indefinite matrices and mismatched or duplicate asset
+  labels; nonpositive tangency normalization does not produce a max-Sharpe claim.
+- Boundary tests and Python comparison tests cover the changed contracts. Parity
+  documentation now reflects the implemented Monte Carlo tolerance and no-retry
+  policy, and removes obsolete RNG, SVD-fallback, and rounding claims.
+
+These changes intentionally reject inputs or outputs previously accepted silently.
+Consumers should handle structured errors and unavailable scenario values. Historical
+release entries below describe their versions, including behavior now superseded.
+
 ## [0.6.0] — 2026-07-18
 
 QUEUE COMPLETE — all 9 modules of `analyst-toolkit/quant` are ported. This wave delivers the one §1.3 stochastic module, closing the port order that ran deterministic-first by design.

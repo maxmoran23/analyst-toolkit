@@ -11,6 +11,13 @@ Usage:
     # Output includes fair value per token, scenarios, sensitivity to discount rate
 """
 import argparse
+try:
+    from ._validation import number, series, confidence_level
+except ImportError:
+    import sys
+    from pathlib import Path
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    from _validation import number, series, confidence_level
 import json
 
 
@@ -22,6 +29,13 @@ def dcf(fees_yearly, discount, terminal_growth, circulating_supply, capture_rati
     circulating_supply: tokens outstanding (not max supply)
     capture_ratio: fraction of fees captured by token holders (burn + staking yield); 1.0 = 100% pass-through
     """
+    series(fees_yearly, "fees_yearly", minimum=0)
+    number(discount, "discount")
+    number(terminal_growth, "terminal_growth")
+    number(circulating_supply, "circulating_supply")
+    number(capture_ratio, "capture_ratio", minimum=0, maximum=1)
+    if discount <= terminal_growth or terminal_growth <= -1 or circulating_supply <= 0:
+        raise ValueError("require discount > terminal_growth > -1 and positive circulating supply")
     years = len(fees_yearly)
     pv_fees = 0.0
     for t, fee in enumerate(fees_yearly, start=1):
@@ -29,13 +43,12 @@ def dcf(fees_yearly, discount, terminal_growth, circulating_supply, capture_rati
 
     # terminal value at end of year N, assuming growing perpetuity
     terminal_fee = fees_yearly[-1] * (1 + terminal_growth) * capture_ratio
-    if discount > terminal_growth:
-        tv = terminal_fee / (discount - terminal_growth)
-        pv_tv = tv / ((1 + discount) ** years)
-    else:
-        pv_tv = 0  # degenerate case
+    tv = terminal_fee / (discount - terminal_growth)
+    pv_tv = tv / ((1 + discount) ** years)
     enterprise_value = pv_fees + pv_tv
     fair_value_per_token = enterprise_value / circulating_supply
+    number(enterprise_value, "enterprise_value")
+    number(fair_value_per_token, "fair_value_per_token")
     return {
         "pv_of_explicit_fees": round(pv_fees, 2),
         "pv_of_terminal": round(pv_tv, 2),
@@ -62,13 +75,20 @@ def main():
     # scenarios — bear: -40% fees, higher discount, lower terminal; bull: +40%, lower discount
     bear_fees = [f * 0.6 for f in fees]
     bull_fees = [f * 1.4 for f in fees]
-    bear = dcf(bear_fees, args.discount + 0.05, max(0.01, args.terminal_growth - 0.02), args.circulating_supply, args.capture_ratio)
-    bull = dcf(bull_fees, max(0.05, args.discount - 0.03), args.terminal_growth + 0.02, args.circulating_supply, args.capture_ratio)
+    def scenario(*values):
+        try:
+            return dcf(*values)
+        except ValueError as exc:
+            return {"unavailable": str(exc)}
+
+    bear = scenario(bear_fees, args.discount + 0.05, max(0.01, args.terminal_growth - 0.02), args.circulating_supply, args.capture_ratio)
+    bull = scenario(bull_fees, max(0.05, args.discount - 0.03), args.terminal_growth + 0.02, args.circulating_supply, args.capture_ratio)
 
     # sensitivity to discount rate
     sens = {}
     for d in [0.10, 0.12, 0.15, 0.18, 0.20, 0.25]:
-        sens[f"discount_{d}"] = round(dcf(fees, d, args.terminal_growth, args.circulating_supply, args.capture_ratio)["fair_value_per_token"], 4)
+        value = scenario(fees, d, args.terminal_growth, args.circulating_supply, args.capture_ratio)
+        sens[f"discount_{d}"] = value.get("fair_value_per_token", value)
 
     out = {
         "inputs": {
@@ -83,11 +103,16 @@ def main():
         "bull_case": bull,
         "sensitivity_per_token": sens,
     }
-    if args.current_price:
+    if args.current_price is not None:
+        number(args.current_price, "current_price")
+        if args.current_price <= 0:
+            raise ValueError("current_price must be positive")
         out["current_price"] = args.current_price
         out["upside_base_pct"] = round((base["fair_value_per_token"] / args.current_price - 1) * 100, 2)
-        out["upside_bull_pct"] = round((bull["fair_value_per_token"] / args.current_price - 1) * 100, 2)
-        out["downside_bear_pct"] = round((bear["fair_value_per_token"] / args.current_price - 1) * 100, 2)
+        if "fair_value_per_token" in bull:
+            out["upside_bull_pct"] = round((bull["fair_value_per_token"] / args.current_price - 1) * 100, 2)
+        if "fair_value_per_token" in bear:
+            out["downside_bear_pct"] = round((bear["fair_value_per_token"] / args.current_price - 1) * 100, 2)
 
     print(json.dumps(out, indent=2))
 

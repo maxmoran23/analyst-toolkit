@@ -48,7 +48,7 @@ class VarParityTest {
                     "--confidence", "0.975", "--portfolio-value", "100000",
                 )),
             )
-            // 0.97 is not in the z-table: both sides must take the 1.645 fallback.
+            // Arbitrary confidence must use its own Gaussian quantile.
             assertEquals(
                 pythonVar("--returns-json", path, "--confidence", "0.97"),
                 kotlinVar(arrayOf("--returns-json", path, "--confidence", "0.97")),
@@ -126,20 +126,15 @@ class VarParityTest {
     }
 
     @Test
-    fun `parametric hand check — z-table lookup and round3 key quirk`() {
-        // Alternating +-1% has zero mean, so VaR = z * sigma with sigma = sqrt(20e-4 / 19).
+    fun `parametric hand check uses continuous normal quantiles`() {
         val returns = List(20) { if (it % 2 == 0) 0.01 else -0.01 }
         val sigma = sqrt(20.0 * 1e-4 / 19.0)
-        val (varValue, _) = parametricVar(returns, 0.95)
-        assertEquals(1.645 * sigma, varValue, 1e-15)
-
-        // round(0.9501, 3) = 0.95 hits the table; the same z makes the same VaR.
-        val (quirkVar, _) = parametricVar(returns, 0.9501)
-        assertEquals(varValue, quirkVar, 0.0)
-
-        // Off-table confidence falls back to z = 1.645, matching the Python default.
-        val (fallbackVar, _) = parametricVar(returns, 0.97)
-        assertEquals(1.645 * sigma, fallbackVar, 1e-15)
+        val (value95, _) = parametricVar(returns, 0.95)
+        assertEquals(1.6448536269514722 * sigma, value95, 1e-14)
+        val (value9501, _) = parametricVar(returns, 0.9501)
+        assertTrue(value9501 > value95)
+        val (value97, _) = parametricVar(returns, 0.97)
+        assertEquals(1.8807936081512509 * sigma, value97, 1e-14)
     }
 
     @Test

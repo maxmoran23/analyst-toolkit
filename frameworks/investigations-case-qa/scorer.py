@@ -33,6 +33,7 @@ import sys
 from dataclasses import dataclass, field
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from _lib.validation import validate_numeric_fields
 from _lib.aggregations import clamp  # noqa: E402
 from _lib.rules import Rule, RuleSet  # noqa: E402
 from _lib.scoring import weighted_composite  # noqa: E402
@@ -281,6 +282,7 @@ SEVERITY_CLASS = {
 
 
 def review_case(case: CaseFile, config: Config = Config()) -> QAReview:
+    validate_numeric_fields(case, config)
     f = {
         "case_type": case.case_type,
         "subject_identified": case.subject_identified,

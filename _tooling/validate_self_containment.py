@@ -25,12 +25,14 @@ D. PAIRING BUDGET — no file instructs the reader to attach/load/pair more
 import re
 import sys
 from pathlib import Path
+from markdown_blocks import fenced_blocks
 
 ROOT = Path(sys.argv[1] if len(sys.argv) > 1 else ".").resolve()
 
 REPO_DIRS = (
     "methodology", "output-templates", "reference", "samples",
     "standalone", "prompts", "docs", "quant", "quant-jvm", "_tooling",
+    "frameworks", "teams", "validation", "codex",
 )
 REPO_PATH_RE = re.compile(
     r"\b(?:" + "|".join(re.escape(d) for d in REPO_DIRS) + r")/[\w./-]+"
@@ -43,13 +45,10 @@ ALLOWED_COMPANION = {"BASE.md"}
 
 def fenced_and_outside(text):
     """Split file lines into (inside_fences, outside_fences)."""
-    inside, outside = [], []
-    in_fence = False
-    for line in text.split("\n"):
-        if FENCE_RE.match(line.strip()):
-            in_fence = not in_fence
-            continue
-        (inside if in_fence else outside).append(line)
+    blocks = fenced_blocks(text)
+    inside = [block.body for block in blocks]
+    covered = {line for block in blocks for line in range(block.start_line, block.end_line + 1)}
+    outside = [line for index, line in enumerate(text.splitlines(), 1) if index not in covered]
     return "\n".join(inside), "\n".join(outside)
 
 
@@ -58,7 +57,9 @@ def file_refs(text, self_name):
     refs |= {m for m in MD_FILE_RE.findall(text)}
     refs.discard(self_name)
     # normalize: drop bare basenames that duplicate a path ref already counted
-    return {r for r in refs if r not in ("README.md",)}
+    # A bare README name also describes an output artifact; qualified repository
+    # paths remain forbidden and are unambiguous dependencies.
+    return refs - {"README.md"}
 
 
 def main() -> int:
@@ -74,7 +75,10 @@ def main() -> int:
 
     # --- Rule A: paste payload purity
     for p in prompt_files + standalone_files:
-        inside, _ = fenced_and_outside(p.read_text())
+        text = p.read_text(encoding="utf-8")
+        if any(not block.closed for block in fenced_blocks(text)):
+            errors.append(f"RULE A {p.relative_to(ROOT)}: unclosed paste fence")
+        inside, _ = fenced_and_outside(text)
         refs = file_refs(inside, p.name)
         refs -= ALLOWED_COMPANION
         if refs:
@@ -106,16 +110,15 @@ def main() -> int:
             )
 
     # --- Rule D: pairing budget report
-    attach_re = re.compile(
-        r"(?:attach|load|pair(?:ed)? with|alongside)[^.\n]*?`([\w./-]+\.(?:md|html))`",
-        re.I,
-    )
+    attach_re = re.compile(r"\b(?:attach|load|pair(?:ed)? with|alongside)\b", re.I)
+    companion_re = re.compile(r"`([\w./-]+\.(?:md|html))`")
     for p in prompt_files:
         _, outside = fenced_and_outside(p.read_text())
-        companions = {m.split("/")[-1] for m in attach_re.findall(outside)}
+        companions = {name for line in outside.splitlines() if attach_re.search(line)
+                      for name in companion_re.findall(line)}
         companions.discard(p.name)
-        budget = 1 + (1 if companions else 0)
-        bad = companions - ALLOWED_COMPANION - {c for c in companions if c.endswith(".html")}
+        budget = 1 + len(companions)
+        bad = {c for c in companions if Path(c).name not in ALLOWED_COMPANION and not c.endswith(".html")}
         if bad:
             errors.append(
                 f"RULE D {p.relative_to(ROOT)}: instructs attaching a non-BASE "

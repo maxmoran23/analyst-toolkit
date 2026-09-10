@@ -17,6 +17,8 @@ calibration evidence an independent model review (SR 11-7 style) expects.
 from __future__ import annotations
 
 from dataclasses import dataclass, asdict
+from itertools import zip_longest
+import math
 
 
 @dataclass
@@ -77,7 +79,12 @@ class Confusion:
 def confusion(y_true, y_pred) -> Confusion:
     """y_true / y_pred are iterables of 1 (positive/match) or 0 (negative)."""
     tp = fp = tn = fn = 0
-    for t, p in zip(y_true, y_pred):
+    absent = object()
+    for t, p in zip_longest(y_true, y_pred, fillvalue=absent):
+        if t is absent or p is absent:
+            raise ValueError("true and predicted label counts must match")
+        if type(t) not in (int, bool) or type(p) not in (int, bool) or t not in (0, 1) or p not in (0, 1):
+            raise ValueError("labels must be binary integers or booleans")
         if p:
             if t:
                 tp += 1
@@ -104,8 +111,13 @@ def sweep(y_true, scores, thresholds):
     so it raises the auto-clear volume; the columns let a reviewer read the
     false-negative leakage that buys each unit of false-positive reduction.
     """
+    y_true, scores = list(y_true), list(scores)
+    if len(y_true) != len(scores) or any(not math.isfinite(value) for value in scores):
+        raise ValueError("scores must be finite and align with true labels")
     rows = []
     for thr in thresholds:
+        if not math.isfinite(thr):
+            raise ValueError("threshold must be finite")
         y_pred = [1 if s >= thr else 0 for s in scores]
         c = confusion(y_true, y_pred)
         row = {"threshold": round(thr, 4)}

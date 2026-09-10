@@ -26,6 +26,7 @@ import sys
 from dataclasses import dataclass, field
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from _lib.validation import validate_numeric_fields
 from _lib.scoring import weighted_composite, band, tier_max  # noqa: E402
 
 TIER_ORDER = ["LOW", "MEDIUM", "HIGH"]
@@ -149,6 +150,7 @@ def _floors(c: Customer, config: Config):
 
 
 def rate(c: Customer, config: Config = Config()) -> Rating:
+    validate_numeric_fields(c, config)
     feats = factor_scores(c)
     score = score_features(feats)
     base_tier = band(score, [config.low_band, config.high_band], TIER_ORDER)

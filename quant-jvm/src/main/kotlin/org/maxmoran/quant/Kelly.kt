@@ -43,6 +43,8 @@ data class KellyRow(
 
 /** Optimal full-Kelly fraction for a binary bet at decimal odds. */
 fun kellySingle(p: Double, oddsDecimal: Double): Double {
+    require(p.isFinite() && p in 0.0..1.0) { "probability must be in [0, 1]" }
+    require(oddsDecimal.isFinite() && oddsDecimal > 1.0) { "decimal odds must exceed 1" }
     val b = oddsDecimal - 1.0
     val q = 1.0 - p
     val f = if (b > 0.0) (b * p - q) / b else 0.0
@@ -50,7 +52,10 @@ fun kellySingle(p: Double, oddsDecimal: Double): Double {
 }
 
 /** Expected value as % of stake (decimal, e.g. 0.052 = 5.2% edge). */
-fun edgePct(p: Double, oddsDecimal: Double): Double = p * (oddsDecimal - 1.0) - (1.0 - p)
+fun edgePct(p: Double, oddsDecimal: Double): Double {
+    kellySingle(p, oddsDecimal)
+    return p * (oddsDecimal - 1.0) - (1.0 - p)
+}
 
 /**
  * Naive multi-bet Kelly assuming low correlation by default. Optional correlation matrix
@@ -63,6 +68,18 @@ fun kellyPortfolio(
     fraction: Double = 0.25,
     corrMatrix: Map<String, Map<String, Double>>? = null,
 ): JsonObject {
+    require(fraction.isFinite() && fraction in 0.0..1.0) { "fraction must be in [0, 1]" }
+    val labels = edges.mapIndexed { i, edge -> edge.label.ifBlank { "bet_$i" } }
+    require(labels.toSet().size == labels.size) { "bet labels must be unique" }
+    corrMatrix?.forEach { (label, row) ->
+        require(label in labels) { "unknown correlation row" }
+        row.forEach { (other, correlation) ->
+            require(other in labels && correlation.isFinite() && correlation in -1.0..1.0) { "invalid correlation" }
+            require(label != other || correlation == 1.0) { "correlation diagonal must equal 1" }
+            val reverse = corrMatrix[other]?.get(label)
+            require(reverse == null || kotlin.math.abs(reverse - correlation) <= 1e-12) { "correlations must be symmetric" }
+        }
+    }
     val results = edges.mapIndexed { i, e ->
         val k = kellySingle(e.p, e.odds)
         val ev = edgePct(e.p, e.odds)
@@ -76,7 +93,7 @@ fun kellyPortfolio(
         )
     }
 
-    val totalRaw = results.sumOf { it.fractionalKellyPct }
+    val totalRaw = edges.sumOf { kellySingle(it.p, it.odds) * fraction } * 100.0
     if (totalRaw > 50.0) {
         val scale = 50.0 / totalRaw
         results.forEach {
@@ -89,15 +106,21 @@ fun kellyPortfolio(
         results.forEach { r ->
             val row = corrMatrix[r.label] ?: return@forEach
             val others = row.filterKeys { it != r.label }
-            if (others.isNotEmpty()) {
-                val avgCorr = others.values.sum() / others.size
-                val shrink = max(0.5, 1.0 - avgCorr * 0.5)
+            if (row.isNotEmpty()) {
+                val avgCorr = if (others.isEmpty()) 0.0 else others.values.sum() / others.size
+                val shrink = max(0.5, 1.0 - max(0.0, avgCorr) * 0.5)
                 r.fractionalKellyPct = round3(r.fractionalKellyPct * shrink)
                 r.correlationShrink = round3(shrink)
             }
         }
     }
 
+    var excessUnits = max(0L, results.sumOf { kotlin.math.round(it.fractionalKellyPct * 1000).toLong() } - 50000L)
+    results.sortedByDescending { it.fractionalKellyPct }.forEach {
+        val reduction = minOf(excessUnits, kotlin.math.round(it.fractionalKellyPct * 1000).toLong())
+        it.fractionalKellyPct = round3(it.fractionalKellyPct - reduction / 1000.0)
+        excessUnits -= reduction
+    }
     val totalExposure = round3(results.sumOf { it.fractionalKellyPct })
 
     return buildJsonObject {
@@ -142,6 +165,7 @@ fun runKelly(args: Array<String>) {
             val odds = (parsed["odds-decimal"] ?: parsed["odds"])?.toDoubleOrNull()
                 ?: errorOut("need --odds-decimal (or --odds)")
             val fraction = parsed["fraction"]?.toDoubleOrNull() ?: 0.25
+            require(fraction.isFinite() && fraction in 0.0..1.0) { "fraction must be in [0, 1]" }
             val k = kellySingle(p, odds)
             val ev = edgePct(p, odds)
             buildJsonObject {

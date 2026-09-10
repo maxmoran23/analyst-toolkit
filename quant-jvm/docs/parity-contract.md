@@ -1,114 +1,96 @@
-# Parity Contract — quant-jvm ↔ quant (Python)
+# Parity Contract — quant-jvm and quant (Python)
 
-This document specifies the **executable agreement** between `analyst-toolkit/quant/` (Python) and `analyst-toolkit/quant-jvm/` (Kotlin). Every claim below is enforced by a JUnit test that fails the build if violated.
-
----
+This contract describes the checks implemented in the [Kotlin test suite](../src/test/kotlin/org/maxmoran/quant/).
+It establishes agreement on those inputs, not correctness for every possible input.
+Independent hand calculations and boundary tests supplement cross-language comparisons:
+two implementations can preserve the same error.
 
 ## 1. Categories of parity
 
-Numerical functions split into three regimes, each with a different tolerance and a different verification strategy. Conflating them produces either spurious test failures (too tight) or false confidence (too loose).
+### 1.1 Deterministic calculations
 
-### 1.1 Deterministic pure math
-
-**Examples:** `kellySingle`, `edgePct`, `sharpeRatio`, `maxDrawdown`, `percentile`, `dcfValuation`.
-
-**Tolerance:** `|python_result − kotlin_result| < 1e-10` on raw doubles.
-
-**Rationale:** IEEE 754 double-precision arithmetic is deterministic per-operation. Cross-language drift here comes from (a) transcendental function ordering (Python's `math.exp` vs Kotlin's `kotlin.math.exp` may compile to different libm calls), and (b) compiler reorderings of associative operations. Both effects are bounded by a few ulps — well inside 1e-10 for the operation counts in this library.
-
-**Verification:** Test harness invokes Python via `ProcessBuilder` on identical inputs, parses JSON output, and asserts each numerical field within tolerance. The unchanged `sharpe.py` CLI intentionally exposes only rounded report fields, so `SharpeParityTest` uses a `python3 -c` oracle that imports its `mean`, `stdev`, `downside_stdev`, and `max_drawdown` helpers and reconstructs the remaining raw operations in the same order. This keeps the authorized Python source byte-identical while still testing unrounded Kotlin values to `1e-10`.
+Kelly, return ratios, drawdown, volatility, pairwise correlation, VaR, DCF, and the
+Monte Carlo output-shaping helpers are compared against Python on fixed inputs.
+Raw scalar comparisons generally use an absolute tolerance of `1e-10`. DCF uses
+relative tolerance at large currency magnitudes; an absolute `1e-10` bound there
+can be smaller than floating-point spacing. Individual tests define the actual
+field-level tolerance and whether the oracle imports a helper or reconstructs a
+calculation. Those are different forms of evidence and must not be conflated.
 
 ### 1.2 Rounded display fields
 
-**Examples:** `edge_pct`, `full_kelly_pct`, `fractional_kelly_pct`, `total_exposure_pct`, Sharpe-family ratios, and the two-decimal `win_rate_pct` field.
+Public output comparisons use parsed JSON values, with the precision declared by each
+field. Kelly uses three decimal places; some other report fields use two or four.
+The Kotlin rounding helpers use `BigDecimal(value)` and `HALF_EVEN` to retain the
+input double's representation when rounding. Agreement is tested on selected half-point
+and signed values, not asserted from a decimal example alone.
 
-**Tolerance:** **Exact equality** after applying Python's `round(x, 3)` semantics.
+#### Infinity serialization
 
-**Rationale:** Python 3's `round()` uses half-to-even (banker's rounding) on floats — but the actual behavior depends on the float's binary representation, which is *not* obvious from the decimal input. The string `"1.235"` is stored as `1.234999999...`, so `round(1.235, 3) == 1.234` (not 1.235). To get exact agreement, Kotlin's `round3` uses `BigDecimal(value).setScale(3, RoundingMode.HALF_EVEN)`, which matches Python's behavior on the same binary representation.
+The Sharpe-family output uses the JSON string `"inf"` in its documented unbounded
+Omega and profit-factor cases. This is distinct from invalid numeric inputs or
+non-standard bare JSON infinity. Preserve the documented field semantics and reject
+malformed inputs where the owning module defines a boundary contract.
 
-**Verification:** A dedicated `round3` parity test runs both implementations on a set of edge cases (half-points, denormal-adjacent values, negatives) and asserts identical outputs. Sharpe public-contract tests compare the complete parsed JSON object field-for-field; `win_rate_pct` uses the equivalent two-decimal HALF_EVEN helper.
+### 1.3 Stochastic functions
 
-### 1.2.1 Infinity serialization
+The implemented stochastic module is Monte Carlo, including GBM and jump-diffusion.
+The Python and JVM samplers do not promise identical draws for the same numeric seed.
+The JVM implementation uses `java.util.Random`; the Python implementation uses its
+standard-library random generator. Fixed seeds test repeatability within a runtime.
 
-The Python public contract emits the JSON string `"inf"` when Omega has no losses below its threshold or profit factor has no negative returns. Kotlin emits the same string in those two fields; it never emits non-standard bare `Infinity`. Tests cover zero downside, zero volatility, infinite Omega, and infinite profit factor.
+[MonteCarloParityTest](../src/test/kotlin/org/maxmoran/quant/MonteCarloParityTest.kt)
+compares two 10,000-path runs using a bound of `6 * sqrt(2) * estimated_standard_error`,
+plus the specified rounding allowance. Standard errors are estimated from the JVM
+sample; quantile errors use the sample's local quantile slope. The square-root-of-two
+factor allows for variability in both samples under comparable variance. The test has
+no automatic retry. This is a regression tolerance, not a calibrated guarantee of the
+suite's false-failure probability or model validity. Tail statistics whose standard
+errors cannot be estimated reliably are explicitly excluded in the test.
 
-### 1.3 Stochastic functions (planned, applies to `monte_carlo`, parts of `var`)
+Separate tests check deterministic output shaping on fixed injected samples,
+closed-form GBM moments, and seed reproducibility. Current VaR has historical and
+Gaussian methods only; it does not implement a stochastic VaR estimator.
 
-**Tolerance:** Distributional agreement within **2 standard errors at N ≥ 10,000 samples**.
+### 1.4 Numerical linear algebra
 
-**Rationale:** Python's `random.gauss(seed=42)` and Kotlin's `kotlin.random.Random(42).nextGaussian()` both use Mersenne Twister but with different Gaussian sampling algorithms (Wichmann-Hill vs Box-Muller), different seed-initialization conventions, and different state layouts. **Bit-identical sequences are not achievable without porting the RNG implementation itself**, which defeats the purpose of demonstrating implementation independence.
+Markowitz uses explicit Cholesky factorization and forward/backward substitution in
+both languages. Raw solver comparisons use `1e-6` per-entry tolerance on the tested
+matrices. Singular or indefinite covariance is rejected; there is no SVD fallback
+or silent pivot replacement. A matrix must satisfy the input and positive-definiteness
+checks before the solve. These unconstrained portfolios can include short positions.
 
-**What's actually invariant:** the *distribution*. If both implementations sample correctly from N(μ=0, σ=1), their sample means, percentiles, and tail probabilities converge at the rate predicted by the Central Limit Theorem.
+Pairwise correlation performs no matrix decomposition and belongs to the scalar
+comparison tests in section 1.1. Gaussian VaR now uses inverse-normal quantiles in
+both languages at the requested confidence, replacing the former fixed-table fallback.
 
-**Verification approach (chosen):** For each stochastic function, the parity test will:
+## 2. Boundaries of the claim
 
-1. Run both implementations with N=10,000 paths and matching parameters.
-2. Compare sample statistics (mean, p05, p25, p50, p75, p95, max drawdown distribution).
-3. Assert each statistic is within `± 2 × (standard error at N=10,000)` of the other.
-4. At p < 0.05 confidence, this test fails ~5% of the time even when both implementations are correct. To handle this, the test is allowed **one retry with a new seed** before failing. Two consecutive failures indicate a real divergence.
+| Property | Contract |
+|---|---|
+| JSON bytes | Whitespace, key order, and scientific notation can differ; compare schema and numeric values. |
+| Errors | Nonzero CLI status and a structured error where the module specifies it; wording need not match. |
+| Missing Python | Cross-language tests can be skipped locally. A skipped check is unverified parity; CI provisions Python and a complete parity result requires no such skips. |
+| Performance | No cross-language speed or memory claim is made by the parity suite. |
+| Invalid inputs | Boundary tests cover the enumerated cases; undocumented older module edges remain outside the guarantee. |
+| Negative zero | Kotlin BigDecimal rounding may lose the sign of zero. Numeric equality is the comparison contract. |
+| Real-world validity | Cross-language agreement does not establish forecasting, investment, or production decision effectiveness. |
 
-**Rejected alternatives:**
+## 3. Failure and maintenance rules
 
-| Approach | Why rejected |
-|----------|--------------|
-| Bit-match by porting Python's Mersenne Twister + Wichmann-Hill to Kotlin | ~100 LOC of state-mirroring; couples Kotlin to a specific Python implementation; defeats the audit narrative ("same math, different language") |
-| Reseed-from-Python (dump RNG draws to JSON, load in Kotlin) | Tests only the post-RNG math, not the full function; couples tests to Python runtime; brittle if Python's `random` impl changes |
-| Skip RNG-dependent tests entirely | No coverage on the most operationally important function (`monte_carlo`) |
+A numerical disagreement, unexpected error, or failed stochastic comparison fails the
+build. Do not retry with fresh seeds until the result passes. Diagnose the failed
+statistic, the input, and the oracle; preserve the original failure.
 
-### 1.4 Numerical linear algebra (planned, applies to `markowitz`, `correlation`)
+When a Python primitive changes:
 
-**Tolerance:** `|python_result − kotlin_result| < 1e-6` on each matrix entry, with both implementations using the same decomposition algorithm (Cholesky for positive-definite covariance, otherwise SVD).
+1. Record the behavioral change and migration impact in the [changelog](../CHANGELOG.md).
+2. Port the relevant valid-input behavior and rejection semantics to Kotlin.
+3. Add a regression that fails under the old behavior, plus an independent expected
+   value or invariant where feasible.
+4. Run the complete suite with Python available and inspect skipped-test counts.
+5. Update this contract when algorithms, comparison tolerances, or the covered domain
+   change. Do not loosen tolerances merely to conceal a regression.
 
-**Rationale:** Pivot ordering in matrix decomposition can produce results that differ by orders of magnitude more than basic arithmetic — both numerically correct, but on different floating-point paths. Pinning the algorithm (not just the spec) closes this gap. Apache Commons Math 3 is used in Kotlin to ensure the decomposition routines are well-validated.
-
----
-
-## 2. What is *not* asserted
-
-| Claim | Why not asserted |
-|-------|------------------|
-| JSON output is byte-identical | Field ordering varies between language JSON libs. Schema and values are asserted; whitespace and key order are not. |
-| Error messages match exactly | Error strings are display surface, not contract. Both implementations emit `{"error": "..."}` with non-zero exit; the body text may differ. |
-| Performance is comparable | Out of scope. Kotlin is expected to be faster on cold start in some cases and slower in others; this is not a benchmark. |
-| Behavior on NaN / Infinity / overflow | Asserted only where the Python implementation has a documented behavior. Undocumented edge cases produce *whatever Python does*, in both languages, but are not contractually guaranteed. |
-
----
-
-## 3. When parity tests should fail the build
-
-1. A numerical regression in either implementation (the test is the *only* guard against an asymmetric bug fix).
-2. A change in `round3` semantics on either side (Python deprecation, BigDecimal scale change).
-3. A divergence in algorithm choice (e.g., one side switches from Cholesky to LU decomposition).
-
-## 4. When parity tests should *not* fail the build
-
-1. Python interpreter missing on the build machine → cross-language Sharpe tests use JUnit assumptions and are reported as skipped. Kotlin-only hand-math and CLI-contract assertions still run and must pass.
-2. Stochastic test fails once → automatic retry with new seed. Two consecutive failures = real divergence.
-3. JSON field ordering changes → not asserted, by design.
-
----
-
-## 5. Maintenance discipline
-
-When `quant/<module>.py` changes:
-
-1. Note the change in `CHANGELOG.md` (this repo's, not the parent's).
-2. If the change is **adding** a field or function: port to Kotlin, add parity test, build green.
-3. If the change is **modifying** existing math: re-port, update parity test if tolerances need tuning, build green.
-4. If the change is **removing** functionality: remove from Kotlin too.
-5. If a Python change is **explicitly not portable** (e.g., uses a Python-only library with no JVM equivalent): document the decision in this file's section 6, and leave the Kotlin side at the prior version with a note.
-
-Section 6 is empty as of v0.1.0 — every module in `quant/` is portable in principle.
-
-## 6. Documented non-portable divergences
-
-### 6.1 `round3(-0.0)` returns `+0.0` in Kotlin, `-0.0` in Python
-
-Python's `round(-0.0, 3)` returns `-0.0` (preserving the sign of zero). Kotlin's `round3` uses `BigDecimal(value).setScale(3, RoundingMode.HALF_EVEN)`, and `BigDecimal` drops the sign of zero — converting back to `Double` always yields `+0.0`.
-
-**Why not "fix" this:**
-- No analytical primitive in this library propagates the sign of zero (Kelly fractions are clamped at 0; Sharpe / VaR / drawdown all collapse `-0.0` and `+0.0` to the same downstream result).
-- Preserving negative zero would require post-processing every `BigDecimal` conversion — visual noise for no analytical gain.
-- The fleet's Python code itself doesn't rely on this distinction anywhere.
-
-**Recorded as a documented divergence**, not a bug to fix.
+Source-specific validation is still required before applying a primitive to a new
+population or decision. Keep model assumptions separate from implementation parity.

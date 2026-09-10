@@ -17,6 +17,7 @@ commingling intermediary, so the exposure is not attributable).
 """
 from __future__ import annotations
 
+import math
 from collections import deque
 
 _EPS = 1e-4
@@ -36,12 +37,24 @@ def propagate_taint(edges, seeds, breakers=frozenset(), *, max_hops=6,
     severity x prod(transfer_fraction) x hop_decay^hops; the strongest path wins.
     Propagation does not continue out of a breaker node (unless ignore_breakers).
     Returns {node: {"exposure", "hops", "seed"}} for all reached non-seed nodes."""
+    edges = list(edges)
+    if type(max_hops) is not int or max_hops < 0:
+        raise ValueError("max_hops must be a non-negative integer")
+    if not math.isfinite(hop_decay) or not 0 <= hop_decay <= 1:
+        raise ValueError("hop_decay must be finite and in [0, 1]")
+    if any(not math.isfinite(frac) or not 0 <= frac <= 1 for _, _, frac in edges):
+        raise ValueError("transfer fractions must be finite and in [0, 1]")
+    if any(not math.isfinite(sev) or not 0 <= sev <= 1 for sev in seeds.values()):
+        raise ValueError("seed severities must be finite and in [0, 1]")
     adj = _adjacency(edges)
     best = {}
     for seed, sev in seeds.items():
         dq = deque([(seed, float(sev), 0)])
+        reached = {(seed, 0): float(sev)}
         while dq:
             node, taint, hops = dq.popleft()
+            if taint < reached[(node, hops)]:
+                continue
             if hops >= max_hops:
                 continue
             if node in breakers and hops > 0 and not ignore_breakers:
@@ -52,7 +65,10 @@ def propagate_taint(edges, seeds, breakers=frozenset(), *, max_hops=6,
                 cur = best.get(nb)
                 if cur is None or nt > cur[0]:
                     best[nb] = (nt, nh, seed)
-                if nt > _EPS:
+                if nt > _EPS and nt > reached.get((nb, nh), -1.0):
+                    # Only the strongest state at an identical depth can help.
+                    # Keeping depth preserves weaker but shorter viable paths.
+                    reached[(nb, nh)] = nt
                     dq.append((nb, nt, nh))
     return {n: {"exposure": v[0], "hops": v[1], "seed": v[2]} for n, v in best.items()}
 
@@ -64,10 +80,15 @@ def address_exposure(edges, seeds, target, breakers=frozenset(), *,
     so a `via_breaker` case (potential exposure exists but is broken by a commingling
     intermediary) is detectable. Returns a feature dict the disposition engine
     consumes."""
+    edges = list(edges)  # both passes must consume the identical edge population
     real = propagate_taint(edges, seeds, breakers, max_hops=max_hops, hop_decay=hop_decay)
     potential = propagate_taint(edges, seeds, breakers, max_hops=max_hops,
                                 hop_decay=hop_decay, ignore_breakers=True)
     r = real.get(target)
+    if target in seeds and seeds[target] > 0:
+        if r is None or seeds[target] >= r["exposure"]:
+            r = {"exposure": float(seeds[target]), "hops": 0, "seed": target}
+        return {**r, "via_breaker": False}
     p = potential.get(target)
     if r and r["exposure"] > _EPS:
         return {"exposure": r["exposure"], "hops": r["hops"], "seed": r["seed"],

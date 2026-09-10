@@ -162,9 +162,13 @@ def select(p: SamplingPlan, item_ids=None, seed=0, strata=None,
     stratum. Same seed -> identical selection; the returned items ARE the
     selection log."""
     n = sample_size if sample_size is not None else p.sample_size
+    if type(n) is not int or n < 1:
+        raise ValueError("sample_size must be a positive integer")
     rng = random.Random(seed)
     if strata is None:
         pool = list(item_ids)
+        if len(set(pool)) != len(pool):
+            raise ValueError("population item IDs must be unique")
         take = min(n, len(pool))
         items = sorted(rng.sample(pool, take))
         return Selection(p.control, str(seed), "simple-random", items, {"all": take})
@@ -172,8 +176,14 @@ def select(p: SamplingPlan, item_ids=None, seed=0, strata=None,
         groups = strata
     else:
         groups = {}
+        item_ids, strata = list(item_ids), list(strata)
+        if len(item_ids) != len(strata):
+            raise ValueError("item IDs and stratum labels must align")
         for i, s in zip(item_ids, strata):
             groups.setdefault(s, []).append(i)
+    population_ids = [item for group in groups.values() for item in group]
+    if len(set(population_ids)) != len(population_ids):
+        raise ValueError("population item IDs must be unique across strata")
     alloc = _allocate({s: len(g) for s, g in groups.items()}, n)
     items = []
     for s in sorted(alloc):

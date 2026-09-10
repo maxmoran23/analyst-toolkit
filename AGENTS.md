@@ -90,7 +90,9 @@ Change the registry, not the twelve places downstream of it.
 
 ## Run the gates before you commit
 
-All are pure stdlib and fast. CI runs exactly these.
+Use `python3 _tooling/check.py --full` for the complete local Python gate set.
+Kotlin parity and presentation preservation require their declared runtimes and remain
+separate CI jobs. The individual content and evidence commands are:
 
 ```bash
 python3 _tooling/validate_self_containment.py    # two-file rule
@@ -102,7 +104,7 @@ python3 _tooling/validate_index.py               # indexes + declared counts mat
 python3 _tooling/validate_hygiene.py             # leak shapes, emoji
 python3 _tooling/build_briefs.py --check         # standalone briefs current
 python3 _tooling/build_evidence_index.py --check # EVIDENCE.md current
-python3 _tooling/verify_evidence.py              # all 13 evidence packs re-derive (~20s)
+python3 _tooling/verify_evidence.py              # all registered evidence packs re-derive
 ```
 
 If `verify_evidence.py` fails, the committed evidence no longer matches what the code

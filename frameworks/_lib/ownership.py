@@ -112,8 +112,8 @@ def graph_resolution(graph: dict[str, Any], candidate_id: str | None = None) -> 
             unresolved.append({"node_id": node_id, "reason": "opaque intermediary"})
         if node.get("nominee") is True:
             unresolved.append({"node_id": node_id, "reason": "nominee relationship"})
-        if node["type"] == "entity" and node.get("ownership_complete") is False:
-            unresolved.append({"node_id": node_id, "reason": "ownership_complete=false"})
+        if node["type"] == "entity" and node.get("ownership_complete") is not True:
+            unresolved.append({"node_id": node_id, "reason": "ownership completeness not confirmed"})
     if candidate_id is not None:
         if candidate_id not in index or index[candidate_id]["type"] != "person":
             raise ValueError("candidate_id must identify a person node")

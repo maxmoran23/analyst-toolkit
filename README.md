@@ -18,16 +18,16 @@ affairs. It assumes you know your domain. It does not assume you write code.
 - **87 prompts.** A page of written instructions you copy and paste into an AI assistant
   you already have — Microsoft 365 Copilot, GitHub Copilot, Claude, ChatGPT. Nothing to
   install. Each one turns the assistant into a specific analyst with a defined method, a
-  scoring rubric, and a fixed output shape, so two people running it get comparable work.
+  scoring rubric, and a fixed output shape, so reviewers can compare the method and output structure across runs. Model-generated results still require verification.
 - **18 runnable engines.** Small, transparent calculators for the problems that are
   really about volume — triaging 50,000 sanctions alerts, tuning a monitoring threshold,
   resolving who ultimately owns an entity, deciding whether two similar names are the
   same person, deciding whether a customer extract is fit to screen against.
 
-**Why you should believe any of it.** Because you do not have to. Every accuracy figure
+**How to check the engines.** Reproduce the synthetic validation and inspect its limits. Every accuracy figure
 in this repository is produced by a script, not typed by a person, and an automated check
-re-derives all of them from scratch on every change — on a machine nobody here controls.
-You can run the same check yourself in about twenty seconds:
+re-derives all of them from scratch on every change — in GitHub-hosted CI.
+Run the same check locally; duration depends on the machine:
 
 ```bash
 python3 _tooling/verify_evidence.py
@@ -42,6 +42,19 @@ is nil. Every such bound is published in **[`frameworks/EVIDENCE.md`](frameworks
 **What none of it does.** Nothing here connects to a bank system, blocks a payment,
 files a report, or off-boards a customer. It drafts, it scores, and it documents. A
 qualified person decides. All test data is synthetic and every entity is fictional.
+
+### Search and export locally
+
+```bash
+python3 _tooling/toolkit.py list sanctions --kind prompt
+python3 _tooling/toolkit.py assemble prompts/compliance/entity-risk-assessment --with-base --output build/entity-prompt.md
+python3 _tooling/check.py --full
+```
+
+The optional command searches the live catalog and exports the canonical instructions.
+It can include a JSON provenance manifest and reject oversized payloads without
+truncation. See the [CLI guide](docs/toolkit-cli.md) for demonstrations, filters, and
+verification boundaries. Direct copy/paste use needs no runtime.
 
 ### Where to go
 
@@ -193,10 +206,10 @@ For the full list of prompts in each category and how they chain into workflows,
 Every prompt in this library follows the same discipline — documented in full under [`methodology/`](methodology/):
 
 - **Audit-defensible.** Every claim carries a source. Observed fact, allegation, and projection are never blended.
-- **Evidence, not assertion.** Every number in every `evidence/` pack is emitted by a harness, and CI **re-derives all fifteen packs from seed on every commit** and fails if one differs. Safety claims carry an exact confidence bound, not just "recall 1.0". Check it yourself in twenty seconds: `python3 _tooling/verify_evidence.py`. See [`frameworks/EVIDENCE.md`](frameworks/EVIDENCE.md).
+- **Evidence, not assertion.** Every number in every `evidence/` pack is emitted by a harness, and CI **re-derives every registered pack from seed on every commit** and fails if one differs. Safety claims carry an exact confidence bound, not just "recall 1.0". Reproduce it locally: `python3 _tooling/verify_evidence.py`. See [`frameworks/EVIDENCE.md`](frameworks/EVIDENCE.md).
 - **Two-file ceiling, machine-enforced.** Any feature replicates with at most one prompt + [`BASE.md`](BASE.md). CI fails if a paste payload references another file or any prompt names a different companion.
 - **Runs anywhere.** Every prompt is self-contained and assistant-agnostic — no tool, integration, memory, or specific product required. If a capability is missing it degrades gracefully and asks for what it needs. See [running on any assistant](docs/running-on-any-assistant.md).
-- **Structured output.** Each prompt specifies an exact output format — scorecards, severity tiers, confidence ratings — so results are comparable and reusable.
+- **Structured output.** Each prompt specifies an exact output format — scorecards, severity tiers, confidence ratings — so output structure is comparable and reusable; this does not make model-generated conclusions deterministic.
 - **Honest about gaps.** "No adverse findings" and "quiet period" are valid results. Thin evidence lowers the confidence rating; it does not get filled with inference.
 - **Vendor-skeptical.** Self-reported metrics and vendor claims are treated as unverified until corroborated.
 - **No fabrication.** An unverifiable claim is labeled or omitted — never invented.

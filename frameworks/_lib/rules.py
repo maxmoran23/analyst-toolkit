@@ -17,6 +17,7 @@ framework's METHODOLOGY.md).
 """
 from __future__ import annotations
 
+import math
 from dataclasses import dataclass, field
 from typing import Callable
 
@@ -50,6 +51,10 @@ class Rule:
                 f"rule {self.name!r} must return (fired, severity, detail) "
                 "or (fired, severity, detail, corroborating_causes)"
             )
+        if type(fired) is not bool:
+            raise ValueError(f"rule {self.name!r} must return a boolean fired flag")
+        if isinstance(severity, bool) or not isinstance(severity, (int, float)) or not math.isfinite(severity) or not 0 <= severity <= 1:
+            raise ValueError(f"rule {self.name!r} severity must be finite and in [0, 1]")
         return RuleResult(
             name=self.name,
             fired=bool(fired),

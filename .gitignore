@@ -36,3 +36,6 @@ frameworks/*/data/
 # Codex silo — working material, reviewed and promoted deliberately, never published.
 # Standard: ~/Desktop/Agents/_skills-library/codex-silo/SILO-STANDARD.md
 codex/
+
+# Local instruction exports and their provenance envelopes.
+/build/

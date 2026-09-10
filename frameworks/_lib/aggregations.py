@@ -55,6 +55,8 @@ def ewma(series, alpha: float = 0.3) -> float:
 
 
 def clamp(x: float, lo: float = 0.0, hi: float = 1.0) -> float:
+    if math.isnan(x) or not math.isfinite(lo) or not math.isfinite(hi) or lo > hi:
+        raise ValueError("clamp requires a non-NaN value and finite ordered bounds")
     return max(lo, min(hi, x))
 
 
@@ -70,6 +72,13 @@ def saturating(value: float, scale: float) -> float:
     """Map a non-negative magnitude into [0,1) with diminishing returns:
     value/(value+scale). `scale` is the value at which the output reaches 0.5.
     Keeps a single large deviation from dominating a bounded score."""
+    if math.isnan(value) or not math.isfinite(scale) or scale <= 0:
+        raise ValueError("saturating requires a non-NaN value and a positive finite scale")
     if value <= 0:
         return 0.0
-    return value / (value + scale)
+    if math.isinf(value):
+        return 1.0  # limit for a positive observation with a zero baseline
+    denominator = value + scale
+    if math.isinf(denominator):
+        return 1.0 / (1.0 + scale / value)
+    return value / denominator

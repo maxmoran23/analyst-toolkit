@@ -25,11 +25,13 @@ Deterministic. Same inputs -> same recommendation.
 """
 from __future__ import annotations
 
+import math
 import os
 import sys
 from dataclasses import dataclass, field
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from _lib.validation import validate_numeric_fields
 from _lib import metrics  # noqa: E402
 
 
@@ -86,21 +88,34 @@ def _candidates(values, n):
 
 
 def tune_rule(rule: Rule, values, labels, config: Config = Config()) -> TuningResult:
+    validate_numeric_fields(rule, config)
+    values, labels = list(values), list(labels)
+    if not values or len(values) != len(labels) or any(not math.isfinite(value) for value in values):
+        raise ValueError("values must be non-empty, finite and aligned with labels")
+    if any(type(label) not in (int, bool) or label not in (0, 1) for label in labels) or not any(labels):
+        raise ValueError("binary labels must include at least one positive to measure recall")
+    if not 0 < config.recall_floor <= 1 or config.n_candidates < 1 or config.keep_tolerance < 0:
+        raise ValueError("invalid recall floor, candidate count or keep tolerance")
+    positives = sum(labels)
+    def meets_floor(row):
+        # Display precision is not the acceptance criterion for a safety gate.
+        return (positives - row["btl_missed"]) / positives >= config.recall_floor
+
     cands = _candidates(values, config.n_candidates)
     sweep = [_stats_at(values, labels, t) for t in cands]
     current = _stats_at(values, labels, rule.current_threshold)
 
     # recommend the HIGHEST threshold whose detection still meets the floor
-    safe = [r for r in sweep if r["detection_rate"] >= config.recall_floor]
+    safe = [r for r in sweep if meets_floor(r)]
     rec = max(safe, key=lambda r: r["threshold"]) if safe else min(sweep, key=lambda r: r["threshold"])
 
     cur_thr, rec_thr = rule.current_threshold, rec["threshold"]
-    if current["detection_rate"] < config.recall_floor:
+    if not meets_floor(current):
         action = "LOWER"
         reason = (f"BTL leakage: current threshold detects only "
                   f"{current['detection_rate']:.0%} of suspicious activity (below the "
                   f"{config.recall_floor:.0%} floor); lower to recover detection.")
-    elif rec_thr > cur_thr * (1 + config.keep_tolerance):
+    elif rec_thr > cur_thr + abs(cur_thr) * config.keep_tolerance:
         action = "RAISE"
         reason = (f"ATL over-alerting: detection holds at "
                   f"{rec['detection_rate']:.0%} while alert volume falls "

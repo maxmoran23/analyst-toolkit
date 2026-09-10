@@ -3,13 +3,21 @@
 Markowitz mean-variance portfolio optimization (min-variance, max-Sharpe, efficient frontier).
 
 Uses pure-Python linear algebra (Cholesky / back-substitution) to stay dependency-free.
-For larger assets sets (>20), numpy is significantly faster — falls back if available.
+Short sales are allowed. Singular or indefinite covariance matrices are rejected;
+no hidden regularization or third-party fallback changes the requested problem.
 
 Usage:
-    python3 markowitz.py --returns-csv returns.csv --rf 0.05 --target-return 0.12
+    python3 markowitz.py --returns-csv returns.csv --rf 0.05
     # returns.csv: columns = assets, rows = daily returns (no header, comma-separated)
 """
 import argparse
+try:
+    from ._validation import number, series, confidence_level
+except ImportError:
+    import sys
+    from pathlib import Path
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    from _validation import number, series, confidence_level
 import csv
 import json
 import math
@@ -17,14 +25,28 @@ import sys
 
 
 def mean_vec(matrix):
-    n = len(matrix)
+    if not matrix or not matrix[0]:
+        raise ValueError("matrix must contain observations and assets")
     m = len(matrix[0])
+    for row in matrix:
+        series(row, "matrix row")
+        if len(row) != m:
+            raise ValueError("matrix rows must have equal lengths")
+    n = len(matrix)
     return [sum(matrix[i][j] for i in range(n)) / n for j in range(m)]
 
 
 def cov_matrix(matrix):
-    n = len(matrix)
+    if not matrix or not matrix[0]:
+        raise ValueError("matrix must contain observations and assets")
     m = len(matrix[0])
+    for row in matrix:
+        series(row, "matrix row")
+        if len(row) != m:
+            raise ValueError("matrix rows must have equal lengths")
+    n = len(matrix)
+    if n < 2:
+        raise ValueError("covariance requires at least two observations")
     mu = mean_vec(matrix)
     cov = [[0.0] * m for _ in range(m)]
     for j in range(m):
@@ -38,6 +60,13 @@ def cov_matrix(matrix):
 
 def cholesky(A):
     n = len(A)
+    if not n or any(len(row) != n for row in A):
+        raise ValueError("matrix must be non-empty and square")
+    for i, row in enumerate(A):
+        series(row, "matrix row")
+        for j in range(i):
+            if not math.isclose(A[i][j], A[j][i], rel_tol=1e-12, abs_tol=1e-15):
+                raise ValueError("matrix must be symmetric")
     L = [[0.0] * n for _ in range(n)]
     for i in range(n):
         for j in range(i + 1):
@@ -45,7 +74,7 @@ def cholesky(A):
             if i == j:
                 v = A[i][i] - s
                 if v <= 0:
-                    v = 1e-10  # regularize
+                    raise ValueError("matrix must be positive definite; remove redundant assets or explicitly regularize")
                 L[i][j] = math.sqrt(v)
             else:
                 L[i][j] = (A[i][j] - s) / L[j][j]
@@ -70,6 +99,9 @@ def backward_sub(U, b):
 
 def solve_linear(A, b):
     """Solve Ax=b via Cholesky. A must be positive definite."""
+    series(b, "right-hand side")
+    if len(b) != len(A):
+        raise ValueError("right-hand side length must match matrix")
     L = cholesky(A)
     y = forward_sub(L, b)
     Lt = [[L[j][i] for j in range(len(L))] for i in range(len(L))]
@@ -93,7 +125,7 @@ def max_sharpe_portfolio(cov, excess_returns):
     """
     inv_cov_r = solve_linear(cov, excess_returns)
     denom = sum(inv_cov_r)
-    if abs(denom) < 1e-12:
+    if denom <= 1e-12:
         return None
     return [v / denom for v in inv_cov_r]
 
@@ -139,6 +171,11 @@ def main():
 
     n_assets = len(returns[0])
     names = args.asset_names.split(",") if args.asset_names else [f"asset_{i}" for i in range(n_assets)]
+    if len(names) != n_assets or len(set(names)) != n_assets or any(not name.strip() for name in names):
+        raise ValueError("asset names must be unique, non-empty and match the data columns")
+    number(args.rf, "rf")
+    if args.annualize <= 0:
+        raise ValueError("annualize must be positive")
     cov, mu = cov_matrix(returns)
     periodic_rf = args.rf / args.annualize
     excess = [m - periodic_rf for m in mu]

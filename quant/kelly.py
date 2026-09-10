@@ -12,6 +12,13 @@ Usage (portfolio of bets, possibly correlated):
     # edges.json: [{"label":"NBA-BOS-ML","p":0.58,"odds":1.91},{...}]
 """
 import argparse
+try:
+    from ._validation import number, series, confidence_level
+except ImportError:
+    import sys
+    from pathlib import Path
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    from _validation import number, series, confidence_level
 import json
 import math
 import sys
@@ -23,6 +30,10 @@ def kelly_single(p, odds_decimal):
     b = odds - 1 (net payout), q = 1 - p
     f = (bp - q) / b
     """
+    number(p, "p", minimum=0, maximum=1)
+    number(odds_decimal, "odds_decimal")
+    if odds_decimal <= 1:
+        raise ValueError("decimal odds must exceed 1")
     b = odds_decimal - 1
     q = 1 - p
     f = (b * p - q) / b if b > 0 else 0.0
@@ -31,6 +42,7 @@ def kelly_single(p, odds_decimal):
 
 def edge_pct(p, odds_decimal):
     """Expected value as % of stake."""
+    kelly_single(p, odds_decimal)
     return p * (odds_decimal - 1) - (1 - p)
 
 
@@ -40,6 +52,25 @@ def kelly_portfolio(edges, fraction=0.25, corr_matrix=None):
     Scales each bet by fractional Kelly and caps total exposure.
     If corr_matrix provided, applies diversification shrinkage.
     """
+    number(fraction, "fraction", minimum=0, maximum=1)
+    labels = [e.get("label", f"bet_{i}") for i, e in enumerate(edges)]
+    if len(set(labels)) != len(labels):
+        raise ValueError("bet labels must be unique")
+    if corr_matrix is not None:
+        if not isinstance(corr_matrix, dict):
+            raise ValueError("correlation matrix must map labels to rows")
+        for label, row in corr_matrix.items():
+            if label not in labels or not isinstance(row, dict):
+                raise ValueError("correlation rows must use known bet labels")
+            for other, correlation in row.items():
+                if other not in labels:
+                    raise ValueError("correlation columns must use known bet labels")
+                number(correlation, "correlation", minimum=-1, maximum=1)
+                if label == other and correlation != 1:
+                    raise ValueError("correlation diagonal must equal 1")
+                reverse = corr_matrix.get(other, {}).get(label)
+                if reverse is not None and not math.isclose(correlation, reverse, abs_tol=1e-12):
+                    raise ValueError("correlations must be symmetric when both entries are supplied")
     results = []
     total_raw = 0.0
     for e in edges:
@@ -68,11 +99,18 @@ def kelly_portfolio(edges, fraction=0.25, corr_matrix=None):
         for i, r in enumerate(results):
             row = corr_matrix.get(r["label"], {})
             if row:
-                avg_corr = sum(v for k, v in row.items() if k != r["label"]) / max(1, len(row) - 1)
-                shrink = max(0.5, 1 - avg_corr * 0.5)  # 50% floor
+                others = [v for k, v in row.items() if k != r["label"]]
+                avg_corr = sum(others) / len(others) if others else 0.0
+                shrink = max(0.5, 1 - max(0.0, avg_corr) * 0.5)  # haircut only; no leverage from negative correlations
                 r["fractional_kelly_pct"] = round(r["fractional_kelly_pct"] * shrink, 3)
                 r["correlation_shrink"] = round(shrink, 3)
 
+    # Display rounding must not turn the stated 50% ceiling into an excess.
+    excess_units = max(0, sum(round(r["fractional_kelly_pct"] * 1000) for r in results) - 50000)
+    for r in sorted(results, key=lambda row: row["fractional_kelly_pct"], reverse=True):
+        reduction = min(excess_units, round(r["fractional_kelly_pct"] * 1000))
+        r["fractional_kelly_pct"] = round(r["fractional_kelly_pct"] - reduction / 1000, 3)
+        excess_units -= reduction
     total_exposure = sum(r["fractional_kelly_pct"] for r in results)
     return {
         "fraction": fraction,
@@ -93,6 +131,7 @@ def main():
     ap.add_argument("--fraction", type=float, default=0.25, help="Kelly fraction (default 0.25 = quarter)")
     args = ap.parse_args()
 
+    number(args.fraction, "fraction", minimum=0, maximum=1)
     if args.mode == "single":
         if args.p is None or args.odds_decimal is None:
             print(json.dumps({"error": "need --p and --odds-decimal"}))

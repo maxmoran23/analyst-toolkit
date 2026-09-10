@@ -18,13 +18,15 @@ private val PRETTY_JSON = Json { prettyPrint = true }
  * Deterministic port of `quant/var.py` — historical and parametric (Gaussian) VaR and CVaR.
  *
  * Both methods are deterministic pure math under parity-contract.md §1.1: historical VaR is
- * a sorted-quantile lookup and parametric VaR uses a fixed z-table (no inverse-CDF fit, no
+ * a sorted-quantile lookup and parametric VaR uses the inverse normal CDF (no fitted distribution, no
  * RNG). `var.py` ships no Monte Carlo or bootstrap variant, so nothing falls under the §1.3
  * stochastic regime and nothing is deferred.
  */
 
 /** VaR and CVaR as the (1-confidence) quantile of the sorted historical distribution. */
 fun historicalVar(returns: List<Double>, confidence: Double): Pair<Double, Double> {
+    require(returns.isNotEmpty() && returns.all { it.isFinite() }) { "returns must be non-empty and finite" }
+    require(confidence.isFinite() && confidence > 0.0 && confidence < 1.0) { "confidence must be in (0, 1)" }
     val sorted = returns.sorted()
     val idx = max(0, floor((1.0 - confidence) * sorted.size).toInt())
     val varValue = -sorted[idx]
@@ -33,15 +35,10 @@ fun historicalVar(returns: List<Double>, confidence: Double): Pair<Double, Doubl
     return varValue to cvar
 }
 
-// Fixed z-scores keyed by round(confidence, 3), matching the Python table and its
-// 1.645 fallback for any confidence level not in the table.
-private val Z_TABLE = mapOf(
-    0.90 to 1.282, 0.95 to 1.645, 0.975 to 1.960,
-    0.99 to 2.326, 0.995 to 2.576, 0.999 to 3.090,
-)
-
 /** Gaussian VaR from sample mean and ddof=1 sigma; understates fat tails by construction. */
 fun parametricVar(returns: List<Double>, confidence: Double): Pair<Double, Double> {
+    require(returns.size >= 2 && returns.all { it.isFinite() }) { "need at least two finite returns" }
+    require(confidence.isFinite() && confidence > 0.0 && confidence < 1.0) { "confidence must be in (0, 1)" }
     val n = returns.size
     val mean = returns.sum() / n
     val variance = returns.sumOf { value ->
@@ -49,7 +46,7 @@ fun parametricVar(returns: List<Double>, confidence: Double): Pair<Double, Doubl
         deviation * deviation
     } / (n - 1)
     val sigma = sqrt(variance)
-    val z = Z_TABLE[round3(confidence)] ?: 1.645
+    val z = org.apache.commons.math3.distribution.NormalDistribution().inverseCumulativeProbability(confidence)
     val varValue = z * sigma - mean
     val phiZ = exp(-0.5 * z * z) / sqrt(2.0 * PI)
     // Python raises ZeroDivisionError at confidence = 1.0; Kotlin's silent Infinity would

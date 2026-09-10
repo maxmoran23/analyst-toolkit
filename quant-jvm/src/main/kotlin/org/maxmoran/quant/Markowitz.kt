@@ -20,21 +20,26 @@ private val PRETTY_JSON = Json { prettyPrint = true }
  * parity-contract.md §1.4 applies: the reference solves cov * x = b with a hand-rolled
  * Cholesky factorization plus forward/backward substitution (pure Python, no numpy in the
  * code path), so this port replicates that exact arithmetic — same loops, same summation
- * order, same 1e-10 pivot regularization — rather than delegating to a library solver.
+ * order, explicit rejection of nonpositive pivots — rather than delegating to a library solver.
  * Raw solver parity is asserted at the §1.4 tolerance (1e-6 per entry).
  */
 
 /** Column means of a row-major returns matrix; mirrors `mean_vec`. */
 fun meanVec(matrix: List<List<Double>>): List<Double> {
+    require(matrix.isNotEmpty() && matrix[0].isNotEmpty()) { "matrix must contain observations and assets" }
     val n = matrix.size
     val m = matrix[0].size
+    require(matrix.all { row -> row.size == m && row.all { it.isFinite() } }) { "matrix rows must be finite and equal length" }
     return List(m) { j -> matrix.sumOf { it[j] } / n }
 }
 
 /** Sample (ddof=1) covariance matrix plus the mean vector; mirrors `cov_matrix`. */
 fun covMatrix(matrix: List<List<Double>>): Pair<List<List<Double>>, List<Double>> {
+    require(matrix.isNotEmpty() && matrix[0].isNotEmpty()) { "matrix must contain observations and assets" }
     val n = matrix.size
     val m = matrix[0].size
+    require(matrix.all { row -> row.size == m && row.all { it.isFinite() } }) { "matrix rows must be finite and equal length" }
+    require(n >= 2) { "covariance requires at least two observations" }
     val mu = meanVec(matrix)
     val cov = Array(m) { DoubleArray(m) }
     for (j in 0 until m) {
@@ -49,9 +54,13 @@ fun covMatrix(matrix: List<List<Double>>): Pair<List<List<Double>>, List<Double>
     return cov.map { it.toList() } to mu
 }
 
-/** Cholesky factor with the reference's 1e-10 regularization of non-positive pivots. */
+/** Cholesky factor; rejects non-positive pivots without changing the covariance. */
 fun cholesky(a: List<List<Double>>): List<List<Double>> {
     val n = a.size
+    require(n > 0 && a.all { row -> row.size == n && row.all { it.isFinite() } }) { "matrix must be finite and square" }
+    for (i in a.indices) for (j in 0 until i) {
+        require(abs(a[i][j] - a[j][i]) <= maxOf(1e-15, 1e-12 * maxOf(abs(a[i][j]), abs(a[j][i])))) { "matrix must be symmetric" }
+    }
     val l = Array(n) { DoubleArray(n) }
     for (i in 0 until n) {
         for (j in 0..i) {
@@ -59,7 +68,7 @@ fun cholesky(a: List<List<Double>>): List<List<Double>> {
             for (k in 0 until j) s += l[i][k] * l[j][k]
             if (i == j) {
                 var v = a[i][i] - s
-                if (v <= 0.0) v = 1e-10
+                require(v > 0.0) { "matrix must be positive definite; explicitly regularize if intended" }
                 l[i][j] = sqrt(v)
             } else {
                 l[i][j] = (a[i][j] - s) / l[j][j]
@@ -93,6 +102,7 @@ private fun backwardSub(u: List<List<Double>>, b: List<Double>): List<Double> {
 
 /** Solve Ax = b via Cholesky, matching `solve_linear`'s factor-transpose-substitute path. */
 fun solveLinear(a: List<List<Double>>, b: List<Double>): List<Double> {
+    require(b.size == a.size && b.all { it.isFinite() }) { "right-hand side must match matrix and be finite" }
     val l = cholesky(a)
     val y = forwardSub(l, b)
     val lt = List(l.size) { i -> List(l.size) { j -> l[j][i] } }
@@ -111,7 +121,7 @@ fun minVariancePortfolio(cov: List<List<Double>>): List<Double> {
 fun maxSharpePortfolio(cov: List<List<Double>>, excessReturns: List<Double>): List<Double>? {
     val invCovR = solveLinear(cov, excessReturns)
     val denom = invCovR.sum()
-    if (abs(denom) < 1e-12) return null
+    if (denom <= 1e-12) return null
     return invCovR.map { it / denom }
 }
 
@@ -232,6 +242,8 @@ fun evaluateMarkowitz(args: Array<String>): MarkowitzCliResult {
         val returns = parseReturnsCsv(File(path).readText())
         if (returns.isEmpty()) throw IllegalArgumentException("no numeric data found")
         val names = assetNames?.split(",")
+        require(names == null || (names.size == returns[0].size && names.toSet().size == names.size && names.all { it.isNotBlank() })) { "asset names must be unique, non-empty and match the data columns" }
+        require(rf.isFinite() && annualize > 0) { "rf must be finite and annualize must be positive" }
         MarkowitzCliResult(
             exitCode = 0,
             output = PRETTY_JSON.encodeToString(

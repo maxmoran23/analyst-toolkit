@@ -44,6 +44,7 @@ import sys
 from dataclasses import dataclass
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from _lib.validation import validate_numeric_fields
 from _lib.rules import Rule, RuleSet          # noqa: E402
 from _lib.match import jaro_winkler, levenshtein, soundex  # noqa: E402
 from _lib.text_normalize import normalize     # noqa: E402
@@ -418,8 +419,19 @@ class FeedAssessment:
 
 def assess_feed(records, config: Config = Config(),
                 asof_str: str = DEFAULT_ASOF, feed_id: str = "FEED") -> FeedAssessment:
+    validate_numeric_fields(config)
     asof = parse_iso(asof_str)
+    if asof is None:
+        raise ValueError("asof_str must be a valid ISO calendar date")
+    records = list(records)
     n = len(records)
+    if not n:
+        raise ValueError("cannot assess an empty feed")
+    ids = [record.record_id for record in records]
+    if any(not isinstance(record_id, str) or not record_id.strip() for record_id in ids):
+        raise ValueError("record_id must be a non-empty string")
+    if len(set(ids)) != n:
+        raise ValueError("record_id must be unique; duplicate IDs would undercount defects")
 
     defects = []
     for rec in records:

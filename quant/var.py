@@ -10,13 +10,23 @@ Usage:
     echo '[-0.02, 0.01, -0.05, 0.03, ...]' | python3 var.py --stdin --confidence 0.95
 """
 import argparse
+try:
+    from ._validation import number, series, confidence_level
+except ImportError:
+    import sys
+    from pathlib import Path
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    from _validation import number, series, confidence_level
 import json
 import math
 import sys
+from statistics import NormalDist
 
 
 def historical_var(returns, confidence):
     """VaR as the (1-confidence) quantile of the historical return distribution."""
+    series(returns, "returns")
+    confidence_level(confidence)
     sorted_r = sorted(returns)
     idx = max(0, int(math.floor((1 - confidence) * len(sorted_r))))
     var = -sorted_r[idx]
@@ -27,14 +37,13 @@ def historical_var(returns, confidence):
 
 def parametric_var(returns, confidence):
     """Gaussian VaR: mean - z * sigma. Approximation only, understates fat tails."""
+    series(returns, "returns", minimum_length=2)
+    confidence_level(confidence)
     n = len(returns)
     mean = sum(returns) / n
     var_ = sum((r - mean) ** 2 for r in returns) / (n - 1)
     sigma = math.sqrt(var_)
-    # inverse normal CDF approximation (Beasley-Springer-Moro would be more accurate)
-    # For 95%: z=1.645, 99%: z=2.326, 99.9%: z=3.090
-    z_table = {0.90: 1.282, 0.95: 1.645, 0.975: 1.960, 0.99: 2.326, 0.995: 2.576, 0.999: 3.090}
-    z = z_table.get(round(confidence, 3), 1.645)
+    z = NormalDist().inv_cdf(confidence)
     var = z * sigma - mean
     # CVaR for gaussian: sigma * phi(z) / (1-confidence) - mean, where phi is normal PDF
     phi_z = math.exp(-0.5 * z * z) / math.sqrt(2 * math.pi)
