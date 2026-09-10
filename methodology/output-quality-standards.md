@@ -32,11 +32,13 @@ observed from inferred.
 A multi-source investigation that has to hold up to a skeptical reader.
 
 **Floor:**
-- Three or more independent sources for any quantitative claim
+- Trace each quantitative claim to its original measurement or reproducible calculation;
+  seek independent corroboration where available and disclose single-source dependence
 - At least one primary source per major finding
 - Observed / reported / estimated / inferred kept visibly distinct
 - A contrarian / bear-case section — not optional
-- A confidence rating (HIGH / MODERATE / LOW / SPECULATIVE) on each major finding
+- A confidence rating (HIGH / MODERATE / LOW / NOT ASSESSABLE) with a reason on each major finding;
+  label speculation as a claim type, not a confidence measurement
 - Sources cited inline in the body *and* listed at the end
 
 A synthesis that only cites secondary sources, or that omits the contrarian
@@ -149,6 +151,28 @@ scannable.
 
 **Style:** match the surrounding codebase. For a new project, pick a standard
 formatter and linter and apply them consistently.
+
+---
+
+## Artifact acceptance and model changes
+
+Validate the file the reader will receive, after the final edit and export. Open
+it in the intended reader where available; otherwise report that rendering was
+not verified. Check clipped content, stale chart totals, missing sources, broken
+filters, keyboard access, and printable output. Reconcile export row counts and
+financial totals to the same underlying data used for the screen. Preserve IDs
+with leading zeroes; encode untrusted text as text so spreadsheet formulas or HTML
+cannot execute merely because a record is displayed.
+
+When changing an assistant, prompt, model setting, or retrieval method, compare
+old and proposed versions on the same frozen synthetic task set. Define acceptance
+criteria before running: material factual errors, missed hard-risk cases,
+unsupported claims, required abstentions, and useful output completeness. Include
+missing, conflicting, stale, and malicious source material, not only ideal inputs.
+Preserve outputs, runtime settings, source versions, and adjudicated failures.
+Do not use the test results to tune the same acceptance set repeatedly; add a
+separate challenge set. A synthetic pass supports the tested cases only and does
+not establish performance on real institutional populations.
 
 ---
 
