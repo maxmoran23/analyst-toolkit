@@ -23,10 +23,11 @@ from __future__ import annotations
 
 import os
 import sys
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from _lib.validation import validate_numeric_fields
+from _lib.validation import (validate_numeric_fields, validate_range, canonical_choice,
+                             canonical_choices, validate_floor, validate_feature_scores)
 from _lib.scoring import weighted_composite, band, tier_max  # noqa: E402
 
 TIER_ORDER = ["LOW", "MEDIUM", "HIGH"]
@@ -104,22 +105,35 @@ class Rating:
 
 
 def _country_score(code: str) -> float:
-    return COUNTRY_BUCKET_SCORE[COUNTRY_TIER.get(code, "STANDARD")]
+    return COUNTRY_BUCKET_SCORE[COUNTRY_TIER[code]]
+
+
+def _validated_customer(c: Customer) -> Customer:
+    validate_numeric_fields(c)
+    for name in ("ownership_opacity", "expected_activity_intensity"):
+        validate_range(getattr(c, name), name, 0, 1)
+    return replace(c,
+                   customer_type=canonical_choice(c.customer_type, CUSTOMER_TYPE_RISK, "customer_type"),
+                   domicile_country=canonical_choice(c.domicile_country, COUNTRY_TIER, "domicile_country"),
+                   operating_countries=canonical_choices(c.operating_countries, COUNTRY_TIER, "operating_countries"),
+                   products=canonical_choices(c.products, PRODUCT_RISK, "products"),
+                   channel=canonical_choice(c.channel, CHANNEL_RISK, "channel"))
 
 
 def factor_scores(c: Customer) -> dict:
     """Each factor mapped to a common 0-100 sub-score. Monotone in the underlying
     risk of every input."""
+    c = _validated_customer(c)
     geos = [c.domicile_country] + list(c.operating_countries)
     geography = max((_country_score(g) for g in geos), default=25.0)
-    products = max((PRODUCT_RISK.get(p, 30) for p in c.products), default=15.0)
+    products = max((PRODUCT_RISK[p] for p in c.products), default=15.0)
     return {
         "geography": geography,
         "products": products,
-        "customer_type": CUSTOMER_TYPE_RISK.get(c.customer_type, 30),
+        "customer_type": CUSTOMER_TYPE_RISK[c.customer_type],
         "negative_history": 100.0 if c.prior_sar else (80.0 if c.adverse_media else 0.0),
         "pep": 100.0 if c.pep else 0.0,
-        "channel": CHANNEL_RISK.get(c.channel, 30),
+        "channel": CHANNEL_RISK[c.channel],
         "ownership_opacity": 100.0 * max(0.0, min(1.0, c.ownership_opacity)),
         "expected_activity": 100.0 * max(0.0, min(1.0, c.expected_activity_intensity)),
     }
@@ -128,6 +142,7 @@ def factor_scores(c: Customer) -> dict:
 def score_features(feats: dict) -> float:
     """Pure feature -> composite score (0-100). The monotonicity property is tested
     against this function; it is also the unit a deployment exposes as a tool."""
+    validate_feature_scores(feats, WEIGHTS)
     return weighted_composite(feats, WEIGHTS)
 
 
@@ -151,6 +166,11 @@ def _floors(c: Customer, config: Config):
 
 def rate(c: Customer, config: Config = Config()) -> Rating:
     validate_numeric_fields(c, config)
+    c = _validated_customer(c)
+    validate_floor(config.pep_floor, "MEDIUM", TIER_ORDER, "pep_floor")
+    validate_floor(config.high_risk_floor, "HIGH", TIER_ORDER, "high_risk_floor")
+    for name in ("low_band", "high_band"):
+        validate_range(getattr(config, name), name, 0, 100)
     feats = factor_scores(c)
     score = score_features(feats)
     base_tier = band(score, [config.low_band, config.high_band], TIER_ORDER)

@@ -6,6 +6,7 @@ import kotlinx.serialization.json.buildJsonArray
 import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
+import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Assumptions.assumeTrue
@@ -94,8 +95,8 @@ class DrawdownParityTest {
         assertEquals(listOf(1.0, 1.1, 0.99), equityFromReturns(listOf(0.1, -0.1)).map { round3(it) })
         assertEquals(emptyList<DrawdownEpisode>(), recoveryEpisodes(listOf(1.0, 2.0, 3.0)))
         assertEquals(listOf(0.0), drawdownSeries(listOf(1.0)))
-        // Non-positive running peak collapses drawdown to zero, matching the Python guard.
-        assertEquals(listOf(0.0, 0.0), drawdownSeries(listOf(-1.0, -2.0)))
+        // Negative equity cannot be interpreted as an ordinary percentage drawdown.
+        assertThrows(IllegalArgumentException::class.java) { drawdownSeries(listOf(-1.0, -2.0)) }
     }
 
     @Test

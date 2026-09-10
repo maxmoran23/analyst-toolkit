@@ -10,7 +10,7 @@ From the repository root:
 
 ```bash
 python3 _tooling/toolkit.py list sanctions --kind prompt
-python3 _tooling/toolkit.py list --category investigations
+python3 _tooling/toolkit.py list --category compliance
 python3 _tooling/toolkit.py list --kind framework --json
 ```
 
@@ -46,6 +46,25 @@ bytes, not whether the methodology is correct or a model used every instruction.
 Outputs are created exclusively: an existing destination is refused. Choose a new
 filename for a later version. Keep private inputs and generated analysis outside the
 public repository. Only the public instruction export belongs in this build workflow.
+
+To verify a saved JSON envelope against the checkout that produced it:
+
+```bash
+python3 _tooling/toolkit.py verify build/entity-manifest.json
+python3 _tooling/toolkit.py verify build/entity-manifest.json --json
+```
+
+Verification rebuilds the payload from its catalog ID and compares the content,
+source hashes, sizes, mode, and remaining placeholders. It rejects altered payloads
+even if their hashes have been recomputed, and does not follow source paths supplied
+by the envelope. Demo values and their source hash come from the same bytes. Toolkit
+sources cannot be symbolic links, including links into ignored local material.
+
+A later source revision may legitimately fail verification; retain the source commit
+with the export and check out that revision to reproduce it. Hashes and reconstruction
+establish consistency with this checkout, not authenticity, current applicability, or
+the quality of an assistant's conclusions. Verification reads files and emits its result;
+it neither executes the payload nor modifies the envelope.
 
 To reject an attachment exceeding an exact character budget:
 

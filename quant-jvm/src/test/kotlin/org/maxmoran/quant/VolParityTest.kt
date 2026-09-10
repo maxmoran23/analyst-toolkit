@@ -6,6 +6,7 @@ import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonArray
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
+import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Assumptions.assumeTrue
@@ -56,7 +57,7 @@ class VolParityTest {
     }
 
     @Test
-    fun `garch parity — full contract and the short-series exit-0 error merge`() {
+    fun `garch parity — full contract and short-series rejection`() {
         requirePython()
         withTempJson(numbersJson(mixedReturns())) { path ->
             assertEquals(
@@ -64,12 +65,12 @@ class VolParityTest {
                 kotlinVol("--returns-json", path, "--method", "garch"),
             )
         }
-        // Python merges {"error": ...} into the result and still exits 0 for < 20 returns.
         withTempJson(numbersJson(List(5) { 0.01 })) { path ->
-            val python = pythonVol("--returns-json", path, "--method", "garch")
-            val kotlin = kotlinVol("--returns-json", path, "--method", "garch")
-            assertEquals(python, kotlin)
-            assertTrue(kotlin.containsKey("error"), "short-series garch must carry the error field")
+            val python = ProcessBuilder("python3", pythonReference().absolutePath,
+                "--returns-json", path, "--method", "garch").redirectErrorStream(true).start()
+            python.inputStream.bufferedReader().readText()
+            assertTrue(python.waitFor() != 0)
+            assertTrue(evaluateVol(arrayOf("--returns-json", path, "--method", "garch")).exitCode != 0)
         }
     }
 
@@ -113,10 +114,10 @@ class VolParityTest {
     fun `estimator primitives pass unconditional hand checks`() {
         // Two returns, zero mean: sample variance 0.02, annualize=1.
         assertEquals(sqrt(0.02), realizedVol(listOf(0.1, -0.1), 1), 1e-15)
-        assertEquals(0.0, realizedVol(listOf(0.1), 1), 0.0)
+        assertThrows(IllegalArgumentException::class.java) { realizedVol(listOf(0.1), 1) }
         // Single return seeds EWMA variance directly.
         assertEquals(0.1, ewmaVol(listOf(0.1), 0.94, 1), 1e-15)
-        assertEquals(0.0, ewmaVol(emptyList(), 0.94, 252), 0.0)
+        assertThrows(IllegalArgumentException::class.java) { ewmaVol(emptyList(), 0.94, 252) }
         // One pair with log range 1: variance = 1 / (4 ln 2).
         assertEquals(sqrt(1.0 / (4.0 * ln(2.0))), parkinsonVol(listOf(exp(1.0) to 1.0), 1), 1e-15)
         // One bar, close == open: variance = 0.5 * ln(h/l)^2 = 0.5.
@@ -134,7 +135,7 @@ class VolParityTest {
         assertEquals(expected, result["unconditional_annual_vol_pct"]?.jsonPrimitive?.content?.toDouble())
         assertEquals(0.95, result["persistence"]?.jsonPrimitive?.content?.toDouble())
 
-        assertEquals("need >= 20 returns", simpleGarch(List(19) { 0.01 })["error"]?.jsonPrimitive?.content)
+        assertThrows(IllegalArgumentException::class.java) { simpleGarch(List(19) { 0.01 }) }
     }
 
     @Test

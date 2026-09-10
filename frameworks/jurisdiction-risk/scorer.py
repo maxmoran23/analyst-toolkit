@@ -31,7 +31,8 @@ import sys
 from dataclasses import dataclass, field
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from _lib.validation import validate_numeric_fields
+from _lib.validation import (validate_numeric_fields, validate_range, canonical_choices,
+                             validate_floor, validate_feature_scores)
 from _lib.scoring import weighted_composite, band, tier_max  # noqa: E402
 
 TIER_ORDER = ["LOW", "MEDIUM", "HIGH", "CRITICAL"]
@@ -105,6 +106,16 @@ def dimension_scores(j: Jurisdiction) -> dict:
     stating each conversion. Monotone in the underlying risk of every input. A
     dimension named in `j.missing` is dropped so it is excluded from the composite
     rather than scored as a value."""
+    validate_numeric_fields(j)
+    validate_range(j.basel_score, "basel_score", 0, 10)
+    for name in ("cpi_score", "wgi_rule_of_law_pct", "wgi_control_corruption_pct",
+                 "secrecy_score", "organized_crime_score", "terrorism_score", "instability_score"):
+        validate_range(getattr(j, name), name, 0, 100)
+    missing = canonical_choices(j.missing, WEIGHTS, "missing")
+    if len(set(missing)) != len(missing):
+        raise ValueError("missing dimensions must be unique")
+    if len(missing) == len(WEIGHTS):
+        raise ValueError("at least one jurisdiction dimension must be assessed")
     corruption = ( (100.0 - j.cpi_score) + (100.0 - j.wgi_control_corruption_pct) ) / 2.0
     scores = {
         "aml_cft": _clip(j.basel_score * 10.0),
@@ -115,7 +126,7 @@ def dimension_scores(j: Jurisdiction) -> dict:
         "terrorism": _clip(j.terrorism_score),
         "instability": _clip(j.instability_score),
     }
-    for m in j.missing:
+    for m in missing:
         scores.pop(m, None)
     return scores
 
@@ -124,6 +135,7 @@ def score_features(feats: dict) -> float:
     """Pure feature -> composite score (0-100), renormalized across only the
     dimensions present. The monotonicity property is tested against this function;
     it is also the unit a deployment exposes as a tool."""
+    validate_feature_scores(feats, WEIGHTS, allow_subset=True)
     weights = {k: WEIGHTS[k] for k in feats if k in WEIGHTS}
     return weighted_composite(feats, weights)
 
@@ -147,6 +159,10 @@ def _floors(j: Jurisdiction, config: Config):
 
 def rate(j: Jurisdiction, config: Config = Config()) -> Rating:
     validate_numeric_fields(j, config)
+    validate_floor(config.high_floor, "HIGH", TIER_ORDER, "high_floor")
+    validate_floor(config.critical_floor, "CRITICAL", TIER_ORDER, "critical_floor")
+    for name in ("med_band", "high_band", "crit_band"):
+        validate_range(getattr(config, name), name, 0, 100)
     feats = dimension_scores(j)
     score = score_features(feats)
     base_tier = band(score, [config.med_band, config.high_band, config.crit_band], TIER_ORDER)

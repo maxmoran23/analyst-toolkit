@@ -32,7 +32,7 @@ import sys
 from dataclasses import dataclass
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from _lib.validation import validate_numeric_fields
+from _lib.validation import validate_numeric_fields, validate_range
 from _lib.aggregations import clamp  # noqa: E402
 
 # Illicit-category severities (0..1). Benign categories are 0 — exposure to them is
@@ -83,6 +83,14 @@ class Disposition:
 
 def score_address(a: AddressAlert, config: Config = Config()) -> Disposition:
     validate_numeric_fields(a, config)
+    validate_range(a.exposure, "exposure", 0, 1)
+    validate_range(a.amount_fraction, "amount_fraction", 0, 1)
+    if a.hops is not None and (type(a.hops) is not int or a.hops < 0):
+        raise ValueError("hops must be a nonnegative integer or None")
+    if config.max_actionable_hops < 0:
+        raise ValueError("max_actionable_hops must be nonnegative")
+    for name in ("deminimis_fraction", "dilution_floor", "escalate_floor", "review_high", "review_medium"):
+        validate_range(getattr(config, name), name, 0, 1)
     sev = CATEGORY_SEVERITY.get(a.top_category, 0.30)
     risk = clamp(a.exposure)  # exposure already encodes severity x decay^hops x fraction
     components = {

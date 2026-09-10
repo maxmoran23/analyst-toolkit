@@ -32,7 +32,7 @@ import sys
 from dataclasses import dataclass, field
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from _lib.validation import validate_numeric_fields
+from _lib.validation import validate_numeric_fields, validate_range
 from _lib.aggregations import ratio_to_expected, saturating, clamp  # noqa: E402
 from _lib.rules import Rule, RuleSet  # noqa: E402
 
@@ -169,6 +169,8 @@ def _near_misses(f) -> list:
 def score_alert(alert: Alert, profile: CustomerProfile,
                 config: Config = Config()) -> Disposition:
     validate_numeric_fields(alert, profile, config)
+    validate_range(alert.passthrough_ratio, "passthrough_ratio", 0, 1)
+    validate_range(alert.high_risk_geo_fraction, "high_risk_geo_fraction", 0, 1)
     if alert.customer_id != profile.customer_id:
         raise ValueError("alert and profile customer_id must match")
     throughput = alert.total_in + alert.total_out

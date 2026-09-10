@@ -4,6 +4,7 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
+import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Assumptions.assumeTrue
@@ -87,7 +88,7 @@ class CorrelationParityTest {
 
     @Test
     fun `CSV parsing skips headers and blank lines without Python`() {
-        val csv = "asset_a,asset_b\n\n0.01,0.02\nnot,numeric\n0.03,-0.01\n"
+        val csv = "asset_a,asset_b\n\n0.01,0.02\n0.03,-0.01\n"
         val cols = parseReturnsCsv(csv)
         assertEquals(listOf(listOf(0.01, 0.02), listOf(0.03, -0.01)), cols)
 

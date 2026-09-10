@@ -1,6 +1,6 @@
 # `_tooling/` — maintenance scripts and CI gates
 
-Use `toolkit.py` to search and export instructions, `check.py` to run the Python
+Use `toolkit.py` to search, export, and verify saved instructions, `check.py` to run the Python
 quality gates, builders to regenerate derived content, and validators to detect drift.
 Direct copy/paste users need none of these tools.
 

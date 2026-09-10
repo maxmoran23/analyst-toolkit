@@ -31,7 +31,8 @@ fun mean(xs: List<Double>): Double = if (xs.isEmpty()) 0.0 else xs.sum() / xs.si
 
 /** Sample standard deviation, matching `stdev(xs, ddof=1)` in the Python reference. */
 fun sampleStandardDeviation(xs: List<Double>, ddof: Int = 1): Double {
-    if (xs.size < 2) return 0.0
+    require(xs.size >= 2 && xs.all { it.isFinite() }) { "need at least two finite observations" }
+    require(ddof >= 0 && ddof < xs.size) { "ddof must be nonnegative and smaller than the sample" }
     // Python's float summation returns an exact common value for a constant
     // sequence; preserve the resulting zero-volatility contract explicitly.
     if (xs.all { it == xs[0] }) return 0.0
@@ -40,26 +41,28 @@ fun sampleStandardDeviation(xs: List<Double>, ddof: Int = 1): Double {
         val deviation = value - average
         deviation * deviation
     }
-    return sqrt(squaredDeviations / (xs.size - ddof))
+    return sqrt(squaredDeviations / (xs.size - ddof)).also { require(it.isFinite()) { "standard deviation overflow" } }
 }
 
 /** Root-mean-square shortfall below [target], including zero shortfalls in the denominator. */
 fun downsideDeviation(xs: List<Double>, target: Double = 0.0): Double {
-    if (xs.isEmpty()) return 0.0
+    require(xs.isNotEmpty() && xs.all { it.isFinite() } && target.isFinite()) { "need finite observations and target" }
     val squaredShortfalls = xs.sumOf { value ->
         val shortfall = min(0.0, value - target)
         shortfall * shortfall
     }
-    return sqrt(squaredShortfalls / xs.size)
+    return sqrt(squaredShortfalls / xs.size).also { require(it.isFinite()) { "downside deviation overflow" } }
 }
 
 /** Maximum peak-to-trough drawdown as a positive fraction. */
 fun maxDrawdown(returns: List<Double>): Double {
+    require(returns.isNotEmpty() && returns.all { it.isFinite() && it >= -1 }) { "simple returns must be finite and >= -1" }
     var equity = 1.0
     var peak = equity
     var maximum = 0.0
     for (value in returns) {
         equity *= 1.0 + value
+        require(equity.isFinite()) { "compounded equity overflow" }
         peak = max(peak, equity)
         maximum = max(maximum, (peak - equity) / peak)
     }
@@ -113,8 +116,8 @@ fun calculateSharpeMetrics(
 ): SharpeRawMetrics {
     require(returns.size >= 30) { "need >= 30 periods" }
     require(annualize > 0) { "annualize must be positive" }
-    require(riskFreeRate.isFinite()) { "risk-free rate must be finite" }
-    require(returns.all { it.isFinite() }) { "returns must contain only finite numbers" }
+    require(riskFreeRate.isFinite() && riskFreeRate > -1) { "risk-free rate must be finite and > -1" }
+    require(returns.all { it.isFinite() && it >= -1 }) { "simple returns must be finite and >= -1" }
 
     val periodicRiskFreeRate = (1.0 + riskFreeRate).pow(1.0 / annualize) - 1.0
     val excess = returns.map { it - periodicRiskFreeRate }
@@ -125,6 +128,7 @@ fun calculateSharpeMetrics(
     var totalReturn = 1.0
     for (value in returns) totalReturn *= 1.0 + value
     val cagr = totalReturn.pow(annualize.toDouble() / returns.size) - 1.0
+    require(cagr.isFinite()) { "CAGR overflow" }
     val maximumDrawdown = maxDrawdown(returns)
 
     val wins = returns.count { it > 0.0 }

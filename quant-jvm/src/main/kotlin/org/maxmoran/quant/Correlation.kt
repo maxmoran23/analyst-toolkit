@@ -1,6 +1,7 @@
 package org.maxmoran.quant
 
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonArray
@@ -22,8 +23,9 @@ private val PRETTY_JSON = Json { prettyPrint = true }
 
 /** Pearson correlation; returns 0.0 for short series or zero variance, matching `corr`. */
 fun corr(x: List<Double>, y: List<Double>): Double {
+    require(x.size == y.size && x.all { it.isFinite() } && y.all { it.isFinite() }) { "paired series must be finite and have equal lengths" }
     val n = x.size
-    if (n < 2) return 0.0
+    if (n < 2 || x.all { it == x[0] } || y.all { it == y[0] }) return 0.0
     val mx = x.sum() / n
     val my = y.sum() / n
     var num = 0.0
@@ -36,24 +38,37 @@ fun corr(x: List<Double>, y: List<Double>): Double {
         val deviation = value - my
         deviation * deviation
     })
-    if (dx == 0.0 || dy == 0.0) return 0.0
-    return num / (dx * dy)
+    require(dx != 0.0 && dy != 0.0) { "nonconstant variance is below floating-point resolution" }
+    return (num / (dx * dy)).also { require(it.isFinite()) { "correlation overflow" } }
 }
 
-/**
- * Parse CSV text the way the Python reference does: empty rows are skipped, and any row
- * containing a value that fails float() (e.g. a header) is skipped whole. The reference
- * uses csv.reader; quoted numeric fields are a non-contract divergence (skipped here).
+private fun correlationValue(x: List<Double>, y: List<Double>): Double? {
+    val value = corr(x, y)
+    if (x.size < 2 || x.all { it == x[0] } || y.all { it == y[0] }) return null
+    return round4(value)
+}
+
+/** Accept one all-text header, then rectangular finite numeric rows; reject malformed data.
+ * The line-oriented parser supports unquoted fields and quoted single-line fields without embedded commas.
  */
 fun parseReturnsCsv(text: String): List<List<Double>> {
-    val cols = mutableListOf<List<Double>>()
-    for (line in text.lineSequence()) {
+    val rows = mutableListOf<List<Double>>()
+    var first = true
+    for ((index, line) in text.lineSequence().withIndex()) {
         if (line.isEmpty()) continue
-        val values = line.split(",").map { it.trim().toDoubleOrNull() }
-        if (values.any { it == null }) continue
-        cols.add(values.filterNotNull())
+        val fields = line.split(",").map { it.trim().removeSurrounding("\"") }
+        val values = fields.map { it.toDoubleOrNull() }
+        if (first && values.all { it == null }) {
+            first = false
+            continue
+        }
+        first = false
+        require(values.all { it != null && it.isFinite() }) { "malformed numeric CSV row ${index + 1}" }
+        val numeric = values.filterNotNull()
+        require(rows.isEmpty() || numeric.size == rows[0].size) { "ragged CSV row ${index + 1}" }
+        rows.add(numeric)
     }
-    return cols
+    return rows
 }
 
 /** Public rounded JSON value contract, field-for-field with `quant/correlation.py`. */
@@ -63,28 +78,27 @@ fun correlationOutput(
     window: Int = 30,
     crisisThreshold: Double = -0.05,
 ): JsonObject {
-    if (cols.isEmpty()) throw IllegalArgumentException("no numeric rows in CSV")
+    require(cols.size >= 2 && cols[0].size >= 2 && cols.all { row -> row.size == cols[0].size && row.all { it.isFinite() } }) { "need finite rectangular data with two observations and two assets" }
+    require(window >= 2 && crisisThreshold.isFinite()) { "window must be >= 2 and crisis threshold finite" }
     val nRows = cols.size
     val nAssets = cols[0].size
-    // The reference echoes the full provided name list even when longer than the asset count.
     val names = assetNames ?: List(nAssets) { "a$it" }
+    require(names.size == nAssets && names.all { it.isNotBlank() } && names.toSet().size == names.size) { "asset names must be nonempty, unique and match columns" }
     val series = List(nAssets) { j -> cols.map { it[j] } }
 
-    val fullCorr = LinkedHashMap<String, Double>()
+    val fullCorr = LinkedHashMap<String, Double?>()
     for (i in 0 until nAssets) {
         for (j in i + 1 until nAssets) {
-            fullCorr["${names[i]}__${names[j]}"] = round4(corr(series[i], series[j]))
+            fullCorr["${names[i]}__${names[j]}"] = correlationValue(series[i], series[j])
         }
     }
 
     val crisisIdx = (0 until nRows).filter { series[0][it] < crisisThreshold }
-    val crisisCorr = LinkedHashMap<String, Double>()
+    val crisisCorr = LinkedHashMap<String, Double?>()
     if (crisisIdx.size > 5) {
         for (i in 0 until nAssets) {
             for (j in i + 1 until nAssets) {
-                crisisCorr["${names[i]}__${names[j]}"] = round4(
-                    corr(crisisIdx.map { series[i][it] }, crisisIdx.map { series[j][it] })
-                )
+                crisisCorr["${names[i]}__${names[j]}"] = correlationValue(crisisIdx.map { series[i][it] }, crisisIdx.map { series[j][it] })
             }
         }
     }
@@ -92,15 +106,16 @@ fun correlationOutput(
     // The reference subtracts the already-rounded values, then rounds the difference again.
     val compression = LinkedHashMap<String, Double>()
     for ((key, full) in fullCorr) {
+        if (full == null) continue
         val crisis = crisisCorr[key] ?: continue
         compression[key] = round4(crisis - full)
     }
 
-    val rolling = LinkedHashMap<String, Double>()
+    val rolling = LinkedHashMap<String, Double?>()
     if (nRows >= window) {
         for (i in 1 until nAssets) {
             rolling["${names[i]}_vs_${names[0]}"] =
-                round4(corr(tailSlice(series[0], window), tailSlice(series[i], window)))
+                correlationValue(series[0].takeLast(window), series[i].takeLast(window))
         }
     }
 
@@ -111,6 +126,7 @@ fun correlationOutput(
         put("window", JsonPrimitive(window))
         put("crisis_threshold", JsonPrimitive(crisisThreshold))
         put("n_crisis_days", JsonPrimitive(crisisIdx.size))
+        put("undefined_correlation_convention", JsonPrimitive("null means insufficient observations or zero variance; excluded from compression"))
         put("full_sample_correlation", mapToJson(fullCorr))
         put("crisis_correlation", mapToJson(crisisCorr))
         put("correlation_compression", mapToJson(compression))
@@ -118,22 +134,14 @@ fun correlationOutput(
         put(
             "interpretation_hint",
             JsonPrimitive(
-                "If compression > 0.2, diversification collapses in crashes. " +
-                    "Treat 'uncorrelated' tag with suspicion."
+                "Compression > 0.2 is a descriptive review flag, not a calibrated threshold or proof that diversification fails."
             ),
         )
     }
 }
 
-// Python's xs[-window:] semantics: window 0 yields the whole list, negative drops from the front.
-private fun tailSlice(xs: List<Double>, window: Int): List<Double> = when {
-    window > 0 -> xs.takeLast(window)
-    window == 0 -> xs
-    else -> xs.drop(minOf(-window, xs.size))
-}
-
-private fun mapToJson(values: Map<String, Double>): JsonObject = buildJsonObject {
-    values.forEach { (key, value) -> put(key, JsonPrimitive(value)) }
+private fun mapToJson(values: Map<String, Double?>): JsonObject = buildJsonObject {
+    values.forEach { (key, value) -> put(key, value?.let { JsonPrimitive(it) } ?: JsonNull) }
 }
 
 /** Testable result of evaluating the correlation CLI contract. */

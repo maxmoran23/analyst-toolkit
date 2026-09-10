@@ -14,7 +14,7 @@ import kotlin.system.exitProcess
 private val PRETTY_JSON = Json { prettyPrint = true }
 
 /**
- * Port of `quant/monte_carlo.py` — GBM price paths with optional Merton jumps, ending-price
+ * Port of `quant/monte_carlo.py` — GBM price paths with optional Bernoulli log-price jumps, ending-price
  * and max-drawdown distributions.
  *
  * Regime split per parity-contract.md: the path generators are stochastic and verified
@@ -31,9 +31,15 @@ private val PRETTY_JSON = Json { prettyPrint = true }
 
 /** Index-truncating percentile pick from a pre-sorted list; mirrors `percentile` exactly. */
 fun percentile(sortedList: List<Double>, p: Double): Double {
+    require(sortedList.isNotEmpty() && sortedList.all { it.isFinite() } && sortedList.zipWithNext().all { (a, b) -> a <= b }) { "percentile needs finite sorted samples" }
+    require(p.isFinite() && p in 0.0..1.0) { "percentile must lie in [0, 1]" }
     var idx = (p * sortedList.size).toInt()
     idx = min(max(0, idx), sortedList.size - 1)
     return sortedList[idx]
+}
+
+private fun validatePathInputs(spot: Double, drift: Double, vol: Double, days: Int, dt: Double) {
+    require(spot.isFinite() && spot > 0 && drift.isFinite() && vol.isFinite() && vol >= 0 && dt.isFinite() && dt > 0 && days >= 0) { "require finite positive spot/dt, nonnegative vol/days and finite drift" }
 }
 
 /** One geometric Brownian motion path of [days] steps, drawing from [rng]. */
@@ -45,16 +51,19 @@ fun gbmPath(
     dt: Double = 1.0 / 365.0,
     rng: Random,
 ): List<Double> {
+    validatePathInputs(spot, drift, vol, days, dt)
     val path = ArrayList<Double>(days + 1)
     path.add(spot)
     for (step in 0 until days) {
         val z = rng.nextGaussian()
-        path.add(path.last() * exp((drift - 0.5 * vol * vol) * dt + vol * sqrt(dt) * z))
+        val next = path.last() * exp((drift - 0.5 * vol * vol) * dt + vol * sqrt(dt) * z)
+        require(next.isFinite()) { "simulated price overflow" }
+        path.add(next)
     }
     return path
 }
 
-/** GBM with Poisson-approximated Merton jumps; `gauss(mean, vol)` = mean + vol * z. */
+/** GBM with one Bernoulli log-price jump per step; `gauss(mean, vol)` = mean + vol * z. */
 fun jumpGbmPath(
     spot: Double,
     drift: Double,
@@ -66,6 +75,8 @@ fun jumpGbmPath(
     dt: Double = 1.0 / 365.0,
     rng: Random,
 ): List<Double> {
+    validatePathInputs(spot, drift, vol, days, dt)
+    require(jumpIntensity.isFinite() && jumpIntensity >= 0 && jumpIntensity * dt <= 1 && jumpMean.isFinite() && jumpVol.isFinite() && jumpVol >= 0) { "require finite nonnegative jump intensity/volatility and intensity * dt <= 1" }
     val path = ArrayList<Double>(days + 1)
     path.add(spot)
     for (step in 0 until days) {
@@ -74,13 +85,16 @@ fun jumpGbmPath(
         if (rng.nextDouble() < jumpIntensity * dt) {
             jump = jumpMean + jumpVol * rng.nextGaussian()
         }
-        path.add(path.last() * exp((drift - 0.5 * vol * vol) * dt + vol * sqrt(dt) * z + jump))
+        val next = path.last() * exp((drift - 0.5 * vol * vol) * dt + vol * sqrt(dt) * z + jump)
+        require(next.isFinite()) { "simulated price overflow" }
+        path.add(next)
     }
     return path
 }
 
 /** Deterministic per-path max drawdown, mirroring the inline loop in the Python main. */
 fun pathMaxDrawdown(path: List<Double>): Double {
+    require(path.isNotEmpty() && path[0] > 0 && path.all { it.isFinite() && it >= 0 }) { "path must be finite, nonnegative and start positive" }
     var peak = path[0]
     var maxDd = 0.0
     for (p in path) {
@@ -103,6 +117,8 @@ fun simulate(
     jumps: Boolean = false,
     seed: Long = 42L,
 ): SimulationResult {
+    validatePathInputs(spot, drift, vol, days, 1.0 / 365.0)
+    require(paths > 0) { "paths must be positive" }
     val rng = Random(seed)
     val endingPrices = ArrayList<Double>(max(0, paths))
     val maxDrawdowns = ArrayList<Double>(max(0, paths))
@@ -134,8 +150,9 @@ fun monteCarloSummary(
     paths: Int,
     jumps: Boolean,
 ): JsonObject {
-    if (endingPrices.isEmpty()) throw ArithmeticException("division by zero: no simulated paths")
-    if (spot == 0.0) throw ArithmeticException("division by zero: spot is zero")
+    validatePathInputs(spot, drift, vol, days, 1.0 / 365.0)
+    require(paths > 0 && endingPrices.size == paths && maxDrawdowns.size == paths) { "simulation sample counts must match paths" }
+    require(endingPrices.all { it.isFinite() && it >= 0 } && maxDrawdowns.all { it.isFinite() && it in 0.0..1.0 }) { "invalid simulation samples" }
     val ep = endingPrices.sorted()
     val dd = maxDrawdowns.sorted()
     val meanEnding = ep.sum() / ep.size

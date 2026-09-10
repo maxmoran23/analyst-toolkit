@@ -28,6 +28,8 @@ def load_engine(name, filename='scorer.py'):
 dq = load_engine('data-quality-rules')
 tm = load_engine('transaction-monitoring')
 crr = load_engine('customer-risk-rating')
+jurisdiction = load_engine('jurisdiction-risk')
+npa = load_engine('npa-product-risk')
 kyt = load_engine('onchain-kyt-address-risk')
 tuning = load_engine('tm-threshold-tuning', 'engine.py')
 qa = load_engine('qa-sampling', 'engine.py')
@@ -102,6 +104,142 @@ class BoundaryTests(unittest.TestCase):
             result = resolve_candidate(graph, 'p')
             self.assertEqual(result['disposition'], 'REVIEW')
             self.assertFalse(result['auto_clear_eligible'])
+
+
+class RatingInputContractTests(unittest.TestCase):
+    def test_feature_only_scoring_requires_the_declared_population(self):
+        for engine in [crr, npa]:
+            complete = {key: 50 for key in engine.WEIGHTS}
+            partial = dict(complete)
+            partial.pop(next(iter(partial)))
+            for features in [partial, {**complete, 'unknown': 0}, {}]:
+                with self.subTest(engine=engine, features=features), self.assertRaises(ValueError):
+                    engine.score_features(features)
+            self.assertAlmostEqual(engine.score_features(complete), 50)
+        for features in [{}, {'unknown': 0}, {'aml_cft': 50, 'unknown': 0}]:
+            with self.subTest(features=features), self.assertRaises(ValueError):
+                jurisdiction.score_features(features)
+        self.assertEqual(jurisdiction.score_features({'aml_cft': 50}), 50)
+
+    def test_feature_only_scoring_rejects_invalid_subscores(self):
+        for engine in [crr, npa, jurisdiction]:
+            for value in [True, '0', float('nan'), float('inf'), -.01, 100.01]:
+                features = {key: 50 for key in engine.WEIGHTS}
+                features[next(iter(features))] = value
+                with self.subTest(engine=engine, value=value), self.assertRaises(ValueError):
+                    engine.score_features(features)
+
+    def test_customer_case_normalization_preserves_floor_and_caller(self):
+        code = next(code for code, tier in crr.COUNTRY_TIER.items() if tier == 'HIGH')
+        customer = crr.Customer('synthetic', customer_type=' shell ',
+                                domicile_country=code.lower(), products=[' CRYPTO '],
+                                channel=' remote ', ownership_opacity=.8)
+        result = crr.rate(customer)
+        self.assertEqual(result.tier, 'HIGH')
+        self.assertIn('high-risk-jurisdiction nexus', result.floors_applied)
+        self.assertIn('opaque shell structure', result.floors_applied)
+        self.assertEqual(customer.customer_type, ' shell ')
+        self.assertEqual(customer.products, [' CRYPTO '])
+        self.assertEqual(customer.domicile_country, code.lower())
+
+    def test_customer_unknown_taxonomies_never_receive_default_score(self):
+        for kwargs in [dict(customer_type='UNREGISTERED'), dict(channel='UNREGISTERED'),
+                       dict(products=['unregistered']), dict(domicile_country='XX'),
+                       dict(operating_countries=['XX']), dict(products='crypto'),
+                       dict(operating_countries=None), dict(channel=None)]:
+            for evaluate in (crr.rate, crr.factor_scores):
+                with self.subTest(kwargs=kwargs, evaluate=evaluate), self.assertRaises(ValueError):
+                    evaluate(crr.Customer('synthetic', **kwargs))
+
+    def test_product_case_normalization_cannot_bypass_prohibition_or_floor(self):
+        code = next(code for code, tier in npa.JURISDICTION_BUCKET.items() if tier == 'PROHIBITED')
+        product = npa.Product('synthetic', target_jurisdictions=[code.lower()])
+        self.assertEqual(npa.assess(product).routing, 'REFER_PROHIBITED')
+        self.assertTrue(npa.prohibited_attributes(product))
+        self.assertEqual(product.target_jurisdictions, [code.lower()])
+        product = npa.Product('synthetic', asset_settlement_type=' digital_asset ',
+                              novelty_to_firm='new_capability', involves_custody=True)
+        result = npa.assess(product)
+        self.assertEqual(result.tier, 'HIGH')
+        self.assertIn('digital-asset custody novelty', result.floors_applied)
+        self.assertIn('digital-asset control review', result.conditions)
+        self.assertEqual(product.asset_settlement_type, ' digital_asset ')
+
+    def test_product_unknown_taxonomies_never_receive_default_score(self):
+        cases = [{name: 'UNREGISTERED'} for name in
+                 ['client_segment', 'delivery_channel', 'asset_settlement_type',
+                  'novelty_to_firm', 'third_party_dependency', 'model_ai_reliance']]
+        cases.extend([dict(target_jurisdictions=['XX']), dict(target_jurisdictions='XX')])
+        for kwargs in cases:
+            for evaluate in (npa.assess, npa.factor_scores, npa.prohibited_attributes):
+                with self.subTest(kwargs=kwargs, evaluate=evaluate), self.assertRaises(ValueError):
+                    evaluate(npa.Product('synthetic', **kwargs))
+
+    def test_declared_unit_intervals_reject_clipping(self):
+        cases = [(crr.Customer, crr.rate, 'ownership_opacity'),
+                 (crr.Customer, crr.rate, 'expected_activity_intensity'),
+                 (npa.Product, npa.assess, 'data_privacy_surface'),
+                 (npa.Product, npa.assess, 'cash_intensity'),
+                 (npa.Product, npa.assess, 'cross_border_reach')]
+        for constructor, evaluate, name in cases:
+            for value in [-.01, 1.01]:
+                with self.subTest(name=name, value=value), self.assertRaises(ValueError):
+                    evaluate(constructor('synthetic', **{name: value}))
+            for value in [0, 1]:
+                with self.subTest(name=name, value=value):
+                    self.assertTrue(math.isfinite(evaluate(constructor('synthetic', **{name: value})).score))
+
+    def test_jurisdiction_index_ranges_and_missing_taxonomy(self):
+        ranges = dict(cpi_score=100, basel_score=10, wgi_rule_of_law_pct=100,
+                      wgi_control_corruption_pct=100, secrecy_score=100,
+                      organized_crime_score=100, terrorism_score=100, instability_score=100)
+        for name, upper in ranges.items():
+            for value in [-.01, upper + .01]:
+                with self.subTest(name=name, value=value), self.assertRaises(ValueError):
+                    jurisdiction.rate(jurisdiction.Jurisdiction('XX', **{name: value}))
+        for missing in ['aml_cft', ['unregistered'], ['aml_cft', 'AML_CFT'], list(jurisdiction.WEIGHTS)]:
+            with self.subTest(missing=missing), self.assertRaises(ValueError):
+                jurisdiction.rate(jurisdiction.Jurisdiction('XX', missing=missing))
+        item = jurisdiction.Jurisdiction('XX', missing=[' AML_CFT '])
+        self.assertEqual(jurisdiction.rate(item).dimensions_scored, 6)
+        self.assertEqual(item.missing, [' AML_CFT '])
+
+    def test_config_cannot_weaken_published_floors(self):
+        cases = [(crr.rate, crr.Customer('synthetic'), crr.Config(pep_floor='LOW')),
+                 (crr.rate, crr.Customer('synthetic'), crr.Config(high_risk_floor='MEDIUM')),
+                 (jurisdiction.rate, jurisdiction.Jurisdiction('XX'), jurisdiction.Config(high_floor='MEDIUM')),
+                 (jurisdiction.rate, jurisdiction.Jurisdiction('XX'), jurisdiction.Config(critical_floor='HIGH')),
+                 (npa.assess, npa.Product('synthetic'), npa.Config(hard_floor='MEDIUM')),
+                 (npa.assess, npa.Product('synthetic'), npa.Config(combo_floor='LOW'))]
+        for evaluate, record, config in cases:
+            with self.subTest(config=config), self.assertRaises(ValueError):
+                evaluate(record, config)
+        self.assertEqual(crr.rate(crr.Customer('synthetic', pep=True), crr.Config(pep_floor='HIGH')).tier, 'HIGH')
+        self.assertEqual(jurisdiction.rate(jurisdiction.Jurisdiction('XX', fatf_greylist=True),
+                                           jurisdiction.Config(high_floor='CRITICAL')).tier, 'CRITICAL')
+        self.assertEqual(npa.assess(npa.Product('synthetic', new_client_segment=True, new_geography=True),
+                                   npa.Config(combo_floor='HIGH')).tier, 'HIGH')
+
+    def test_product_review_intervals_require_complete_positive_integer_map(self):
+        for intervals in [{}, {'HIGH': 1}, {'HIGH': 90, 'MEDIUM': 180, 'LOW': True},
+                          {'HIGH': -1, 'MEDIUM': 180, 'LOW': 365}]:
+            with self.subTest(intervals=intervals), self.assertRaises(ValueError):
+                npa.assess(npa.Product('synthetic'), npa.Config(review_days=intervals))
+
+    def test_kyt_and_monitoring_declared_fraction_ranges(self):
+        for value in [-.01, 1.01]:
+            for name in ['exposure', 'amount_fraction']:
+                options = dict(exposure=.8, amount_fraction=.8)
+                options[name] = value
+                with self.subTest(name=name, value=value), self.assertRaises(ValueError):
+                    kyt.score_address(kyt.AddressAlert('synthetic', 'mixer', **options))
+            for name in ['passthrough_ratio', 'high_risk_geo_fraction']:
+                with self.subTest(name=name, value=value), self.assertRaises(ValueError):
+                    tm.score_alert(tm.Alert('synthetic', 'synthetic', **{name: value}),
+                                   tm.CustomerProfile('synthetic'))
+        for hops in [-1, .5, True, '1']:
+            with self.subTest(hops=hops), self.assertRaises(ValueError):
+                kyt.score_address(kyt.AddressAlert('synthetic', 'mixer', .8, hops=hops, amount_fraction=.8))
 
 
 class GraphAndProvenanceTests(unittest.TestCase):

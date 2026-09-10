@@ -22,14 +22,25 @@ private val PRETTY_JSON = Json { prettyPrint = true }
 
 /** Compound a unit start through periodic returns; mirrors `equity_from_returns`. */
 fun equityFromReturns(returns: List<Double>, start: Double = 1.0): List<Double> {
+    require(returns.isNotEmpty() && returns.all { it.isFinite() && it >= -1 }) { "simple returns must be finite and >= -1" }
+    require(start.isFinite() && start > 0) { "start must be finite and positive" }
     val equity = ArrayList<Double>(returns.size + 1)
     equity.add(start)
-    for (r in returns) equity.add(equity.last() * (1.0 + r))
+    for (r in returns) {
+        val next = equity.last() * (1.0 + r)
+        require(next.isFinite()) { "compounded equity overflow" }
+        equity.add(next)
+    }
     return equity
 }
 
-/** Per-observation drawdown fractions from a running peak; zero when the peak is non-positive. */
+private fun validateEquity(equity: List<Double>) {
+    require(equity.isNotEmpty() && equity[0] > 0 && equity.all { it.isFinite() && it >= 0 }) { "equity must be finite, nonnegative and start positive" }
+}
+
+/** Per-observation drawdown fractions from a positive initial running peak. */
 fun drawdownSeries(equity: List<Double>): List<Double> {
+    validateEquity(equity)
     var peak = equity[0]
     return equity.map { value ->
         peak = max(peak, value)
@@ -54,6 +65,7 @@ data class DrawdownEpisode(
 
 /** Sequential drawdown episodes, matching `recovery_episodes` including the unrecovered tail. */
 fun recoveryEpisodes(equity: List<Double>): List<DrawdownEpisode> {
+    validateEquity(equity)
     val episodes = mutableListOf<DrawdownEpisode>()
     var peak = equity[0]
     var peakIdx = 0
@@ -105,7 +117,8 @@ fun recoveryEpisodes(equity: List<Double>): List<DrawdownEpisode> {
 
 /** Public rounded JSON value contract, field-for-field with `quant/drawdown.py`. */
 fun drawdownOutput(equity: List<Double>, topN: Int = 5): JsonObject {
-    require(equity.isNotEmpty()) { "equity series is empty" }
+    validateEquity(equity)
+    require(topN >= 0) { "topN must be nonnegative" }
     val dds = drawdownSeries(equity)
     val episodes = recoveryEpisodes(equity)
     // Stable descending sort on the rounded field, matching Python's sorted(..., reverse=True).

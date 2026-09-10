@@ -13,11 +13,13 @@ Usage:
 import argparse
 try:
     from ._validation import number, series, confidence_level
+    from .correlation import parse_returns_csv
 except ImportError:
     import sys
     from pathlib import Path
     sys.path.insert(0, str(Path(__file__).resolve().parent))
     from _validation import number, series, confidence_level
+    from correlation import parse_returns_csv
 import csv
 import json
 import math
@@ -154,16 +156,8 @@ def main():
     ap.add_argument("--annualize", type=int, default=252)
     args = ap.parse_args()
 
-    returns = []
     with open(args.returns_csv) as f:
-        reader = csv.reader(f)
-        for row in reader:
-            if not row:
-                continue
-            try:
-                returns.append([float(x) for x in row])
-            except ValueError:
-                continue
+        returns = parse_returns_csv(f, minimum_rows=0, minimum_assets=1)
 
     if not returns:
         print(json.dumps({"error": "no numeric data found"}))

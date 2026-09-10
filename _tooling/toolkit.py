@@ -14,7 +14,7 @@ from pathlib import Path
 import re
 import sys
 
-from build_demos import build_block, extract_prompt_block, load_registry
+from build_demos import build_block, extract_prompt_block
 
 ROOT = Path(__file__).resolve().parent.parent
 PLACEHOLDER_RE = re.compile(r"\{\{(.*?)\}\}", re.DOTALL)
@@ -31,6 +31,11 @@ def digest(data: bytes) -> str:
 
 
 def read_source(path: Path) -> tuple[str, dict]:
+    if not path.is_relative_to(ROOT):
+        raise ValueError("Source is outside the repository")
+    if any(part.is_symlink() for part in [path, *path.parents]
+           if part != ROOT and ROOT in part.parents):
+        raise ValueError("Symbolic links are not toolkit sources")
     resolved = path.resolve()
     if not resolved.is_relative_to(ROOT):
         raise ValueError("Source resolves outside the repository")
@@ -45,7 +50,8 @@ def fields(text: str) -> dict:
 
 
 def inventory() -> list[dict]:
-    categories = json.loads((ROOT / "prompts/CATEGORIES.json").read_text(encoding="utf-8"))["categories"]
+    category_text, _ = read_source(ROOT / "prompts/CATEGORIES.json")
+    categories = json.loads(category_text)["categories"]
     entries = []
     groups = [("prompt", (ROOT / "prompts").glob("*/*.md")),
               ("standalone", (ROOT / "standalone").glob("*.md")),
@@ -97,11 +103,11 @@ def payload_for(entry: dict, demo: bool) -> tuple[str, list[dict]]:
         return entry["_payload"], sources
     if entry["kind"] != "prompt":
         raise ValueError("--demo is available only for prompts")
-    key = entry["source"]["path"].removeprefix("prompts/")
-    registry = load_registry()
+    key = Path(entry["source"]["path"]).name
+    text, source = read_source(ROOT / "_tooling/demos" / (entry["category"] + ".json"))
+    registry = json.loads(text)
     if key not in registry:
         raise ValueError("No registered synthetic demo for this prompt")
-    _, source = read_source(ROOT / "_tooling/demos" / (entry["category"] + ".json"))
     sources.append(source)
     return build_block(key, entry["_payload"], registry[key]), sources
 
@@ -126,6 +132,49 @@ def assemble(entry: dict, demo: bool, include_base: bool) -> tuple[str, dict]:
     return payload, manifest
 
 
+def unique_object(pairs: list[tuple]) -> dict:
+    result = {}
+    for key, value in pairs:
+        if key in result:
+            raise ValueError("Duplicate JSON object key")
+        result[key] = value
+    return result
+
+
+def reject_constant(value: str):
+    raise ValueError("Nonfinite JSON numbers are not valid in an export")
+
+
+def verify_export(path: Path) -> dict:
+    """Rebuild from a catalog ID, never from paths supplied by the envelope."""
+    envelope = json.loads(path.read_text(encoding="utf-8"), object_pairs_hook=unique_object,
+                          parse_constant=reject_constant)
+    if not isinstance(envelope, dict) or set(envelope) != {"payload", "manifest"}:
+        raise ValueError("Expected an assemble --json envelope with payload and manifest")
+    payload, manifest = envelope["payload"], envelope["manifest"]
+    if not isinstance(payload, str) or not isinstance(manifest, dict):
+        raise ValueError("Payload must be text and manifest must be an object")
+    if type(manifest.get("schema_version")) is not int or manifest["schema_version"] != 1:
+        raise ValueError("Unsupported export schema version")
+    if not isinstance(manifest.get("id"), str) or manifest.get("mode") not in ("template", "synthetic-demo"):
+        raise ValueError("Invalid export ID or mode")
+    if type(manifest.get("with_base")) is not bool:
+        raise ValueError("with_base must be a boolean")
+    if digest(payload.encode("utf-8")) != manifest.get("payload_sha256"):
+        raise ValueError("Payload hash does not match its manifest")
+    entry = select(inventory(), manifest["id"])
+    rebuilt, expected = assemble(entry, manifest["mode"] == "synthetic-demo", manifest["with_base"])
+    if rebuilt != payload:
+        raise ValueError("Payload differs from current repository assembly; use the recorded source revision")
+    # JSON comparison preserves numeric types as well as values (True is not 1).
+    if json.dumps(manifest, sort_keys=True) != json.dumps(expected, sort_keys=True):
+        raise ValueError("Manifest differs from current source hashes or assembly metadata")
+    return {"status": "verified", "id": entry["id"], "mode": manifest["mode"],
+            "payload_sha256": expected["payload_sha256"], "source_files": len(expected["sources"]),
+            "payload_size": expected["payload_size"],
+            "scope": "Exact reconstruction against this checkout; not a signature or analytical validation."}
+
+
 def emit(text: str, output: Path | None) -> None:
     if output is None:
         sys.stdout.write(text)
@@ -145,6 +194,9 @@ def parser() -> argparse.ArgumentParser:
     listing.add_argument("--kind", choices=("prompt", "standalone", "framework"))
     listing.add_argument("--json", action="store_true", help="Emit deterministic catalog JSON")
     listing.add_argument("--output", type=Path)
+    verification = commands.add_parser("verify", help="Reconstruct a saved JSON export against this checkout")
+    verification.add_argument("envelope", type=Path, help="File produced by assemble --json")
+    verification.add_argument("--json", action="store_true", help="Emit a machine-readable verification result")
     for name in ("show", "assemble"):
         command = commands.add_parser(name, help="Read the canonical payload" if name == "show" else "Export one prompt, optionally combined with BASE")
         command.add_argument("id", help="Full catalog ID, or an unambiguous basename")
@@ -161,6 +213,11 @@ def main(argv: list[str] | None = None) -> int:
     cli = parser()
     args = cli.parse_args(argv)
     try:
+        if args.command == "verify":
+            result = verify_export(args.envelope)
+            print(json.dumps(result, indent=2) if args.json else
+                  f"Verified {result['id']}: payload, source hashes, and assembly metadata match this checkout.\n{result['scope']}")
+            return 0
         entries = inventory()
         if args.command == "list":
             if args.category and args.category not in {entry["category"] for entry in entries}:

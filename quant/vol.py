@@ -7,77 +7,100 @@ Usage:
     python3 vol.py --ohlc-json ohlc.json --method parkinson --annualize 365
 """
 import argparse
+try:
+    from ._validation import number, series, integer
+except ImportError:
+    from pathlib import Path
+    import sys
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    from _validation import number, series, integer
+
 import json
 import math
 import sys
 
 
 def realized_vol(returns, annualize=252):
+    series(returns, "returns", minimum_length=2)
+    integer(annualize, "annualize")
     n = len(returns)
-    if n < 2:
-        return 0.0
     mu = sum(returns) / n
     var = sum((r - mu) ** 2 for r in returns) / (n - 1)
-    return math.sqrt(var) * math.sqrt(annualize)
+    return number(math.sqrt(var) * math.sqrt(annualize), "volatility")
 
 
 def ewma_vol(returns, lam=0.94, annualize=252):
     """RiskMetrics-style EWMA. Lambda=0.94 for daily (JPM default)."""
-    if not returns:
-        return 0.0
+    series(returns, "returns")
+    integer(annualize, "annualize")
+    number(lam, "lambda", minimum=0, maximum=1)
     var = returns[0] ** 2
     for r in returns[1:]:
         var = lam * var + (1 - lam) * r * r
-    return math.sqrt(var) * math.sqrt(annualize)
+    return number(math.sqrt(var) * math.sqrt(annualize), "volatility")
 
 
 def parkinson_vol(high_low_pairs, annualize=252):
     """Parkinson uses high/low range. Efficient for OHLC data."""
+    integer(annualize, "annualize")
     if not high_low_pairs:
-        return 0.0
+        raise ValueError("need at least one high/low pair")
     k = 1 / (4 * math.log(2))
     var_sum = 0.0
     for h, l in high_low_pairs:
-        if l > 0:
-            var_sum += (math.log(h / l)) ** 2
+        number(h, "high", minimum=0)
+        number(l, "low", minimum=0)
+        if not 0 < l <= h:
+            raise ValueError("require 0 < low <= high")
+        var_sum += (math.log(h / l)) ** 2
     var = k * var_sum / len(high_low_pairs)
-    return math.sqrt(var) * math.sqrt(annualize)
+    return number(math.sqrt(var) * math.sqrt(annualize), "volatility")
 
 
 def garman_klass_vol(ohlc_list, annualize=252):
     """Uses O/H/L/C. More efficient than Parkinson for assets without overnight gaps."""
+    integer(annualize, "annualize")
     if not ohlc_list:
-        return 0.0
+        raise ValueError("need at least one OHLC bar")
     total = 0.0
     for o, h, l, c in ohlc_list:
-        if o > 0 and l > 0:
-            hl = math.log(h / l)
-            co = math.log(c / o)
-            total += 0.5 * hl * hl - (2 * math.log(2) - 1) * co * co
-    var = total / len(ohlc_list)
-    return math.sqrt(max(0, var)) * math.sqrt(annualize)
+        for value in (o, h, l, c):
+            number(value, "OHLC price", minimum=0)
+        if not (0 < l <= min(o, c) <= max(o, c) <= h):
+            raise ValueError("require 0 < low <= open/close <= high")
+        hl = math.log(h) - math.log(l) if not math.isfinite(h / l) else math.log(h / l)
+        co = math.log(c) - math.log(o) if not math.isfinite(c / o) or c / o == 0 else math.log(c / o)
+        total += 0.5 * hl * hl - (2 * math.log(2) - 1) * co * co
+    var = number(total / len(ohlc_list), "Garman-Klass variance")
+    return number(math.sqrt(max(0, var)) * math.sqrt(annualize), "volatility")
 
 
 def simple_garch(returns, annualize=252, omega=None, alpha=0.10, beta=0.85):
     """
     Simplified GARCH(1,1) forecast. Uses fixed parameters (typical equity defaults)
-    rather than MLE estimation to avoid scipy dependency. Decent for anomaly detection.
+    rather than MLE estimation; callers must assess those assumptions for their series.
     """
+    series(returns, "returns", minimum_length=20)
+    integer(annualize, "annualize")
+    number(alpha, "alpha", minimum=0)
+    number(beta, "beta", minimum=0)
+    if alpha + beta >= 1:
+        raise ValueError("GARCH requires alpha + beta < 1")
+    if omega is not None:
+        number(omega, "omega", minimum=0)
     n = len(returns)
-    if n < 20:
-        return {"error": "need >= 20 returns"}
     unconditional = sum(r * r for r in returns) / n
     if omega is None:
         omega = unconditional * (1 - alpha - beta)
     var_t = unconditional
-    series = [math.sqrt(var_t)]
+    conditional_vols = [math.sqrt(var_t)]
     for r in returns:
         var_t = omega + alpha * r * r + beta * var_t
-        series.append(math.sqrt(var_t))
-    forecast = math.sqrt(var_t) * math.sqrt(annualize)
+        conditional_vols.append(math.sqrt(var_t))
+    forecast = number(math.sqrt(var_t) * math.sqrt(annualize), "volatility")
     return {
         "garch_annualized_vol_pct": round(forecast * 100, 3),
-        "current_conditional_vol_pct": round(series[-1] * math.sqrt(annualize) * 100, 3),
+        "current_conditional_vol_pct": round(conditional_vols[-1] * math.sqrt(annualize) * 100, 3),
         "persistence": round(alpha + beta, 4),
         "unconditional_annual_vol_pct": round(math.sqrt(unconditional * annualize) * 100, 3),
     }
@@ -117,7 +140,7 @@ def main():
             returns = json.load(f)
         result.update(simple_garch(returns, args.annualize))
 
-    print(json.dumps(result, indent=2))
+    print(json.dumps(result, indent=2, allow_nan=False))
 
 
 if __name__ == "__main__":

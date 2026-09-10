@@ -5,6 +5,7 @@ import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
+import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotEquals
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -188,7 +189,7 @@ class MonteCarloParityTest {
         assertEquals(1.0, percentile(sorted, 0.0), 0.0)
         assertEquals(4.0, percentile(sorted, 1.0), 0.0)   // idx 4 clamps to 3
         assertEquals(1.0, percentile(sorted, 0.24), 0.0)  // int(0.96) truncates to 0
-        assertEquals(1.0, percentile(sorted, -0.5), 0.0)  // negative clamps to 0
+        assertThrows(IllegalArgumentException::class.java) { percentile(sorted, -0.5) }
 
         assertEquals(0.25, pathMaxDrawdown(listOf(100.0, 120.0, 90.0, 130.0, 110.0)), 1e-15)
         assertEquals(0.0, pathMaxDrawdown(listOf(1.0, 2.0, 3.0)), 0.0)

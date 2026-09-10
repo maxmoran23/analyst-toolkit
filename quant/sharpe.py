@@ -7,6 +7,14 @@ Usage:
     python3 sharpe.py --returns-json crypto_daily.json --rf 0.05 --annualize 365
 """
 import argparse
+try:
+    from ._validation import number, series, integer
+except ImportError:
+    from pathlib import Path
+    import sys
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    from _validation import number, series, integer
+
 import json
 import math
 import sys
@@ -17,24 +25,31 @@ def mean(xs):
 
 
 def stdev(xs, ddof=1):
-    if len(xs) < 2:
+    series(xs, minimum_length=2)
+    integer(ddof, "ddof", minimum=0)
+    if ddof >= len(xs):
+        raise ValueError("ddof must be smaller than the sample")
+    if all(x == xs[0] for x in xs):
         return 0.0
     m = mean(xs)
-    return math.sqrt(sum((x - m) ** 2 for x in xs) / (len(xs) - ddof))
+    return number(math.sqrt(sum((x - m) ** 2 for x in xs) / (len(xs) - ddof)), "standard deviation")
 
 
 def downside_stdev(xs, target=0.0):
+    series(xs)
+    number(target, "target")
     below = [min(0.0, x - target) for x in xs]
     if not below:
         return 0.0
-    return math.sqrt(sum(x * x for x in below) / len(below))
+    return number(math.sqrt(sum(x * x for x in below) / len(below)), "downside deviation")
 
 
 def max_drawdown(returns):
     """Returns max DD as positive fraction (e.g. 0.42 = 42% drawdown)."""
+    series(returns, "returns", minimum=-1)
     equity = [1.0]
     for r in returns:
-        equity.append(equity[-1] * (1 + r))
+        equity.append(number(equity[-1] * (1 + r), "compounded equity"))
     peak = equity[0]
     max_dd = 0.0
     for v in equity:
@@ -65,6 +80,11 @@ def main():
         print(json.dumps({"error": "need >= 30 periods"}))
         sys.exit(1)
 
+    series(returns, "returns", minimum_length=30, minimum=-1)
+    integer(args.annualize, "annualize")
+    number(args.rf, "rf")
+    if args.rf <= -1:
+        raise ValueError("rf must exceed -1")
     n = len(returns)
     periodic_rf = (1 + args.rf) ** (1 / args.annualize) - 1
     excess = [r - periodic_rf for r in returns]
@@ -78,8 +98,8 @@ def main():
 
     total_return = 1.0
     for r in returns:
-        total_return *= 1 + r
-    cagr = total_return ** (args.annualize / n) - 1
+        total_return = number(total_return * (1 + r), "compounded equity")
+    cagr = number(total_return ** (args.annualize / n) - 1, "CAGR")
     max_dd = max_drawdown(returns)
     calmar = cagr / max_dd if max_dd > 0 else 0.0
 
@@ -110,7 +130,7 @@ def main():
         "avg_loss_pct": round(avg_loss * 100, 3),
         "profit_factor": round(profit_factor, 3) if profit_factor != float("inf") else "inf",
     }
-    print(json.dumps(out, indent=2))
+    print(json.dumps(out, indent=2, allow_nan=False))
 
 
 if __name__ == "__main__":

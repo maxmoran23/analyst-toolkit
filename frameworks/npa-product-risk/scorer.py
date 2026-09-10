@@ -28,10 +28,11 @@ from __future__ import annotations
 
 import os
 import sys
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from _lib.validation import validate_numeric_fields
+from _lib.validation import (validate_numeric_fields, validate_range, canonical_choice,
+                             canonical_choices, validate_floor, validate_feature_scores)
 from _lib.scoring import weighted_composite, band, tier_max  # noqa: E402
 
 TIER_ORDER = ["LOW", "MEDIUM", "HIGH"]
@@ -154,7 +155,23 @@ class Assessment:
 
 
 def _jurisdiction_score(code: str) -> float:
-    return JURISDICTION_BUCKET_SCORE[JURISDICTION_BUCKET.get(code, "STANDARD")]
+    return JURISDICTION_BUCKET_SCORE[JURISDICTION_BUCKET[code]]
+
+
+def _validated_product(p: Product) -> Product:
+    validate_numeric_fields(p)
+    for name in ("data_privacy_surface", "cash_intensity", "cross_border_reach"):
+        validate_range(getattr(p, name), name, 0, 1)
+    taxonomies = {
+        "client_segment": CLIENT_SEGMENT_RISK, "delivery_channel": DELIVERY_CHANNEL_RISK,
+        "asset_settlement_type": ASSET_SETTLEMENT_RISK, "novelty_to_firm": NOVELTY_RISK,
+        "third_party_dependency": THIRD_PARTY_RISK, "model_ai_reliance": MODEL_AI_RISK,
+    }
+    normalized = {name: canonical_choice(getattr(p, name), choices, name)
+                  for name, choices in taxonomies.items()}
+    normalized["target_jurisdictions"] = canonical_choices(
+        p.target_jurisdictions, JURISDICTION_BUCKET, "target_jurisdictions")
+    return replace(p, **normalized)
 
 
 def _clamp01(x: float) -> float:
@@ -164,6 +181,7 @@ def _clamp01(x: float) -> float:
 def factor_scores(p: Product) -> dict:
     """Each factor mapped to a common 0-100 sub-score. Monotone in the underlying
     risk of every input."""
+    p = _validated_product(p)
     jurisdiction = max((_jurisdiction_score(j) for j in p.target_jurisdictions), default=28.0)
     fincrime = 100.0 * (
         FINCRIME_MIX["cash_intensity"] * _clamp01(p.cash_intensity)
@@ -173,12 +191,12 @@ def factor_scores(p: Product) -> dict:
     return {
         "fincrime_exposure": fincrime,
         "jurisdiction_footprint": jurisdiction,
-        "asset_settlement_type": ASSET_SETTLEMENT_RISK.get(p.asset_settlement_type, 40),
-        "client_segment": CLIENT_SEGMENT_RISK.get(p.client_segment, 40),
-        "novelty_to_firm": NOVELTY_RISK.get(p.novelty_to_firm, 45),
-        "third_party_dependency": THIRD_PARTY_RISK.get(p.third_party_dependency, 40),
-        "delivery_channel": DELIVERY_CHANNEL_RISK.get(p.delivery_channel, 45),
-        "model_ai_reliance": MODEL_AI_RISK.get(p.model_ai_reliance, 40),
+        "asset_settlement_type": ASSET_SETTLEMENT_RISK[p.asset_settlement_type],
+        "client_segment": CLIENT_SEGMENT_RISK[p.client_segment],
+        "novelty_to_firm": NOVELTY_RISK[p.novelty_to_firm],
+        "third_party_dependency": THIRD_PARTY_RISK[p.third_party_dependency],
+        "delivery_channel": DELIVERY_CHANNEL_RISK[p.delivery_channel],
+        "model_ai_reliance": MODEL_AI_RISK[p.model_ai_reliance],
         "data_privacy_surface": 100.0 * _clamp01(p.data_privacy_surface),
     }
 
@@ -186,12 +204,14 @@ def factor_scores(p: Product) -> dict:
 def score_features(feats: dict) -> float:
     """Pure feature -> composite score (0-100). The monotonicity property is tested
     against this function; it is also the unit a deployment exposes as a tool."""
+    validate_feature_scores(feats, WEIGHTS)
     return weighted_composite(feats, WEIGHTS)
 
 
 def prohibited_attributes(p: Product) -> list:
     """The documented prohibited list, checked first and never scored around.
     Any hit routes the proposal to REFER_PROHIBITED."""
+    p = _validated_product(p)
     hits = []
     if any(JURISDICTION_BUCKET.get(j) == "PROHIBITED" for j in p.target_jurisdictions):
         hits.append("prohibited-jurisdiction target market")
@@ -247,6 +267,15 @@ def _conditions(p: Product, feats: dict, tier: str, config: Config) -> list:
 
 def assess(p: Product, config: Config = Config()) -> Assessment:
     validate_numeric_fields(p, config)
+    p = _validated_product(p)
+    validate_floor(config.hard_floor, "HIGH", TIER_ORDER, "hard_floor")
+    validate_floor(config.combo_floor, "MEDIUM", TIER_ORDER, "combo_floor")
+    for name in ("low_band", "high_band", "fincrime_condition_threshold"):
+        validate_range(getattr(config, name), name, 0, 100)
+    validate_range(config.privacy_condition_threshold, "privacy_condition_threshold", 0, 1)
+    if (not isinstance(config.review_days, dict) or set(config.review_days) != set(TIER_ORDER)
+            or any(type(days) is not int or days <= 0 for days in config.review_days.values())):
+        raise ValueError("review_days must provide a positive integer interval for every tier")
     feats = factor_scores(p)
     score = score_features(feats)
     base_tier = band(score, [config.low_band, config.high_band], TIER_ORDER)

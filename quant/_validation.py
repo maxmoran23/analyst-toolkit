@@ -24,3 +24,9 @@ def confidence_level(value):
     number(value, "confidence")
     if not 0 < value < 1:
         raise ValueError("confidence must be strictly between 0 and 1")
+
+
+def integer(value, name, *, minimum=1):
+    if type(value) is not int or value < minimum:
+        raise ValueError(f"{name} must be an integer >= {minimum}")
+    return value

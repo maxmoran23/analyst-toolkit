@@ -7,18 +7,37 @@ Usage:
     python3 drawdown.py --returns-json returns.json
 """
 import argparse
+try:
+    from ._validation import number, series, integer
+except ImportError:
+    from pathlib import Path
+    import sys
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    from _validation import number, series, integer
+
 import json
 import sys
 
 
 def equity_from_returns(returns, start=1.0):
+    series(returns, "returns", minimum=-1)
+    number(start, "start")
+    if start <= 0:
+        raise ValueError("start must be positive")
     eq = [start]
     for r in returns:
-        eq.append(eq[-1] * (1 + r))
+        eq.append(number(eq[-1] * (1 + r), "compounded equity"))
     return eq
 
 
+def validate_equity(equity):
+    series(equity, "equity", minimum=0)
+    if equity[0] <= 0:
+        raise ValueError("initial equity must be positive")
+
+
 def drawdown_series(equity):
+    validate_equity(equity)
     dds = []
     peak = equity[0]
     for v in equity:
@@ -30,6 +49,7 @@ def drawdown_series(equity):
 
 def recovery_episodes(equity):
     """Return list of (peak_idx, trough_idx, recovery_idx, dd_pct, duration_days)."""
+    validate_equity(equity)
     episodes = []
     peak = equity[0]
     peak_idx = 0
@@ -90,6 +110,7 @@ def main():
         print(json.dumps({"error": "need --equity-json or --returns-json"}))
         sys.exit(1)
 
+    integer(args.top_n, "top_n", minimum=0)
     dds = drawdown_series(equity)
     eps = recovery_episodes(equity)
     eps_sorted = sorted(eps, key=lambda e: e["dd_pct"], reverse=True)
@@ -107,7 +128,7 @@ def main():
             max(1, sum(1 for e in eps if e.get("duration_to_recovery"))), 2
         ),
     }
-    print(json.dumps(out, indent=2))
+    print(json.dumps(out, indent=2, allow_nan=False))
 
 
 if __name__ == "__main__":

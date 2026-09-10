@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Monte Carlo price path simulation — geometric Brownian motion, with optional Merton jumps.
+Monte Carlo price path simulation — geometric Brownian motion, with optional Bernoulli log-price jumps.
 Useful for portfolio stress-testing and expected drawdown distribution.
 
 Usage:
@@ -8,32 +8,61 @@ Usage:
     python3 monte_carlo.py --spot 3500 --vol 1.0 --days 90 --paths 5000 --jumps
 """
 import argparse
+try:
+    from ._validation import number, series, integer
+except ImportError:
+    from pathlib import Path
+    import sys
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    from _validation import number, series, integer
+
 import json
 import math
 import random
 
 
+def validate_path_inputs(spot, drift, vol, days, dt):
+    number(spot, "spot")
+    number(drift, "drift")
+    number(vol, "vol", minimum=0)
+    number(dt, "dt")
+    integer(days, "days", minimum=0)
+    if spot <= 0 or dt <= 0:
+        raise ValueError("spot and dt must be positive")
+
+
 def gbm_path(spot, drift, vol, days, dt=1 / 365):
+    validate_path_inputs(spot, drift, vol, days, dt)
     path = [spot]
     for _ in range(days):
         z = random.gauss(0, 1)
-        path.append(path[-1] * math.exp((drift - 0.5 * vol * vol) * dt + vol * math.sqrt(dt) * z))
+        path.append(number(path[-1] * math.exp((drift - 0.5 * vol * vol) * dt + vol * math.sqrt(dt) * z), "simulated price"))
     return path
 
 
 def jump_gbm_path(spot, drift, vol, days, jump_intensity=0.5, jump_mean=-0.05, jump_vol=0.15, dt=1 / 365):
+    validate_path_inputs(spot, drift, vol, days, dt)
+    number(jump_intensity, "jump_intensity", minimum=0)
+    number(jump_mean, "jump_mean")
+    number(jump_vol, "jump_vol", minimum=0)
+    if jump_intensity * dt > 1:
+        raise ValueError("Bernoulli jump approximation requires intensity * dt <= 1")
     path = [spot]
     for _ in range(days):
         z = random.gauss(0, 1)
-        # Poisson-approximated jump arrival
+        # One Bernoulli jump per step; accurate only when intensity * dt is small.
         jump = 0.0
         if random.random() < jump_intensity * dt:
             jump = random.gauss(jump_mean, jump_vol)
-        path.append(path[-1] * math.exp((drift - 0.5 * vol * vol) * dt + vol * math.sqrt(dt) * z + jump))
+        path.append(number(path[-1] * math.exp((drift - 0.5 * vol * vol) * dt + vol * math.sqrt(dt) * z + jump), "simulated price"))
     return path
 
 
 def percentile(sorted_list, p):
+    series(sorted_list, "sorted samples")
+    number(p, "percentile", minimum=0, maximum=1)
+    if any(a > b for a, b in zip(sorted_list, sorted_list[1:])):
+        raise ValueError("percentile samples must be sorted")
     idx = int(p * len(sorted_list))
     idx = min(max(0, idx), len(sorted_list) - 1)
     return sorted_list[idx]
@@ -46,10 +75,12 @@ def main():
     ap.add_argument("--drift", type=float, default=0.0, help="annualized drift")
     ap.add_argument("--days", type=int, default=30)
     ap.add_argument("--paths", type=int, default=10000)
-    ap.add_argument("--jumps", action="store_true", help="enable Merton jump-diffusion")
+    ap.add_argument("--jumps", action="store_true", help="enable one Bernoulli log-price jump per step")
     ap.add_argument("--seed", type=int, default=42)
     args = ap.parse_args()
 
+    validate_path_inputs(args.spot, args.drift, args.vol, args.days, 1 / 365)
+    integer(args.paths, "paths")
     random.seed(args.seed)
 
     ending_prices = []
@@ -95,7 +126,7 @@ def main():
         "prob_halving": round(sum(1 for p in ep if p < args.spot * 0.5) / len(ep) * 100, 2),
         "prob_doubling": round(sum(1 for p in ep if p > args.spot * 2) / len(ep) * 100, 2),
     }
-    print(json.dumps(out, indent=2))
+    print(json.dumps(out, indent=2, allow_nan=False))
 
 
 if __name__ == "__main__":

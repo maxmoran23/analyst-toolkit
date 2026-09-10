@@ -28,30 +28,35 @@ data class OhlcBar(val open: Double, val high: Double, val low: Double, val clos
 
 /** Annualized close-to-close volatility from sample (ddof=1) variance. */
 fun realizedVol(returns: List<Double>, annualize: Int = 252): Double {
+    require(returns.size >= 2 && returns.all { it.isFinite() }) { "need at least two finite returns" }
+    require(annualize > 0) { "annualize must be positive" }
     val n = returns.size
-    if (n < 2) return 0.0
     val mu = returns.sum() / n
     val variance = returns.sumOf { value ->
         val deviation = value - mu
         deviation * deviation
     } / (n - 1)
-    return sqrt(variance) * sqrt(annualize.toDouble())
+    return (sqrt(variance) * sqrt(annualize.toDouble())).also { require(it.isFinite()) { "volatility overflow" } }
 }
 
 /** RiskMetrics-style EWMA; lambda=0.94 is the JPM daily default. */
 fun ewmaVol(returns: List<Double>, lam: Double = 0.94, annualize: Int = 252): Double {
-    if (returns.isEmpty()) return 0.0
+    require(returns.isNotEmpty() && returns.all { it.isFinite() }) { "need finite returns" }
+    require(annualize > 0) { "annualize must be positive" }
+    require(lam.isFinite() && lam in 0.0..1.0) { "lambda must lie in [0, 1]" }
     var variance = returns[0] * returns[0]
     for (i in 1 until returns.size) {
         val r = returns[i]
         variance = lam * variance + (1 - lam) * r * r
     }
-    return sqrt(variance) * sqrt(annualize.toDouble())
+    return (sqrt(variance) * sqrt(annualize.toDouble())).also { require(it.isFinite()) { "volatility overflow" } }
 }
 
-/** Parkinson range estimator from (high, low) pairs; non-positive lows are skipped. */
+/** Parkinson range estimator from (high, low) pairs; requires positive ordered high/low pairs. */
 fun parkinsonVol(highLowPairs: List<Pair<Double, Double>>, annualize: Int = 252): Double {
-    if (highLowPairs.isEmpty()) return 0.0
+    require(highLowPairs.isNotEmpty()) { "need at least one high/low pair" }
+    require(annualize > 0) { "annualize must be positive" }
+    require(highLowPairs.all { (h, l) -> h.isFinite() && l.isFinite() && l > 0 && h >= l }) { "require 0 < low <= high" }
     val k = 1.0 / (4.0 * ln(2.0))
     var varSum = 0.0
     for ((high, low) in highLowPairs) {
@@ -61,29 +66,32 @@ fun parkinsonVol(highLowPairs: List<Pair<Double, Double>>, annualize: Int = 252)
         }
     }
     val variance = k * varSum / highLowPairs.size
-    return sqrt(variance) * sqrt(annualize.toDouble())
+    return (sqrt(variance) * sqrt(annualize.toDouble())).also { require(it.isFinite()) { "volatility overflow" } }
 }
 
-/** Garman-Klass OHLC estimator; bars with non-positive open or low are skipped. */
+/** Garman-Klass OHLC estimator; requires positive OHLC prices with open and close inside the range. */
 fun garmanKlassVol(ohlc: List<OhlcBar>, annualize: Int = 252): Double {
-    if (ohlc.isEmpty()) return 0.0
+    require(ohlc.isNotEmpty()) { "need at least one OHLC bar" }
+    require(annualize > 0) { "annualize must be positive" }
+    require(ohlc.all { b -> listOf(b.open, b.high, b.low, b.close).all { it.isFinite() } && b.low > 0 && b.open in b.low..b.high && b.close in b.low..b.high }) { "require 0 < low <= open/close <= high" }
     var total = 0.0
     for (bar in ohlc) {
         if (bar.open > 0.0 && bar.low > 0.0) {
-            val hl = lnPositive(bar.high / bar.low)
-            val co = lnPositive(bar.close / bar.open)
+            val hl = if ((bar.high / bar.low).isFinite()) lnPositive(bar.high / bar.low) else ln(bar.high) - ln(bar.low)
+            val coRatio = bar.close / bar.open
+            val co = if (coRatio.isFinite() && coRatio > 0) lnPositive(coRatio) else ln(bar.close) - ln(bar.open)
             total += 0.5 * hl * hl - (2.0 * ln(2.0) - 1.0) * co * co
         }
     }
     val variance = total / ohlc.size
-    return sqrt(max(0.0, variance)) * sqrt(annualize.toDouble())
+    require(variance.isFinite()) { "Garman-Klass variance overflow" }
+    return (sqrt(max(0.0, variance)) * sqrt(annualize.toDouble())).also { require(it.isFinite()) { "volatility overflow" } }
 }
 
 /**
  * Simplified GARCH(1,1) forecast with fixed parameters, matching `simple_garch`.
  *
- * Mirrors the Python error contract exactly: on fewer than 20 returns the result is an
- * `{"error": ...}` object that `vol.py`'s main() merges into its output and still exits 0.
+ * Rejects short samples, nonfinite values and nonstationary parameter combinations.
  */
 fun simpleGarch(
     returns: List<Double>,
@@ -92,10 +100,11 @@ fun simpleGarch(
     alpha: Double = 0.10,
     beta: Double = 0.85,
 ): JsonObject {
+    require(returns.size >= 20 && returns.all { it.isFinite() }) { "need at least 20 finite returns" }
+    require(annualize > 0) { "annualize must be positive" }
+    require(alpha.isFinite() && beta.isFinite() && alpha >= 0 && beta >= 0 && alpha + beta < 1) { "GARCH requires nonnegative alpha/beta and alpha + beta < 1" }
+    require(omega == null || (omega.isFinite() && omega >= 0)) { "omega must be finite and nonnegative" }
     val n = returns.size
-    if (n < 20) {
-        return buildJsonObject { put("error", JsonPrimitive("need >= 20 returns")) }
-    }
     val unconditional = returns.sumOf { it * it } / n
     val omegaValue = omega ?: unconditional * (1.0 - alpha - beta)
     var varT = unconditional
@@ -103,6 +112,7 @@ fun simpleGarch(
         varT = omegaValue + alpha * r * r + beta * varT
     }
     val forecast = sqrt(varT) * sqrt(annualize.toDouble())
+    require(forecast.isFinite()) { "volatility overflow" }
     return buildJsonObject {
         put("garch_annualized_vol_pct", JsonPrimitive(round3(forecast * 100.0)))
         put(

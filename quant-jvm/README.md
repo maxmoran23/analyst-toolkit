@@ -103,7 +103,7 @@ gradle run --args="markowitz --returns-csv returns.csv --asset-names btc,eth,gol
 # Token fee-capture DCF (fees passed inline as JSON, not a file path)
 gradle run --args="dcf --fees-yearly [120e6,150e6,180e6,200e6,210e6] --discount 0.15 --terminal-growth 0.04 --circulating-supply 1e9 --current-price 0.5"
 
-# Monte Carlo price paths (GBM, or Merton jump-diffusion with --jumps)
+# Monte Carlo price paths (GBM, or Bernoulli log-price jumps with --jumps)
 gradle run --args="monte_carlo --spot 60000 --vol 0.80 --drift 0.05 --days 30 --paths 10000"
 gradle run --args="monte_carlo --spot 3500 --vol 1.0 --days 90 --paths 5000 --jumps --seed 7"
 ```
@@ -136,3 +136,7 @@ If `quant-jvm` ever falls behind `quant/` (a Python change without a correspondi
 ## License
 
 MIT, matching the parent repo.
+
+### Series input contracts
+
+The Python [time-series and simulation input contracts](../quant/README.md#time-series-and-simulation-input-contracts) also apply to the Kotlin calculation entrypoints. Invalid OHLC bars, short GARCH samples, negative initial equity, invalid frequency/horizons and malformed numeric correlation rows are rejected. Undefined report correlations use JSON `null` and do not enter compression. The low-level correlation helper retains its historical zero sentinel. Drawdown recovery durations count observation periods; the legacy days field assumes daily observations.
