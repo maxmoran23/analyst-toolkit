@@ -220,8 +220,35 @@ alone is not. (A runnable country-risk engine over these indices is a planned fr
 | **FATF** — `fatf-gafi.org` | Standards, guidance, mutual evaluations | International standard of record | Free | T1 |
 | **Federal banking regulators** — OCC, FDIC, Federal Reserve enforcement actions | US bank enforcement | Precedent and expectations | Free | T1 |
 | **EBA / ESMA / national regulators** — e.g. FCA, BaFin | EU/UK regulatory action | Non-US regulatory intelligence | Free | T1 |
+| **Federal Register** — `federalregister.gov` (+ `/api/v1` JSON API) | US rules, proposed rules, notices, comment deadlines | The primary record of what was actually published, and when | Free + API | T1 |
+| **Regulations.gov** — `regulations.gov` (+ API) | Rulemaking dockets, submitted comments | Reading the comment file on a proposal, not just the proposal | Free + API | T1 |
+| **OIRA review dashboard** — `reginfo.gov` | Rules pending White House review before publication | Forward view: what is queued to publish, and how long it has sat | Free | T1 |
 
 See also [`regulatory-intelligence.md`](regulatory-intelligence.md) for the tracking method.
+
+### Query precision on the Federal Register API (verified 2026-10-04)
+
+`conditions[term]` does not behave as a phrase search, and an unquoted multi-word term
+returns a materially larger set than the phrase it looks like. Measured against the full
+corpus on the same day, document counts for quoted versus unquoted forms:
+
+| Term as submitted | Unquoted | Quoted | Ratio |
+|---|---|---|---|
+| `digital asset` | 3,239 | 415 | 7.8x |
+| `beneficial ownership` | 9,224 | 1,787 | 5.2x |
+| `stablecoin` (single token) | 159 | 80 | 2.0x |
+
+The practical rule: **quote every term, then state which form produced any count you
+report.** An unquoted multi-word count is not a count of that phrase, and a brief that
+says "N documents mention digital assets" while querying unquoted overstates by roughly
+an order of magnitude.
+
+Do not adopt the obvious explanation without testing it. "Unquoted terms are ANDed
+token-by-token" would predict no effect on a single-token query, yet `stablecoin` still
+halves when quoted — so quoting changes matching behaviour beyond multi-word handling
+(stemming or variant expansion are plausible and were not confirmed here). Treat the
+*ratio* as the reproducible finding and the *mechanism* as undetermined; re-measure
+rather than assuming either is stable across API versions.
 
 ---
 
