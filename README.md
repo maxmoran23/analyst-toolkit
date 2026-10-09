@@ -8,7 +8,7 @@
 
 ## Prefer a small attachment package for one task?
 
-The companion [Markdown Analyst Toolkit](https://github.com/maxmoran23/markdown-analyst-toolkit) packages 16 analytical topics as self-contained Markdown suites. Each has ten working attachments plus orientation and build records, with detailed procedures, fictional examples, fixed Word/Excel templates and an offline light/dark dashboard. Users work through messages and attachments; no terminal, repository integration or agent builder is required.
+The companion [Markdown Analyst Toolkit](https://github.com/maxmoran23/markdown-analyst-toolkit) packages 24 analytical topics as self-contained Markdown suites. Each has ten working attachments plus orientation and build records, with detailed procedures, fictional examples, fixed Word/Excel templates and an offline light/dark dashboard. Users work through messages and attachments; no terminal, repository integration or agent builder is required. The [offline suite finder](https://github.com/maxmoran23/markdown-analyst-toolkit/releases/download/v1.1.0/suite-finder.html) helps select a topic and copy the attachment prompt for the current stage.
 
 Use its [plain-English start guide](https://github.com/maxmoran23/markdown-analyst-toolkit/blob/main/docs/START-HERE.md) for that manual workflow. This repository continues to provide the broader prompt library and runnable scoring engines described below.
 
