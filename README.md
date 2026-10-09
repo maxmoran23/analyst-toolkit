@@ -6,6 +6,12 @@
 
 ---
 
+## Prefer a small attachment package for one task?
+
+The companion [Markdown Analyst Toolkit](https://github.com/maxmoran23/markdown-analyst-toolkit) packages 16 analytical topics as self-contained Markdown suites. Each has ten working attachments plus orientation and build records, with detailed procedures, fictional examples, fixed Word/Excel templates and an offline light/dark dashboard. Users work through messages and attachments; no terminal, repository integration or agent builder is required.
+
+Use its [plain-English start guide](https://github.com/maxmoran23/markdown-analyst-toolkit/blob/main/docs/START-HERE.md) for that manual workflow. This repository continues to provide the broader prompt library and runnable scoring engines described below.
+
 ## If you have five minutes
 
 **Who this is for.** People who work financial crime for a living — sanctions and
